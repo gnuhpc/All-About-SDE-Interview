@@ -1,0 +1,67 @@
+package org.gnuhpc.bigdata.leetcode;
+
+import org.gnuhpc.bigdata.datastructure.trie.Trie;
+import org.junit.Test;
+
+import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+
+public class LongestCommonPrefix14 {
+    //O(nlogn)
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        if (strs.length == 1) return strs[0];
+
+        Arrays.sort(strs);
+
+        char[] first = strs[0].toCharArray();
+        char[] last = strs[strs.length-1].toCharArray();
+
+        int i;
+        for (i = 0; i < Math.min(first.length,last.length) && first[i] == last[i]; i++);
+
+        return strs[0].substring(0,i);
+    }
+
+    public String longestCommonPrefix2(String[] strs) {
+        Trie trie = new Trie();
+
+        for (String s:strs) trie.insert(s);
+
+        return trie.longestCommonPrefix();
+    }
+
+    public String longestCommonPrefix3(String[] strs) {
+        if (strs == null || strs.length == 0)
+            return "";
+        int minLen = Integer.MAX_VALUE;
+        for (String str : strs)
+            minLen = Math.min(minLen, str.length());
+        int low = 1;
+        int high = minLen;
+        while (low <= high) {
+            int middle = (low + high) / 2;
+            if (isCommonPrefix(strs, middle))
+                low = middle + 1;
+            else
+                high = middle - 1;
+        }
+        return strs[0].substring(0, (low + high) / 2);
+    }
+
+    private boolean isCommonPrefix(String[] strs, int len){
+        String str1 = strs[0].substring(0,len);
+        for (int i = 1; i < strs.length; i++)
+            if (!strs[i].startsWith(str1))
+                return false;
+        return true;
+    }
+
+    @Test
+    public void test(){
+        String[] strs = new String[]{"al", "all", "alp", "alde"};
+        assertEquals("al", longestCommonPrefix(strs));
+        assertEquals("al", longestCommonPrefix2(strs));
+        assertEquals("al", longestCommonPrefix3(strs));
+    }
+}

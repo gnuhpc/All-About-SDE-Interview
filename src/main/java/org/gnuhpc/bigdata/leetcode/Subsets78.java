@@ -5,6 +5,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+//组合类的
+/*
+问题模型：求出所有满足条件的“组合”。
+判断条件：组合中的元素是顺序无关的。
+时间复杂度：与 2^n 相关。
+ */
 public class Subsets78 {
     /*
     分别求长度为0到n的子集

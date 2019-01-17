@@ -13,6 +13,7 @@ public class CombinationSum39 {
         return res;
     }
 
+    //思路： 标准dfs，遍历start，注意下一个start还是i
     private void backtrack(List<List<Integer>> res, List<Integer> tempList, int [] nums, int remain, int start){
         counter++;
         if(remain < 0 || start >= nums.length) return;

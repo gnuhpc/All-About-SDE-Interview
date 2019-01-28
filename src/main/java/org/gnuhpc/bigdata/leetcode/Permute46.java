@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+问题模型：求出所有满足条件的“ 排列”。
+判断条件：组合中的元素是顺序“ 相关”的。
+时间复杂度：与 n! 相关。
+ */
 public class Permute46 {
     //方法一：交换递归 , 注意，这个方法对于重复的数字是无法剔除的，比如1,1,1,1
     public List<List<Integer>> permute(int[] nums) {
@@ -34,18 +39,18 @@ public class Permute46 {
         }
     }
 
-    //方法二：backtracking + memory
+    //方法二：backtracking + memory  最通用
     /*
     * Standard backtracking (dfs) approach
 Key Idea: for each number, we need an additional array to indicate whether this number is used or not,
 we can only use those unused numbers to generate the remaining part of the permutation.
     * */
-    public List<List<Integer>> permutedfs1(int[] nums) {
+    public List<List<Integer>> permute2(int[] nums) {
 
         /*
-     * @param nums: Sample list of integers.
-     * @return: Sample list of permutations.
-     */
+         * @param nums: Sample list of integers.
+         * @return: Sample list of permutations.
+         */
         List<List<Integer>> results = new ArrayList<>();
         if (nums == null) {
             return results;
@@ -139,7 +144,7 @@ we can only use those unused numbers to generate the remaining part of the permu
     }
 
     // 针对String有特殊的处理:字符串拼接
-       /*
+    /*
      * Sample method exposed to client to calculate permutation of String in Java. 对String的一些特殊处理
      */
     public void permutation(String input) {
@@ -167,6 +172,6 @@ we can only use those unused numbers to generate the remaining part of the permu
 
     @Test
     public void test() {
-        System.out.println(permutedfs1(new int[]{1, 2, 3}));
+        System.out.println(permute3(new int[]{1, 2, 3}));
     }
 }

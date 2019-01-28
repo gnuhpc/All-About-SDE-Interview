@@ -5,15 +5,17 @@ import org.junit.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 
+public class PermuteUnique47 {
+
+    //Method1 : DFS
 /*
 * 使用排列式深度优先搜索算法。
 和没有重复元素的 Permutation 一题相比，只加了两句话：
 Arrays.sort(nums) // 排序这样所有重复的数
-if (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1]) { continue; } // 跳过会造成重复的情况
+if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) { continue; } // 跳过会造成重复的情况
 * */
 
-//https://www.youtube.com/watch?v=re9JDd7M-v8 上边有个图画的不错
-public class PermuteUnique47 {
+    //https://www.youtube.com/watch?v=re9JDd7M-v8 上边有个图画的不错
     List<List<Integer>> res = new ArrayList<>();
 
     public List<List<Integer>> permuteUnique(int[] nums) {
@@ -57,12 +59,13 @@ public class PermuteUnique47 {
         nums[a]=nums[b];
         nums[b]=tmp;
     }
+
     private void dfs(int[] nums, int index){
         if(index==nums.length)
             list.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
 
         Set<Integer> set = new HashSet<>(); //因为有重复，所以每次交换之和一个出现相同的元素进行交换，可以排序实现，我这里使用Set来表示
-        for(int i=index;i<nums.length;i++){
+        for(int i=index; i<nums.length; i++){
             if(set.contains(nums[i]))
                 continue;
             set.add(nums[i]);
@@ -71,6 +74,7 @@ public class PermuteUnique47 {
             swap(nums,index,i);
         }
     }
+
     //从第一个数开始，不停的与他之后的进行交换，中间有DFS
     //这道题关键在于DFS 看具体的介绍
     public List<List<Integer>> permuteUnique2(int[] nums) {

@@ -142,7 +142,7 @@ public class FindLadders126 {
 
     /*
     Method3 ：BFS + DFS ，先用BFS构建出从beginWord到wordList（beginWord也加在dict中）中各个word的steps
-    然胡DFS的时候根据步数进行 ， 偶尔超时
+    然后DFS的时候根据步数进行 ， 偶尔超时
      */
     //word - step
     HashMap<String, Integer> map = new HashMap<>();
@@ -173,7 +173,7 @@ public class FindLadders126 {
         while (!queue.isEmpty()) {
             String str = queue.poll();
             if (str.equals(endWord))
-                continue;
+                break;
             for (int i = 0; i < beginWord.length(); i++) {
                 char[] word = str.toCharArray();
                 for (char ch = 'a'; ch <= 'z'; ch++) {
@@ -349,7 +349,7 @@ public class FindLadders126 {
 
 //        System.out.println(findLadders("hit", "cog", arr));
 //        System.out.println(findLadders2("hit", "cog", arr));
-        System.out.println(findLadders4("hit", "cog", arr));
+        System.out.println(findLadders3("hit", "cog", arr));
 
 //        arr.clear();
 //        arr.add("a");

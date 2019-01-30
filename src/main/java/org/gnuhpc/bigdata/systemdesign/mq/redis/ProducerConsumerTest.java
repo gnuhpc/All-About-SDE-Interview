@@ -1,12 +1,10 @@
 package org.gnuhpc.bigdata.systemdesign.mq.redis;
 
-import java.io.IOException;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import redis.clients.jedis.Jedis;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -23,9 +21,16 @@ public class ProducerConsumerTest {
     public void publishAndConsume() {
         Producer p = new Producer(new Jedis("localhost"), "foo");
         Consumer c = new Consumer(new Jedis("localhost"), "a subscriber", "foo");
+        Consumer c1 = new Consumer(new Jedis("localhost"), "a subscriber 2", "foo");
 
-        p.publish("hello world!");
-        assertEquals("hello world!", c.consume());
+        p.publish("hello world1!");
+        p.publish("hello world2!");
+        p.publish("hello world3!");
+        assertEquals("hello world1!", c.consume());
+        assertEquals(2, c.unreadMessages());
+        assertEquals("hello world1!", c1.consume());
+        assertEquals("hello world2!", c1.consume());
+        assertEquals(1, c1.unreadMessages());
     }
 
     @Test
@@ -69,26 +74,6 @@ public class ProducerConsumerTest {
         assertEquals("b", c.consume());
     }
 
-    @Test
-    public void eraseOldMessages() {
-        Producer p = new Producer(new Jedis("localhost"), "foo");
-        Consumer c = new Consumer(new Jedis("localhost"), "a subscriber", "foo");
-
-        p.publish("a");
-        p.publish("b");
-
-        assertEquals("a", c.consume());
-
-        p.clean();
-
-        Consumer nc = new Consumer(new Jedis("localhost"), "new subscriber",
-                "foo");
-
-        assertEquals("b", c.consume());
-        assertEquals("b", nc.consume());
-        assertNull(c.consume());
-        assertNull(nc.consume());
-    }
 
     class SlowProducer extends Producer {
         private long sleep;
@@ -102,19 +87,15 @@ public class ProducerConsumerTest {
             this.sleep = sleep;
         }
 
-        protected Integer getNextMessageId() {
-            Integer nextMessageId = super.getNextMessageId();
+        @Override
+        public void publish(String message) {
             sleep(sleep);
-            return nextMessageId;
+            super.publish(message);
         }
     }
 
     class SlowConsumer extends Consumer {
         private long sleep;
-
-        public SlowConsumer(Jedis jedis, String id, String topic) {
-            this(jedis, id, topic, 500L);
-        }
 
         public SlowConsumer(Jedis jedis, String id, String topic, long sleep) {
             super(jedis, id, topic);
@@ -146,7 +127,7 @@ public class ProducerConsumerTest {
     private void sleep(long sleep) {
         try {
             Thread.sleep(sleep);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 

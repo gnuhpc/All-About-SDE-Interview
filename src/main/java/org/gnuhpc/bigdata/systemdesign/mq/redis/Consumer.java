@@ -6,23 +6,20 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
 public class Consumer {
-    private Nest topic;
-    private Nest subscriber;
+    private Topic topic;
+    private Subscriber subscriber;
     private String id;
 
     public Consumer(final Jedis jedis, final String id, final String topic) {
-        this.topic = new Nest("topic:" + topic, jedis);
-        this.subscriber = new Nest(this.topic.cat("subscribers").key(), jedis);
+        this.topic = new Topic("topic:" + topic, jedis);
+        this.subscriber = new Subscriber(this.topic.cat("subscribers").key(), jedis);
         this.id = id;
     }
 
     private void waitForMessages() {
         try {
-            // TODO el otro metodo podria hacer q no se consuman mensajes por un
-            // tiempo si no llegan, de esta manera solo se esperan 500ms y se
-            // controla que haya mensajes.
             Thread.sleep(500);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 
@@ -43,7 +40,7 @@ public class Consumer {
     private String readUntilEnd() {
         while (unreadMessages() > 0) {
             String message = read();
-            goNext();
+            commit();
             if (message != null)
                 return message;
         }
@@ -51,41 +48,29 @@ public class Consumer {
         return null;
     }
 
-    private void goNext() {
+    private void commit() {
         subscriber.zincrby(1, id);
     }
 
-    private int getLastReadMessage() {
+    private int getLastReadMessageID() {
         Double lastMessageRead = subscriber.zscore(id);
         if (lastMessageRead == null) {
-            Set<Tuple> zrangeWithScores = subscriber.zrangeWithScores(0, 1);
-            if (zrangeWithScores.iterator().hasNext()) {
-                Tuple next = zrangeWithScores.iterator().next();
-                Integer lowest = (int) next.getScore() - 1;
-                subscriber.zadd(lowest, id);
-                return lowest;
-            } else {
-                return 0;
-            }
+            return 0;
         }
         return lastMessageRead.intValue();
     }
 
     private int getTopicSize() {
-        String stopicSize = topic.get();
-        int topicSize = 0;
-        if (stopicSize != null) {
-            topicSize = Integer.valueOf(stopicSize);
-        }
-        return topicSize;
+        return topic.getEndOffSet();
     }
 
+    //Peek the first without commit
     public String read() {
-        int lastReadMessage = getLastReadMessage();
-        return topic.cat("message").cat(lastReadMessage + 1).get();
+        String nextReadMessageID = (getLastReadMessageID() + 1) + "";
+        return topic.cat("message").cat(nextReadMessageID).getMsgContent();
     }
 
     public int unreadMessages() {
-        return getTopicSize() - getLastReadMessage();
+        return getTopicSize() - getLastReadMessageID();
     }
 }

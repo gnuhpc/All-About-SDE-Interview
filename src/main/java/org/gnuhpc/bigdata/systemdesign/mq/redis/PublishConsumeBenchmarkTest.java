@@ -11,11 +11,10 @@ import redis.clients.jedis.Jedis;
 
 public class PublishConsumeBenchmarkTest extends Assert {
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         Jedis jedis = new Jedis("localhost");
         jedis.flushAll();
         jedis.disconnect();
-
     }
 
     @Test

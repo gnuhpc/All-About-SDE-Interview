@@ -8,51 +8,32 @@ import redis.clients.jedis.Transaction;
 import redis.clients.jedis.Tuple;
 
 public class Producer {
-    private Jedis jedis;
-    private Nest topic;
-    private Nest subscriber;
+    private final Jedis jedis;
+    private final Topic topic;
 
     public Producer(final Jedis jedis, final String topic) {
+        this.topic = new Topic("topic:" + topic, jedis);
         this.jedis = jedis;
-        this.topic = new Nest("topic:" + topic, jedis);
-        this.subscriber = new Nest(this.topic.cat("subscribers").key(), jedis);
     }
 
     public void publish(final String message) {
         publish(message, 0);
     }
 
-    protected Integer getNextMessageId() {
-        final String slastMessageId = topic.get();
-        Integer lastMessageId = 0;
-        if (slastMessageId != null) {
-            lastMessageId = Integer.parseInt(slastMessageId);
-        }
-        lastMessageId++;
-        return lastMessageId;
-    }
-
-    public void clean() {
-        Set<Tuple> zrangeWithScores = subscriber.zrangeWithScores(0, 1);
-        Tuple next = zrangeWithScores.iterator().next();
-        Integer lowest = (int) next.getScore();
-        topic.cat("message").cat(lowest).del();
-    }
-
     /**
-     * @param message menssage
+     * @param message message
      * @param seconds expiry time
      */
     public void publish(String message, int seconds) {
-        List<Object> exec = null;
-        Integer lastMessageId = null;
+        List<Object> exec;
+        String lastMessageId;
         do {
             topic.watch();
-            lastMessageId = getNextMessageId();
-            Transaction trans = jedis.multi();
+            lastMessageId = topic.getNextMessageId();
+            Transaction trans = topic.multi();
             String msgKey = topic.cat("message").cat(lastMessageId).key();
             trans.set(msgKey, message);
-            trans.set(topic.key(), lastMessageId.toString());
+            trans.set(topic.key(), lastMessageId);
             if (seconds > 0)
                 trans.expire(msgKey, seconds);
             exec = trans.exec();

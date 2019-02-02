@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class FindMedianSortedArrays4 {
     /*
-    Method 1: 二分法
+    二分法
     要求The overall run time complexity should be O(log (m+n)).
     If we see log(n), we should think about using binary something.
      */

@@ -3,6 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.ListNode;
 
 public class SortList148 {
+    //归并排序，
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null)
             return head;

@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 public class HeapSort{
     private int N;
 
-    //O(N log(N)) - iterating over every element and building BST
+    //O(N log(N)) - iterating over every element and building BST ， 空间复杂度O(1)
     // 可以保证这个时间复杂度，不管数据是什么情况
     public void sort(int[] arr) {
         //第一步构建最大堆

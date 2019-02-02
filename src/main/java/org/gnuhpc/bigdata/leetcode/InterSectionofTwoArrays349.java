@@ -17,9 +17,9 @@ public class InterSectionofTwoArrays349 {
         if(nums1.length==0 || nums2.length==0) {
             return new int[0];
         }
-        Set<Integer> set1 = Arrays.stream(nums1).mapToObj(i-> new Integer(i)).collect(Collectors.toSet());
-        Set<Integer> set2 = Arrays.stream(nums2).mapToObj(i-> new Integer(i)).collect(Collectors.toSet());
+        Set<Integer> set1 = Arrays.stream(nums1).boxed().collect(Collectors.toSet());
+        Set<Integer> set2 = Arrays.stream(nums2).boxed().collect(Collectors.toSet());
         set1.retainAll(set2);
-        return set1.stream().mapToInt(i->new Integer(i)).toArray();
+        return set1.stream().mapToInt(Integer::new).toArray();
     }
 }

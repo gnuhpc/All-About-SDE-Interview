@@ -34,7 +34,7 @@ public class MinimumSizeSubarraySum209 {
     }
 
     /**
-     * 暴力解法，O(n^2)
+     * 暴力解法，O(n^2),简单直观
      * @param s
      * @param nums
      * @return

@@ -32,4 +32,35 @@ public class MinimumSizeSubarraySum209 {
 
         return res;
     }
+
+    /**
+     * 暴力解法，O(n^2)
+     * @param s
+     * @param nums
+     * @return
+     */
+    public static int minSubArrayLen2(int s, int[] nums) {
+        int min=Integer.MAX_VALUE, k=0; // min最小窗口大小，k当前最小窗口起始元素下标
+        for(int i=0;i<nums.length;i++){
+            int sum = 0;
+            for(int j=i;j<nums.length;j++){
+                sum+=nums[j];
+                if(sum >= s) {
+                    int cur = j-i+1;
+                    if(cur < min) {
+                        k = i;
+                        min = cur;
+                    }
+                    continue;
+                }
+            }
+        }
+
+        if(min == Integer.MAX_VALUE) return 0;
+        for(int i=0;i<min;i++){
+            nums[i] = nums[k+i];
+        }
+
+        return min;
+    }
 }

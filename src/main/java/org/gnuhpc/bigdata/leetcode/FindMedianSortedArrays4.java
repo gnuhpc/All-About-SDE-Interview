@@ -47,6 +47,7 @@ public class FindMedianSortedArrays4 {
         return end;
     }
 
+    //一个有序数组arr中小于等于number的数字个数
     private int countSmallerOrEqual(int[] arr, int number) {
         int start = 0, end = arr.length - 1;
 

@@ -37,4 +37,31 @@ public class HappyNumber202 {
 
         return sum;
     }
+
+    /**
+     * 思路与上面类似，仅做备份
+     * @param n
+     * @return
+     */
+    public boolean isHappy(int n) {
+        HashSet<Integer> s = new HashSet<Integer>();
+        if(n==1) return true;
+        int num = calc(n);
+        while(!s.contains(num) && num != 1){
+            s.add(num);
+            num = calc(num);
+        }
+        if(num == 1) return true;
+        else return false;
+    }
+
+    public int calc(int n){
+        int sum = 0;
+        while(n != 0){
+            int d = n %10;
+            sum+= d*d;
+            n = n/10;
+        }
+        return sum;
+    }
 }

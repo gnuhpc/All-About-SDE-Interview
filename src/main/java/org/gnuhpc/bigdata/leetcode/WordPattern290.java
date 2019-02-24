@@ -27,8 +27,29 @@ public class WordPattern290 {
     }
 
     public static void main(String[] args) {
-        String pattern = "abba", str = "dog dog dog dog";
+        String pattern = "abba", str = "dog cat cat dog";
 
-        System.out.println(wordPattern(pattern,str));
+        System.out.println(wordPattern2(pattern,str));
+    }
+
+    // 2个map，判断包含key的方法，一个map就用containsKey和containsValue
+    public static boolean wordPattern2(String pattern, String str) {
+        Map<Character,String> mapPS = new HashMap<Character,String>();
+        Map<String,Character> mapSP = new HashMap<String,Character>();
+        String[] strArr = str.split(" ");
+        if(strArr.length != pattern.length()) return false;
+        for(int i = 0; i< strArr.length; i++){
+            String s = strArr[i];
+            Character c = (Character) pattern.charAt(i);
+            if(mapPS.containsKey(c) && (!s.equals(mapPS.get(c)))) return false;
+            else if(mapSP.containsKey(s) && (c != mapSP.get(s))) return false;
+            else {
+                mapPS.put(c,s);
+                mapSP.put(s,c);
+            }
+        }
+        return true;
+
+
     }
 }

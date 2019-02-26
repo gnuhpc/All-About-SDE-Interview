@@ -17,6 +17,11 @@ public class ThreeSum15 {
 
 
     /**
+     *
+     * 通过减治的思想，我们可把三个数求和的问题，减治为对于数组中不重复的元素nums[i],求两个数的和等于-nums[i]的过程。
+     * 这个问题比较复杂的一点是，还要处理重复的数据。为了简化我们的操作，我们先对数组进行预排序。
+     * 经历了预排序，我们判断一个元素是否重复，只需要比较它和之前位置的元素是否相等就可以了。
+     * 排序之后，对于求两个数和的问题，可以通过low和high两个指针从两边查找，也简化了操作时间。
      * @param nums : Give an array numbers of n integer
      * @return : Find all unique triplets in the array which gives the sum of zero.
      */

@@ -20,14 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.designpattern.callback;
+package org.gnuhpc.bigdata.designpattern.callback.eda.event;
+
+
+import org.gnuhpc.bigdata.designpattern.callback.eda.model.User;
 
 /**
- * 
- * Callback interface
- * 
+ * The {@link UserUpdatedEvent} should should be dispatched whenever a user has been updated.
+ * This class can be extended to contain details about the user has been updated. In this example,
+ * the entire {@link User} object is passed on as data with the event.
  */
-public interface Callback {
+public class UserUpdatedEvent extends AbstractEvent {
 
-  void call();
+  private User user;
+
+  public UserUpdatedEvent(User user) {
+    this.user = user;
+  }
+
+  public User getUser() {
+    return user;
+  }
 }

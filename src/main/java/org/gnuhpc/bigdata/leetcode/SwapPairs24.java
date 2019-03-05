@@ -52,6 +52,12 @@ public class SwapPairs24 {
             n1.next = post;
             pre.next = n2;
 
+            /**不要post节点的方案
+             *  n1.next = n2.next;
+             *  n2.next = n1;
+             *  pre.next = n2;
+             */
+
             pre = n1;
         }
 

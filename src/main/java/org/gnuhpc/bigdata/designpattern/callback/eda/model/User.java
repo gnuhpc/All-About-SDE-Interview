@@ -20,60 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.designpattern.callback;
+package org.gnuhpc.bigdata.designpattern.callback.eda.model;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
- * Add a field as a counter. Every time the callback method is called increment this field. Unit
- * test checks that the field is being incremented.
- *
- * Could be done with mock objects as well where the call method call is verified.
+ * This {@link User} class is a basic pojo used to demonstrate user data sent along with
+ * the {@link UserCreatedEvent} and {@link UserUpdatedEvent} events.
  */
-public class CallbackTest {
+public class User {
 
-  private Integer callingCount = 0;
+  private String username;
 
-  @Test
-  public void test() {
-    Callback callback = new Callback() {
-      @Override
-      public void call() {
-        callingCount++;
-      }
-    };
-
-    Task task = new SimpleTask();
-
-    assertEquals(new Integer(0), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(1), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(2), callingCount);
-
+  public User(String username) {
+    this.username = username;
   }
 
-  @Test
-  public void testWithLambdasExample() {
-    Callback callback = () -> callingCount++;
-
-    Task task = new SimpleTask();
-
-    assertEquals(new Integer(0), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(1), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(2), callingCount);
-
+  public String getUsername() {
+    return username;
   }
 }

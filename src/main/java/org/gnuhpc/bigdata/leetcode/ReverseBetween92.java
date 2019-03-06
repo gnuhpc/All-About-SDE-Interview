@@ -33,27 +33,37 @@ public class ReverseBetween92 {
         return dummy.next;
     }
 
-
     public ListNode reverseBetween2(ListNode head, int m, int n) {
-        //保留此结点，避免m=1时，head结点要被反转，如果返回head将会出错
-        ListNode dummy = new ListNode(0);
-        dummy.next=head;
-        ListNode pre = dummy;
-        for(int i = 1;i<m; i++){
-            pre = pre.next;
+        if (m >= n || head == null) {
+            return head;
         }
-        ListNode mpre = pre;
-        ListNode mNode = pre.next;
-        ListNode cur = mNode.next;
-        pre = mNode;
-        for(int i = m;i<n;i++){
-            ListNode post = cur.next;
-            cur.next=pre;
-            pre = cur;
-            cur = post;
+
+        ListNode dummy = new ListNode(0); // 必须有个dummy，因为m=1时，head就不是第一个节点了。
+        dummy.next = head;
+        head = dummy;
+
+        for (int i = 1; i < m; i++) {
+            if (head == null) {
+                return null;
+            }
+            head = head.next;
         }
-        mpre.next = pre;
-        mNode.next=cur;
+
+        ListNode premNode = head;
+        ListNode mNode = head.next;
+        ListNode nNode = mNode, postnNode = mNode.next;
+        for (int i = m; i < n; i++) {
+            if (postnNode == null) {
+                return null;
+            }
+            ListNode temp = postnNode.next;
+            postnNode.next = nNode;
+            nNode = postnNode;
+            postnNode = temp;
+        }
+        mNode.next = postnNode;
+        premNode.next = nNode;
+
         return dummy.next;
     }
 }

@@ -61,10 +61,11 @@ public class QuickSort {
     }
 
     /*
-    1.3 双指针交换法；
+    1.3 双指针交换法；最好用，推荐记忆，从左边找一个不应该在左边的，从右边找一个不应该在右边的，然后交换
      */
     public int partition3(int[] numbers, int low, int high) {
         int pivot = numbers[low];
+        //low 为pivot的idx，所以从low+1开始找
         int i = low+1;
         int j = high;
         while(i <= j){
@@ -74,7 +75,7 @@ public class QuickSort {
                 swap(numbers,i,j);
             }
         }
-        //交换j是因为它从它的有效区域探头出来了
+        //交换j是因为它从它的有效区域探头出来了，最后来交换low和j
         swap(numbers,low,j);
         return j;
     }

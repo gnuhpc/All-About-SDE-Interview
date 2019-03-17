@@ -11,6 +11,7 @@ public class ContainsNearbyAlmostDuplicate220 {
     /*
     * 用于对元素排序的有序集合类，集合中的元素是自然排序的，也不能有重复的元素
     * subSet(E fromElement,true, E toElement, true) 方法用于返回这个集合，其元素范围从fromElement(包括)到toElement(包括)的部分视图。
+    * long是为了防止整型加法溢出
     * */
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
         if(nums == null || nums.length == 0 || t < 0)
@@ -33,5 +34,6 @@ public class ContainsNearbyAlmostDuplicate220 {
         int k = 3, t=3;
 
         System.out.println(containsNearbyAlmostDuplicate(array,k,t));
+
     }
 }

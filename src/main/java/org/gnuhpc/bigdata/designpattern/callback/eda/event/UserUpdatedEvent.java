@@ -20,22 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.designpattern.callback;
+package org.gnuhpc.bigdata.designpattern.callback.eda.event;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.gnuhpc.bigdata.designpattern.callback.eda.model.User;
 
 /**
- * 
- * Implementation of task that need to be executed
- * 
+ * The {@link UserUpdatedEvent} should should be dispatched whenever a user has been updated.
+ * This class can be extended to contain details about the user has been updated. In this example,
+ * the entire {@link User} object is passed on as data with the event.
  */
-public class SimpleTask extends Task {
+public class UserUpdatedEvent extends AbstractEvent {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTask.class);
+  private User user;
 
-  @Override
-  public void execute() {
-    LOGGER.info("Perform some important activity and after call the callback method.");
+  public UserUpdatedEvent(User user) {
+    this.user = user;
+  }
+
+  public User getUser() {
+    return user;
   }
 }

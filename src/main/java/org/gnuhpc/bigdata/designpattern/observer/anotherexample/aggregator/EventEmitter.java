@@ -20,60 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.designpattern.callback;
+package org.gnuhpc.bigdata.designpattern.observer.anotherexample.aggregator;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Add a field as a counter. Every time the callback method is called increment this field. Unit
- * test checks that the field is being incremented.
+ * 
+ * EventEmitter is the base class for event producers that can be observed.
  *
- * Could be done with mock objects as well where the call method call is verified.
  */
-public class CallbackTest {
+public abstract class EventEmitter {
 
-  private Integer callingCount = 0;
+  private List<EventObserver> observers;
 
-  @Test
-  public void test() {
-    Callback callback = new Callback() {
-      @Override
-      public void call() {
-        callingCount++;
-      }
-    };
-
-    Task task = new SimpleTask();
-
-    assertEquals(new Integer(0), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(1), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(2), callingCount);
-
+  public EventEmitter() {
+    observers = new LinkedList<>();
   }
 
-  @Test
-  public void testWithLambdasExample() {
-    Callback callback = () -> callingCount++;
-
-    Task task = new SimpleTask();
-
-    assertEquals(new Integer(0), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(1), callingCount);
-
-    task.executeWith(callback);
-
-    assertEquals(new Integer(2), callingCount);
-
+  public EventEmitter(EventObserver obs) {
+    this();
+    registerObserver(obs);
   }
+
+  public final void registerObserver(EventObserver obs) {
+    observers.add(obs);
+  }
+
+  protected void notifyObservers(Event e) {
+    for (EventObserver obs : observers) {
+      obs.onEvent(e);
+    }
+  }
+
+  public abstract void timePasses(Weekday day);
 }

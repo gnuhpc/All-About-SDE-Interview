@@ -83,7 +83,7 @@ public class Knapsack {
 			if (weights[idx]<=w) taking = profits[idx] + solve(idx - 1, w - weights[idx]);
 
 
-			// assign max value we get by including or excluding current item
+            // assign max value we get by including or excluding current item
 			lookup.put(key, Integer.max(taking, notTaking));
 		}
 

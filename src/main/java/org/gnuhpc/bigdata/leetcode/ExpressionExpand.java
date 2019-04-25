@@ -2,9 +2,7 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 public class ExpressionExpand {
     //Method 1: Non-recursive
@@ -71,7 +69,7 @@ public class ExpressionExpand {
     }
 
 
-    //Method 2: Non-recursive
+    //Method 2: recursive
     public String expressionExpand2(String s) {
         if (s == null || s.isEmpty()) {
             return s;
@@ -80,15 +78,17 @@ public class ExpressionExpand {
         char[] charArray = s.toCharArray();
         int tmpNum = 0;
 
-        int times = -1;
+        Map<Integer,Integer> pMap = buildMap(charArray);
+
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < charArray.length; i++) {
             char c = charArray[i];
             if (c == '[') {
-                int nextLeftPos = s.substring(i+1).indexOf("]") + i + 1;
-                sb.append(expand(s.substring(i+1,nextLeftPos),tmpNum));
-                i = nextLeftPos + 1;
+                int matchPos = pMap.get(i);
+                sb.append(expand(s.substring(i+1,matchPos),tmpNum));
+                i = matchPos;
+                tmpNum = 0;
             } else if (c == ']') {
                 continue;
             } else if (c <= '9' && c >= '0') {
@@ -99,6 +99,22 @@ public class ExpressionExpand {
         }
 
         return sb.toString();
+    }
+
+    private Map<Integer, Integer> buildMap(char[] arr) {
+        Map<Integer,Integer> map = new HashMap<>();
+
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == '[') {
+                stack.push(i);
+            } else if (arr[i] == ']'){
+                map.put(stack.pop(), i);
+            }
+        }
+
+        return map;
     }
 
     private String expand(String s, int times) {
@@ -116,5 +132,6 @@ public class ExpressionExpand {
 //        System.out.println(expressionExpand2("abc3[a]"));
 //        System.out.println(expressionExpand2("3[a]"));
         System.out.println(expressionExpand2("3[2[ad]3[pf]]xyz"));
+//        System.out.println(expressionExpand2("4[ac]dy"));
     }
 }

@@ -95,13 +95,13 @@ public class MetadataTagger {
 
     @Test
     public void test1() {
-        String review = "I visited San Francisco for work and stayed at Airbnb. I really loved the city and the home where I stayed.";
+        String review = "I visited San Francisco for work and stayed at Airbnb. I really loved the city and the home where I stayed. Airbnb";
         tagsMap = new HashMap<String, String>() {{
             put("Airbnb", "business");
             put("san francisco", "city");
         }};
 
-        assertEquals("I visited [city]{San Francisco} for work and stayed at [business]{Airbnb}. I really loved the city and the home where I stayed.", "I visited [city]{San Francisco} for work and stayed at [business]{Airbnb}. I really loved the city and the home where I stayed.",
+        assertEquals("I visited [city]{San Francisco} for work and stayed at [business]{Airbnb}. I really loved the city and the home where I stayed.", "I visited [city]{San Francisco} for work and stayed at [business]{Airbnb}. I really loved the city and the home where I stayed. [business]{Airbnb}",
                      prependTags(review, tagsMap));
     }
 

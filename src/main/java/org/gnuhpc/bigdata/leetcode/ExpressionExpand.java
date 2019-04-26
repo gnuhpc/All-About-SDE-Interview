@@ -133,5 +133,6 @@ public class ExpressionExpand {
 //        System.out.println(expressionExpand2("abc3[a]"));
 //        System.out.println(expressionExpand2("3[a]"));
         System.out.println(expressionExpand2("3[2[ad]3[pf]]xyz"));
+//        System.out.println(expressionExpand2("4[ac]dy"));
     }
 }

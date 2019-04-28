@@ -1,9 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 interface NestedInteger {
 
@@ -49,15 +46,11 @@ public class NestedIterator341 implements Iterator<Integer>{
 
 }
 
-/**
- *
- */
-
-/*
-* public class NestedIterator implements Iterator<Integer> {
+//迭代直接准备好数据，内存消耗更大，但是后边在遍历的时候就使得next和hasnext方法解耦
+class NestedIterator2 implements Iterator<Integer> {
     List<Integer> list = new ArrayList<>();
     int pos = 0;//current position
-    public NestedIterator(List<NestedInteger> nestedList) {
+    public NestedIterator2(List<NestedInteger> nestedList) {
         //use arrayList to store nestedList
         traverse(nestedList);
     }
@@ -81,14 +74,3 @@ public class NestedIterator341 implements Iterator<Integer>{
         return pos < list.size();
     }
 }
-
-*
-*
-*
-*
-*
-* */
-
-
-
-

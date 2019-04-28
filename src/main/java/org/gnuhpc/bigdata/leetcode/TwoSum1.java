@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class TwoSum1 {
     public static void main(String[] args) {
-        int[] nums = new int[] {2, 7, 11, 15};
+        int[] nums = new int[] {7, 11, 2, 15};
         int target = 9;
 
         twoSumUsingSort(nums,target);
@@ -39,9 +39,10 @@ public class TwoSum1 {
     /*
      * @param numbers: An array of Integer
      * @param target: target = numbers[index1] + numbers[index2]
-     * @return: [index1 + 1, index2 + 1] (index1 < index2)
+     * @return: [index1 , index2 ] (index1 < index2)
      */
-    static class Pair {
+    //Pair为值和索引的封装，以
+    static class Pair implements Comparable {
         Integer value;
         Integer index;
 
@@ -52,15 +53,13 @@ public class TwoSum1 {
         Integer getValue() {
             return this.value;
         }
-    }
-
-    static class ValueComparator implements Comparator<Pair> {
 
         @Override
-        public int compare(Pair o1, Pair o2) {
-            return o1.getValue().compareTo(o2.getValue());
+        public int compareTo(Object o) {
+            return this.value.compareTo(((Pair) o).value);
         }
     }
+
     public static int[] twoSumUsingSort(int[] numbers, int target) {
         int[] result = new int[2];
         // write your code here
@@ -69,7 +68,7 @@ public class TwoSum1 {
         for(int i=0;i<numbers.length;i++) {
             number[i] = new Pair(numbers[i], i);
         }
-        Arrays.sort(number, new ValueComparator());
+        Arrays.sort(number);
         int L=0, R = numbers.length-1;
         while(L<R) {
             if( number[L].getValue() + number[R].getValue() == target) {
@@ -77,6 +76,7 @@ public class TwoSum1 {
                 result[1] = number[R].index;
                 return result;
             }
+            //注意这个移动规则，给定了一边后再移动，且指针只向一个方向移动
             if( number[L].getValue() + number[R].getValue() < target) {
                 L++;
             } else {

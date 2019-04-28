@@ -48,3 +48,47 @@ public class NestedIterator341 implements Iterator<Integer>{
     }
 
 }
+
+/**
+ *
+ */
+
+/*
+* public class NestedIterator implements Iterator<Integer> {
+    List<Integer> list = new ArrayList<>();
+    int pos = 0;//current position
+    public NestedIterator(List<NestedInteger> nestedList) {
+        //use arrayList to store nestedList
+        traverse(nestedList);
+    }
+    public void traverse(List<NestedInteger> nestedList){
+        if(nestedList == null) return;
+        for(NestedInteger e: nestedList){
+            if(e.isInteger()){
+                list.add(e.getInteger());
+            }else{
+                traverse(e.getList());//do recursion when meeting list element
+            }
+        }
+    }
+    @Override
+    public Integer next() {
+        return list.get(pos++);
+    }
+
+    @Override
+    public boolean hasNext() {
+        return pos < list.size();
+    }
+}
+
+*
+*
+*
+*
+*
+* */
+
+
+
+

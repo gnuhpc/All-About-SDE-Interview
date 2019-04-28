@@ -3,7 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.ListNode;
 import org.junit.Test;
 
-public class IsPalindromeLinkedList {
+public class IsPalindromeLinkedList234 {
     @Test
     public void test(){
         ListNode n1 = new ListNode(1);

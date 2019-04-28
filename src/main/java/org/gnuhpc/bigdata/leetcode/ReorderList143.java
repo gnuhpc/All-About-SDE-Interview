@@ -76,4 +76,49 @@ public class ReorderList143 {
         reorderList(head);
         Assert.assertArrayEquals(ListNode.toArray(head), new int[]{1,4,2,3});
     }
+
+
+    public void reorderList2(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        ListNode mid = findMiddle(head);
+        ListNode tail = reverse(mid.next);
+        mid.next = null; //注意将这里赋空，变成2个列表,无需特殊处理
+
+        merge(head, tail);
+    }
+
+    private void merge(ListNode p, ListNode q) {
+        while(q != null){
+            ListNode nextq = q.next;
+            ListNode nextp = p.next;
+            q.next = p.next;
+            p.next = q;
+            p = nextp;
+            q = nextq;
+        }
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode newHead = null;
+        while (head != null) {
+            ListNode temp = head.next;
+            head.next = newHead;
+            newHead = head;
+            head = temp;
+        }
+        return newHead;
+    }
+
+    private ListNode findMiddle(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
 }

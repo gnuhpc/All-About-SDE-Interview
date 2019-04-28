@@ -1,8 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InterSectionofTwoArrays349 {
@@ -145,4 +143,34 @@ public class InterSectionofTwoArrays349 {
 
         return false;
     }
+
+    // TreeSet
+    public int[] intersection4(int[] nums1, int[] nums2) {
+        if (nums1 == null || nums2 == null) {
+            return null;
+        }
+
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int i = 0; i < nums1.length; i++) {
+            set.add(nums1[i]);
+        }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        for (int i = 0; i < nums2.length; i++) {
+            if (set.contains(nums2[i]) ) {
+                arr.add(nums2[i]);
+                set.remove(nums2[i]);
+            }
+        }
+
+        int size = arr.size();
+        int[] result = new int[size];
+        int index = 0;
+        for (Integer num : arr) {
+            result[index++] = num;
+        }
+
+        return result;
+    }
+
 }

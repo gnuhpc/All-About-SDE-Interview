@@ -20,14 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.designpattern.callback;
+package org.gnuhpc.bigdata.designpattern.callback.eda.model;
+
 
 /**
- * 
- * Callback interface
- * 
+ * This {@link User} class is a basic pojo used to demonstrate user data sent along with
+ * the {@link UserCreatedEvent} and {@link UserUpdatedEvent} events.
  */
-public interface Callback {
+public class User {
 
-  void call();
+  private String username;
+
+  public User(String username) {
+    this.username = username;
+  }
+
+  public String getUsername() {
+    return username;
+  }
 }

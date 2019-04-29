@@ -4,7 +4,7 @@ import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
 
-// O(nlogn) 稳定，Object类型的排序一般都是merge sort
+// O(nlogn) 稳定，Object类型的排序一般都是merge sort , 空间复杂度O(n)
 // 左闭右开
 public class MergeSort {
     public static Void sort(int[] input){
@@ -28,7 +28,7 @@ public class MergeSort {
         merge(input, start, mid, end);
     }
 
-    // 左闭右开
+    // 左闭右开 ， 誊写的过程
     public static void merge(int[] input, int start, int mid, int end) {
 
         //已经有序就返回

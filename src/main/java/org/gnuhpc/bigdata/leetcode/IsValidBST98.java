@@ -151,4 +151,14 @@ public class IsValidBST98 {
         System.out.println(isValidBST2(root));
         System.out.println(isValidBST3(root));
     }
+
+    // add by Tina Inorder traverse and judge if in order
+    long last = Long.MIN_VALUE;
+    public boolean isValidBST6(TreeNode root) {
+        if (root == null) return true;
+        if ( !isValidBST(root.left) ) return false;
+        if (root.val <= last) return false;
+        last = root.val;
+        return isValidBST(root.right) ;
+    }
 }

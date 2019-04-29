@@ -1,7 +1,10 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 
 public class ContainsDuplicate217 {
     public boolean containsDuplicate(int[] nums) {
@@ -18,4 +21,20 @@ public class ContainsDuplicate217 {
 
         return result;
     }
+
+    /**
+     * 本题不需要用hashmap，只需要hashset即可
+     * @param nums
+     * @return
+     */
+    public boolean containsDuplicate2(int[] nums) {
+        Set<Integer> set = new HashSet<Integer>();
+        for(int i = 0;i<nums.length;i++){
+            if(set.contains(nums[i])) return true;
+            else set.add(nums[i]);
+        }
+        return false;
+
+    }
+
 }

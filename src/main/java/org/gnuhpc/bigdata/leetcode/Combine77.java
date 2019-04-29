@@ -43,7 +43,7 @@ public class Combine77 {
             return;
         }
 
-        for (int i = start; i < nums.length; i++) {
+        for (int i = start; i < nums.length -(size-temp.size()) + 1; i++) { //nums.length
             temp.add(nums[i]);
             dfs(nums,i+1,size,temp,res);
             temp.remove(temp.size()-1);
@@ -55,5 +55,43 @@ public class Combine77 {
     public void test(){
         System.out.println(combine(4,2));
     }
+
+
+    // add by @Tina
+    // 注意这类题目中，dfs不用返回值，
+    // 因为List是引用类型，从定义开始，到传参进去
+    // 任何一次改变，都会被带回来
+    // 注意回溯的过程，需要把刚刚这一轮加到temp中的元素remomve，
+    // 继续遍历下一个
+    // i=n时，已经没有元素可以加进list了，不必再进行递归，可进行剪枝
+    public List<List<Integer>> combine2(int n, int k) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> temp = new ArrayList<Integer>();
+        dfs(res, temp, n, k, 1);
+        return res;
+    }
+
+    private void dfs(List<List<Integer>> res, List<Integer> temp, int n, int k, int m) {
+        if(temp.size() == k) {
+            res.add(new ArrayList<Integer>(temp));
+            return;
+        }
+        /*or(int i=m; i<=n; i++) {
+            temp.add(i);
+            dfs(res, temp, n, k, i+1);
+            temp.remove(temp.size()-1);
+        }*/
+
+        // 此时temp还剩下k-temp.size个位置，确保[i,...,n]中至少包含k-temp.size个元素
+        // i <= n-(k-temp.size) +1
+        for(int i=m; i<=n-(k-temp.size()) +1; i++) {
+            temp.add(i);
+            dfs(res, temp, n, k, i+1);
+            temp.remove(temp.size()-1);
+        }
+    }
+
+
+
 
 }

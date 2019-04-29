@@ -17,22 +17,26 @@ public class ThreeSumClosest16 {
         Arrays.sort(nums);
 
         for (int i = 0; i < nums.length-2; i++) {
-            int j = i + 1;
-            int k = nums.length - 1;
-            while (j < k) {
-                int sum = nums[i] + nums[j] + nums[k];
+            int L = i + 1;
+            int R = nums.length - 1;
+            while (L < R) {
+                int sum = nums[i] + nums[L] + nums[R];
                 int diff = Math.abs(sum - target);
 
-                if(diff == 0) return sum;
+                // 如果diff为0， 说明three sum等于target，则可以直接返回了，最接近的就是target本身
+                if(diff == 0) return target;
 
+                //如果diff小于min,则表示这次为潜在答案，先记录
                 if (diff < min) {
                     min = diff;
                     result = sum;
                 }
+
+                //移动指针
                 if (sum <= target) {
-                    j++;
+                    L++;
                 } else {
-                    k--;
+                    R--;
                 }
             }
         }

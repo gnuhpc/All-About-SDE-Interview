@@ -78,11 +78,14 @@ public class LowestCommonAncestor236 {
 
     /*
     Method2 : 递归方法
+
      */
     public TreeNode lowestCommonAncestorRecusive(TreeNode root, TreeNode p, TreeNode q) {
+        //如果找到 p 或者 q 那么就没有必要接着递归，因为共同祖先只可能是该节点或该节点祖先
+        //如果 root 为空了，说明这条路径上不可能有 p 或 q 节点，返回空
         if (root==null||root==p||root==q){return root;}
-        TreeNode left = lowestCommonAncestor(root.left,p,q);
-        TreeNode right = lowestCommonAncestor(root.right,p,q);
+        TreeNode left = lowestCommonAncestor(root.left,p,q);//往左分支上寻找
+        TreeNode right = lowestCommonAncestor(root.right,p,q); //往右分支上寻找
         return left==null?right:right==null?left:root;
     }
 }

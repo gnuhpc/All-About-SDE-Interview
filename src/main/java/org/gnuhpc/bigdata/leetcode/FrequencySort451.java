@@ -58,4 +58,64 @@ public class FrequencySort451 {
 //            }
 //        });
     }
+
+    public String frequencySort3(String s) {
+        if (s == null || s.length() <= 2) return s;
+        int length = s.length();
+        //统计各个字符出现的次数
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) + 1);
+            } else {
+                map.put(c, 1);
+            }
+        }
+        //sb1求出各种频率的字符
+        //"eeeee"的时候，e出现了length次，所以申请的时候length+1
+        StringBuilder[] sb1 = new StringBuilder[length + 1];
+        int max = 0;
+        for (char c : map.keySet()) {
+            int fre = map.get(c);
+            if (sb1[fre] == null) {
+                sb1[fre] = new StringBuilder();
+            }
+            if (fre > max) max = fre;
+            for (int i = 0; i < fre; i++) {
+                sb1[fre].append(c);
+            }
+        }
+        //最后ret把各种频率的字符由高到低连接起来
+        StringBuilder ret = new StringBuilder();
+        for (int i = max; i > 0; i--) {
+            if (sb1[i] != null)
+                ret.append(sb1[i]);
+        }
+        return ret.toString();
+    }
+
+
+        public String frequencySort2 (String s){
+            //方法2；二维数组
+            int[][] count = new int[128][2];
+            char[] ch = s.toCharArray();
+            for (char c : ch) {
+                count[c][0] = c;
+                count[c][1]++;
+            }
+            Arrays.sort(count, new Comparator<int[]>() {
+                public int compare(int[] a, int[] b) {
+                    return b[1] - a[1];
+                }
+            });
+            StringBuilder ret = new StringBuilder();
+            for (int i = 0; i < 128; i++) {
+                for (int j = 0; j < count[i][1]; j++) {
+                    ret.append((char) count[i][0]);
+                }
+            }
+            return ret.toString();
+        }
+
 }

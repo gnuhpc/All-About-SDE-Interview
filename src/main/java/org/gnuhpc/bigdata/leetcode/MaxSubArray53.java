@@ -42,6 +42,24 @@ public class MaxSubArray53 {
 
     }
 
+    //PrefixSum 方法 TODO 很通用的一个模板
+    // Sum(i~j) = PrefixSum[j + 1] - PrefixSum[i]
+    // 要想让sum最大，则需要prefixsum[i]最小，因此要记录下
+    public int maxSubArrayPreFixSum(int[] A) {
+        if (A == null || A.length == 0){
+            return 0;
+        }
+        //max记录全局最大值，sum记录前i个数的和，minSum记录前i个数中0-k的最小值
+        int max = Integer.MIN_VALUE, sum = 0, minSum = 0;
+        for (int i = 0; i < A.length; i++) {
+            sum += A[i];
+            max = Math.max(max, sum - minSum);
+            minSum = Math.min(minSum, sum);
+        }
+
+        return max;
+    }
+
     //记忆化搜索 + DP
     public int maxSubArrayMemo(int[] nums) {
         // -1 is not proper for illegal input

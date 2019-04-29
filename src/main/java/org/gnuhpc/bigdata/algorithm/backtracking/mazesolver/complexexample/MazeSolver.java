@@ -43,8 +43,8 @@ public class MazeSolver {
 		}else if( this.mazeMap[i][j] == 1 ){  // if it is a wall we cannot go in that direction
 			return;
 		}else{
-		
-			this.visited[i][j] = true;  // set the current position to visited 
+
+            this.visited[i][j] = true;  // set the current position to visited
 			
 			dfs(i+1,j); // going down
 			dfs(i,j+1); // going right

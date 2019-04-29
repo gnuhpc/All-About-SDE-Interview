@@ -46,6 +46,7 @@ public class MoveZeros283 {
         }
     }
 
+    //最优解
     public static void moveZeroSwap(int[] nums){
         int k=0;
         for (int i = 0; i < nums.length; i++) {

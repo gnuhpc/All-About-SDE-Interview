@@ -4,6 +4,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ *  Anagrams指几个string有相同的字符，但不同的字符顺序。
+ */
+
 public class FindAllAnagrams438 {
     public static void main(String[] args) {
         String str1 = "cbaebabacd";
@@ -59,6 +63,19 @@ public class FindAllAnagrams438 {
     }
     private static boolean isAllZero(Collection<Long> values){
         return values.stream().filter(l->l!=0).count()==0;
+    }
+
+
+
+
+
+
+    public static Boolean isAnagrams(Character[] pArr, Map<Character,Integer> wMap){
+        int i = 0;
+        while(i<pArr.length){
+            if(wMap.get(pArr[i]) != 1)  return false;
+        }
+        return true;
     }
 }
 

@@ -37,7 +37,7 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) { continue; } // 跳过会�
         }
         for (int i=0; i<nums.length; i++) {
             // 当前位置的数已经在List中了 ,实际上是剪枝
-            if(used[i]) continue;
+            if(used[i]) continue; // add by tina 这一行并不会被命中吧？？
             // 当前元素与其前一个元素值相同 且 前元素尚没有被加到list中，跳过该元素 （如果不跳过直接加入，则不是用了第一个1就是用了第二个1，从结果看来都是重复的排列）
             if(i>0 && nums[i]==nums[i-1] && !used[i-1])   {
                 continue;//only insert duplicate element when the previous duplicate element has been inserted

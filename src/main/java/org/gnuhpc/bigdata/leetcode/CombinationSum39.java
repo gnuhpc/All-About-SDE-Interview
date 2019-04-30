@@ -15,8 +15,8 @@ public class CombinationSum39 {
 
     //思路： 标准dfs，遍历start，注意下一个start还是i
     private void backtrack(List<List<Integer>> res, List<Integer> tempList, int [] nums, int remain, int start){
-        counter++;
-        if(remain < 0 || start >= nums.length) return;
+        //counter++;
+        if(remain < 0 || start >= nums.length) return; //注意递归的结束条件
         if(remain == 0) {
             res.add(new ArrayList<>(tempList));
             return;
@@ -31,6 +31,8 @@ public class CombinationSum39 {
     /*
     思路2， dfs 遍历法， 有个robot将所有情况跑到并且计入
     Faster method!!
+
+    leetode运行发现没有方法一快啊！！！
      */
     public List<List<Integer>> combinationSum2(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
@@ -81,5 +83,42 @@ public class CombinationSum39 {
         afterTime = System.currentTimeMillis();
         diffInMilliSeconds = afterTime- beforeTime;
         System.out.println(" Time cost is " + diffInMilliSeconds);
+    }
+
+    // add by tina, 暴力递归
+    public List<List<Integer>> combinationSum3(int[] candidates, int target) {
+        if(candidates == null || target < 0) return null;
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> temp = new ArrayList<Integer>();
+        genCombSum(candidates,target,0,temp,res);
+        return res;
+    }
+
+
+    public void genCombSum(int[] candidates, int target, int start, List<Integer> temp,List<List<Integer>> res){
+
+        if(sum(temp) == target) {
+            res.add(new ArrayList<Integer>(temp));
+            return;
+        }
+        if(sum(temp) > target) {
+            return;
+        }
+
+        for(int i = start; i < candidates.length; i++){
+            temp.add(candidates[i]);
+            genCombSum(candidates,target,i,temp,res);
+            temp.remove(temp.get(temp.size() -1));
+        }
+
+        return;
+    }
+
+    public int sum(List<Integer> temp){
+        int s = 0;
+        for(int i  = 0; i< temp.size(); i++){
+            s += temp.get(i);
+        }
+        return s;
     }
 }

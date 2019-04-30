@@ -75,4 +75,33 @@ public class SubsetsWithDup90 {
         System.out.println(subsetsWithDup(new int[]{1,2,2}));
         System.out.println(subsetsWithDup2(new int[]{1,2,2}));
     }
+
+    // add by tina， 与方法一类似,注意与78比较
+    public List<List<Integer>> subsetsWithDup5(int[] nums) {
+        if(nums == null) return null;
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int k = 0; k<=nums.length;k++){
+            helper(nums,k,0,temp,res);
+        }
+        System.out.println(new ArrayList<>());
+        return res;
+
+    }
+
+    public void helper(int[] nums, int k, int start, List<Integer> temp,List<List<Integer>> res){
+        if(temp.size() == k) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for(int i = start; i< nums.length; i++){ //<nums.length -(k-temp.size())+1
+            //System.out.println("i="+i+", temp = "+ temp+",k = " +k);
+            if(i>start && nums[i] == nums[i-1]) continue;
+            temp.add(nums[i]);
+            helper(nums,k,i+1,temp,res);
+            temp.remove(temp.size()-1);
+        }
+
+    }
 }

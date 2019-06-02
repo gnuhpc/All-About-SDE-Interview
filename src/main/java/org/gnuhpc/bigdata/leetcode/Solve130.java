@@ -132,4 +132,103 @@ public class Solve130 {
 
         System.out.println();
     }
+
+    // add by tina
+    // 定义4个方向遍历的偏移量
+    // 本体不需要使用used这样的数组，因为可以在原二维数组上标记
+    // 对比第200题-岛屿个数
+    private int[][] d = {{-1,0},{0,1},{1,0},{0,-1}};
+    private int m,n;
+
+    public void solve3(char[][] board) {
+        if(board == null || board.length==0)
+            return;
+
+        m = board.length;
+        n = board[0].length;
+        //4个for循环，寻找边界为O的字符，通过dfs遍历和其连通的O，都标记为*
+       /* for(int j = 0; j< n;j++){
+            if(board[0][j] == 'O'){
+                dfs(board,0,j);
+            }
+        }
+        for(int j = 0; j< n;j++){
+            if(board[m-1][j] == 'O'){
+                dfs(board,m-1,j);
+            }
+        }
+        for(int i = 0; i< m;i++){
+            if(board[i][0] == 'O'){
+                dfs(board,i,0);
+            }
+        }
+        for(int i = 0; i<m;i++){
+            if(board[i][n-1] == 'O'){
+                dfs(board,i,n-1);
+            }
+        }
+        // 边界及与其联通的O都被标为*后，中间严格被X包围的O可以翻转为X了
+        for(int i=0;i<m;i++)
+            for(int j = 0; j<n;j++){
+                if(board[i][j] == 'O')
+                    board[i][j] = 'X';
+            }
+        // 有效O反转后，将*标重置为O
+        for(int i=0;i<m;i++)
+            for(int j = 0; j<n;j++){
+                if(board[i][j] == '*')
+                    board[i][j] = 'O';
+            }*/
+
+       // 优化
+        //merge O's on left & right boarder
+        for(int i=0;i<m;i++){
+            if(board[i][0] == 'O'){
+                dfs(board, i, 0);
+            }
+
+            if(board[i][n-1] == 'O'){
+                dfs(board, i, n-1);
+            }
+        }
+
+        //merge O's on top & bottom boarder
+        for(int j=0; j<n; j++){
+            if(board[0][j] == 'O'){
+                dfs(board, 0, j);
+            }
+
+            if(board[m-1][j] == 'O'){
+                dfs(board, m-1, j);
+            }
+        }
+
+        //process the board
+        for(int i=0;i<m;i++){
+            for(int j=0; j<n; j++){
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X';
+                }else if(board[i][j] == '*'){//同一个位置，不会被扫2次
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    public void dfs(char[][] board, int startx , int starty){ //, boolean[][] used
+        board[startx][starty] = '*';
+
+        for(int i = 0; i<4; i++){
+            int newx = startx + d[i][0];
+            int newy = starty + d[i][1];
+            if(isInArea(newx,newy) && board[newx][newy] == 'O' ){//&& !used[newx][newy]
+                dfs(board, newx ,newy); //,used
+            }
+        }
+    }
+
+    private boolean isInArea(int i ,int j){
+        return i >= 0 && i< m && j >= 0 && j<n;
+    }
+
 }

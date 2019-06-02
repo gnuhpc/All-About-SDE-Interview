@@ -9,6 +9,7 @@ public class NumIslands200 {
 
     /*
         Method1: dfs recursivly calling，也是发现是1就向四个方向沉没
+        在原数组上标记为x
      */
     public static int numIslands(char[][] grid) {
         int result = 0;
@@ -301,4 +302,52 @@ public class NumIslands200 {
         };
         System.out.println(numIslands2(grid));
     }
+
+    // add by tina
+    private int[][] d = {{-1,0},{0,1},{1,0},{0,-1}};
+    private int m, n;
+
+    public int numIslands7(char[][] grid) {
+        m = grid.length;
+        if(m == 0) return 0;
+        n = grid[0].length;
+        int res = 0;
+
+        boolean[][] used = new boolean[m][n];
+        for(int i = 0; i< m; i++)
+            for(int j = 0; j<n;j++){
+                if(grid[i][j] == '1' && !used[i][j]){
+                    //System.out.println("i = " +i + ",j=" +j +  "," +used[i][j]);
+                    res++;
+                    dfs(grid,i,j,used);
+                }
+            }
+
+        return res;
+    }
+
+    /**
+     * 此递归看起来没有结束条件，
+     * 是因为我们在决定是否进行下一轮递归时，做了条件判断
+     * 相对而言，第一种解法看起来更加简洁
+     * @param grid
+     * @param startx
+     * @param starty
+     * @param used
+     */
+    public void dfs(char[][] grid, int startx,int starty,boolean[][] used){
+        used[startx][starty] = true;
+        for(int i = 0; i<4;i++){
+            int newx = startx + d[i][0];
+            int newy = starty + d[i][1];
+            if(isInArea(newx,newy) && grid[newx][newy] == '1' && !used[newx][newy])
+                dfs(grid,newx,newy,used);
+        }
+        return;
+    }
+
+    private boolean isInArea(int i ,int j){
+        return i >= 0 && i< m && j >= 0 && j<n;
+    }
+
 }

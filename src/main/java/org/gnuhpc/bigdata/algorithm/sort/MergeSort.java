@@ -3,9 +3,14 @@ package org.gnuhpc.bigdata.algorithm.sort;
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
-
 // O(nlogn) 稳定，Object类型的排序一般都是merge sort , 空间复杂度O(n)
 // 左闭右开
+// 2个优化点
+// ① merge的时候如果已经有序就返回
+// ② 递归退出的条件：当数据集足够小的时候，采用插入排序，这样会比较快
+// 原因是因为
+// 1、当数据数量足够小时，数组近乎有序的概率比较大
+// 2、插入排序O(N^2)前面的系数比O(NLogN)小，在N足够小的时候，插入排序比较快
 public class MergeSort {
     public static Void sort(int[] input){
         if (input == null || input.length < 2 ) return null;
@@ -21,6 +26,11 @@ public class MergeSort {
         if (end - start <= 1) {
             return;
         }
+        /**
+         *  if (end - start <= 16) {
+         *             insertSort(arr,start,end);
+         *         }
+         */
 
         int mid = (start + end) / 2;
         mergeSort(input, start, mid);
@@ -54,6 +64,17 @@ public class MergeSort {
 
         //拷贝回结果
         System.arraycopy(temp, 0, input, start, temp.length);
+    }
+
+    public static void insertSort(int[] arr, int l, int r){
+
+        for( int i = l + 1 ; i < r ; i ++ ){
+            int e = arr[i];
+            int j = i;
+            for( ; j > l && arr[j-1]>e ; j--)
+                arr[j] = arr[j-1];
+            arr[j] = e;
+        }
     }
 
     public static void parallelMergeSort(int[] input,int low, int high, int numOfThreads) {
@@ -100,4 +121,6 @@ public class MergeSort {
         Utils.evaluateSort(MergeSort::sort,arr);
 //        Utils.printArray(arr);
     }
+
+
 }

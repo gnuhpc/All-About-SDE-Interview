@@ -8,7 +8,7 @@ public class MinimumSizeSubarraySum209 {
     }
 
     public static int minSubArrayLen(int s, int[] nums) {
-        int res = Integer.MAX_VALUE, sum = 0;
+        int res = Integer.MAX_VALUE, sum = 0; //res也可以取nums.length+1
 
         int l=0, r=-1;
 
@@ -34,7 +34,7 @@ public class MinimumSizeSubarraySum209 {
     }
 
     /**
-     * 暴力解法，O(n^2),简单直观
+     * 暴力解法，O(n^2)
      * @param s
      * @param nums
      * @return

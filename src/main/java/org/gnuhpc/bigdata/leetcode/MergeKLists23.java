@@ -61,11 +61,7 @@ Maintain a list of k elements. And always remove the first element from the list
 
 
     public ListNode mergeKLists2(ListNode[] lists) {
-        Queue<ListNode> heap = new PriorityQueue<ListNode>(10, new Comparator<ListNode>(){
-            public int compare (ListNode l1, ListNode l2){
-                return l1.val - l2.val;
-            }
-        });
+        Queue<ListNode> heap = new PriorityQueue<ListNode>(10, Comparator.comparingInt(l -> l.val));
 
         for (int i = 0; i < lists.length; i++){
             ListNode temp = lists[i];

@@ -16,6 +16,7 @@ interface NestedInteger {
            public List<NestedInteger> getList();
 }
 
+//Method: Recursive Method
 public class NestedIterator341 implements Iterator<Integer>{
     private Deque<NestedInteger> stack;
 

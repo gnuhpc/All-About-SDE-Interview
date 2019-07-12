@@ -26,6 +26,8 @@ By using a double linked list, once we use the HashMap to located the position o
 When we need update the cache for a key, we first use the HashMap to located the corresponding node, update the value, then we remove the node from the queue and put that node at the beginning of the Double Linked list.
  */
 public class LRUCache146_3 {
+
+    //其实单向链表也是可以的
      class Node {
         public int key,val;
         public Node next,prev;

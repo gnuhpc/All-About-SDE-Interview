@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-//很典型，棋盘类的问题本质就是一个图问题
+//很典型，棋盘类的问题本质就是一个图问题. 方法一和方法六推荐
 public class NumIslands200 {
 
     /*

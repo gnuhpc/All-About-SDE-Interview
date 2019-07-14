@@ -4,11 +4,12 @@ import org.junit.Test;
 
 import java.util.*;
 
+//PriorityQueue本质上不是Queue，而是Heap，它只是具备了Queue的接口
+//Minheap by default
 public class PriorityQueueTest {
     @Test
     public void test(){
 
-        // Minheap by default
         Queue<Integer> minheap= new PriorityQueue<>();
         //add elements
         minheap.addAll(Arrays.asList(8,9,1,2,3,4,5));

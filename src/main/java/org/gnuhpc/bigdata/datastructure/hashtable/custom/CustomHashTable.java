@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
+// rehash: https://luoming1224.github.io/2018/11/12/[redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0]redis%E6%B8%90%E8%BF%9B%E5%BC%8Frehash%E6%9C%BA%E5%88%B6/
+
 //另外一种实现是采用index++r，然后探测是否有占用的方式来进行
 public class CustomHashTable<K, V> {
     private static final int NUMBER_OF_BUCKETS = 10;
@@ -21,7 +23,7 @@ public class CustomHashTable<K, V> {
     }
 
     public void put(K k, V v) {
-        int index = k.hashCode() % NUMBER_OF_BUCKETS;
+        int index = hashfunc(k.toString());
         Entry<K, V> kvEntry = new Entry<>(k, v);
 
         List<Entry<K, V>> bucket = buckets.get(index);
@@ -78,5 +80,14 @@ public class CustomHashTable<K, V> {
         public V getValue() {
             return value;
         }
+    }
+
+    private int hashfunc(String key){
+        int sum = 0;
+        for(int i = 0; i < key.length(); i ++){
+            sum = sum * 31 + (int)(key.charAt(i));
+            sum = sum % NUMBER_OF_BUCKETS;
+        }
+        return sum;
     }
 }

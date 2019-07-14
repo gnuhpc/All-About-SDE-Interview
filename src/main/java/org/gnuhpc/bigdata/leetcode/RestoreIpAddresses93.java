@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ import java.util.List;
  */
 public class RestoreIpAddresses93 {
     public List<String> restoreIpAddresses(String s) {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
         helper(s, 0, "", res);
         return res;
     }
@@ -48,7 +50,7 @@ public class RestoreIpAddresses93 {
     }
 
 
-    //有限层循环
+    //Method2:暴力，有限层循环
     public List<String> restoreIpAddresses2(String s) {
         List<String> res = new ArrayList<String>();
         for (int a = 1; a < 4; ++a)
@@ -69,6 +71,50 @@ public class RestoreIpAddresses93 {
                             }
                         }
         return res;
+    }
+
+    //Method3: DFS + Backtracking
+    public ArrayList<String> restoreIpAddresses3(String s) {
+        ArrayList<String> result = new ArrayList<>();
+
+        if (s.length() < 4 || s.length() > 12)
+            return result;
+
+        helper(result, new ArrayList<>(), s , 0);
+        return result;
+    }
+
+    public void helper(ArrayList<String> result, ArrayList<String> temp, String s, int start) {
+        if (temp.size() == 4) {
+            if (start != s.length())
+                return;
+
+            result.add(String.join(".", temp));
+            return;
+        }
+
+        //可以添加一个优化条件：i < start + 3，因为一个ip column不能超过3
+        for (int i = start; i < s.length(); i++) {
+            String tmp = s.substring(start, i + 1);
+            if (isvalid(tmp)) {
+                temp.add(tmp);
+                helper(result, temp, s, i+1);
+                temp.remove(temp.size() - 1);
+            }
+        }
+    }
+
+    private boolean isvalid(String s) {
+        if (s.length()>3) return false;
+        if (s.charAt(0) == '0')
+            return s.equals("0");     	// to eliminate cases like "00", "10"
+        int digit = Integer.valueOf(s);
+        return digit >= 0 && digit <= 255;
+    }
+
+    @Test
+    public void test(){
+        System.out.println(restoreIpAddresses3("25525511135"));
     }
 
 

@@ -1,6 +1,8 @@
 package org.gnuhpc.bigdata.leetcode;
 
 public class RemoveDuplicates26 {
+    // add by tina
+    // 思路：双指针，一个指向当前非重复元素的最后一个位置，一个负责向前遍历
     public static int removeDuplicates(int[] nums) {
         if (nums.length<=1) return nums.length;
         int l=0;

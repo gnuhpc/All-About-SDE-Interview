@@ -27,4 +27,25 @@ public class RemoveElement27 {
         }
 
     }
+
+    // add by Tina
+    // 思路：从后往前，找到=val的数，与len-1交换，交换后，len--
+    public int removeElement2(int[] nums, int val) {
+        if(nums == null || nums.length == 0 ) return 0;
+        int len = nums.length;
+
+        for(int i = len-1; i >= 0; i--){
+            if(nums[i] == val){
+                if(i != len-1) swap2(nums,i,len-1);
+                len--;
+            }
+        }
+        return len;
+    }
+
+    public void swap2(int[] nums,int i ,int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }

@@ -44,4 +44,34 @@ public class RemoveDuplicatesLeftTwo80 {
         }
     }
 
+    // add by Tina
+    public int removeDuplicates2(int[] nums) {
+        if(nums==null){
+            return 0;
+        }
+
+        if (nums.length <= 2){
+            return nums.length;
+        }
+        /*
+        1,1,1,2,2,3
+          i j
+        */
+        int i = 1; // point to previous,满足题意的数组下标
+        int j = 2; // point to current,遍历全数组
+
+        while (j < nums.length) {
+            //什么情况下i停止变化，等待符合题目的新数据逐一覆盖
+            if (nums[j] == nums[i] && nums[j] == nums[i - 1]) {
+                j++;
+            } else { //仅需往前赋值，无需交换，因为j一直朝前遍历，i表示有效数据
+                i++;
+                nums[i] = nums[j];
+                j++;
+            }
+        }
+
+        return i + 1;
+    }
+
 }

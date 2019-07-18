@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.datastructure.set.unionfindset.QuickUnion;
 import org.junit.Test;
 
 import java.util.*;
@@ -9,7 +10,7 @@ public class NumIslands200 {
 
     /*
         Method1: dfs recursivly calling，也是发现是1就向四个方向沉没
-        在原数组上标记为x
+        在原数组上标记为x TODO: 二维DFS重点
      */
     public static int numIslands(char[][] grid) {
         int result = 0;
@@ -89,7 +90,7 @@ public class NumIslands200 {
     }
 
     /*
-    Method 3 Union-Find
+    Method 3 Union-Find -- QuickUnion
      */
 
     public int numIslands3(char[][] grid) {
@@ -104,34 +105,36 @@ public class NumIslands200 {
 
 
         //初始化并查集, 注意这个初始化的方法，因为每个岛（x,y）都是一个独立实体，
-        // 因此需要对m*n个坐标点都标注
-        int[] root = new int[m*n];
+        //因此需要对m*n个坐标点都标注, 二维数组转为一维数组
+        QuickUnion qu = new QuickUnion(m*n);
         int count=0;//这也是岛屿的最大个数
+        //假设这些点都不相连的情况下，count算出来是多少，同时构造并差集为了下边的合并
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
                 if(grid[i][j]=='1'){
-                    root[i*n+j] = i*n+j;
+                    qu.id[i*n+j] = i*n+j;
                     count++;
                 }
             }
         }
 
+
+        //再遍历一遍
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
                 if(grid[i][j]=='1'){
+                    //四个方向进行操作
                     for(int k=0; k<4; k++){
                         int x = i+dx[k];
                         int y = j+dy[k];
 
                         if(x>=0&&x<m&&y>=0&&y<n&&grid[x][y]=='1'){
-                            int cRoot = root(root, i*n+j);
-                            int nRoot = root(root, x*n+y);
-                            if(nRoot!=cRoot){ //相邻的进行合并
-                                root[cRoot]=nRoot; //update previous node's root to be current
-                                //然后减1
+                            if (!qu.connected(i*n+j,x*n+y)){
+                                //合并
+                                qu.union(i*n+j,x*n+y);
+                                //总数减1
                                 count--;
                             }
-
                         }
                     }
                 }
@@ -188,6 +191,7 @@ public class NumIslands200 {
         return numOfIslands;
     }
 
+
     /*
     Method 5: inplace dfs
      */
@@ -232,13 +236,6 @@ public class NumIslands200 {
     }
 
 
-    public int root(int[] arr, int id){
-        while(arr[id]!=id){
-            arr[id] = arr[arr[id]];
-            id = arr[id];
-        }
-        return id;
-    }
 
     /*
     Method 6: BFS ,发现是1的不断让这个岛沉没(改为0)，一层层的沉没 , 这个方法比DFS好，DFS可能Stack Overflow

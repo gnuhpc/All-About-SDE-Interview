@@ -360,7 +360,7 @@ public class TreeUtils {
         }
         System.out.println("\n====END====");
 
-//        TreeNode removeRoot = removeHalfNodes(root);
+//        TreeNode removeRoot = removeHalfNodes(find);
 //        System.out.println();
 
         TreeNode removeLeafRoot = removeLeafNodes(root);

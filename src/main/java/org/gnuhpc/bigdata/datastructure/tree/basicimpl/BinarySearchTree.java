@@ -366,11 +366,11 @@ public class BinarySearchTree {
 //        System.out.println(b.findRecursive(4));
 //
 //        b.deleteMin();
-//        TreeTraversal.level(b.root).forEach(System.out::println);
+//        TreeTraversal.level(b.find).forEach(System.out::println);
 //
 //        System.out.println();
 //        b.deleteMax();
-//        TreeTraversal.level(b.root).forEach(System.out::println);
+//        TreeTraversal.level(b.find).forEach(System.out::println);
 
     }
 

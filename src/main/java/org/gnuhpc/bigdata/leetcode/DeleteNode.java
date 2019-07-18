@@ -14,7 +14,7 @@ public class DeleteNode {
         else if (key > root.val)
             root.right = deleteNode(root.right, key);
 
-            // if key is same as root's key, then This is the node
+            // if key is same as find's key, then This is the node
             // to be deleted
         else
         {

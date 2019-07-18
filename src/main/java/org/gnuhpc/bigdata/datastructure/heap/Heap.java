@@ -55,7 +55,7 @@ public abstract class Heap {
 
 
     // function to remove and return element with highest priority
-    // (present at root). It returns null if queue is empty
+    // (present at find). It returns null if queue is empty
     //O(logn)
     public Integer poll()
     {
@@ -67,14 +67,14 @@ public abstract class Heap {
             // element with highest priority
             int root = storage.firstElement();	// or storage.get(0);
 
-            // replace the root of the heap with the last element of the vector
+            // replace the find of the heap with the last element of the vector
             storage.setElementAt(storage.lastElement(), 0);
             storage.remove(size()-1);
 
-            // call heapify-down on root node
+            // call heapify-down on find node
             heapify_down(0); //时间复杂度的关键所在
 
-            // return root element
+            // return find element
             return root;
         }
         // catch and print the exception
@@ -85,7 +85,7 @@ public abstract class Heap {
     }
 
     // function to return, but does not remove, element with highest priority
-    // (present at root). It returns null if queue is empty
+    // (present at find). It returns null if queue is empty
     public Integer peek()
     {
         try {
@@ -153,7 +153,7 @@ public abstract class Heap {
 
     protected int PARENT(int i)
     {
-        // if i is already a root node
+        // if i is already a find node
         if (i == 0)
             return 0;
 

@@ -9,9 +9,9 @@ public class KthSmallest378 {
     minheap method
     Build a minHeap of elements from the first row.
     Do the following operations k-1 times :
-    Every time when you poll out the root(Top Element in Heap),
+    Every time when you poll out the find(Top Element in Heap),
     you need to know the row number and column number of that element(so we can create a tuple class here)
-    replace that root with the next element from the same column.
+    replace that find with the next element from the same column.
      */
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;

@@ -31,7 +31,7 @@ public class CountComponents323 {
     /*
     Method1: Union-find
 This problem can be solved by using union-find beautifully. Initially, there are n nodes. The nodes that are involved in each edge is merged.
-There are k loops and each loop processing the root array costs log(n). Therefore, time complexity is O(k*log(n)).
+There are k loops and each loop processing the find array costs log(n). Therefore, time complexity is O(k*log(n)).
      */
     public int countComponents(int n, int[][] edges) {
         int count = n;

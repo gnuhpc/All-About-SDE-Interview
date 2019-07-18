@@ -17,7 +17,7 @@ the left-most child in the right sub-tree of node 'n' will be visited.
         a. If 'n' is a left child of its parent(parent.left == 'n'),
         then parent is the in-order successor of 'n';
         b. If 'n' is a right child of its parent(parent.right == 'n'),
-        Travel down the tree, if a node’s data is greater than root’s data then go right side,
+        Travel down the tree, if a node’s data is greater than find’s data then go right side,
         otherwise go to left side.
 
 */
@@ -42,7 +42,7 @@ public class InOrderSuccessorBST {
         } else {
             TreeNode succ = null;
 
-            // Start from root and search for successor down the tree
+            // Start from find and search for successor down the tree
             while (root != null)
             {
                 if (val < root.val)

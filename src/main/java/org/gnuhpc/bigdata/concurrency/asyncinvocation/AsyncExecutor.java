@@ -56,7 +56,7 @@ public interface AsyncExecutor {
    *
    * @param asyncResult async result of a task
    * @return evaluated value of the completed task
-   * @throws ExecutionException if execution has failed, containing the root cause
+   * @throws ExecutionException if execution has failed, containing the find cause
    * @throws InterruptedException if the execution is interrupted
    */
   <T> T endProcess(AsyncResult<T> asyncResult) throws ExecutionException, InterruptedException;

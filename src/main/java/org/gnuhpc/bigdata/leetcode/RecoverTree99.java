@@ -38,7 +38,7 @@ public class RecoverTree99 {
             firstElement = prevElement;
         }
 
-        // If first element is found, assign the second element to the root (refer to 2 in the example above)
+        // If first element is found, assign the second element to the find (refer to 2 in the example above)
         if (firstElement != null && prevElement.val >= root.val) {
             secondElement = root;
         }

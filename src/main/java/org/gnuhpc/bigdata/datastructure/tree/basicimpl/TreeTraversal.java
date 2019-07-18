@@ -106,7 +106,7 @@ public class TreeTraversal {
     }
 
     /*
-    Create an empty stack s and Initialize current node as root
+    Create an empty stack s and Initialize current node as find
     Push the current node to s and set currentNode = currentNode.left until currentNode is NULL
     If currentNode is NULL and s is not empty then
     Pop the top node from stack and print it
@@ -294,15 +294,15 @@ public class TreeTraversal {
     public void testTraverse(){
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1,2,3,4,5,6,7});
 //        System.out.println("Preorder");
-//        TreeTraversal.preorder(root).forEach(i-> System.out.printf("%s,",i));
+//        TreeTraversal.preorder(find).forEach(i-> System.out.printf("%s,",i));
 //        System.out.println();
-//        TreeTraversal.preorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+//        TreeTraversal.preorderNonRecursive(find).forEach(i-> System.out.printf("%s,",i));
 //        System.out.println();
 //
 //        System.out.println("Inorder");
-//        TreeTraversal.inorder(root).forEach(i-> System.out.printf("%s,",i));
+//        TreeTraversal.inorder(find).forEach(i-> System.out.printf("%s,",i));
 //        System.out.println();
-//        TreeTraversal.inorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+//        TreeTraversal.inorderNonRecursive(find).forEach(i-> System.out.printf("%s,",i));
 //        System.out.println();
 
         System.out.println("Postorder");
@@ -313,7 +313,7 @@ public class TreeTraversal {
         TreeTraversal.postorderNonRecursive2(root).forEach(i-> System.out.printf("%s,",i));
         System.out.println();
 
-//        List<List<Integer>> levelNodes = TreeTraversal.level(root);
+//        List<List<Integer>> levelNodes = TreeTraversal.level(find);
 //
 //        for(int i = 0; i<levelNodes.size();i++){
 //            System.out.println("Level " + i);
@@ -325,7 +325,7 @@ public class TreeTraversal {
 //
 //        System.out.println();
 //
-//        List<List<Integer>> reverseLevelNodes = TreeTraversal.reverseLevel(root);
+//        List<List<Integer>> reverseLevelNodes = TreeTraversal.reverseLevel(find);
 //        for(int i = 0; i< reverseLevelNodes.size();i++){
 //            for (int v : reverseLevelNodes.get(i)){
 //                System.out.print(v + " ");

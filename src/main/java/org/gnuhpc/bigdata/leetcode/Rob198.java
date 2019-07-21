@@ -10,25 +10,27 @@ public class Rob198 {
      */
 
     public int rob(int[] nums) {
+        if(nums.length == 1) return nums[0];
         res = new int[nums.length];
         Arrays.fill(res, -1);
         //自顶向下，一般从最后的开始, 从最后一家开始抢，规模缩小
-        return solve(nums.length - 1,nums);
+        return solve(0,nums.length - 1,nums);
     }
 
-    private int solve(int idx, int[] nums){
-        if (idx < 0) return 0;
+
+    private int solve(int end, int idx, int[] nums){
+        if (idx < end) return 0;
         if (res[idx]!=-1) return res[idx];
 
         //包含两种决策
-        int max =  Math.max(nums[idx] + solve(idx - 2,nums),solve(idx-1,nums));
+        int max =  Math.max(nums[idx] + solve(end,idx - 2,nums),solve(end,idx-1,nums));
         res[idx] = max;
 
         return max;
     }
 
 
-    /*
+    /* TODO DFS+memorization -> DP 的典型案例
     DP ,这个完全可以通过上边的步骤改出来，-- 本质递推
      */
 

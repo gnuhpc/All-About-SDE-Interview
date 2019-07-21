@@ -7,10 +7,10 @@ import java.util.List;
  */
 
 public class MinimumTotal120 {
-    //从上到下记忆化搜索
-    private int n;
-    private int[][] minSum;
-    private int[][] triangle;
+    //从上到下记忆化搜索 ，要掌握
+    private int                 n;
+    private int[][]             minSum;
+    private List<List<Integer>> triangle;
 
     private int search(int x, int y) {
         if (x >= n) {
@@ -22,19 +22,19 @@ public class MinimumTotal120 {
         }
 
         minSum[x][y] = Math.min(search(x + 1, y), search(x + 1, y + 1))
-                       + triangle[x][y];
+                       + triangle.get(x).get(y);
         return minSum[x][y];
     }
 
-    public int minimumTotal(int[][] triangle) {
-        if (triangle == null || triangle.length == 0) {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.size() == 0) {
             return -1;
         }
-        if (triangle[0] == null || triangle[0].length == 0) {
+        if (triangle.get(0) == null || triangle.get(0).size() == 0) {
             return -1;
         }
 
-        this.n = triangle.length;
+        this.n = triangle.size();
         this.triangle = triangle;
         this.minSum = new int[n][n];
 

@@ -9,8 +9,8 @@ import java.util.List;
 
 public class BinaryTreePaths257 {
     /** dfs
-     * @param root the root of the binary tree
-     * @return all root-to-isLeaf paths
+     * @param root the find of the binary tree
+     * @return all find-to-isLeaf paths
      */
     public List<String> binaryTreePaths(TreeNode root) {
         List<String> result = new ArrayList<String>();
@@ -41,8 +41,8 @@ public class BinaryTreePaths257 {
     }
 
     /** Divide and Conquer
-     * @param root the root of the binary tree
-     * @return all root-to-isLeaf paths
+     * @param root the find of the binary tree
+     * @return all find-to-isLeaf paths
      */
     public List<String> binaryTreePaths2(TreeNode root) {
         //递归三要素 1. 返回
@@ -63,7 +63,7 @@ public class BinaryTreePaths257 {
             paths.add(root.val + "->" + path);
         }
 
-        // root is a isLeaf
+        // find is a isLeaf
         if (paths.size() == 0) {
             paths.add("" + root.val);
         }

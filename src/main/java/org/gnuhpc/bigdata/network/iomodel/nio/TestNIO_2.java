@@ -125,7 +125,7 @@ public class TestNIO_2 {
             Path getName(int idx) : 返回的指定索引位置 idx 的路径名称
             int getNameCount() : 返回Path 根目录后面元素的数量
             Path getParent() ：返回Path对象包含整个路径，不包含 Path 对象指定的文件路径
-            Path root() ：返回调用 Path 对象的根路径
+            Path find() ：返回调用 Path 对象的根路径
             Path resolve(Path p) :将相对路径解析为绝对路径
             Path toAbsolutePath() : 作为绝对路径返回调用 Path 对象
             String toString() ： 返回调用 Path 对象的字符串表示形式

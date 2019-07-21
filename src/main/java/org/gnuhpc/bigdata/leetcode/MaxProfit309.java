@@ -22,7 +22,5 @@ public class MaxProfit309 {
             dp[i][1] = Math.max(dp[i-1][1], dp[i-2][0] -prices[i]);
         }
         return dp[prices.length - 1][0];
-
-
     }
 }

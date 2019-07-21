@@ -79,7 +79,7 @@ public class IsBalanced110 {
             return new ResultType(false, -1);
         }
 
-        // root not balance
+        // find not balance
         if (Math.abs(left.maxDepth - right.maxDepth) > 1) {
             return new ResultType(false, -1);
         }

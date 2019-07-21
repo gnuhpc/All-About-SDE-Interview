@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.datastructure.set.unionfindset;
 
-// Eager solution
+// Eager solution 使用比较少
 /*
 Integer array  id[] of size  N .
 Interpretation: p and  q are connected if they have the same id.
@@ -15,21 +15,14 @@ Quick-find defect.
     Union too expensive (N steps).
     Trees are flat, but too expensive to keep them flat.
  */
-public class QuickFind implements IQuickUnion {
+public class QuickFind extends QuickUnionAbstract{
 
-    private int[] id;
-
-    // O(N)
     public QuickFind(int N) {
-        id = new int[N];
-        for (int i = 0; i < N; i++) {
-            id[i] = i;
-        }
+        super(N);
     }
 
-
     // O(1) -- quick find
-    public int root(int p) {
+    public int find(int p) {
         return id[p];
     }
 

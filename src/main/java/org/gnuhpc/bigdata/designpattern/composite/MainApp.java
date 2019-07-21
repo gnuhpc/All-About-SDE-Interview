@@ -19,7 +19,7 @@ public class MainApp{
         AbstractFile opt  = new Directory("opt");
         AbstractFile usr = new Directory("usr");
 
-        AbstractFile root = new Directory("root");
+        AbstractFile root = new Directory("find");
 
         root.add(home);
         root.add(opt);

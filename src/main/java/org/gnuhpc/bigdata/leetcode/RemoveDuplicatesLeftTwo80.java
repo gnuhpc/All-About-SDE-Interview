@@ -4,7 +4,7 @@ package org.gnuhpc.bigdata.leetcode;
 //快指针应该与他的前一个数字进行对比，以发现重复数字。
 public class RemoveDuplicatesLeftTwo80 {
     public static int removeDuplicates(int[] nums){
-        final int k = 2;  // k用于记录数组中重复数字最多出现的次数
+        //永远指向第一个不满足题意的位置
         int start = 1;
         int count = 1;
 
@@ -18,7 +18,7 @@ public class RemoveDuplicatesLeftTwo80 {
 
         for(int i = 1; i < nums.length; ++i) {
             if(nums[i] == nums[i - 1]) { //注意这个比较条件，是和临近的上个一个比较
-                if(count < k) {
+                if (count < 2) {
                     nums[start++] = nums[i];  // 如果出现次数小于规定，慢指针后移
                 }
                 count++;
@@ -72,6 +72,28 @@ public class RemoveDuplicatesLeftTwo80 {
         }
 
         return i + 1;
+    }
+
+    //Method 3: Two pointers
+    public int removeDuplicates3(int[] nums) {
+        if (nums == null) {
+            return 0;
+        }
+
+        if (nums.length <= 2) {
+            return nums.length;
+        }
+
+        //永远指向第一个不满足题意的位置, 0 和 1 无论是否相同都满足题意，因此直接跳过
+        int j = 2;
+
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] != nums[j - 2]) {
+                nums[j] = nums[i];
+                j++;
+            }
+        }
+        return j;
     }
 
 }

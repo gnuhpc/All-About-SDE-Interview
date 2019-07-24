@@ -1,6 +1,7 @@
 package org.gnuhpc.bigdata.leetcode.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TreeNode {
     public int val;
@@ -19,7 +20,7 @@ public class TreeNode {
      *          4
      */
     public static TreeNode sampleBST(){
-        HashMap<Integer, TreeNode> nodes = new HashMap<>();
+        Map<Integer, TreeNode> nodes = new HashMap<>();
         for (int i = 1; i < 10; i++) {
             nodes.put(i, new TreeNode(i));
         }

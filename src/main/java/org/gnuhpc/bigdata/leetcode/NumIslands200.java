@@ -12,6 +12,19 @@ public class NumIslands200 {
         Method1: dfs recursivly calling，也是发现是1就向四个方向沉没
         在原数组上标记为x TODO: 二维DFS重点
      */
+    /*
+    Flood Fill
+    Flood-Fill (node, target_color, replacement_color) do
+    1. If the color of node is not equal to target_color,
+    then return
+    2. Set the color of node to replacement_color
+    3. Perform Flood-Fill (step to the west of node ...)
+    Perform Flood-Fill (step to the east of node ...)
+    Perform Flood-Fill (step to the north of node ...)
+    Perform Flood-Fill (step to the south of node ...)
+    4. Return
+    end
+     */
     public static int numIslands(char[][] grid) {
         int result = 0;
         for (int r = 0; r < grid.length; r++) {

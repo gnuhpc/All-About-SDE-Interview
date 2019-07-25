@@ -1,9 +1,11 @@
 package org.gnuhpc.bigdata.leetcode;
 
 
+import org.gnuhpc.bigdata.leetcode.utils.ListNode;
 import org.junit.Test;
 
 public class ReverseList206 {
+    //Method1: 非递归
     public ListNode reverseList(ListNode head) {
         if(head==null||head.next ==null)
             return head;
@@ -21,30 +23,33 @@ public class ReverseList206 {
         return pre;
     }
 
+    //Method 2: 递归
+    public ListNode reverseList2(ListNode head) {
+        if(head==null||head.next ==null)
+            return head;
+
+        ListNode newHead = reverseList2(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+
+
     @Test
     public void test(){
-
-        /*for(int i = 0;i<1;i++){
-            System.out.println(i);
-        }*/
         ListNode head = new ListNode(1);
-
         head.next = new ListNode(2);
         head.next.next = new ListNode(3);
         System.out.println(head.val);
         System.out.println(head.next.val);
         System.out.println(head.next.next.val);
-        head = head.next;
-        System.out.println(head.val);
+
+        ListNode reverseHead = reverseList2(head);
+        System.out.println(reverseHead.val);
+        System.out.println(reverseHead.next.val);
+        System.out.println(reverseHead.next.next.val);
 
     }
-
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
-
 }
 
 

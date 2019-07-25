@@ -4,6 +4,7 @@ target/
 *.iml
 # File-based project format
 *.iws
+*.ipr
 
 # IntelliJ
 out/

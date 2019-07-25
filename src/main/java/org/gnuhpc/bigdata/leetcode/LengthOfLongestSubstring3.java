@@ -25,11 +25,11 @@ public class LengthOfLongestSubstring3 {
         Map<Character, Integer> map = new HashMap<>();
         int start = 0;
         int max = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i); /*start point can be recent dup's next char or last start*/
-            start = Math.max(start, (map.containsKey(c)) ? map.get(c) + 1 : 0); /*if current str len is bigger then update*/
-            max = Math.max(max, i - start + 1); /*add char to distanceMap with index*/
-            map.put(c, i);
+        for (int end = 0; end < s.length(); end++) {
+            char c = s.charAt(end);
+            map.put(c, end);
+            start = Math.max(start, (map.containsKey(c)) ? map.get(c) + 1 : 0);
+            max = Math.max(max, end - start + 1);
         }
         return max;
     }
@@ -46,7 +46,7 @@ public class LengthOfLongestSubstring3 {
         while (r<sc.length){
             char c = sc[r];
             cnt[c]++;
-            while (cnt[c] > 1) {
+            while (cnt[c] > 1) { //直到这个重复的字符不再出现在新的字符串上
                 cnt[sc[l]]--;
                 l++;
             }

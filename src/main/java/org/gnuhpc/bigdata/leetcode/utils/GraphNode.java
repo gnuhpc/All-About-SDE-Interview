@@ -7,6 +7,7 @@ import java.util.List;
  * Created_By: stefanie
  * Date: 14-11-23
  * Time: 下午1:40
+ * 可以表示有向图的节点也可以表示无向图的节点
  */
 public class GraphNode {
     public int label;

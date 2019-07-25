@@ -3,17 +3,39 @@ package org.gnuhpc.bigdata.leetcode;
 import java.util.Arrays;
 
 public class HIndex274 {
-    // add by Tina,
-    // 方法一，先排序，后遍历找到citations[i] >= n-i即可
-    // T=O(nlogn)|M=O(1)
+    /*
+    The definition of h-index in the problem is confusing. Actually, according to Wikipedia,
+
+
+    某人的h指数是指他至多有h篇论文分别被引用了至少h次。
+    其计算方法非常简单，例如，
+    某人的h指数是25，这表示他已发表的论文中，每篇被引用了至少25次的论文总共有25篇。
+
+    => 我们要在数组中找一个最大的 h，使得后 h 个数大于等于 h，
+/*
+* 思路：
+*
+* 1、首先看到大于等于某个值自然而然的想到将数组排序；
+*
+* 2、将数组排序之后，对于给定的某个i，我们知道有citations.length - i篇论文的引用数 ≥ citations[i]，i篇
+*    论文的引用数 < citations[i]；
+*
+* 3、不妨设h = citations.length - i，即至多有h篇论文分别引用了至少citation[i]次，其余citations.length - h篇
+*    论文的引用数不多于citation[i]次。
+*
+*    既然如此，只要citation[i] ≥ h，就满足题意。
+*/
+
     public int hIndex(int[] citations) {
-        if(citations == null ) return 0;
         Arrays.sort(citations);
-        int n = citations.length;
-        for(int i = 0;i < n; i++){
-            if(citations[i] >= n-i) return n-i;
+        for (int i = 0; i < citations.length; i++) {
+            int h = citations.length - i;
+            if (h <= citations[i]) {
+                return h;
+            }
         }
         return 0;
+
     }
 
     // 方法二，借助hash表，hash表最重要的是明确其下标和值的含义
@@ -34,6 +56,8 @@ public class HIndex274 {
         }
         return 0;
     }
+
+
 
 
 

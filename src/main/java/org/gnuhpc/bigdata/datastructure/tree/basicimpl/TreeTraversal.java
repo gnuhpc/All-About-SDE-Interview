@@ -51,7 +51,7 @@ public class TreeTraversal {
     }
 
     /*
-    Merhod 2： DFS模板方法
+    Merhod 2： DFS模板方法 // TODO: DFS模板
      */
     public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
         List<Integer> result = new ArrayList<>();
@@ -171,11 +171,11 @@ public class TreeTraversal {
         return res;
     }
 
-    //后续遍历非递归，真实的另一种写法
+    //后续遍历非递归，真实的另一种写法, 推荐
     @AllArgsConstructor
     static class StackNode{
         TreeNode n;
-        boolean isFirst;
+        boolean isFirst; //记录是不是第一次被遍历到
     }
 
     public static List<Integer> postorderNonRecursive2(TreeNode root) {
@@ -186,6 +186,7 @@ public class TreeTraversal {
         if (cur == null) return res;
 
         while (cur!=null || !stack.isEmpty()){
+            // 要点，一直向左找下去
             while (cur!=null){
                 stack.push(new StackNode(cur,true));
                 cur = cur.left;
@@ -218,16 +219,17 @@ public class TreeTraversal {
             if(p != null) {
                 stack.push(p);
                 //addFirst保证了结果集的倒序, DRL 访问，但是以LRD插入，返回则直接为LRD
-                result.addFirst(p.val);  // Reverse the process of preorder
-                p = p.right;             // Reverse the process of preorder
+                result.addFirst(p.val);
+                p = p.right;
             } else {
                 //左子树
-                p = stack.pop().left; // Reverse the process of preorder
+                p = stack.pop().left;
             }
         }
         return result;
     }
 
+    // TODO: BFS模板
     public static List<List<Integer>> level(TreeNode root){
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;

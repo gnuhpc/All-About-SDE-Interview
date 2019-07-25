@@ -10,8 +10,28 @@ public class FirstMissingPositive41 {
     // 题目要求o(n)的时间复杂度，且O(1)的空间复杂度
     // 一种类似于桶排序的思想
     // 结果值在[1~n+1]之间
+    /*  这道题之所有能利用本来的数组作为bucket的关键原因是因为如果里面的值都小于等于0或者都大于n，则一定是1
+        可以用数组本身作为一个"hash table"：A[0] = 1, A[1] = 2, .... A[n-1] = n。目标是尽可能将数字i放到数组第i-1个位置。
+        扫描数组中每个数：
+        1. 如果A[i]<1或者A[i]>n。说明A[i]一定不是first missing positive。跳过
+        2. 如果A[i] = i+1，说明A[i]已经在正确的位置，跳过
+        3. 如果A[i]!=i+1，且0<A[i]<=n，应当将A[i]放到A[A[i]-1]的位置，所以可以交换两数。
+        这里注意，当A[i] = A[A[i]-1]时会陷入死循环。这种情况下直接跳过。
+     */
+
+    //2ms, beat 89.18%
     public int firstMissingPositive(int[] nums) {
         if (nums == null) return -1;
+
+
+        //基于上边的关键原因，可以做如下优化
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+
+        for (int i = 0; i < nums.length; i++) {
+            min = Math.min(min, nums[i]);
+            max = Math.max(max, nums[i]);
+        }
+
         for (int i = 0; i < nums.length; i++) {
             while (nums[i] <= nums.length && nums[i] > 0 && nums[nums[i] - 1] != nums[i]){
                 Utils.swap(nums, nums[i]-1,i);

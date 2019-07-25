@@ -18,7 +18,7 @@ public class FindMedianSortedArrays4 {
         return findKth(A, B, n / 2 + 1);
     }
 
-    // k is not zero-based, it starts from 1
+    // 查找A，B两个有序数组合并后的第k个数， k is not zero-based, it starts from 1
     public int findKth(int[] A, int[] B, int k) {
         if (A.length == 0) {
             return B[k - 1];
@@ -27,6 +27,7 @@ public class FindMedianSortedArrays4 {
             return A[k - 1];
         }
 
+        //这是对数值进行二分
         int start = Math.min(A[0], B[0]);
         int end = Math.max(A[A.length - 1], B[B.length - 1]);
 
@@ -48,7 +49,9 @@ public class FindMedianSortedArrays4 {
     }
 
     //一个有序数组arr中小于等于number的数字个数
+    //TODO 二分法的一个变种
     private int countSmallerOrEqual(int[] arr, int number) {
+        //这是对idx进行二分
         int start = 0, end = arr.length - 1;
 
         // find first index that arr[index] > number;

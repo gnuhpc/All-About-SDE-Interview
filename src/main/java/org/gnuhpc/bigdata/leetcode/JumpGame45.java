@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 /**
  * 采用递归的做法，发现超时 80/92
  */
@@ -18,6 +20,7 @@ public class JumpGame45 {
             minJump = Math.min(jumps,minJump);
             return;
         }else{
+            //剪枝
             if(jumps >= minJump) return;
             for(int i = 1; i<=nums[newindex];i++){
                 help(nums,n,newindex,i,jumps+1);
@@ -42,5 +45,43 @@ public class JumpGame45 {
 
         return ret;
     }
+
+    public int jump4(int[] nums) {
+        int end = 0;
+        int maxPosition = 0;
+        int steps = 0;
+        for(int i = 0; i < nums.length - 1; i++){
+            //找能跳的最远的
+            maxPosition = Math.max(maxPosition, nums[i] + i);
+            if( i == end){ //遇到边界，就说明这个部分已经遍历完了，最大值也找到了，
+                // 就按照最大值更新边界，并且步数加一
+                end = maxPosition;
+                steps++;
+            }
+        }
+        return steps;
+    }
+
+    public int jump5(int[] nums) {
+        int position = nums.length - 1; //要找的位置
+        int steps = 0;
+        while (position != 0) { //是否到了第 0 个位置
+            for (int i = 0; i < position; i++) {
+                if (nums[i]+i >= position) {
+                    position = i; //更新要找的位置
+                    steps++;
+                    break;
+                }
+            }
+        }
+        return steps;
+    }
+
+
+    @Test
+    public void test(){
+        System.out.println(jump4(new int[]{2,3,1,1,4,2,1}));
+    }
+
 
 }

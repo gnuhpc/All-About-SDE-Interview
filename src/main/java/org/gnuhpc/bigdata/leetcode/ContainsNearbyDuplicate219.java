@@ -22,6 +22,7 @@ public class ContainsNearbyDuplicate219 {
         return false;
     }
 
+    //Method 1: Hash
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         boolean result = false;
         //数字-起始比较位置

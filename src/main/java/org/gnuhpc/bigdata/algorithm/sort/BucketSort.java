@@ -24,6 +24,7 @@ public class BucketSort {
             bucket[n]++;
         }
 
+        //展开结果
         int idx =0;
         for (int i=0; i<bucket.length; i++) {
             for (int j=0; j<bucket[i]; j++) {
@@ -74,7 +75,7 @@ public class BucketSort {
         return array;
     }
 
-    private int hashcode(int num, int max, int min, int length){
+    private int hashcode(int num, int max, int min, int length){ //注意这个归一化
         return (int)(((double)length/(max-min))*(num-min));// length*归一化
     }
 

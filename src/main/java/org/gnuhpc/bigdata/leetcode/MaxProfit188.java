@@ -7,6 +7,13 @@ public class MaxProfit188 {
         int n = prices.length;
         int max_k = k;
 
+        //一次交易由买入和卖出构成，至少需要两天。所以说有效的限制 k 应该不超过 n/2，
+        // 如果超过，就没有约束作用了，相当于 k = +infinity。这种情况是之前解决过的。
+        //
+        //作者：labuladong
+        //链接：https://leetcode-cn.com/problems/two-sum/solution/yi-ge-fang-fa-tuan-mie-6-dao-gu-piao-wen-ti-by-lab/
+        //来源：力扣（LeetCode）
+        //著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
         if(k>n/2) return maxProfit(prices);
         int[][][] dp = new int[n][max_k + 1][2];
 

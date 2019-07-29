@@ -19,7 +19,7 @@ Union.
 
 public class WeightedQuickUnion extends QuickUnion{
 
-    //用来计数的，自己是一个区域的就是1，这个区域有
+    //用来计数的，自己是一个区域的就是1，这个区域有几个元素
     public int[] sz;
 
     public WeightedQuickUnion(int N) {

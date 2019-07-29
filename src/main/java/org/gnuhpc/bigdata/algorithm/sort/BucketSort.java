@@ -54,9 +54,9 @@ public class BucketSort {
             bucketList.add(new LinkedList<>());
         }
         // 2. 将数据放入对应桶内
-        for (int anArray : array) {
-            int index = hashcode(anArray, max, min, length);
-            bucketList.get(index).add(anArray);
+        for (int num: array) {
+            int index = bucket(num, max, min, length);
+            bucketList.get(index).add(num);
         }
         // 对每个桶内部排序（可以递归桶排序）
         for( int i = 0 ; i < bucketList.size() ; i++ ){
@@ -75,8 +75,11 @@ public class BucketSort {
         return array;
     }
 
-    private int hashcode(int num, int max, int min, int length){ //注意这个归一化
-        return (int)(((double)length/(max-min))*(num-min));// length*归一化
+    private int bucket(int num, int max, int min, int length){ //注意这个归一化有三个要点：
+        //1. 先进行除法进行归一
+        //2. 转换为double
+        //3. 乘以length
+        return (int)(((double)(num-min)/(max-min))*length);
     }
 
     @Test

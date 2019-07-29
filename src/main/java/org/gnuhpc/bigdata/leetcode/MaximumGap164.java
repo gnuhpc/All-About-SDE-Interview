@@ -25,16 +25,16 @@ public class MaximumGap164 {
         int[] maxs = new int[len + 1];
         int bid = 0;
         for (int i = 0; i < len; i++) {
-            bid = bucket(nums[i], len, min, max);
+            bid = bucket(nums[i], max, min, len);
             mins[bid] = hasNum[bid] ? Math.min(mins[bid], nums[i]) : nums[i];
             maxs[bid] = hasNum[bid] ? Math.max(maxs[bid], nums[i]) : nums[i];
             hasNum[bid] = true;
         }
         int res = 0;
         int lastMax = maxs[0];
-        int i = 1;
-        for (; i <= len; i++) {
+        for (int i=1; i <= len; i++) {
             if (hasNum[i]) {
+                //找出下一个bucket中最小的那个和上一个最大的那个的插值，这个一定是既相邻，差值又是最大的一个
                 res = Math.max(res, mins[i] - lastMax);
                 lastMax = maxs[i];
             }
@@ -42,11 +42,14 @@ public class MaximumGap164 {
         return res;
     }
 
-    private int bucket(long num, long len, long min, long max) {
-        return (int) ((num - min) * len / (max - min));
+    private int bucket(int num, int max, int min, int length){ //注意这个归一化有三个要点：
+        //1. 先进行除法进行归一
+        //2. 转换为double
+        //3. 乘以length
+        return (int)(((double)(num-min)/(max-min))*length);
     }
 
-    // Method 2 标准bucket，内存不够用
+    // Method 2 标准bucket，内存不够用,OOM
     public int maximumGap2(int[] nums) {
         if(nums == null || nums.length < 2){
             return 0;

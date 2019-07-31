@@ -53,6 +53,7 @@ public class CountSmaller315 {
         return idx;
     }
 
+    //Method2: BST 构建中遍历，这两个方法本质一样 注意方法2比方法1快，1慢的地方在add by idx这个操作
     public List<Integer> countSmaller2(int[] nums) {
         List<Integer> res = new ArrayList<>();
         if (nums == null || nums.length == 0) return res;
@@ -90,12 +91,6 @@ public class CountSmaller315 {
         return count;
     }
 
-    @Test
-    public void test() {
-        System.out.println(countSmaller(new int[]{5,2,6,1}));
-    }
-
-    //Method2: BST 构建中遍历，这两个方法本质一样 注意方法2比方法1快，1慢的地方在add by idx这个操作
     class TreeNode {
         TreeNode left;
         TreeNode right;
@@ -106,4 +101,68 @@ public class CountSmaller315 {
             this.val = val;
         }
     }
+
+    //Method 3: Merge sort
+    public List<Integer> countSmaller3(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+
+        if (nums == null || nums.length == 0) {
+            return list;
+        }
+
+        int len = nums.length;
+        int[] idxs = new int[len];
+        int[] count = new int[len];
+
+        for (int i = 0; i < len; i++)
+            idxs[i] = i;
+
+        mergeSort(nums, idxs, 0, len, count);
+
+        for (int c: count) list.add(c);
+
+        return list;
+    }
+
+    private void mergeSort(int[] nums, int[] idxs, int start, int end, int[] count) {
+        if (end - start <= 1) {
+            return;
+        }
+
+        int mid = (end - start) / 2 + start;
+        mergeSort(nums, idxs, start, mid, count);
+        mergeSort(nums, idxs, mid, end, count);
+
+        merge(nums, idxs, start, end, count);
+    }
+
+    private void merge(int[] nums, int[] idxs, int start, int end, int[] count) {
+
+        int mid = (end - start) / 2 + start;
+
+        int i = start, j = mid, k = 0;
+        int[] temp = new int[end - start];
+
+        while (k < end - start) {
+            if (i < mid) {
+                if (j < end && nums[idxs[j]] < nums[idxs[i]]) {
+                    temp[k++] = idxs[j++];
+                } else {
+                    count[idxs[i]] += j - mid;
+                    temp[k++] = idxs[i++];
+                }
+            } else {
+                temp[k++] = idxs[j++];
+            }
+        }
+
+        System.arraycopy(temp, 0, idxs, start, end - start);
+    }
+
+
+    @Test
+    public void test() {
+        System.out.println(countSmaller3(new int[]{5,2,6,1}));
+    }
+
 }

@@ -29,7 +29,6 @@ public class InsertSort {
     }
 
     public static void sortRecursive(int[] array, int numItems) {
-
         if (numItems < 2) {
             return;
         }

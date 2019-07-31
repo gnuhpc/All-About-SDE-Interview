@@ -14,9 +14,9 @@ import org.junit.Test;
 public class MergeSort {
     public static Void sort(int[] input){
         if (input == null || input.length < 2 ) return null;
-//        mergeSort(input,0,input.length);
-        parallelMergeSort(input,0,input.length,16);
-
+        mergeSort(input,0,input.length);
+        //也可以使用并发版本
+        //parallelMergeSort(input,0,input.length,16);
         return null;
     }
 
@@ -26,31 +26,29 @@ public class MergeSort {
         if (end - start <= 1) {
             return;
         }
-        /**
-         *  if (end - start <= 16) {
-         *             insertSort(arr,start,end);
-         *         }
-         */
 
-        int mid = (start + end) / 2;
+        if (end - start <= 16) {
+            insertSort(input,start,end);
+        }
+
+
+        int mid = (end - start) / 2 + start;
         mergeSort(input, start, mid);
         mergeSort(input, mid, end);
-        merge(input, start, mid, end);
+        merge(input, start, end);
     }
 
     // 左闭右开 ， 誊写的过程
-    public static void merge(int[] input, int start, int mid, int end) {
-
+    public static void merge(int[] input, int start, int end) {
+        int mid = (end - start) / 2 + start;
         //已经有序就返回
         if (input[mid - 1] <= input[mid]) {
             return;
         }
 
-        int i = start;
-        int j = mid;
-        int k = 0;
-
+        int i = start, j = mid, k = 0;
         int[] temp = new int[end - start];
+
         while (i < mid && j < end) {
             temp[k++] = input[i] <= input[j] ? input[i++] : input[j++];
         }
@@ -66,8 +64,7 @@ public class MergeSort {
         System.arraycopy(temp, 0, input, start, temp.length);
     }
 
-    public static void insertSort(int[] arr, int l, int r){
-
+    private static void insertSort(int[] arr, int l, int r){
         for( int i = l + 1 ; i < r ; i ++ ){
             int e = arr[i];
             int j = i;
@@ -77,8 +74,8 @@ public class MergeSort {
         }
     }
 
+    //并发版本
     public static void parallelMergeSort(int[] input,int low, int high, int numOfThreads) {
-
         if (numOfThreads <= 1) {
             mergeSort(input,low, high);
             return;
@@ -98,29 +95,18 @@ public class MergeSort {
             e.printStackTrace();
         }
 
-        merge(input,low, middleIndex, high);
+        merge(input,low, high);
     }
 
     private static Thread mergeSortThread(int[] input, int low, int high, int numOfThreads) {
-
-        return new Thread() {
-            @Override
-            public void run() {
-                parallelMergeSort(input,low, high, numOfThreads / 2);
-            }
-        };
+        return new Thread(() -> parallelMergeSort(input,low, high, numOfThreads / 2));
     }
-
-
-
 
     @Test
     public void test() {
         int[] arr = Utils.generateRandomArray(10000000, 0, 100);
-//        Utils.printArray(arr);
+        //Utils.printArray(arr);
         Utils.evaluateSort(MergeSort::sort,arr);
-//        Utils.printArray(arr);
+        //Utils.printArray(arr);
     }
-
-
 }

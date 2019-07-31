@@ -5,34 +5,48 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-//很通用的一个模板
 public class SubarraySum560 {
     public int subarraySum(int[] nums, int k) {
-        Map<Integer, Integer> preSum = new HashMap<>();
-        preSum.put(0, 1);   //key: preSum, value: frequency
-        int count = 0;
-        int curSum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            curSum += nums[i];
-            if (preSum.containsKey(curSum - k))
-                count += preSum.get(curSum - k);
-            // it means there is some sum value v between 0 and x, which makes sum of array [x + 1 to i] == k
-            // the frequency is the number of x
-            preSum.put(curSum, preSum.getOrDefault(curSum, 0) + 1);
+        // Edge cases
+        if(nums.length == 0)    return 0;
+
+        // hashmap + preSum
+        /*
+            1. Hashmap<sum[0,i - 1], frequency>
+            //下面是很通用的一个模板 preSum = 总Sum - 区间Sum
+            2. sum[i, j] = sum[0, j] - sum[0, i - 1]    --> sum[0, i - 1] = sum[0, j] - sum[i, j]
+                   k           sum      hashmap-key     -->  hashmap-key  =  sum - k
+            3. now, we have k and sum.
+                  As long as we can find a sum[0, i - 1], we then get a valid subarray
+                 which is as long as we have the hashmap-key,  we then get a valid subarray
+            4. Why don't map.put(sum[0, i - 1], 1) every time ?
+                  if all numbers are positive, this is fine
+                  if there exists negative number, there could be preSum frequency > 1
+        */
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+        int result = 0;
+        //preSum是0出现了1次
+        map.put(0, 1);
+        for(int cur : nums) {
+            sum += cur;
+            if(map.containsKey(sum - k))  // there exist a key, that [hashmap-key  =  sum - k]
+                result += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
-        return count;
+        return result;
     }
 
     @Test
     public void test(){
-        subarraySum(new int[]{0,0,0,0,0,0,0,0,0,0},0);
+        subarraySum(new int[]{1,1,1},2);
     }
 
 }
 /* From https://www.jiuzhang.com/solution/subarray-sum/ 是具体求一个位置而不是计数，此时HashMap的定义有变化
+// 这个案例中相当于上一题中k=0的情况
   public ArrayList<Integer> subarraySum(int[] nums) {
         // write your code here
-
         int len = nums.length;
 
         ArrayList<Integer> ans = new ArrayList<Integer>();
@@ -46,8 +60,8 @@ public class SubarraySum560 {
             sum += nums[i];
 
             if (map.containsKey(sum)) {
-                ans.add(map.get(sum) + 1);
-                ans.add(i);
+                ans.add(map.get(sum) + 1);//起始位置
+                ans.add(i);//结束位置
                 return ans;
             }
 

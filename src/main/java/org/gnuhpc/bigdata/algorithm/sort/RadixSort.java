@@ -15,20 +15,19 @@ public class RadixSort {
 
     public static void radixSort(int[] nums) {
         //simple linear search for the max item
-        int m = Arrays.stream(nums).max().getAsInt();
+        int max = Arrays.stream(nums).max().getAsInt();
 
-        for (int exp = 1; m / exp > 0; exp *= 10)
+        for (int exp = 1; max / exp > 0; exp *= 10)
             countSort(nums, exp);
     }
 
     public static void countSort(int[] nums, int exp) {
 
-        int[] count = new int[10];
+        int[] count = new int[10]; //注意这个时候就不用取range了，这个case中这个优化是极小的
         int[] output = new int[nums.length];
 
         // Store count of occurrences in count[]
-        for (int i = 0; i < nums.length; i++)
-            count[(nums[i] / exp) % 10]++;
+        for (int num : nums) count[(num / exp) % 10]++;
 
         // Change count[i] so that count[i] now contains
         // actual position of this digit in output[]
@@ -43,7 +42,6 @@ public class RadixSort {
 
         // Copy the output array to arr[], so that arr[] now
         // contains sorted numbers according to current digit
-        for (int i = 0; i < nums.length; i++)
-            nums[i] = output[i];
+        System.arraycopy(output, 0, nums, 0, nums.length);
     }
 }

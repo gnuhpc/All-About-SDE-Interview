@@ -2,34 +2,39 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
-//首先明确一个不争的事实，数组是一个特殊的数组，里面的数都在1--length-1范围内，那么一旦某个数字有重复了，就会导致从中间劈开，
-// 有重复数字的那一边数字多，假设[1,1,3,4,5,2],从中间劈开的中位数是3，而小于等于3的数字有4个，大于中位数3，
-// 说明重复数字在左半边，high就被替换为mid
+//明确一个不争的事实，数组是一个特殊的数组，里面的数都在[1,length-1]范围内
 public class FindDuplicate287 {
-    public static int findDuplicate(int[] nums) {
-        if (nums.length == 0)
+    public int findDuplicate(int[] nums) {
+        if (nums.length <=1)
             return 0;
-        int low = 1, high = nums.length - 1, mid;
-        while (low < high) {
-            mid = low + (high - low) / 2; //根据数组长度，寻找中位数
-            //然后计算比中位数小的数字个数
+        if(nums.length == 2){
+            return nums[0];
+        }
+        int small = 1, big = nums.length - 1, guess;
+        while (small < big) {
+            // 猜测一个数字，比如中间的一个，其实猜哪个数字都无所谓！！，你改为10也行，3也行，只是效率不行
+            // 猜2可以将一半的数字剔除，才是关键
+            // 这也解释了为什么二分法有时候不见得非要有序。一次可以排除一半的解法统称为二分法。
+            guess = small + (big - small) / 2;
+            //然后计算比这个猜的数字小于等于的个数
             int count = 0;
             for (int i = 0; i < nums.length; i++) {
-                if (nums[i] <= mid)
+                if (nums[i] <= guess)
                     count++;
             }
-            //如果这个数字个数本身就比中位数大，那么
-            if (count > mid)
-                high = mid;
-            else
-                low = mid + 1;
+            //如果这个个数大于猜测这个数字的本身，那么猜测的范围不会超过guess
+            if (count > guess)
+                big = guess;
+            else // 反之不会低于guess
+                small = guess + 1;
         }
-        return low;
+        return small;
     }
 
 
     @Test
     public void test(){
         System.out.println(findDuplicate(new int[]{3,1,3,4,2}));
+        System.out.println(findDuplicate(new int[]{1,1,2}));
     }
 }

@@ -49,7 +49,7 @@ public class MaximumGap164 {
         return (int)(((double)(num-min)/(max-min))*length);
     }
 
-    // Method 2 标准bucket，内存不够用,OOM
+    // Method 2 counting sort based，内存不够用,OOM
     public int maximumGap2(int[] nums) {
         if(nums == null || nums.length < 2){
             return 0;

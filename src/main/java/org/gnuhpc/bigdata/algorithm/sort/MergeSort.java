@@ -60,7 +60,7 @@ public class MergeSort {
             temp[k++] = input[j++];
         }
 
-        //拷贝回结果
+        //拷贝回结果，注意是copy回input从start开始的数据
         System.arraycopy(temp, 0, input, start, temp.length);
     }
 

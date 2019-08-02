@@ -27,41 +27,62 @@ public class MergeSort {
             return;
         }
 
-        if (end - start <= 16) {
-            insertSort(input,start,end);
-        }
+//        if (end - start <= 16) {
+//            insertSort(input,start,end);
+//        }
 
 
         int mid = (end - start) / 2 + start;
         mergeSort(input, start, mid);
         mergeSort(input, mid, end);
-        merge(input, start, end);
+        merge2(input, start, end);
     }
 
-    // 左闭右开 ， 誊写的过程
-    public static void merge(int[] input, int start, int end) {
+    // 左闭右开 ， 誊写的过程 , 双指针写法, 推荐这种。
+    public static void merge(int[] nums, int start, int end) {
         int mid = (end - start) / 2 + start;
         //已经有序就返回
-        if (input[mid - 1] <= input[mid]) {
+        if (nums[mid - 1] <= nums[mid]) {
             return;
         }
 
-        int i = start, j = mid, k = 0;
-        int[] temp = new int[end - start];
+        int i = start, j = mid, cacheIdx = 0;
+        int[] cache = new int[end - start];
 
         while (i < mid && j < end) {
-            temp[k++] = input[i] <= input[j] ? input[i++] : input[j++];
+            cache[cacheIdx++] = nums[i] <= nums[j] ? nums[i++] : nums[j++];
         }
 
         while (i < mid) {
-            temp[k++] = input[i++];
+            cache[cacheIdx++] = nums[i++];
         }
         while (j < end) {
-            temp[k++] = input[j++];
+            cache[cacheIdx++] = nums[j++];
         }
 
         //拷贝回结果，注意是copy回input从start开始的数据
-        System.arraycopy(temp, 0, input, start, temp.length);
+        System.arraycopy(cache, 0, nums, start, cache.length);
+    }
+
+    // Merge循环嵌套写法， 这种写法在merge sort counting中有用
+    public static void merge2(int[] nums, int start, int end){
+        int mid = (end-start)/2 + start;
+        int i = start;
+        int j = mid;
+        int cacheIdx = 0;
+
+        int[] cache = new int[end-start];
+        for(;i<mid;i++){
+            while (j < end && nums[j]<nums[i] ){ //注意要判断j的有效性在前
+                cache[cacheIdx++] = nums[j++];
+            }
+
+            cache[cacheIdx++] = nums[i];
+        }
+
+        //注意这个处理，因为右半边后边没有被放入cache中的数字本身就很大了。
+        //也可以将右边没有放入cache的一个while都放进去，然后copy的时候长度直接为cache.length
+        System.arraycopy(cache,0, nums, start, j-start);
     }
 
     private static void insertSort(int[] arr, int l, int r){
@@ -104,9 +125,10 @@ public class MergeSort {
 
     @Test
     public void test() {
-        int[] arr = Utils.generateRandomArray(10000000, 0, 100);
-        //Utils.printArray(arr);
+//        int[] arr = Utils.generateRandomArray(5, 0, 100);
+        int[] arr = new int[]{34,25,46,12,37};
+        Utils.printArray(arr);
         Utils.evaluateSort(MergeSort::sort,arr);
-        //Utils.printArray(arr);
+        Utils.printArray(arr);
     }
 }

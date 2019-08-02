@@ -102,32 +102,37 @@ public class CountSmaller315 {
         }
     }
 
-    //Method 3: Merge sort
+    //Method 3: Merge sort , from https://algorithm.dun.so/leetcode-315/
+    // 可以先理解如下这个
+    // https://medium.com/@ssbothwell/counting-inversions-with-merge-sort-4d9910dc95f0
     public List<Integer> countSmaller3(int[] nums) {
-        List<Integer> list = new ArrayList<>();
+
+        List<Integer> list = new ArrayList<Integer>();
 
         if (nums == null || nums.length == 0) {
             return list;
         }
 
         int len = nums.length;
+
         int[] idxs = new int[len];
         int[] count = new int[len];
 
+        //idxs 为排序后的原数组index。例如原数组是2,1 则排序后的idxs为1,0
         for (int i = 0; i < len; i++)
             idxs[i] = i;
 
         mergeSort(nums, idxs, 0, len, count);
 
-        for (int c: count) list.add(c);
+        for (int i : count)
+            list.add(i);
 
         return list;
     }
 
     private void mergeSort(int[] nums, int[] idxs, int start, int end, int[] count) {
-        if (end - start <= 1) {
+        if (start + 1 >= end)
             return;
-        }
 
         int mid = (end - start) / 2 + start;
         mergeSort(nums, idxs, start, mid, count);
@@ -137,26 +142,31 @@ public class CountSmaller315 {
     }
 
     private void merge(int[] nums, int[] idxs, int start, int end, int[] count) {
-
         int mid = (end - start) / 2 + start;
 
+        int[] tmpIdx = new int[end - start];
         int i = start, j = mid, k = 0;
-        int[] temp = new int[end - start];
 
-        while (k < end - start) {
-            if (i < mid) {
-                if (j < end && nums[idxs[j]] < nums[idxs[i]]) {
-                    temp[k++] = idxs[j++];
-                } else {
-                    count[idxs[i]] += j - mid;
-                    temp[k++] = idxs[i++];
-                }
-            } else {
-                temp[k++] = idxs[j++];
+        while (i < mid && j < end) {
+            if (nums[idxs[i]] > nums[idxs[j]]) {
+                tmpIdx[k++] = idxs[j++];
+            }
+            else {
+                count[idxs[i]] += j - mid;
+                tmpIdx[k++] = idxs[i++];
             }
         }
 
-        System.arraycopy(temp, 0, idxs, start, end - start);
+        while (i < mid && k < end - start) {
+            count[idxs[i]] += j - mid;
+            tmpIdx[k++] = idxs[i++];
+        }
+
+        while (j < end && k < end - start) {
+            tmpIdx[k++] = idxs[j++];
+        }
+
+        System.arraycopy(tmpIdx, 0, idxs, start, end - start);
     }
 
 

@@ -3,58 +3,58 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
-import static org.gnuhpc.bigdata.leetcode.utils.Utils.isKthBitSet;
-import static org.gnuhpc.bigdata.leetcode.utils.Utils.setBit;
-
 public class GameOfLife289 {
     public void gameOfLife(int[][] board) {
-        int n = board.length;
-        int m = board[0].length;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                changeBorder(board, i, j);
+            }
+        }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                int state = board[i][j];
-                int lives = getNumberOfLives(board,i,j);
-
-                if (isNextLive(state,lives)){
-                    board[i][j] = setBit(board[i][j],1);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == -1) {
+                    board[i][j] = 1;
+                }
+                if (board[i][j] == 2) {
+                    board[i][j] = 0;
                 }
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                board[i][j] >>= 1 ;
-            }
-        }
     }
 
-    private int getNumberOfLives(int[][] board, int x, int y) {
-        int n = board.length;
-        int m = board[0].length;
-        int res = 0;
-        //TODO 二维数组越界判断
-        for (int i = Math.max(0,x-1); i <= Math.min(x+1,n-1); i++) {
-            for (int j = Math.max(0,y-1); j <= Math.min(y+1, m-1); j++) {
-                if (!(i==x && j==y) && isKthBitSet(board[i][j],0)){
-                    res++;
+    public void changeBorder(int[][] board, int x, int y) {
+        int row = board.length;
+        int col = board[0].length;
+
+        int total = 0; // 这是记录该细胞周围活细胞的数量
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i == x && j == y) {
+                    continue;
+                }
+                if (i >= 0 && i < row && j >= 0 && j < col) {
+                    if (board[i][j] > 0) {
+                        total++;
+                    }
                 }
             }
         }
-
-        return res;
-    }
-
-    private boolean isNextLive(int state, int lives) {
-        if ((
-                (lives==2 || lives==3) && state ==1) ||
-                (lives == 3)
-                ){
-            return true;
-        } else {
-            return false;
+        //把即将死亡的 活细胞 置为 2
+        if (board[x][y] > 0) {
+            if (total < 2 || total > 3) {
+                board[x][y] = 2;
+            }
         }
+        //把即将复活的 死细胞 置为 -1
+        if (board[x][y] <= 0 && total == 3) {
+            board[x][y] = -1;
+        }
+
     }
+
 
     int[][] a;
     @Test

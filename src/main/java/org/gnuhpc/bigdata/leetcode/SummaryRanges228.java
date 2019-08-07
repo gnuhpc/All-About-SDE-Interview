@@ -1,12 +1,17 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SummaryRanges228 {
-    public static void main(String[] args) {
+    @Test
+    public void test(){
         int[] array = new int[]{0,1,2,4,5,7};
-        summaryRanges(array);
+        System.out.println(summaryRanges(array));
     }
 
     public static List<String> summaryRanges(int[] nums) {
@@ -44,47 +49,60 @@ public class SummaryRanges228 {
         }
 
         return result;
-
     }
 
-    /*
-    Method 双指针
-     */
 
-    public List<String> summaryRanges2(int[] nums)
-    {
-        List<String> res = new ArrayList<>();
 
-        if(nums == null || nums.length == 0)
-            return res;
+    class Interval{
+        public int start;
+        public int end;
 
-        int left = 0, right = 0;
-
-        for(int i=1; i<nums.length; i++)
-        {
-            // if current number is not equal to previous number + 1, add the range into list
-            if(nums[i] != nums[i-1] + 1)
-            {
-                // if just one number
-                if(left == right)
-                    res.add("" + nums[left]);
-                else// if more than one number
-                    res.add("" + nums[left] + "->" + nums[right]);
-
-                // if find the gap, update the left and right
-                left = i;
-                right = i;
-            }
-            else if(nums[i] == nums[i-1] + 1) // if find the correct number, increase right
-                right = i;
-
+        public Interval(int init){
+            start = init;
+            end = init;
         }
 
-        // add the last range
-        if(left == right)
-            res.add("" + nums[left]);
-        else // if more than one number
-            res.add("" + nums[left] + "->" + nums[right]);
+        public String toString(){
+            if(start == end){
+                return start + "";
+            } else {
+                return start + "->" + end;
+            }
+        }
+    }
+    //Method 2: 暴力解法
+    public List<String> summaryRanges2(int[] nums) {
+
+        if (nums.length == 0) return new ArrayList<>();
+
+        List<Interval> iList = new ArrayList<>();
+
+        Interval interval = null;
+
+        for(int i = 0, j = 0 ; j<nums.length;){
+            if(i==j) {
+                interval = new Interval(nums[i]);
+                j++;
+                continue;
+            }
+
+            if(nums[j]==nums[j-1]+1){ //连续就往后走
+                interval.end = nums[j];
+                j++;
+            } else {//不连续就加入
+                iList.add(interval);
+                i=j;
+            }
+        }
+
+        //别忘了结尾
+        iList.add(interval);
+
+        List<String> res = new ArrayList<>();
+
+        for (Interval i: iList){
+            res.add(i.toString());
+        }
 
         return res;
     }

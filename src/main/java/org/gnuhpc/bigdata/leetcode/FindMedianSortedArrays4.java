@@ -78,6 +78,7 @@ public class FindMedianSortedArrays4 {
     @Test
     public void test(){
         findMedianSortedArrays(new int[]{1, 3}, new int[]{2, 4, 5});
+        System.out.println(countSmallerOrEqual(new int[]{2,3,5},1));
     }
 
 }

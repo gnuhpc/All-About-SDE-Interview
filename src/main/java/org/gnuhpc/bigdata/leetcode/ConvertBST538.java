@@ -1,7 +1,11 @@
 package org.gnuhpc.bigdata.leetcode;
 
 
+import org.gnuhpc.bigdata.datastructure.linkedlist.basicimpl.LinkedList;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * Copyright gnuhpc 19-7-24
@@ -26,6 +30,27 @@ public class ConvertBST538 {
         root.val += sum;
         sum = root.val;
         inOrder(root.left);
+    }
+
+    public TreeNode convertBST2(TreeNode root) {
+        if (root == null)
+            return root;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode node = root;
+        while (node != null || !stack.isEmpty()) {
+            while (node != null) {
+                stack.add(node);
+                node = node.right;
+            }
+            node = stack.pop();
+            node.val += sum;
+            sum = node.val;
+            if (node.left != null)
+                node = node.left;
+            else
+                node = null;
+        }
+        return root;
     }
 
 }

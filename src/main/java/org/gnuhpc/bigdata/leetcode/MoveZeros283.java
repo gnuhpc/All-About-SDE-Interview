@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -7,7 +9,7 @@ import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
 
 public class MoveZeros283 {
     //O(n) Time, O(n) Space
-    public static void moveZeros(int[] nums) {
+    public void moveZeros(int[] nums) {
         if (nums.length == 0) {
             return;
         }
@@ -32,7 +34,7 @@ public class MoveZeros283 {
     }
 
     //O(n) Time, O(1) Space
-    public static void moveZerosInPlace(int[] nums) {
+    public void moveZeros2(int[] nums) {
         int k = 0;
 
         for (int i = 0; i < nums.length; i++) {
@@ -47,7 +49,7 @@ public class MoveZeros283 {
     }
 
     //最优解
-    public static void moveZeroSwap(int[] nums){
+    public void moveZeros3(int[] nums) {
         int k=0;
         for (int i = 0; i < nums.length; i++) {
             if(nums[i]!=0){
@@ -60,15 +62,16 @@ public class MoveZeros283 {
         }
     }
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
 
         int[] nums = new int[]{0, 1, 3, 0, 5, 0, 0, 1};
         int[] nums2 = new int[]{0, 1, 3, 0, 5, 0, 0, 1};
         int[] nums3 = new int[]{0, 1, 3, 0, 5, 0, 0, 1};
 
         moveZeros(nums);
-        moveZerosInPlace(nums2);
-        moveZeroSwap(nums3);
+        moveZeros2(nums2);
+        moveZeros3(nums3);
         Arrays.stream(nums3).forEach(System.out::println);
         System.out.println(
             Arrays.stream(nums)

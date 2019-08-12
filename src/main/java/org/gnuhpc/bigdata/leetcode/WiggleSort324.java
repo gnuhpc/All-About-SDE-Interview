@@ -3,6 +3,8 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Copyright gnuhpc 19-8-8
  */
@@ -17,61 +19,74 @@ public class WiggleSort324 {
             return;
         }
 
-        int sum = 0;
         int n = nums.length;
+        //TODO 找中位数
+        int[] res = findKthLargest(nums, (nums.length + 1) / 2);
+        int pos = res[0];
+        int median = res[1];
 
-        for (int i = 0; i < n; i++) {
-            sum += nums[i];
+        // Repartition again, For cases like 3,2,1,1,3,2
+        int idx = pos+1;
+        for (int i = pos+1; i < n; i++) {
+            if (nums[i] == median){
+                swap(nums,i,idx);
+                idx++;
+            }
         }
 
-        double average = (double) sum / (double) n;
-
-        partition(nums, average);
-
-        int line = 0;
-        if (n % 2 == 0) {
-            line = n / 2;
-        }
-        else {
-            line = (n + 1) / 2;
-        }
-
-
+        int left = 0, right = (nums.length %2 ==1)? pos: pos+1 ;
         boolean flag = true;
-        int[] res = reconstruct(nums, line, true);
-        if (!isWiggle(res)) {
-            res = reconstruct(nums, line, false);
-        }
 
+        int[] temp = new int[n];
 
-        System.arraycopy(res, 0, nums, 0, n);
-    }
-
-    private int[] reconstruct(int[] nums, int line, boolean flag) {
-        int[] res = new int[nums.length];
-        for (int k = 0, i = 0, j = line; k < nums.length; k++) {
-            if (flag) {
-                res[k] = nums[i];
-                i++;
+        for (int j = 0; j < n; j++) {
+            if (flag){
+                temp[j] = nums[right++];
+            } else {
+                temp[j] = nums[left++];
             }
-            else {
-                res[k] = nums[j];
-                if (j < nums.length) j++;
-            }
+
             flag = !flag;
         }
-        return res;
+
+        System.arraycopy(temp,0,nums,0,n);
+
+
     }
 
-    private void partition(int[] A, double pivot) {
-        int i = 0, j = A.length - 1;
-        while (i < j) {
-            while (A[i] < pivot && i < j) i++;
-            while (A[j] >= pivot && i < j) j--;
 
-            swap(A, i, j);
+    public int[] findKthLargest(int[] nums, int k) {
+        int left = 0, right = nums.length - 1;
+
+        while (true) {
+            int pos = partition(nums, left, right);
+            if (pos + 1 > k) {
+                right = pos - 1;
+            } else if (pos + 1 < k) {
+                left = pos + 1;
+            } else {
+                return new int[]{pos,nums[pos]};
+            }
         }
     }
+
+
+    public int partition(int[] nums, int left, int right) {
+        int pivotVal = nums[left];
+
+        //pos为分界线
+        int pos = left;
+        for (int i = left + 1; i <= right; i++) {
+            //i is valid, swap it with pos
+            if (nums[i] > pivotVal) {
+                swap(nums, ++pos, i);
+            }
+        }
+        swap(nums, left, pos);
+
+        return pos;
+    }
+
 
     private void swap(int[] nums, int i, int j) {
         if (i == j) return;
@@ -80,37 +95,26 @@ public class WiggleSort324 {
         nums[j] = temp;
     }
 
-    boolean isWiggle(int[] nums) {
-        boolean flag1 = true, flag2 = true;
-        for (int i = 1; i < nums.length - 1; i += 2) {
-            if (nums[i - 1] < nums[i] && nums[i] > nums[i + 1]) continue;
-            else {
-                flag1 = false;
-                break;
-            }
+    /*
+    Method2: 直接排序 ，不符合时间复杂度，但是实际上更快
+     */
+    public void wiggleSort2(int[] nums) {
+        int[] tmp = nums.clone();
+        Arrays.sort(tmp);
+        int n = nums.length, m = (n + 1) / 2, j = n;
+        for (int i = 0; i < n; i++) {
+            nums[i] = (i % 2) == 1 ? tmp[--j] : tmp[--m];
         }
-
-        if (flag1) return true;
-
-        for (int i = 1; i < nums.length - 1; i++) {
-            if (nums[i - 1] > nums[i] && nums[i] < nums[i + 1]) continue;
-            else {
-                flag2 = false;
-                break;
-            }
-        }
-
-        return flag2;
     }
-
 
     @Test
     public void test() {
 //        int[] nums = new int[] {1,1,2,1,2,2,1};
-//        int[] nums = new int[] {1,3,2,2,3,1};
-        int[] nums = new int[]{5, 3, 1, 2, 6, 7, 8, 5, 5};
+//        int[] nums = new int[]{1, 3, 2, 2, 3, 1};
+//        int[] nums = new int[]{5, 3, 1, 2, 6, 7, 8, 5, 5};
 //        int[] nums = new int[] {4,5,5,6};
 //        int[] nums = new int[] {4,5,5,5,5,6,6,6};
+        int[] nums = new int[] {3,2,1,1,3,2};
         wiggleSort(nums);
         Utils.printArray(nums);
     }

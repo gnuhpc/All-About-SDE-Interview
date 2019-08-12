@@ -7,6 +7,9 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 public class LongestCommonPrefix14 {
+    /*
+    排序法
+     */
     //O(nlogn)
     public String longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) return "";
@@ -23,6 +26,9 @@ public class LongestCommonPrefix14 {
         return strs[0].substring(0,i);
     }
 
+    /*
+    Method2: Trie Prefix
+     */
     public String longestCommonPrefix2(String[] strs) {
         Trie trie = new Trie();
 
@@ -31,6 +37,10 @@ public class LongestCommonPrefix14 {
         return trie.longestCommonPrefix();
     }
 
+
+    /*
+    Metho3: 二分 TODO: 二分直接猜答案, 适用于答案在一个区间的题目
+     */
     public String longestCommonPrefix3(String[] strs) {
         if (strs == null || strs.length == 0)
             return "";

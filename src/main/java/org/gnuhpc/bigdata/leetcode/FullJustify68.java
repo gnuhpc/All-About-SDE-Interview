@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import com.google.inject.internal.cglib.core.$CollectionUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,7 +14,13 @@ public class FullJustify68 {
         List<String> temp = new ArrayList<>();
         for (int i = 0; i < words.length; i++) {
             String str = words[i];
-            if (count + str.length() >= maxWidth) {
+            if (count + str.length() == maxWidth){
+                temp.add(str);
+                res.add(process(temp,maxWidth,false));
+                temp.clear();
+                count = 0;
+            }
+            else if (count + str.length() > maxWidth) {
                 res.add(process(temp,maxWidth,false));
                 temp.clear();
                 count = 0;

@@ -9,7 +9,7 @@ public class IsMatch44 {
      */
 
     public boolean isMatch(String s, String p) {
-        return helper(s,p,0,0);
+        return helper(s, p, 0, 0);
 
     }
 
@@ -17,18 +17,19 @@ public class IsMatch44 {
         // 递归返回条件
         // If pCursor reaches the end of p,
         // we need to check if sCursor also reaches the end of s. If so, match.
-        if(pCursor == p.length()) return sCursor == s.length();
+        if (pCursor == p.length()) return sCursor == s.length();
 
-        if(p.charAt(pCursor) == '*') {
-            while(pCursor < p.length() && p.charAt(pCursor) == '*') pCursor++;   // Move the index at p to a non-star char.
-            while(sCursor < s.length()) {
-                if(helper(s, p, sCursor, pCursor)) return true; // Find one match, return true.
+        if (p.charAt(pCursor) == '*') {
+            while (pCursor < p.length() && p.charAt(pCursor) == '*')
+                pCursor++;   // Move the index at p to a non-star char.
+            while (sCursor < s.length()) {
+                if (helper(s, p, sCursor, pCursor)) return true; // Find one match, return true.
                 sCursor++; // Try the next one.
             }
             return helper(s, p, sCursor, pCursor);
-        }else if(sCursor < s.length() && (p.charAt(pCursor) == '?' || s.charAt(sCursor) == p.charAt(pCursor))){
+        } else if (sCursor < s.length() && (p.charAt(pCursor) == '?' || s.charAt(sCursor) == p.charAt(pCursor))) {
             return helper(s, p, sCursor + 1, pCursor + 1);
-        }else{
+        } else {
             return false;
         }
     }
@@ -49,14 +50,14 @@ public class IsMatch44 {
 
         int s = 0, p = 0, match = 0, astroIdx = -1; // must be -1
         while (s < str.length()) {
-            if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){ // found ? or same chars
+            if (p < pattern.length() && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))) { // found ? or same chars
                 s++; // move both pointers
                 p++;
             } else if (p < pattern.length() && pattern.charAt(p) == '*') { // found *
                 astroIdx = p; // save astroid index in pattern
                 match = s; // save current index of string
                 p++; // only move pattern pointer forward
-            } else if (astroIdx != -1){ // 不匹配且上一个是*那么从str往下找
+            } else if (astroIdx != -1) { // 不匹配且上一个是*那么从str往下找
                 p = astroIdx + 1; // move to * one char behind astroid
                 match++; // move current index of string
                 s = match;
@@ -68,10 +69,8 @@ public class IsMatch44 {
     }
 
 
-
-
     @Test
-    public void test(){
+    public void test() {
 //        System.out.println(isMatch("aa","a"));
 //        System.out.println(isMatch("aa","*"));
 //        System.out.println(isMatch("cb","?a"));
@@ -84,7 +83,7 @@ public class IsMatch44 {
 //        System.out.println(isMatch("b","*?*?"));
 //        System.out.println(isMatch("b","*?*?*"));
 //        System.out.println(isMatch("hi","*?"));
-        System.out.println(isMatch2("aab","*a"));
+        System.out.println(isMatch2("aab", "*a"));
     }
 
 

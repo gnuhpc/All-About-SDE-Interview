@@ -4,6 +4,7 @@ import com.google.inject.internal.cglib.core.$CollectionUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FullJustify68 {
@@ -59,27 +60,24 @@ public class FullJustify68 {
 
                     sb.append(temp.get(temp.size()-1));
                 } else {
-                    int spaceCount = spaceSum / padCount;
+                    int[] spaces = new int[padCount];
+                    int init = spaceSum/padCount;
+                    Arrays.fill(spaces,init);
 
-                    int tempSum = 0;
+                    int left = spaceSum%padCount;
 
-                    for (int i = 0; i < padCount - 1 ; i++) {
-                        if (tempSum + spaceCount <= spaceSum){
-                            tempSum += spaceCount;
-                        }
+                    for (int i = 0; left >0 && i < spaces.length ; i++) {
+                        spaces[i]++;
+                        left--;
                     }
 
-                    int firstCount = spaceSum - tempSum;
-
-                    sb.append(temp.get(0));
-                    sb.append(makeSpace(firstCount));
-
-                    String spaces = makeSpace(spaceCount);
-
-                    for (int i = 1; i < temp.size(); i++) {
+                    int i = 0;
+                    for (; i < temp.size() -1; i++) {
                         sb.append(temp.get(i));
-                        sb.append(spaces);
+                        sb.append(makeSpace(spaces[i]));
                     }
+
+                    sb.append(temp.get(i));
                 }
             }
         } else { //是最后一行
@@ -111,13 +109,14 @@ public class FullJustify68 {
         return sb.toString();
     }
 
+
     @Test
     public void test(){
-//        System.out.println(fullJustify(new String[]{
-//            "This", "is", "an", "example", "of", "text", "justification."
-//        },16));
         System.out.println(fullJustify(new String[]{
-                "Listen","to","many,","speak","to","a","few."
-        },6));
+            "This", "is", "an", "example", "of", "text", "justification."
+        },16));
+//        System.out.println(fullJustify(new String[]{
+//                "Listen","to","many,","speak","to","a","few."
+//        },6));
     }
 }

@@ -14,36 +14,44 @@ public class LongestSubstring395 {
      */
 
     public int longestSubstring(String s, int k) {
-        if (s == null || s.length() == 0) return 0;
-        char[] chars = new char[26];
-        // record the frequency of each character
-        for (int i = 0; i < s.length(); i += 1) chars[s.charAt(i) - 'a'] += 1;
-        boolean flag = true;
-        for (int i = 0; i < chars.length; i += 1) {
-            if (chars[i] < k && chars[i] > 0) flag = false;
-        }
-        // return the length of string if this string is a valid string
-        if (flag == true) return s.length();
-
-        int result = 0;
-        int start = 0, cur = 0;
-        // otherwise we use all the infrequent elements as splits
-        while (cur < s.length()) {
-            if (chars[s.charAt(cur) - 'a'] < k) {
-                result = Math.max(result, longestSubstring(s.substring(start, cur), k));
-                start = cur + 1;
-            }
-            cur++;
-        }
-        result = Math.max(result, longestSubstring(s.substring(start), k));
-        return result;
+        if(k<2)
+            return s.length();
+        return count(s,k,0,s.length()-1);
     }
 
+    public int count(String s,int k,int left,int right)
+    {
+        //因为字符出现次数不少于k，因此子串的最短长度为k
+        if(right-left+1<k)
+        {
+            return 0;
+        }
+        int[] num = new int[26]; //统计left--right的字符个数
+        for(int i=left;i<=right;i++)
+        {
+            num[s.charAt(i)-'a']++;
+        }
+        //从字符串left、right开始分别向内部进行推进，如果字符个数小于k则继续向内部移动
+        while(right-left+1>=k && num[s.charAt(left)-'a']<k)
+            left++;
+        while(right-left+1>=k && num[s.charAt(right)-'a']<k)
+            right--;
+        if(right-left+1<k)
+            return 0;
+        //进行分治递归
+        for(int i=left;i<=right;i++)
+        {
+            //如果剩余的字符串其中有某个字符总数小于k，则从排除该字符并分为两部分子串继续递归
+            if(num[s.charAt(i)-'a']<k)
+                return Math.max(count(s,k,left,i-1),count(s,k,i+1,right));
+        }
+        return right-left+1;
+    }
 
 
 
     @Test
     public void test(){
-        System.out.println(longestSubstring("baaabcb",3));
+        System.out.println(longestSubstring("ababacb",3));
     }
 }

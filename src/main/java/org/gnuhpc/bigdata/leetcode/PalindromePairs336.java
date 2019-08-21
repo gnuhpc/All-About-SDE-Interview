@@ -7,11 +7,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.isPalindrome;
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.reverseStr;
+
 public class PalindromePairs336 {
 
     /*
-    Trie 方法
-
+    Trie 方法, 太复杂
      */
     class TrieNode {
         TrieNode[] sons = new TrieNode[26];
@@ -49,18 +51,19 @@ public class PalindromePairs336 {
 
     List<List<Integer>> find(String str, int idx) {
         List<List<Integer>> ans = new ArrayList<>();
-        char[] A = str.toCharArray();
+        char[] charArray = str.toCharArray();
         TrieNode d = root;
         // deal with empty string as input
-        if (d.isLeaf && d.idx != idx && checkPalindromePairs(A, 0, A.length - 1)) {
+        if (d.isLeaf && d.idx != idx && checkPalindromePairs(charArray, 0, charArray.length - 1)) {
             ans.add(reverse ? Arrays.asList(idx, d.idx) : Arrays.asList(d.idx, idx));
         }
-        for (int i = A.length - 1; i >= 0; i--) {
-            d = d.sons[A[i] - 'a'];
+        for (int i = charArray.length - 1; i >= 0; i--) {
+            d = d.sons[charArray[i] - 'a'];
             if (d == null) {
                 break;
             }
-            if (d.isLeaf && d.idx != idx && checkPalindromePairs(A, 0, i - 1)) {
+            //当d是叶子节点且不是自己的时候，判断剩下的是不是也是
+            if (d.isLeaf && d.idx != idx && checkPalindromePairs(charArray, 0, i - 1)) {
                 // found a word, how check whether the remainder of str is palin
                 ans.add(reverse ? Arrays.asList(idx, d.idx) : Arrays.asList(d.idx, idx));
             }
@@ -101,24 +104,22 @@ public class PalindromePairs336 {
     /*
     Hash方法
      */
-
     public List<List<Integer>> palindromePairs2(String[] words) {
         List<List<Integer>> res = new ArrayList<>();
         if (words == null || words.length == 0) {
             return res;
         }
-        //build the distanceMap save the key-val pairs: String - idx
-        HashMap<String, Integer> map = new HashMap<>();
+        //build the distanceMap save the key-val pairs: word - idx
+        HashMap<String, Integer> idxMap = new HashMap<>();
         for (int i = 0; i < words.length; i++) {
-            map.put(words[i], i);
+            idxMap.put(words[i], i);
         }
 
         //special cases: "" can be combine with any palindrome string
-        if (map.containsKey("")) {
-            int blankIdx = map.get("");
+        if (idxMap.containsKey("")) {
+            int blankIdx = idxMap.get("");
             for (int i = 0; i < words.length; i++) {
-                if (isPalindrome(words[i])) {
-                    if (i == blankIdx) continue;
+                if (i!=blankIdx && isPalindrome(words[i])) {
                     res.add(Arrays.asList(blankIdx, i));
                     res.add(Arrays.asList(i, blankIdx));
                 }
@@ -127,15 +128,16 @@ public class PalindromePairs336 {
 
         //find all string and reverse string pairs 查找正好反过来的子串对
         for (int i = 0; i < words.length; i++) {
-            String cur_r = reverseStr(words[i]);
-            if (map.containsKey(cur_r)) {
-                int found = map.get(cur_r);
-                if (found == i) continue;
-                res.add(Arrays.asList(i, found));
+            String rStr = reverseStr(words[i]);
+            if (idxMap.containsKey(rStr)) {
+                int found = idxMap.get(rStr);
+                if (found != i){//不是自己, 例如aaa
+                    res.add(Arrays.asList(i, found));
+                }
             }
         }
 
-        //find the pair s1, s2 that
+        //find the pair s1, s2 that ， 这个非常考验分析能力
         //case1 : s1[0:cut] is palindrome and s1[cut+1:] = reverse(s2) => (s2, s1), e.g. cab,ba => (ba,cab)
         //case2 : s1[cut+1:] is palindrome and s1[0:cut] = reverse(s2) => (s1, s2), e.g. cab,ac => (cab,ac)
         for (int i = 0; i < words.length; i++) {
@@ -143,18 +145,20 @@ public class PalindromePairs336 {
             for (int cut = 1; cut < cur.length(); cut++) {
                 if (isPalindrome(cur.substring(0, cut))) {
                     String cut_r = reverseStr(cur.substring(cut));
-                    if (map.containsKey(cut_r)) {
-                        int found = map.get(cut_r);
-                        if (found == i) continue;
-                        res.add(Arrays.asList(found, i));
+                    if (idxMap.containsKey(cut_r)) {
+                        int found = idxMap.get(cut_r);
+                        if (found != i) {//不是自己, 例如aaa
+                            res.add(Arrays.asList(found, i));
+                        }
                     }
                 }
                 if (isPalindrome(cur.substring(cut))) {
                     String cut_r = reverseStr(cur.substring(0, cut));
-                    if (map.containsKey(cut_r)) {
-                        int found = map.get(cut_r);
-                        if (found == i) continue;
-                        res.add(Arrays.asList(i, found));
+                    if (idxMap.containsKey(cut_r)) {
+                        int found = idxMap.get(cut_r);
+                        if (found != i) {//不是自己, 例如aaa
+                            res.add(Arrays.asList(i, found));
+                        }
                     }
                 }
             }
@@ -163,22 +167,9 @@ public class PalindromePairs336 {
         return res;
     }
 
-    public String reverseStr(String str) {
-        return new StringBuilder(str).reverse().toString();
-    }
 
-    public boolean isPalindrome(String s) {
-        int i = 0;
-        int j = s.length() - 1;
-        while (i <= j) {
-            if (s.charAt(i) != s.charAt(j)) {
-                return false;
-            }
-            i++;
-            j--;
-        }
-        return true;
-    }
+
+
 
 
     @Test

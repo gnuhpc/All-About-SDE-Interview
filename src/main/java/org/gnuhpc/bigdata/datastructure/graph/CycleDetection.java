@@ -47,7 +47,6 @@ public class CycleDetection {
 		vertex.setBeingVisited(true);
 		
 		for(MyVertex v : vertex.getAdjacenciesList()){
-
 			//这部分不是标准的DFS
 			System.out.println("Visiting the neighbours of vertex "+vertex);
 			if( v.isBeingVisited() ) { //如果得到的是中间状态，说明由绕回来了，就是有环

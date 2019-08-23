@@ -63,17 +63,15 @@ public class NeighbourMatrixGraph {
         System.out.print(node.data + " ");
         ArrayList<NMNode> neighbours=findNeighbours(node);
         node.visited=true;
-        for (int i = 0; i < neighbours.size(); i++) {
-            NMNode n=neighbours.get(i);
-            if(n!=null && !n.visited)
-            {
+        for (NMNode n : neighbours) {
+            if (n != null && !n.visited) {
                 dfs(n);
             }
         }
     }
 
     // Iterative DFS using stack
-    public  void dfsUsingStack(int adjacency_matrix[][], NMNode node)
+    public  void dfsUsingStack(int[][] adjacency_matrix, NMNode node)
     {
         Stack<NMNode> stack=new  Stack<>();
         stack.add(node);
@@ -130,7 +128,7 @@ public class NeighbourMatrixGraph {
         NMNode node50 =new NMNode(50);
         NMNode node70 =new NMNode(70);
 
-        int adjacency_matrix[][] = {
+        int[][] adjacency_matrix = {
                 {0,1,1,0,0,0,0},  // NMNode 1: 40
                 {0,0,0,1,0,0,0},  // NMNode 2 :10
                 {0,1,0,1,1,1,0},  // NMNode 3: 20
@@ -162,10 +160,10 @@ public class NeighbourMatrixGraph {
 
     }
 
-    public void clearVisitedFlags()
+    private void clearVisitedFlags()
     {
-        for (int i = 0; i < nodes.size(); i++) {
-            nodes.get(i).visited=false;
+        for (NMNode node : nodes) {
+            node.visited = false;
         }
     }
 }

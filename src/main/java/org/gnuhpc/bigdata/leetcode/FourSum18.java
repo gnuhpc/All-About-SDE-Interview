@@ -1,21 +1,24 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class FourSum18 {
 
-    public static void main(String[] args) {
+    @Test
+    public void test(){
+
         int[] nums = new int[]{-3,-1,0,2,4,5};
         int[] nums2 = new int[]{0, 0, 0, 0};
         int[] nums3 = new int[]{1, 2, 3, 4, 5};
-        int target = 14;
+        int target = 9;
 
-        fourSum(nums3, target);
-
+        fourSum2(nums, target);
     }
 
     //双指针
-    public static List<List<Integer>> fourSum(int[] nums, int target) {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         if (nums.length < 4) {
             return list;
@@ -66,8 +69,8 @@ public class FourSum18 {
     }
 
     //Method2 :Hashmap  九章算法讲的这个解法，其实效率不高，从leedcode跑的结果看来
-    public static List<List<Integer>> fourSum2(int[] num, int target) {
-        //Create the dictionary.
+    public List<List<Integer>> fourSum2(int[] num, int target) {
+        //Create the dictionary. sum -- all the combinations(idxs) which can be added to sum.
         Map<Integer, ArrayList<ArrayList<Integer>>> dict = new HashMap<>();
         for (int i = 0; i < num.length - 1; i++) {
             for (int j = i + 1; j < num.length; j++) {

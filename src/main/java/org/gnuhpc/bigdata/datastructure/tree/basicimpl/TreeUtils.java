@@ -326,6 +326,31 @@ public class TreeUtils {
         return root;
     }
 
+
+    //TODO 统计所有可能的path
+    public void getAllPaths(TreeNode root, List<ArrayList<Integer>> allPaths, ArrayList<Integer> temp) {
+        if (root == null) { return;}
+
+        temp.add(root.val);
+        if (root.left == null && root.right == null) {
+            allPaths.add(new ArrayList<>(temp));
+            return;
+        }
+        else {
+            if (root.left != null) {
+                getAllPaths(root.left, allPaths, temp);
+                //回溯
+                temp.remove(temp.size() - 1);
+            }
+
+            if (root.right != null) {
+                getAllPaths(root.right, allPaths, temp);
+                //回溯
+                temp.remove(temp.size() - 1);
+            }
+        }
+    }
+
     @Test
     public void test(){
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1,2,3,4,5,null,7,8});

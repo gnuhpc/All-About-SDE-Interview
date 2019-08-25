@@ -6,7 +6,7 @@ import java.util.*;
 
 public class LevelOrderBottom107 {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        Deque<List<Integer>> res = new LinkedList<>();
+        LinkedList<List<Integer>> res = new LinkedList<>();
         Queue<TreeNode> q = new LinkedList<>();
 
         if (root==null) return new ArrayList<>(res);
@@ -22,10 +22,9 @@ public class LevelOrderBottom107 {
                 if (n.right!=null) q.offer(n.right);
             }
 
-            res.push(subRes);
+            res.addFirst(subRes);
         }
 
-        return new ArrayList<>(res);
-
+        return res;
     }
 }

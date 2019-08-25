@@ -24,46 +24,55 @@ public class TreeTraversal {
         return res;
     }
 
+    //典型的DFS
+
     public static void preorderHelper(List<Integer> res, TreeNode root) {
         if (root == null) return;
         res.add(root.val);
-        preorderHelper(res, root.left);
-        preorderHelper(res, root.right);
-    }
-
-    public static List<Integer> preorderNonRecursive(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode p = root;
-        while(!stack.isEmpty() || p != null) {
-            if(p != null) {
-                //先存着这个节点
-                stack.push(p);
-                result.add(p.val);  // Add before going to children
-                p = p.left;
-            } else {
-                //p==null 意味着左子树已经遍历完毕了，该右子树了，因此pop
-                p = stack.pop();
-                p = p.right;
-            }
-        }
-        return result;
+        if (root.left != null) preorderHelper(res, root.left);
+        if (root.right != null) preorderHelper(res, root.right);
     }
 
     /*
-    Merhod 2： DFS模板方法 // TODO: DFS模板
+    Merhod 2： Non recursive
      */
+    public static List<Integer> preorderNonRecursive(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+
+        if (root == null) {
+            return res;
+        }
+
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                res.add(root.val);
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            root = root.right;
+        }
+        return res;
+
+    }
+
+    /*
+    DFS模板方法 // TODO: DFS模板
+    */
     public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
         List<Integer> result = new ArrayList<>();
 
         Deque<TreeNode> stack = new LinkedList<>();
         stack.push(root);
-        while(!stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             TreeNode n = stack.pop();
-            if(n != null) {
+            result.add(n.val);
+            if (n.right != null) {
                 stack.push(n.right);
+            }
+            if (n.left != null) {
                 stack.push(n.left);
-                result.add(n.val);
             }
         }
         return result;
@@ -106,30 +115,27 @@ public class TreeTraversal {
     }
 
     /*
-    Create an empty stack s and Initialize current node as find
-    Push the current node to s and set currentNode = currentNode.left until currentNode is NULL
-    If currentNode is NULL and s is not empty then
-    Pop the top node from stack and print it
-     set currentNode = currentNode.right
-    go to step 2
-    If stack is empty and currentNode is also null then we are done with it
+        Non-recursive ，注意res.add的位置
     */
     public static List<Integer> inorderNonRecursive(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode p = root;
-        while(!stack.isEmpty() || p != null) {
-            //左子树
-            if(p != null) {
-                stack.push(p);
-                p = p.left;
-            } else { // 为null时才pop，记忆方法：到叶子节点才进行值的访问
-                p = stack.pop();
-                result.add(p.val);  // Add after all left children , 这句话的位置注意和preorder进行对比
-                p = p.right;
-            }
+
+        if (root == null) {
+            return res;
         }
-        return result;
+
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            res.add(root.val);
+            root = root.right;
+        }
+        return res;
+
     }
 
     public static List<Integer> postorder(TreeNode root) {
@@ -210,23 +216,25 @@ public class TreeTraversal {
 
     //后续遍历非递归，但是这个并不是真实的，只是从结果集上是对的，访问的顺序不是
     //推荐写法
+    //和preorder就是左右的前后顺序变了下，再reverse一下，非常好记!
     public static List<Integer> postorderNonRecursive(TreeNode root) {
-        LinkedList<Integer> result = new LinkedList<>();
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        TreeNode p = root;
-        while(!stack.isEmpty() || p != null) {
-            //右子树
-            if(p != null) {
-                stack.push(p);
-                //addFirst保证了结果集的倒序, DRL 访问，但是以LRD插入，返回则直接为LRD
-                result.addFirst(p.val);
-                p = p.right;
-            } else {
-                //左子树
-                p = stack.pop().left;
-            }
+        LinkedList<Integer> res = new LinkedList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+
+        if (root == null) {
+            return res;
         }
-        return result;
+
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                res.addFirst(root.val);
+                stack.push(root);
+                root = root.right;
+            }
+            root = stack.pop();
+            root = root.left;
+        }
+        return res;
     }
 
     // TODO: BFS模板
@@ -334,5 +342,11 @@ public class TreeTraversal {
 //            }
 //            System.out.println();
 //        }
+    }
+
+    @Test
+    public void test2() {
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, null, 2, 3});
+        System.out.println(inorderNonRecursive(root));
     }
 }

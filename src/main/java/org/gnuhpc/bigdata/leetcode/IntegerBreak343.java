@@ -42,7 +42,7 @@ public class IntegerBreak343 {
     }
     private int getMaxProductOfInt(int n) {
         int maxProduct = integerBreak(n);
-        if (n > maxProduct) {
+        if (n > maxProduct) { //还有一个选择是不拆，这个函数与题目主函数的区别就在这儿
             return n;
         }
         return maxProduct;

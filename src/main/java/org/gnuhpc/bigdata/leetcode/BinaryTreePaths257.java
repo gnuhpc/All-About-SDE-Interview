@@ -4,43 +4,52 @@ import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 import org.gnuhpc.bigdata.datastructure.tree.basicimpl.TreeCreator;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BinaryTreePaths257 {
-    /** dfs
+    /** DFS
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths
      */
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> result = new ArrayList<String>();
-        if (root == null) {
-            return result;
-        }
-        helper(root, String.valueOf(root.val), result);
-        return result;
+        List<String> answer = new ArrayList<>();
+        if (root != null) searchBT(root, "", answer);
+        return answer;
     }
 
-    private void helper(TreeNode root, String path, List<String> result) {
-        if (root == null) {
-            return;
-        }
-
-        if (root.left == null && root.right == null) {
-            result.add(path);
-            return;
-        }
-
-        if (root.left != null) {
-            helper(root.left, path + "->" + String.valueOf(root.left.val), result);
-        }
-
-        if (root.right != null) {
-            helper(root.right, path + "->" + String.valueOf(root.right.val), result);
-        }
+    private void searchBT(TreeNode root, String path, List answer) {
+        if (root.left == null && root.right == null) answer.add(path + root.val);
+        if (root.left != null) searchBT(root.left, path + root.val + "->", answer);
+        if (root.right != null) searchBT(root.right, path + root.val + "->", answer);
     }
 
-    /** Divide and Conquer
+    public List binaryTreePaths1(TreeNode root) {
+        List<String> list = new ArrayList<>();
+        Stack<TreeNode> sNode = new Stack<>();
+        Stack<String> sStr = new Stack<>();
+
+        if (root == null) return list;
+        sNode.push(root);
+        sStr.push("");
+        while (!sNode.isEmpty()) {
+            TreeNode curNode = sNode.pop();
+            String curStr = sStr.pop();
+
+            if (curNode.left == null && curNode.right == null) list.add(curStr + curNode.val);
+            if (curNode.left != null) {
+                sNode.push(curNode.left);
+                sStr.push(curStr + curNode.val + "->");
+            }
+            if (curNode.right != null) {
+                sNode.push(curNode.right);
+                sStr.push(curStr + curNode.val + "->");
+            }
+        }
+        return list;
+    }
+
+
+    /** Divide and Conquer Recursion
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths
      */
@@ -48,6 +57,11 @@ public class BinaryTreePaths257 {
         //递归三要素 1. 返回
         List<String> paths = new ArrayList<>();
         if (root == null) {
+            return paths;
+        }
+
+        if (root.left == null && root.right == null) {
+            paths.add(root.val + "");
             return paths;
         }
 
@@ -63,12 +77,35 @@ public class BinaryTreePaths257 {
             paths.add(root.val + "->" + path);
         }
 
-        // find is a isLeaf
-        if (paths.size() == 0) {
-            paths.add("" + root.val);
-        }
-
         return paths;
+    }
+
+    /*
+    Method3: BFS
+     */
+    public List binaryTreePaths3(TreeNode root) {
+        List list = new ArrayList();
+        Queue<TreeNode> qNode = new LinkedList<>();
+        Queue<String> qStr = new LinkedList<>();
+
+        if (root == null) return list;
+        qNode.offer(root);
+        qStr.offer("");
+        while (!qNode.isEmpty()) {
+            TreeNode curNode = qNode.poll();
+            String curStr = qStr.poll();
+
+            if (curNode.left == null && curNode.right == null) list.add(curStr + curNode.val);
+            if (curNode.left != null) {
+                qNode.add(curNode.left);
+                qStr.add(curStr + curNode.val + "->");
+            }
+            if (curNode.right != null) {
+                qNode.add(curNode.right);
+                qStr.add(curStr + curNode.val + "->");
+            }
+        }
+        return list;
     }
 
     @Test

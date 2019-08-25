@@ -14,21 +14,4 @@ public class MinDepth111 {
 
         return -1;
     }
-
-    /**
-     * add by Tina
-     * 主义和求maxDepth的区别，考虑陷进出现的情况
-     * @param root
-     * @return
-     */
-    public int minDepth2(TreeNode root) {
-        if(root == null) return 0;
-        if(root.left == null && root.right != null){
-            return 1+minDepth(root.right);
-        }else if(root.left != null && root.right == null){
-            return 1+minDepth(root.left);
-        }else{
-            return 1+Math.min(minDepth(root.right),minDepth(root.left));
-        }
-    }
 }

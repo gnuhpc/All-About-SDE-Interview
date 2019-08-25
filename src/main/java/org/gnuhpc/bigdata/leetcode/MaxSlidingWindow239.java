@@ -2,21 +2,13 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.datastructure.queue.basicimpl.MonotonicQueue;
 import org.gnuhpc.bigdata.datastructure.queue.basicimpl.Queue;
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
 import java.util.*;
 
 
 public class MaxSlidingWindow239 {
-    @Test
-    public void test(){
-        int[] nums = new int[] {1,3,-1,-3,5,3,6,7};
-        int k = 3;
-
-        for (int i: maxSlidingWindow3(nums,k)){
-            System.out.println(i);
-        }
-    }
     //Method1: 单调队列，专门解决sliding window的最大值最小值问题, 这个特殊的队列保留的都是promising 的值，
     // 也就是很有可能成为最大值的值。队头一定是最大值
     public int[] maxSlidingWindow(int[] nums, int k) {
@@ -105,6 +97,11 @@ sliding_max = 4, 6, 6, 8, 9, 10, 12, 56
         }
 
         return sliding_max;
+    }
+
+    @Test
+    public void test() {
+        Utils.printArray(maxSlidingWindow2(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3));
     }
 
 }

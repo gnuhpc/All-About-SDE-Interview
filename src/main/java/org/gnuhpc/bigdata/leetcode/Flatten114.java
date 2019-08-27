@@ -1,6 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -27,7 +28,6 @@ public class Flatten114 {
         TreeNode cur = root;
         while (cur.right != null) cur = cur.right;
         cur.right = right;
-
     }
 
     /*

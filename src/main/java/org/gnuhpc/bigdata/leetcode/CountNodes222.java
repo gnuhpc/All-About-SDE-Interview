@@ -3,14 +3,25 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 
 public class CountNodes222 {
-    int height(TreeNode root) {
-        return root == null ? -1 : 1 + height(root.left);
-    }
     public int countNodes(TreeNode root) {
-        int h = height(root);
-        return h < 0 ? 0 :
-                height(root.right) == h-1 ? (1 << h) + countNodes(root.right)
-                        : (1 << h-1) + countNodes(root.left);
+        if(root == null){
+            return 0;
+        }
+        int left = countLevel(root.left);
+        int right = countLevel(root.right);
+        if(left == right){
+            return countNodes(root.right) + (int)Math.pow(2,left);
+        }else{
+            return countNodes(root.left) + (int)Math.pow(2,right);
+        }
     }
 
+    private int countLevel(TreeNode root){
+        int level = 0;
+        while(root != null){
+            level++;
+            root = root.left;
+        }
+        return level;
+    }
 }

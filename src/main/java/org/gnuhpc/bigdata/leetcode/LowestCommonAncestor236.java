@@ -65,4 +65,5 @@ public class LowestCommonAncestor236 {
         TreeNode right = lowestCommonAncestor(root.right,p,q); //往右分支上寻找
         return left==null?right:right==null?left:root;
     }
+
 }

@@ -34,7 +34,7 @@ public class MaxPathSum124 {
         helper(root);
         return max;
     }
-    //Path pass parent node only once
+    //Path pass cor node only once
     //at every node, either add its left or right path or nth for n
     public int helper(TreeNode root){
         if(root == null) return 0;

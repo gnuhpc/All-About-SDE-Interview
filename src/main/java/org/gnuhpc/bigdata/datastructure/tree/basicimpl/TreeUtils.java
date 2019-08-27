@@ -7,6 +7,9 @@ import java.util.*;
 
 public class TreeUtils {
 
+    /*
+    返回从root到值为x的路径
+     */
     public static Stack<TreeNode> pathToX(TreeNode root, int x) {
         if (root == null) {
             return null;

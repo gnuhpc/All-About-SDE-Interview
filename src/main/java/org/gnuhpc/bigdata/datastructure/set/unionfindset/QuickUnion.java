@@ -4,7 +4,7 @@ package org.gnuhpc.bigdata.datastructure.set.unionfindset;
 lazy approach
 Data structure.
 Integer array  id[] of size  N .
-Interpretation: id[i] is parent of  i .
+Interpretation: id[i] is cor of  i .
 Root of  i is id[id[id[...id[i]...]]] .
 
 Find. Check if p and q have the same find.

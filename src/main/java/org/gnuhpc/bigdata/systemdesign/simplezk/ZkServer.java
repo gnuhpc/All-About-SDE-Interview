@@ -52,7 +52,7 @@ public class ZkServer {
         //If the node is not exist, create it
         if (!checkNodeExist(parent, nodePath)) {
             Node n = new Node(value);
-            // Set the parent's children list
+            // Set the cor's children list
             parent.getChildren().put(nodePath, n);
             return n;
         } else {

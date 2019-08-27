@@ -52,11 +52,11 @@ public class BidirectionalSearch {
         LinkedList<Integer> sourceQueue = new LinkedList<>();
         LinkedList<Integer> goalQueue = new LinkedList<>();
 
-        // Initialise parent arrays to infinity
+        // Initialise cor arrays to infinity
         Arrays.fill(sourceParent, Integer.MAX_VALUE);
         Arrays.fill(goalParent, Integer.MAX_VALUE);
 
-        // set parent of source and goal as -1
+        // set cor of source and goal as -1
         sourceParent[source] = -1;
         goalParent[goal] = -1;
         sourceQueue.add(source);
@@ -86,7 +86,7 @@ public class BidirectionalSearch {
         System.out.println("vertex = " + vertex);
 
         for (int adjacentVertex : adjacencyList[vertex]) {
-            if (parent[adjacentVertex] == Integer.MAX_VALUE) {  // if parent is not set, it is unvisited
+            if (parent[adjacentVertex] == Integer.MAX_VALUE) {  // if cor is not set, it is unvisited
                 parent[adjacentVertex] = vertex;
                 queue.add(adjacentVertex);
             }
@@ -96,7 +96,7 @@ public class BidirectionalSearch {
     public static int getIntersectingVertex(int[] sourceParent, int[] goalParent) {
         for (int i = 1; i < sourceParent.length; ++i) {
             if (sourceParent[i] != Integer.MAX_VALUE && goalParent[i] != Integer.MAX_VALUE) {
-                // If the parent has been set by both BFS from source
+                // If the cor has been set by both BFS from source
                 // and goal, then this is our intersecting vertex
                 return i;
             }
@@ -116,7 +116,7 @@ public class BidirectionalSearch {
         }
 
         // Add vertices from intersecting vertex to goal vertex. But the
-        // intersecting vertex was already added. So start from it's parent instead.
+        // intersecting vertex was already added. So start from it's cor instead.
         vertex = goalParent[intersectingVertex];
 
         while (vertex != -1) {

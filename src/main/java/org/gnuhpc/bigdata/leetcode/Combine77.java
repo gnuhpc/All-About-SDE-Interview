@@ -14,13 +14,18 @@ public class Combine77 {
     }
 
     /*
-    TODO DFS套路：
+    TODO 组合DFS套路：
     1. 原数据集
     2. 从哪里开始（因为无序不要重复，但是还要剔除已经用过的，因此要一直往前找，这个就是从哪里开始往前找的依据）
-    3. 临时存放位置
+    3. 临时结果集
     4. 最终结果集
 
+    函数内的处理逻辑：
+    1. 判断退出条件，处理临时结果加入到最终结果
+    2. 遍历每个数字，加入临时结果集,然后递归进入，除了start向后一个（因为已经选择过了）,其余传入的内容一样
+    3. 然后回溯，从临时结果集中去掉最后的那个元素
      */
+
     private void dfs(int start, int end, int size, List<List<Integer>> res, ArrayList<Integer> temp) {
         if (temp.size() == size) res.add(new ArrayList<>(temp));
         for (int i = start; i <= end ; i++ ){
@@ -29,11 +34,6 @@ public class Combine77 {
             temp.remove(temp.size()-1);
         }
     }
-
-
-
-
-
 
     @Test
     public void test() {

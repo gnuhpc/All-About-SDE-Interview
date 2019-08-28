@@ -17,17 +17,15 @@ import java.util.*;
 @Data
 class GraphNode {
     int data;
-    boolean visited;
+    boolean visited; //或者有一个HashMap标注visited
     List<GraphNode> neighbours;
 
-    GraphNode(int data)
-    {
+    public GraphNode(int data) {
         this.data=data;
         this.neighbours=new ArrayList<>();
-
     }
-    public void addNeighbours(GraphNode neighbourNode)
-    {
+
+    public void addNeighbours(GraphNode neighbourNode){
         this.neighbours.add(neighbourNode);
     }
 }
@@ -37,15 +35,11 @@ public class NeighbourListGraph {
     private List<GraphNode> nodes = new ArrayList<>();
     private Queue<GraphNode> queue = new LinkedList<>();;
     // Recursive DFS
-    public  void dfs(GraphNode node)
-    {
+    public  void dfs(GraphNode node) {
         System.out.print(node.data + " ");
-        List<GraphNode> neighbours=node.getNeighbours();
         node.visited=true;
-        for (int i = 0; i < neighbours.size(); i++) {
-            GraphNode n=neighbours.get(i);
-            if(n!=null && !n.visited)
-            {
+        for (GraphNode n : node.getNeighbours()) {
+            if (n != null && !n.visited) {
                 dfs(n);
             }
         }
@@ -57,26 +51,20 @@ public class NeighbourListGraph {
         Stack<GraphNode> stack= new Stack<>();
         stack.add(node);
         node.visited=true;
-        while (!stack.isEmpty())
-        {
+        while (!stack.isEmpty()) {
             GraphNode element=stack.pop();
             System.out.print(element.data + " ");
 
-            List<GraphNode> neighbours=element.getNeighbours();
-            for (int i = 0; i < neighbours.size(); i++) {
-                GraphNode n=neighbours.get(i);
-                if(n!=null && !n.visited)
-                {
+            for (GraphNode n : element.getNeighbours()) {
+                if (n != null && !n.visited) {
                     stack.add(n);
-                    n.visited=true;
-
+                    n.visited = true;
                 }
             }
         }
     }
 
-    public void bfs(GraphNode node)
-    {
+    public void bfs(GraphNode node) {
         queue.add(node);
         node.visited=true;
         while (!queue.isEmpty())
@@ -84,22 +72,17 @@ public class NeighbourListGraph {
 
             GraphNode element=queue.remove();
             System.out.print(element.data +" ");
-            List<GraphNode> neighbours=element.getNeighbours();
-            for (int i = 0; i < neighbours.size(); i++) {
-                GraphNode n=neighbours.get(i);
-                if(n!=null && !n.visited)
-                {
+            for (GraphNode n : element.getNeighbours()) {
+                if (n != null && !n.visited) {
                     queue.add(n);
-                    n.visited=true;
+                    n.visited = true;
 
                 }
             }
-
         }
     }
 
-    public static void main(String arg[])
-    {
+    public static void main(String[] arg) {
         GraphNode node40 =new GraphNode(40);
         GraphNode node10 =new GraphNode(10);
         GraphNode node20 =new GraphNode(20);
@@ -140,10 +123,9 @@ public class NeighbourListGraph {
         graph.bfs(node40);
     }
 
-    public void clearVisitedFlags()
-    {
-        for (int i = 0; i < nodes.size(); i++) {
-            nodes.get(i).visited=false;
+    public void clearVisitedFlags() {
+        for (GraphNode node : nodes) {
+            node.visited = false;
         }
     }
 }

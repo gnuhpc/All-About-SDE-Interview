@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LetterCombinations {
-    //Method 1: BFS + Backtracking 这种可以直观理解为钻到底
+    //Method 1: DFS + Backtracking 这种可以直观理解为钻到底
     private static final Map<Integer, char[]> keyMap = new HashMap<Integer, char[]>() {{
         put(2, new char[]{'a', 'b', 'c'});
         put(3, new char[]{'d', 'e', 'f'});
@@ -23,26 +23,24 @@ public class LetterCombinations {
 
     public static List<String> letterCombinations(String digits) {
         List<String> res = new ArrayList<>();
-
         if (digits == null || digits.isEmpty()) return res;
-
-        helper(digits, res, new ArrayList<>(), digits.length());
+        helper(digits, res, new StringBuilder(), digits.length());
 
         return res;
 
     }
 
-    private static void helper(String digits, List<String> res, ArrayList<String> temp, int length) {
-        if (temp.size() == length) {
-            res.add(String.join("", temp));
+    private static void helper(String digits, List<String> res, StringBuilder sb, int length) {
+        if (sb.length() == length) {
+            res.add(sb.toString());
             return;
         }
 
         for (int i = 0; i < digits.length(); i++) {
             for (char c : keyMap.get(Character.getNumericValue(digits.charAt(i)))){
-                temp.add(String.valueOf(c));
-                helper(digits.substring(i+1), res, temp, length);
-                temp.remove(temp.size()-1);
+                sb.append(c);
+                helper(digits.substring(i+1), res, sb, length);
+                sb.deleteCharAt(sb.length()-1);
             }
         }
     }
@@ -66,16 +64,20 @@ public class LetterCombinations {
 
         l.add("");
 
+        //先固定目前要遍历的数字
         for (int i = 0; i < digits.length(); i++) {
             ArrayList<String> temp = new ArrayList<>();
             String option = map.get(digits.charAt(i));
 
+            //然后根据结果集大小,进行遍历，
+            // 因为要对这个初步的结果集每个元素进行一遍可能的option的添加
             for (int j = 0; j < l.size(); j++) {
                 for (int p = 0; p < option.length(); p++) {
                     temp.add(l.get(j) + option.charAt(p));
                 }
             }
 
+            //System.out.println(temp);
             l.clear();
             l.addAll(temp);
         }
@@ -89,7 +91,7 @@ public class LetterCombinations {
 
         List<String> res = letterCombinations2(digits);
 
-        System.out.println();
+        System.out.println(res);
     }
 
 

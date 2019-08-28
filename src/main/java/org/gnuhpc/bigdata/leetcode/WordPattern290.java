@@ -8,7 +8,6 @@ public class WordPattern290 {
     @Test
     public void test() {
         String pattern = "abba", str = "dog cat cat dog";
-
         System.out.println(wordPattern(pattern, str));
     }
 

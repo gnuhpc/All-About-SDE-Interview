@@ -34,31 +34,28 @@ public class TreeTraversal {
     }
 
     /*
-    Merhod 2： Non recursive
+    Merhod 2： Non recursive , 和下边方法的区别是这个方法一直在左边进行，不得以才进行右边的节点
      */
     public static List<Integer> preorderNonRecursive(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode p = root;
 
-        if (root == null) {
-            return res;
-        }
-
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                res.add(root.val);
-                stack.push(root);
-                root = root.left;
+        while (p != null || !stack.isEmpty()) {
+            while (p != null) {
+                res.add(p.val);
+                stack.push(p);
+                p = p.left;
             }
-            root = stack.pop();
-            root = root.right;
+            p = stack.pop();
+            p = p.right;
         }
         return res;
-
     }
 
     /*
-    DFS模板方法 // TODO: DFS模板
+    DFS模板方法 // TODO: DFS模板， 这个方法的特点是通过stack将右边的先记录下来,平时两种都行，
+                但是牵涉到二叉树结构修改了优先有这种，不会导致丢失
     */
     public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
         List<Integer> result = new ArrayList<>();
@@ -120,19 +117,16 @@ public class TreeTraversal {
     public static List<Integer> inorderNonRecursive(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode p = root;
 
-        if (root == null) {
-            return res;
-        }
-
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                stack.push(root);
-                root = root.left;
+        while (p != null || !stack.isEmpty()) {
+            while (p != null) {
+                stack.push(p);
+                p = p.left;
             }
-            root = stack.pop();
-            res.add(root.val);
-            root = root.right;
+            p = stack.pop();
+            res.add(p.val);
+            p = p.right;
         }
         return res;
 
@@ -221,18 +215,16 @@ public class TreeTraversal {
         LinkedList<Integer> res = new LinkedList<>();
         Deque<TreeNode> stack = new LinkedList<>();
 
-        if (root == null) {
-            return res;
-        }
+        TreeNode p = root;
 
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                res.addFirst(root.val);
-                stack.push(root);
-                root = root.right;
+        while (p != null || !stack.isEmpty()) {
+            while (p != null) {
+                res.addFirst(p.val);
+                stack.push(p);
+                p = p.right;
             }
-            root = stack.pop();
-            root = root.left;
+            p = stack.pop();
+            p = p.left;
         }
         return res;
     }

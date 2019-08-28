@@ -18,6 +18,7 @@ public class NextPermutation31 {
             swap(nums, i, j);                     // Switch i and j
         }
         reverse(nums, i + 1, nums.length - 1);       // Reverse the descending sequence
+        //Utils.printArray(nums);
     }
 
 
@@ -29,5 +30,6 @@ public class NextPermutation31 {
     public void test(){
         nextPermutation(new int[]{1,4,3,2});
         nextPermutation(new int[]{1,2,3,4});
+        nextPermutation(new int[]{1,3,2});
     }
 }

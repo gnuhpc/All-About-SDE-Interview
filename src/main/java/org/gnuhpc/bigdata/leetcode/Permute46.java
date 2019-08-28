@@ -63,18 +63,23 @@ we can only use those unused numbers to generate the remaining part of the permu
 
     /*
     排列DFS套路，传入参数：
-    1. 要遍历的集合
-    2. 已经访问过的记录 (why？ 因为不能有重复的)
+    1. 原数据集
+    2. 已经访问过的记录 (why？ 因为不能有重复的) 这是和组合不一样的套路
     3. 临时结果集
     4. 最终结果集
+
+    函数内的处理逻辑：
+    1. 判断退出条件
+    2. 遍历每个数字，选择过的跳过，否则加入临时结果集,鼻周为选择过，然后递归进入，传入的内容一样。
+    3. 然后回溯，将标记去掉，并从临时结果集中去掉最后的那个元素
 
      */
     private void dfs(int[] nums,
                      boolean[] visited,
-                     List<Integer> permutation,
+                     List<Integer> temp,
                      List<List<Integer>> results) {
-        if (nums.length == permutation.size()) {
-            results.add(new ArrayList<>(permutation));
+        if (nums.length == temp.size()) {
+            results.add(new ArrayList<>(temp));
             return;
         }
 
@@ -83,11 +88,11 @@ we can only use those unused numbers to generate the remaining part of the permu
                 continue;
             }
 
-            permutation.add(nums[i]);
+            temp.add(nums[i]);
             visited[i] = true;
-            dfs(nums, visited, permutation, results);
+            dfs(nums, visited, temp, results);
             visited[i] = false;
-            permutation.remove(permutation.size() - 1);
+            temp.remove(temp.size() - 1);
         }
     }
 

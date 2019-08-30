@@ -27,37 +27,36 @@ if you want to find “….’s least number to do something”, you can try to 
 Don’t forget to use a set visited to record which nodes have been visited.
 Sample node can be reached through multiple ways
 but bfs always makes sure whenever it is reached with the least steps, it is flagged as visited.
+//链接：https://leetcode-cn.com/problems/perfect-squares/solution/bfsqiang-hua-lian-xi-zhi-wan-quan-ping-fang-shu-by/
  */
 public class NumSquares279 {
-    int numSquares(int n) {
-        Queue<Integer> q = new LinkedList<>();
+    public int numSquares(int n) {
+        Queue<Integer> que = new LinkedList<>();
         Set<Integer> visited = new HashSet<>();
-        q.offer(0);
+        // 与0点的距离
+        int dist = 0;
+        que.add(0);
         visited.add(0);
-        int depth = 0;
-        while(!q.isEmpty()) {
-            int size = q.size();
-            depth++;
-            while(size-- > 0) {
-                int u = q.poll();
-                for(int i = 1; i*i <= n; i++) {
-                    int v = u+i*i;
-                    if(v == n) {
-                        return depth;
-                    }
-                    //这一层就大于n，后边越加越大，因此除去这个分支
-                    if(v > n) {
-                        break;
-                    }
-                    if(!visited.contains(v)) {
-                        q.offer(v);
-                        visited.add(v);
+        while (!que.isEmpty()) {
+            dist++;
+            int size = que.size();
+            for (int j = 0; j < size; j++) {
+                int cur = que.remove();
+                for (int i = 1; i * i + cur <= n; i++) {
+                    int squre = i * i;
+                    int next = squre + cur;
+                    if (next == n) return dist;
+                    if (!visited.contains(next) && next < n) {
+                        que.add(next);
+                        visited.add(next);
                     }
                 }
             }
         }
-        return depth;
+        return dist;
     }
+
+
 
 
     /*
@@ -69,8 +68,6 @@ public class NumSquares279 {
 因为我们要找的是最短路径。
 反之如果从1个平方开始递减的话，会出现大量的无用搜索。比如每次只减掉1，搜索n，将第一次会达到n层。
      */
-
-
     public int numSquares2(int n) {
         return dfs(n,0,n);
     }
@@ -83,39 +80,9 @@ public class NumSquares279 {
         return min;
     }
 
-    int minimum;
-    int numSquares3(int n) {
-        int digit = (int)Math.sqrt(n);
-        if(digit*digit == n) return 1;
-
-        minimum = n;//this is the maximum number
-        dfs(n, 0, digit, 0);
-        return minimum;
-    }
-    void dfs(int n, int curSum, int curDigit, int curNum)
-    {
-        if(curSum > n || curNum >= minimum) return;
-        if(curSum == n)
-        {
-            minimum = Math.min(curNum,minimum);
-            return;
-        }
-        if(curDigit <= 0) return;
-        if(curDigit == 1)
-        {
-            curNum += n-curSum;
-            minimum = Math.min(curNum,minimum);
-            return;
-        }
-        //either use curDigit or not use
-        if(n-curSum >= curDigit*curDigit)
-            dfs(n, curSum+curDigit*curDigit, curDigit, curNum+1);
-        dfs(n, curSum, curDigit-1, curNum);
-    }
-
     @Test
     public void test(){
-        numSquares2(12);
+        numSquares(12);
     }
 
 

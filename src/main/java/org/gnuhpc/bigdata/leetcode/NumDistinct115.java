@@ -39,7 +39,7 @@ public class NumDistinct115 {
             //S 只能不选当前的字母，此时 S 跳过这个字母， T 不跳过字母。
             count = numDistinctHelper(s, s_start + 1, t, t_start, map);
         }
-        //将当前解放到 map 中
+        //将当前解放到 memo 中
         map.put(key, count);
         return count;
     }

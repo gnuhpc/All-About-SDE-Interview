@@ -26,7 +26,7 @@ public class Combine77 {
     3. 然后回溯，从临时结果集中去掉最后的那个元素
      */
 
-    private void dfs(int start, int end, int size, List<List<Integer>> res, ArrayList<Integer> temp) {
+    private void dfs(int start, int end, int size, List<List<Integer>> res, List<Integer> temp) {
         if (temp.size() == size) res.add(new ArrayList<>(temp));
         for (int i = start; i <= end ; i++ ){
             temp.add(i);

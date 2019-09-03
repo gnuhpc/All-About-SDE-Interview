@@ -53,7 +53,7 @@ public class IsSubsequence392 {
 
         //preprocess t, e.g. t = "abcdac"， s = "adc"
         /*
-        map:
+        memo:
         a: 0,4
         b: 1
         c: 2,5

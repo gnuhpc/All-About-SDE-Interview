@@ -14,10 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gnuhpc.bigdata.systemdesign.basic.consistenthash.sample;
-
-import org.gnuhpc.bigdata.systemdesign.basic.consistenthash.ConsistentHashRouter;
-import org.gnuhpc.bigdata.systemdesign.basic.consistenthash.Node;
+package org.gnuhpc.bigdata.systemdesign.basic.consistenthash;
 
 import java.util.Arrays;
 

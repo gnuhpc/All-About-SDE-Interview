@@ -6,22 +6,22 @@ import org.junit.Test;
 public class DeleteDuplicates82 {
     public ListNode deleteDuplicates(ListNode head) {
         //设置起始节点
-        ListNode start = new ListNode(0);
-        start.next = head;
-        head  = start;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode p = dummy;
 
-        while(head.next != null && head.next.next != null){
-            if(head.next.val == head.next.next.val){
-                int val = head.next.val;
-                while (head.next != null && head.next.val == val) {
-                    head.next = head.next.next;
+        while(p.next != null && p.next.next != null){
+            if(p.next.val == p.next.next.val){
+                int val = p.next.val;
+                while (p.next != null && p.next.val == val) {
+                    p.next = p.next.next;
                 }
             }else{
-                head = head.next;
+                p = p.next;
             }
         }
 
-        return start.next;
+        return dummy.next;
     }
 
     @Test

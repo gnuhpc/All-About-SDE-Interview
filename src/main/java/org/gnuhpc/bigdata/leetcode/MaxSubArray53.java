@@ -32,12 +32,12 @@ public class MaxSubArray53 {
     public int maxSubArray2(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         int max = nums[0], minSum = Integer.MAX_VALUE;
-        int sum[] = new int[nums.length+1];
-        sum[0] = 0;
+        int preSum[] = new int[nums.length+1];
+        preSum[0] = 0;
         for (int i = 1; i <= nums.length; i++) {
-            sum[i] = sum[i-1] + nums[i-1];
-            minSum = Math.min(0, Math.min(minSum, sum[i-1]));
-            max = Math.max(max, sum[i] - minSum);
+            preSum[i] = preSum[i-1] + nums[i-1];
+            minSum = Math.min(minSum, preSum[i-1]);
+            max = Math.max(max, preSum[i] - minSum);
         }
         return max;
     }

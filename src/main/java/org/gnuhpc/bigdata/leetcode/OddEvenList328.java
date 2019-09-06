@@ -48,30 +48,4 @@ public class OddEvenList328 {
         ListNode head = ListNode.createList(new int[]{});
         ListNode.print(oddEvenList(head));
     }
-    public ListNode oddEvenList2(ListNode head) {
-        if(head == null || head.next == null) return head;
-        ListNode oddHead = head;
-        ListNode evenHead = head.next;
-        ListNode odd = oddHead;
-        ListNode even = evenHead;
-
-        ListNode cur = even.next;
-        int i = 3;
-        while(cur != null){
-            if(i%2 == 1){
-                odd.next = cur;
-                odd = cur;
-            }else{
-                even.next = cur;
-                even = cur;
-            }
-            cur = cur.next;
-            i += 1;
-        }
-
-        odd.next = evenHead;
-        even.next = null;
-        return head;
-
-    }
 }

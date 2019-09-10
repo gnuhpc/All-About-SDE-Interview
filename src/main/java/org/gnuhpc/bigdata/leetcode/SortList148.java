@@ -9,22 +9,27 @@ public class SortList148 {
             return head;
 
         // step 1. cut the list to two halves
-        ListNode prev = null, slow = head, fast = head;
-
-        while (fast != null && fast.next != null) {
-            prev = slow;
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
+        ListNode prev = visitMiddlePreOneNode(head);
+        ListNode second = prev.next;
         prev.next = null;
 
         // step 2. sort each half
         ListNode l1 = sortList(head);
-        ListNode l2 = sortList(slow);
+        ListNode l2 = sortList(second);
+
 
         // step 3. merge l1 and l2
         return merge(l1, l2);
+    }
+
+    private ListNode visitMiddlePreOneNode(ListNode head) {
+        ListNode slow = head, fast = head;
+        while(fast!=null && fast.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
     }
 
     ListNode merge(ListNode l1, ListNode l2) {

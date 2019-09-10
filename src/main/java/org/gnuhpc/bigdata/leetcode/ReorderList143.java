@@ -15,7 +15,7 @@ import org.junit.Test;
 public class ReorderList143 {
     public void reorderList(ListNode head) {
         if (head == null || head.next == null || head.next.next == null) return;
-        ListNode mid = findLinkedListMid(head);
+        ListNode mid = visitMiddlePreOneNode(head);
         ListNode midHead = mid.next;
         mid.next = null;//put an end for the first half
         ListNode head2 = reverseLinkedList(midHead);
@@ -43,24 +43,23 @@ public class ReorderList143 {
         return newHead;
     }
 
-    private ListNode findLinkedListMid(ListNode head) {
-        //前边已经处理过空，1,2三种情况了。
-        ListNode fast = head, slow = head;
-
-        while (fast != null && fast.next !=null && fast.next.next !=null){
-            fast = fast.next.next;
+    private ListNode visitMiddlePreOneNode(ListNode head) {
+        ListNode slow = head, fast = head;
+        while(fast!=null && fast.next!=null && fast.next.next!=null){
             slow = slow.next;
+            fast = fast.next.next;
         }
 
         return slow;
     }
 
+
     @Test
     public void testMid(){
         ListNode head = ListNode.createList(new int[]{1,2,3,4});
         ListNode head2 = ListNode.createList(new int[]{1,2,3,4,5});
-        Assert.assertEquals(findLinkedListMid(head).val,3);
-        Assert.assertEquals(findLinkedListMid(head2).val,3);
+        Assert.assertEquals(visitMiddlePreOneNode(head).val,2);
+        Assert.assertEquals(visitMiddlePreOneNode(head2).val,3);
     }
 
     @Test
@@ -76,49 +75,4 @@ public class ReorderList143 {
         reorderList(head);
         Assert.assertArrayEquals(ListNode.toArray(head), new int[]{1,4,2,3});
     }
-
-
-    public void reorderList2(ListNode head) {
-        if (head == null || head.next == null) {
-            return;
-        }
-
-        ListNode mid = findMiddle(head);
-        ListNode tail = reverse(mid.next);
-        mid.next = null; //注意将这里赋空，变成2个列表,无需特殊处理
-
-        merge(head, tail);
-    }
-
-    private void merge(ListNode p, ListNode q) {
-        while(q != null){
-            ListNode nextq = q.next;
-            ListNode nextp = p.next;
-            q.next = p.next;
-            p.next = q;
-            p = nextp;
-            q = nextq;
-        }
-    }
-
-    private ListNode reverse(ListNode head) {
-        ListNode newHead = null;
-        while (head != null) {
-            ListNode temp = head.next;
-            head.next = newHead;
-            newHead = head;
-            head = temp;
-        }
-        return newHead;
-    }
-
-    private ListNode findMiddle(ListNode head) {
-        ListNode slow = head, fast = head.next;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-
 }

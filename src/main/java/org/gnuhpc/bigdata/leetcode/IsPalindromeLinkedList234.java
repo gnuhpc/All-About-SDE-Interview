@@ -8,7 +8,7 @@ public class IsPalindromeLinkedList234 {
     public void test(){
         ListNode n1 = new ListNode(1);
         ListNode n2 = new ListNode(2);
-        ListNode n3 = new ListNode(1);
+        ListNode n3 = new ListNode(2);
         ListNode n4 = new ListNode(1);
 
         n1.next = n2;
@@ -40,47 +40,34 @@ public class IsPalindromeLinkedList234 {
             c2 = c2.next;
         }
 
-        reverseList(middleNode);
-
         return true;
-
     }
 
     private ListNode visitMiddle(ListNode head) {
-        ListNode fast = head;
-        ListNode slow = head;
-        boolean pace = true;
-
-        while(fast.next != null){
-            if (pace){
-                fast = fast.next;
-                slow = slow.next;
-            } else{
-                fast = fast.next;
-            }
-
-            pace = !pace;
-
+        ListNode slow = head, fast = head;
+        while(fast!=null && fast.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        return slow;
+        return slow.next;
     }
 
     public ListNode reverseList(ListNode head) {
         if(head==null||head.next ==null)
             return head;
 
+        ListNode pre = null;
         ListNode next = null;
-        ListNode temp = null;
+        ListNode cur = head;
 
-
-        while (head!=null){
-            next = head.next;
-            head.next = temp;
-            temp = head;
-            head = next;
+        while (cur!=null){
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
         }
 
-        return temp;
+        return pre;
     }
 }

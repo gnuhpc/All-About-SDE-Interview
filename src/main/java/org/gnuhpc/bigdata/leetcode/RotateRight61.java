@@ -7,49 +7,23 @@ import java.util.Arrays;
 
 public class RotateRight61 {
     public ListNode rotateRight(ListNode head, int k) {
-        if (head==null || head.next == null) return head;
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-
-        ListNode slow = dummy, fast = dummy;
-
-        int size = sizeOfList(head);
-        if (size < k) {
-            k %= sizeOfList(head);
-        } else if (size == k){
+        if(head == null || k == 0) {
             return head;
         }
-
-        for (int i = 0; i < k; i++) {
-            if (fast.next == null) fast = dummy;
-            fast = fast.next;
+        ListNode p = head;
+        int len = 1;
+        while(p.next != null) {
+            p = p.next;
+            len++;
         }
-
-        if (fast.next == null){
-            return dummy.next;
+        p.next = head;
+        k %= len;
+        for(int i = 0; i < len - k; i++) {
+            p = p.next;
         }
-
-        while (fast.next!=null){
-            slow = slow.next;
-            fast = fast.next;
-        }
-
-        fast.next = dummy.next;
-
-        ListNode newHead = slow.next;
-        slow.next = null;
-        return newHead;
-    }
-
-    private int sizeOfList(ListNode head) {
-        int size = 0;
-        ListNode c = head;
-
-        while (c!=null){
-            c = c.next;
-            size++;
-        }
-        return size;
+        head = p.next;
+        p.next = null;
+        return head;
     }
 
     @Test

@@ -30,7 +30,7 @@ public class TreeSetDemo {
         System.out.println(fruits.tailSet("Banana"));
         System.out.println(fruits.subSet("Orange","Banana"));
         // creating a TreeSet
-        TreeSet <Integer>treeadd = new TreeSet<Integer>();
+        TreeSet <Integer>treeadd = new TreeSet<>();
 
         // adding in the tree set
         treeadd.add(12);
@@ -40,5 +40,6 @@ public class TreeSetDemo {
 
         // getting ceiling value for 13
         System.out.println("Ceiling value for 13: "+treeadd.ceiling(13));//15
+        System.out.println("Flooring value for 13: "+treeadd.floor(13));//12
     }
 }

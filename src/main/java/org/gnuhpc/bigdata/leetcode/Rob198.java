@@ -3,33 +3,39 @@ package org.gnuhpc.bigdata.leetcode;
 import java.util.Arrays;
 
 public class Rob198 {
-    int[] res;
-
     /*
     dfs + Memoriaztion ，要先想出来DFS，然后加上记忆化搜索 -- 本质递归
      */
 
-    public int rob(int[] nums) {
-        if(nums.length == 1) return nums[0];
-        res = new int[nums.length];
-        Arrays.fill(res, -1);
-        //自顶向下，一般从最后的开始, 从最后一家开始抢，规模缩小
-        return solve(0,nums.length - 1,nums);
+    private int[] memo;
+
+    public int rob1(int[] nums) {
+        memo = new int[nums.length];
+        Arrays.fill(memo, -1);
+        return tryRob(nums, 0, nums.length);
     }
 
-
-    private int solve(int end, int idx, int[] nums){
-        if (idx < end) return 0;
-        if (res[idx]!=-1) return res[idx];
-
-        //包含两种决策
-        int max =  Math.max(nums[idx] + solve(end,idx - 2,nums),solve(end,idx-1,nums));
-        res[idx] = max;
-
+    //左开右闭
+    private int tryRob(int[] nums, int start, int end) {
+        if (start >= end) {
+            return 0;
+        }
+        // 记忆化搜索可以避免重叠子问题的重复运算
+        if (memo[start] != -1) {
+            return memo[start];
+        }
+        // 下面是对状态转移方程的描述
+        int max = 0;
+        for (int i = start; i < end; i++) {
+            max = Math.max(max, nums[i] + tryRob(nums, i + 2, end));
+            max = Math.max(max, tryRob(nums,i+1,end));
+        }
+        memo[start] = max;
         return max;
     }
 
 
+    private int[] res;
     /* TODO DFS+memorization -> DP 的典型案例
     DP ,这个完全可以通过上边的步骤改出来，-- 本质递推
      */

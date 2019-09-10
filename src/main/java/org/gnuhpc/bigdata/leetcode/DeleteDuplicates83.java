@@ -7,29 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DeleteDuplicates83 {
-    public ListNode deleteDuplicates(ListNode head) {
-        if (head == null || head.next == null){
-            return head;
-        }
-
-        ListNode cur = head;
-        ListNode next = cur.next;
-
-        while(next!=null){
-            while(cur.val == next.val){
-                cur.next = next.next;
-                next = next.next;
-                if (next==null){
-                    return head;
-                }
-            }
-
-            cur = next;
-            next = next.next;
-        }
-        return head;
-    }
-
     @Test
     public void test(){
         ListNode head = ListNode.createList(new int[]{1,1,2,3,3});
@@ -64,7 +41,7 @@ public class DeleteDuplicates83 {
     }
 
 
-    public ListNode deleteDuplicates3(ListNode head) {
+    public ListNode deleteDuplicates(ListNode head) {
         if(head == null || head.next == null) return head;
         ListNode pre = head;
         ListNode cur = head.next;

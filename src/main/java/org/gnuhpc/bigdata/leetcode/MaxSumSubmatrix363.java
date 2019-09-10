@@ -1,10 +1,12 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.TreeSet;
 
 public class MaxSumSubmatrix363 {
-    // 先看这个网页：https://www.programcreek.com/2016/08/maximum-sum-of-subarray-close-to-k/
-    // 后看这个视频：https://www.youtube.com/watch?v=yCQN096CwWM
+    //https://www.programcreek.com/2016/08/maximum-sum-of-subarray-close-to-k/
+    //https://www.youtube.com/watch?v=-FgseNO-6Gk
 
     public int maxSumSubmatrix(int[][] matrix, int k) {
         if(matrix==null||matrix.length==0||matrix[0].length==0)
@@ -15,12 +17,12 @@ public class MaxSumSubmatrix363 {
 
         int result = Integer.MIN_VALUE;
 
-        for(int c1=0; c1<n; c1++){
+        for(int L=0; L<n; L++){
             int[] each = new int[m];
-            for(int c2=c1; c2>=0; c2--){
+            for(int l=L; l>=0; l--){
 
                 for(int r=0; r<m; r++){
-                    each[r]+=matrix[r][c2];
+                    each[r]+=matrix[r][l];
                 }
 
                 result = Math.max(result, getLargestSumCloseToK(each, k));
@@ -32,22 +34,28 @@ public class MaxSumSubmatrix363 {
 
     public int getLargestSumCloseToK(int[] arr, int k){
         int sum=0;
-        TreeSet<Integer> set = new TreeSet<Integer>();
+        TreeSet<Integer> set = new TreeSet<>();
         int result=Integer.MIN_VALUE;
         set.add(0);
 
-        for(int i=0; i<arr.length; i++){
-            sum=sum+arr[i];
-
-            Integer ceiling = set.ceiling(sum-k);
-            if(ceiling!=null){
-                result = Math.max(result, sum-ceiling);
-            }
-
+        for (int n : arr){
+            sum+=n;
             set.add(sum);
         }
 
+        for(Integer s: set){
+            Integer ceiling = set.ceiling(s-k);
+            if(ceiling!=null){
+                result = Math.max(result, s-ceiling);
+            }
+        }
+
         return result;
+    }
+
+    @Test
+    public void test(){
+        System.out.println(getLargestSumCloseToK(new int[]{1,0,1},2));
     }
 
 }

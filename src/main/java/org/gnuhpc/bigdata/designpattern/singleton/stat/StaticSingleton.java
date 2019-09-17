@@ -1,11 +1,11 @@
 package org.gnuhpc.bigdata.designpattern.singleton.stat;
 
-//饿汉式
+//静态变量化
 public class StaticSingleton {
 	private static StaticSingleton uniqueInstance = new StaticSingleton();
- 
+
 	private StaticSingleton() {}
- 
+
 	public static StaticSingleton getInstance() {
 		return uniqueInstance;
 	}

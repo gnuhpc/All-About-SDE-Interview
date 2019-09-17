@@ -12,12 +12,17 @@ import java.sql.SQLException;
  */
 public class DBSingleton{
 
+	/*
+	the field needs to be volatile to prevent cache incoherence issues.
+	In fact, the Java memory model allows the publication of partially initialized objects
+	and this may lead in turn to subtle bugs.
+	 */
 	private static volatile DBSingleton instance = null;
 
 	// 不是static，是因为必须有一个这个类的实例才能获取连接
 	private volatile Connection conn = null;
 
-	
+
 	private DBSingleton() {
 		try {
 			DriverManager.registerDriver(new EmbeddedDriver());
@@ -25,7 +30,7 @@ public class DBSingleton{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static DBSingleton getInstance() {
 		if(instance == null) {
 			synchronized(DBSingleton.class) {
@@ -34,17 +39,17 @@ public class DBSingleton{
 				}
 			}
 		}
-		
+
 		return instance;
 	}
-	
+
 	public Connection getConnection() {
 		if(conn == null) {
 			synchronized (DBSingleton.class) {
 				if(conn == null) {
 					try {
 						String dbUrl = "jdbc:derby:memory:codejava/webdb;create=true";
-						
+
 						conn = DriverManager.getConnection(dbUrl);
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -52,8 +57,8 @@ public class DBSingleton{
 				}
 			}
 		}
-		
+
 		return conn;
 	}
-	
+
 }

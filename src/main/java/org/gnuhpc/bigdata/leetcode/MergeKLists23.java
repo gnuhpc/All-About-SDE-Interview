@@ -57,7 +57,7 @@ public class MergeKLists23 {
      */
 
     public ListNode mergeKLists2(ListNode[] lists) {
-        Queue<ListNode> heap = new PriorityQueue<ListNode>(10, Comparator.comparingInt(l -> l.val));
+        Queue<ListNode> heap = new PriorityQueue<>(10, Comparator.comparingInt(l -> l.val));
 
         for (int i = 0; i < lists.length; i++){
             ListNode temp = lists[i];

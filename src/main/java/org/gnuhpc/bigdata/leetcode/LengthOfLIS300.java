@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LengthOfLIS300 {
     /*
-    暴力搜索1
+    Method1: 暴力搜索, LTE
      */
 
     public int lengthOfLIS(int[] nums) {
@@ -43,12 +43,42 @@ Thus, we find out only the length of the LIS possible by not including the curre
     }
 
     /*
-    Method2: DP
+    Method2 : memo search ,TODO: 二维记忆搜索数组舒初始化方法
+     */
+
+    public int lengthOfLIS2(int[] nums) {
+        int memo[][] = new int[nums.length + 1][nums.length];
+        for (int[] l : memo) {
+            Arrays.fill(l, -1);
+        }
+        return lengthofLIS(nums, -1, 0, memo);
+    }
+    public int lengthofLIS(int[] nums, int previndex, int curpos, int[][] memo) {
+        if (curpos == nums.length) {
+            return 0;
+        }
+        if (memo[previndex + 1][curpos] >= 0) {
+            return memo[previndex + 1][curpos];
+        }
+        int taken = 0;
+        if (previndex < 0 || nums[curpos] > nums[previndex]) {
+            taken = 1 + lengthofLIS(nums, curpos, curpos + 1, memo);
+        }
+
+        int nottaken = lengthofLIS(nums, previndex, curpos + 1, memo);
+        int result = Math.max(taken, nottaken);
+        memo[previndex + 1][curpos] =  result;
+        return result;
+    }
+
+
+    /*
+    Method3: DP
      */
     //https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
     // 如果要求这个子序列，则参考：
     // https://www.hackerrank.com/challenges/longest-increasing-subsequent/problem
-    public int lengthOfLIS2(int[] nums) {
+    public int lengthOfLIS3(int[] nums) {
         int n = nums.length;
         if (n==0){ return 0;}
         int lis[] = new int[n];
@@ -70,33 +100,9 @@ Thus, we find out only the length of the LIS possible by not including the curre
     }
 
 
-    //二分法
-    public int lengthOfLIS3(int[] nums) {
-        if(nums.length == 0) return 0;
-        List<Integer> list = new ArrayList<>();
-        list.add(nums[0]);
-        for(int i = 1; i < nums.length; i++){
-            //遇到比头元素小的数字替换
-            if(nums[i] < list.get(0)) list.set(0, nums[i]);
-                //遇到比尾元素打的数字添加到末尾
-            else if(nums[i] > list.get(list.size() - 1)) list.add(nums[i]);
-                //如果遍历到的新元素比ends数组首元素大，比尾元素小时，
-                //用二分查找法找到第一个不小于此新元素的位置，覆盖掉位置的原来的数字
-            else{
-                int left = 0, right = list.size() - 1;
-                while(left < right){
-                    int mid = (left + right) / 2;
-                    if(nums[i] <= list.get(mid)) right = mid;
-                    else left = mid + 1;
-                }
-                list.set(left, nums[i]);
-            }
-        }
-        return list.size();
-    }
 
     @Test
     public void test(){
-        System.out.println(lengthOfLIS2(new int[]{10,9,2,5,3,7,101,18}));
+        System.out.println(lengthOfLIS3(new int[]{10,9,2,5,3,7,101,18}));
     }
 }

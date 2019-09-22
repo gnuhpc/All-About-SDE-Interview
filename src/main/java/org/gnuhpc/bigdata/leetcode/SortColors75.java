@@ -1,11 +1,12 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
+import org.junit.Test;
 
 import java.util.Arrays;
 
 public class SortColors75 {
-    public static void sortColors(int[] nums){
+    public void sortColors(int[] nums){
         int[] counts = new int[3];
 
         for (int i = 0; i < nums.length; i++) {
@@ -21,27 +22,48 @@ public class SortColors75 {
         }
     }
 
-    public static void sortColors2(int[] nums){
-        int zero = -1, two = nums.length;// nums[0...zero]==0, nums[two...j-1]==2
+    //        return new int[] { lt, gt };
+    /*  Method2: 三路快排的partition, 这个案例中pivot为1
+        lt位置的左边都是小于pivot的
+        lt到i都是等于pivot的
+        i到gt都是不知道的
+        gt的右边的都是大于pivot的
 
-        for (int j = 0; j < two; ) {
-            if (nums[j]==1){
-                j++;
-            } else if (nums[j]==2){
-                Utils.swap(nums,--two,j);
-                //不j++的原因是：换过来的数有可能比1大。
-            } else {
-                Utils.swap(nums,++zero,j);
-                j++; //直接j++的原因是从zero换过来的一定是
-            }
+        a[l,lt-1] < pivot
+        a[lt, i-1] = pivot
+        a[i,gt] = unseen
+        a[gt+1, r] > pivot
+     */
+    public void sortColors2(int[] nums){
+        if ( nums == null ) return;
+        if ( nums.length <=1 ) return;
+        int n = nums.length;
+        int i = 0, lt = 0, gt = n-1;
+        int pivot = 1;
+        while (i <= gt){
+            if (nums[i] < pivot)
+                swap(i++, lt++, nums);//i++的原因是：换过来的数一定小于1。
+            else if (nums[i] > pivot)
+                swap(i, gt--, nums); //不i++的原因是：换过来的数有可能比1大。
+            else
+                i++;
         }
     }
 
-    public static void main(String[] args) {
+    private void swap(int i, int j, int[] nums){
+        if(i==j)
+            return;
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    @Test
+    public void test(){
         int[] nums = new int[]{0,2,1,2,1,0,2};
         sortColors(nums);
 
-        int[] nums2 = new int[]{2,0,2,1,1,2};
+        int[] nums2 = new int[]{2,0,2,1,1,0};
         sortColors2(nums2);
         Arrays.stream(nums).forEach(System.out::print);
         System.out.println();

@@ -92,16 +92,18 @@ public class IsSubsequence392 {
 
         if (index == -1) return list.get(0); //如果index是初始值，取list中的第一个
 
-        while (start <= end) {
+        while (start + 1 < end) {
             int mid = start + (end - start) / 2;
             if (list.get(mid) < index) {
-                start = mid + 1;
+                start = mid;
             } else {
-                end = mid - 1;
+                end = mid;
             }
         }
 
-        return list.get(start);
+        if (list.get(start) >= index) return list.get(start);
+        else
+            return list.get(end);
     }
 
 
@@ -110,6 +112,6 @@ public class IsSubsequence392 {
     public void test(){
         System.out.println(isSubsequence("abc", "ahbgdc"));
         System.out.println(isSubsequence("axc", "ahbgdc"));
-        System.out.println(isSubsequence3("agh", "ahabbgdc"));
+        System.out.println(isSubsequence3("aae", "ahabebgdac"));
     }
 }

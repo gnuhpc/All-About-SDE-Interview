@@ -103,7 +103,7 @@ public class NumIslands200 {
     }
 
     /*
-    Method 3 Union-Find -- QuickUnion
+    Method 3 Union-Find -- QuickUnion //TODO 二维数组并差集标准用法
      */
 
     public int numIslands3(char[][] grid) {
@@ -117,20 +117,16 @@ public class NumIslands200 {
         int[] dy={0, 0, -1, 1};
 
 
-        //初始化并查集, 注意这个初始化的方法，因为每个岛（x,y）都是一个独立实体，
-        //因此需要对m*n个坐标点都标注, 二维数组转为一维数组
         QuickUnion qu = new QuickUnion(m*n);
         int count=0;//这也是岛屿的最大个数
-        //假设这些点都不相连的情况下，count算出来是多少，同时构造并差集为了下边的合并
+        //假设这些点都不相连的情况下，count算出来是多少
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
                 if(grid[i][j]=='1'){
-                    qu.id[i*n+j] = i*n+j;
                     count++;
                 }
             }
         }
-
 
         //再遍历一遍
         for(int i=0; i<m; i++){
@@ -155,53 +151,6 @@ public class NumIslands200 {
         }
 
         return count;
-    }
-
-    /*
-    Method 4: Two stack dfs ,太麻烦
-     */
-
-    public int numIslands4(char[][] grid) {
-        int numOfRow = grid.length;
-        if(numOfRow == 0)
-            return 0;
-        int numOfCol = grid[0].length;
-        int numOfIslands = 0;
-        Stack<Integer> gridTrackerOfRow = new Stack<Integer>();
-        Stack<Integer> gridTrackerOfCol = new Stack<Integer>();
-        for(int i = 0; i < numOfRow; i++){
-            for(int j = 0; j < numOfCol; j++){
-                if(grid[i][j] == '1'){
-                    gridTrackerOfRow.push(i);
-                    gridTrackerOfCol.push(j);
-                    while(!gridTrackerOfRow.isEmpty() && !gridTrackerOfCol.isEmpty()){
-                        int x = gridTrackerOfRow.pop();
-                        int y = gridTrackerOfCol.pop();
-                        grid[x][y] = '0';
-
-                        if(y+1 < numOfCol && grid[x][y+1] == '1'){
-                            gridTrackerOfRow.push(x);
-                            gridTrackerOfCol.push(y+1);
-                        }
-                        if(y-1 >= 0 && grid[x][y-1] == '1'){
-                            gridTrackerOfRow.push(x);
-                            gridTrackerOfCol.push(y-1);
-                        }
-                        if(x+1 < numOfRow && grid[x+1][y] == '1'){
-                            gridTrackerOfRow.push(x+1);
-                            gridTrackerOfCol.push(y);
-                        }
-                        if(x-1 >= 0 && grid[x-1][y] == '1'){
-                            gridTrackerOfRow.push(x-1);
-                            gridTrackerOfCol.push(y);
-                        }
-                    }
-                    numOfIslands++;
-                }
-            }
-        }
-
-        return numOfIslands;
     }
 
 

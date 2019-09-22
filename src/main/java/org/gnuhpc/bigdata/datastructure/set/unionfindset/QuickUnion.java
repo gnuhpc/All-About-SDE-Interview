@@ -26,6 +26,9 @@ Quick Union is Faster than Quick Find ,一般都采用这种
 
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 //视频讲解:https://www.youtube.com/watch?v=YB3_c11GPEo
 public class QuickUnion extends QuickUnionAbstract{
 
@@ -51,5 +54,33 @@ public class QuickUnion extends QuickUnionAbstract{
 
     public boolean connected(int p, int q) {
         return find(p) == find(q);
+    }
+
+    public void resort() {
+        for (int i = 0; i < id.length; i++) {
+            find(i);
+        }
+    }
+
+    public int maxCount() {
+        resort();
+
+        Map<Integer, Integer> hp = new HashMap<>();
+        for (int i = 0; i < id.length; i++) {
+            int key = id[i];
+            if (hp.containsKey(key))
+                hp.put(key, hp.get(key) + 1);
+            else
+                hp.put(key, 1);
+        }
+
+        // find max frequency.
+        int max_count = 0;
+
+        for (int i : hp.values()) {
+            max_count = Math.max(max_count, i);
+        }
+
+        return max_count;
     }
 }

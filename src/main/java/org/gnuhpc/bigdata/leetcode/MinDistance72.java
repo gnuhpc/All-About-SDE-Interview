@@ -8,47 +8,64 @@ import java.util.Map;
 //https://www.javacodegeeks.com/2014/03/easy-to-understand-dynamic-programming-edit-distance.html
 public class MinDistance72 {
     /*
-    Method 1: Recursive
+    Method 1: Recursive LTE
      */
     public int minDistance1(String word1, String word2) {
         if (word1.isEmpty()) return word2.length();
         if (word2.isEmpty()) return word1.length();
+        if (word1.equals(word2)) return 0;
         int replace = minDistance1(word1.substring(1), word2.substring(1)) + replaceCost(word1, word2, 0, 0);
         int delete = minDistance1(word1.substring(1), word2) + 1;
         int insert = minDistance1(word1, word2.substring(1)) + 1;
         return min(replace, delete, insert);
     }
 
+    private int replaceCost(String w1, String w2, int w1Index, int w2Index) {
+        return (w1.charAt(w1Index) == w2.charAt(w2Index)) ? 0 : 1;
+    }
+
+    private int min(int... numbers) {
+        int result = Integer.MAX_VALUE;
+        for (int each : numbers) {
+            result = Math.min(result, each);
+        }
+        return result;
+    }
+
 
     /*
-    Method 2: Recursive Memorization
+    Method 2: Recursive Memorization almost pass LTE
      */
 
     public int minDistance(String word1, String word2) {
-        int[][] dis = new int[word1.length()+1][word2.length()+1];
-        return getdis(word1,word2,word1.length(),word2.length(),dis);
-
+        Map<String, Integer> memo = new HashMap<>();
+        return getdis(word1,word2,memo);
     }
-    public static int getdis(String word1,String word2,int m,int n,int[][] dis){
-        if(m==0) return n;
-        if(n==0) return m;
 
-        if(dis[m][n]>0)
-            return dis[m][n];
-        int temp;
-
-        if(word1.charAt(m-1)==word2.charAt(n-1)){
-            temp = getdis(word1,word2,m-1,n-1,dis);
-        }else{
-            temp = min(getdis(word1,word2,m-1,n-1,dis)+1,
-                    getdis(word1,word2,m-1,n,dis)+1,
-                    getdis(word1,word2,m,n-1,dis)+1);
+    private int getdis(String word1, String word2, Map<String, Integer> memo) {
+        String key = word1+"_"+word2;
+        if (word1.isEmpty()) {
+            memo.put(key,word2.length());
+            return word2.length();
         }
-        dis[m][n] = temp;
+        if (word2.isEmpty()) {
+            memo.put(key,word1.length());
+            return word1.length();
+        }
+        if (word1.equals(word2)) {
+            memo.put(key,0);
+            return 0;
+        }
+        if (memo.containsKey(key)) return memo.get(key);
 
-        return dis[m][n];
+        int replaceCost = replaceCost(word1, word2, 0, 0);
+        int replace = getdis(word1.substring(1), word2.substring(1),memo) + replaceCost;
+        int delete = getdis(word1.substring(1), word2, memo) + 1;
+        int insert = getdis(word1, word2.substring(1),memo) + 1;
+        int res = min(replace, delete, insert);
+        memo.put(key,res);
+        return res;
     }
-
 
     /*
     Method 3 : DP
@@ -71,14 +88,4 @@ public class MinDistance72 {
         return dp[m][n];
     }
 
-    public static int replaceCost(String w1, String w2, int w1Index, int w2Index) {
-        return (w1.charAt(w1Index) == w2.charAt(w2Index)) ? 0 : 1;
-    }
-    public static int min(int... numbers) {
-        int result = Integer.MAX_VALUE;
-        for (int each : numbers) {
-            result = Math.min(result, each);
-        }
-        return result;
-    }
 }

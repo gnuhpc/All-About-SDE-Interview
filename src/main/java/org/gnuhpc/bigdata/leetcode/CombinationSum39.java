@@ -9,13 +9,12 @@ public class CombinationSum39 {
     private static int counter = 0;
     public List<List<Integer>> combinationSum(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
-        backtrack(res, new ArrayList<>(), nums, target, 0);
+        dfs(res, new ArrayList<>(), nums, target, 0);
         return res;
     }
 
     //思路： 标准dfs，遍历start，注意下一个start还是i
-    private void backtrack(List<List<Integer>> res, List<Integer> tempList, int [] nums, int remain, int start){
-        //counter++;
+    private void dfs(List<List<Integer>> res, List<Integer> tempList, int [] nums, int remain, int start){
         if(remain < 0 || start >= nums.length) return; //注意递归的结束条件
         if(remain == 0) {
             res.add(new ArrayList<>(tempList));
@@ -23,7 +22,7 @@ public class CombinationSum39 {
         }
         for(int i = start; i < nums.length; i++){
             tempList.add(nums[i]);
-            backtrack(res, tempList, nums, remain - nums[i], i); // not i + 1 because we can reuse same elements
+            dfs(res, tempList, nums, remain - nums[i], i); // not i + 1 because we can reuse same elements
             tempList.remove(tempList.size() - 1);
         }
     }

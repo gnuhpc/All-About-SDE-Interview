@@ -7,6 +7,9 @@ import java.util.*;
 
 public class TreeUtils {
 
+    /*
+    返回从root到值为x的路径
+     */
     public static Stack<TreeNode> pathToX(TreeNode root, int x) {
         if (root == null) {
             return null;
@@ -324,6 +327,31 @@ public class TreeUtils {
         root.right = removeLeafNodes(root.right);
 
         return root;
+    }
+
+
+    //TODO 统计所有可能的path
+    public void getAllPaths(TreeNode root, List<ArrayList<Integer>> allPaths, ArrayList<Integer> temp) {
+        if (root == null) { return;}
+
+        temp.add(root.val);
+        if (root.left == null && root.right == null) {
+            allPaths.add(new ArrayList<>(temp));
+            return;
+        }
+        else {
+            if (root.left != null) {
+                getAllPaths(root.left, allPaths, temp);
+                //回溯
+                temp.remove(temp.size() - 1);
+            }
+
+            if (root.right != null) {
+                getAllPaths(root.right, allPaths, temp);
+                //回溯
+                temp.remove(temp.size() - 1);
+            }
+        }
     }
 
     @Test

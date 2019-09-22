@@ -20,7 +20,6 @@ public class UniquePathsWithObstacles63 {
 
 
     public int dfs(int r, int c, int[][]grid, Map<String, Integer> memo) {
-
         if (r == ROW-1 && c == COL-1) {
             if (memo.isEmpty())
                 return (grid[r][c]==1)? 0:1;
@@ -32,14 +31,14 @@ public class UniquePathsWithObstacles63 {
         if (memo.containsKey(key))
             return memo.get(key);
 
-        int ways = 0;
+        int res = 0;
         for (int i = 0; i < 2; i++) {
             if (valid(r + stepX[i],c + stepY[i], grid)){
-                ways += dfs(r + stepX[i], c + stepY[i],grid, memo);
+                res += dfs(r + stepX[i], c + stepY[i], grid, memo);
             }
         }
-        memo.put(key, ways);
-        return ways;
+        memo.put(key, res);
+        return res;
     }
 
     private boolean valid(int r, int c, int[][] grid) {

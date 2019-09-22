@@ -1,0 +1,121 @@
+package org.gnuhpc.bigdata.leetcode;
+
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+/**
+ * Copyright gnuhpc 19-8-8
+ */
+public class WiggleSort324 {
+    public void wiggleSort(int[] nums) {
+        if (nums == null) return;
+        if (nums.length <= 1) return;
+        if (nums.length == 2) {
+            if (nums[0] > nums[1]) {
+                swap(nums, 0, 1);
+            }
+            return;
+        }
+
+        int n = nums.length;
+        //TODO 找中位数
+        int[] res = findKthLargest(nums, (nums.length + 1) / 2);
+        int pos = res[0];
+        int median = res[1];
+
+        // Repartition again, For cases like 3,2,1,1,3,2
+        int idx = pos+1;
+        for (int i = pos+1; i < n; i++) {
+            if (nums[i] == median){
+                swap(nums,i,idx);
+                idx++;
+            }
+        }
+
+        int left = 0, right = (nums.length %2 ==1)? pos: pos+1 ;
+        boolean flag = true;
+
+        int[] temp = new int[n];
+
+        for (int j = 0; j < n; j++) {
+            if (flag){
+                temp[j] = nums[right++];
+            } else {
+                temp[j] = nums[left++];
+            }
+
+            flag = !flag;
+        }
+
+        System.arraycopy(temp,0,nums,0,n);
+
+
+    }
+
+
+    public int[] findKthLargest(int[] nums, int k) {
+        int left = 0, right = nums.length - 1;
+
+        while (true) {
+            int pos = partition(nums, left, right);
+            if (pos + 1 > k) {
+                right = pos - 1;
+            } else if (pos + 1 < k) {
+                left = pos + 1;
+            } else {
+                return new int[]{pos,nums[pos]};
+            }
+        }
+    }
+
+
+    public int partition(int[] nums, int left, int right) {
+        int pivotVal = nums[left];
+
+        //pos为分界线
+        int pos = left;
+        for (int i = left + 1; i <= right; i++) {
+            //i is valid, swap it with pos
+            if (nums[i] > pivotVal) {
+                swap(nums, ++pos, i);
+            }
+        }
+        swap(nums, left, pos);
+
+        return pos;
+    }
+
+
+    private void swap(int[] nums, int i, int j) {
+        if (i == j) return;
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    /*
+    Method2: 直接排序 ，不符合时间复杂度，但是实际上更快
+     */
+    public void wiggleSort2(int[] nums) {
+        int[] tmp = nums.clone();
+        Arrays.sort(tmp);
+        int n = nums.length, m = (n + 1) / 2, j = n;
+        for (int i = 0; i < n; i++) {
+            nums[i] = (i % 2) == 1 ? tmp[--j] : tmp[--m];
+        }
+    }
+
+    @Test
+    public void test() {
+//        int[] nums = new int[] {1,1,2,1,2,2,1};
+//        int[] nums = new int[]{1, 3, 2, 2, 3, 1};
+//        int[] nums = new int[]{5, 3, 1, 2, 6, 7, 8, 5, 5};
+//        int[] nums = new int[] {4,5,5,6};
+//        int[] nums = new int[] {4,5,5,5,5,6,6,6};
+        int[] nums = new int[] {3,2,1,1,3,2};
+        wiggleSort(nums);
+        Utils.printArray(nums);
+    }
+}

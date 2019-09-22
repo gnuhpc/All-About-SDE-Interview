@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.isPalindrome;
+
 public class Partition131 {
     public List<List<String>> partition(String s) {
         List<List<String>> list = new ArrayList<>();
@@ -28,11 +30,6 @@ public class Partition131 {
         }
     }
 
-    public boolean isPalindrome(String s, int low, int high) {
-        while (low < high)
-            if (s.charAt(low++) != s.charAt(high--)) return false;
-        return true;
-    }
 
     @Test
     public void test() {

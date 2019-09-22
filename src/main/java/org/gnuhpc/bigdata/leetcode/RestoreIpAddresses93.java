@@ -49,31 +49,7 @@ public class RestoreIpAddresses93 {
         }
     }
 
-
-    //Method2:暴力，有限层循环
-    public List<String> restoreIpAddresses2(String s) {
-        List<String> res = new ArrayList<String>();
-        for (int a = 1; a < 4; ++a)
-            for (int b = 1; b < 4; ++b)
-                for (int c = 1; c < 4; ++c)
-                    for (int d = 1; d < 4; ++d)
-                        if (a + b + c + d == s.length()) {
-                            int A = Integer.parseInt(s.substring(0, a));
-                            int B = Integer.parseInt(s.substring(a, a + b));
-                            int C = Integer.parseInt(s.substring(a + b, a + b + c));
-                            int D = Integer.parseInt(s.substring(a + b + c));
-                            if (A <= 255 && B <= 255 && C <= 255 && D <= 255) {
-                                String t = String.valueOf(A) + "." + String.valueOf(B) + "." + String.valueOf(C) + "." + String.valueOf(D);
-                                // 注意最后需要再判断一下长度，防止1970032这种，19.7.00.32这是非法ip
-                                // System.out.println(Integer.parseInt("003".substring(0, 2)));
-                                // 输出为0
-                                if (t.length() == s.length() + 3) res.add(t);
-                            }
-                        }
-        return res;
-    }
-
-    //Method3: DFS + Backtracking
+    //Method22 DFS + Backtracking
     public ArrayList<String> restoreIpAddresses3(String s) {
         ArrayList<String> result = new ArrayList<>();
 
@@ -96,7 +72,7 @@ public class RestoreIpAddresses93 {
         //可以添加一个优化条件：i < start + 3，因为一个ip column不能超过3
         for (int i = start; i < s.length(); i++) {
             String tmp = s.substring(start, i + 1);
-            if (isvalid(tmp)) {
+            if (isValid(tmp)) {
                 temp.add(tmp);
                 helper(result, temp, s, i+1);
                 temp.remove(temp.size() - 1);
@@ -104,11 +80,11 @@ public class RestoreIpAddresses93 {
         }
     }
 
-    private boolean isvalid(String s) {
+    private boolean isValid(String s) {
         if (s.length()>3) return false;
         if (s.charAt(0) == '0')
             return s.equals("0");     	// to eliminate cases like "00", "10"
-        int digit = Integer.valueOf(s);
+        int digit = Integer.parseInt(s);
         return digit >= 0 && digit <= 255;
     }
 

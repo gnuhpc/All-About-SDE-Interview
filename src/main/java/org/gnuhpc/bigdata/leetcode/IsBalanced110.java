@@ -3,9 +3,9 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 
 public class IsBalanced110 {
-    //O(nlogn)
+    //O(nlogn) 最坏是O(n^2)
     /*
-    Method1 : 递归分治
+    Method1 : 递归分治 ，自顶而下
      */
     public boolean isBalanced(TreeNode root) {
         if (root == null) return true;
@@ -28,6 +28,7 @@ public class IsBalanced110 {
 
     /*
     Method2 : 递归，及时Return , 使用-1作为有问题的树，发现为-1则层层返回不再求具体高度
+    O(n)，自底而上
      */
     public boolean isBalanced2(TreeNode root) {
         return depth(root) != -1;
@@ -49,41 +50,4 @@ public class IsBalanced110 {
         return Math.max(left, right) + 1;
     }
 
-    /*
-    Method3 : ResultType 方法
-     */
-
-    class ResultType {
-        public boolean isBalanced;
-        public int maxDepth;
-        public ResultType(boolean isBalanced, int maxDepth) {
-            this.isBalanced = isBalanced;
-            this.maxDepth = maxDepth;
-        }
-    }
-
-    public boolean isBalanced3(TreeNode root) {
-        return helper(root).isBalanced;
-    }
-
-    private ResultType helper(TreeNode root) {
-        if (root == null) {
-            return new ResultType(true, 0);
-        }
-
-        ResultType left = helper(root.left);
-        ResultType right = helper(root.right);
-
-        // subtree not balance
-        if (!left.isBalanced || !right.isBalanced) {
-            return new ResultType(false, -1);
-        }
-
-        // find not balance
-        if (Math.abs(left.maxDepth - right.maxDepth) > 1) {
-            return new ResultType(false, -1);
-        }
-
-        return new ResultType(true, Math.max(left.maxDepth, right.maxDepth) + 1);
-    }
 }

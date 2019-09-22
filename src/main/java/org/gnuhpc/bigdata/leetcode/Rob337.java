@@ -3,6 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Rob337 {
     /*
@@ -24,62 +25,41 @@ public class Rob337 {
     }
 
     /*
-    DFS2
+     优化：dfs + 记忆化搜索
      */
+
+    Map<TreeNode,Integer> mapInclude = new HashMap<>();
+    Map<TreeNode,Integer> mapExclude = new HashMap<>();
     public int rob2(TreeNode root) {
-        return Math.max(dfs(root,true), dfs(root,false));
+        int robIncludeRes=rob(root,true);
+        int robExcludeRes=rob(root, false);
+
+        return Math.max(robIncludeRes,robExcludeRes);
     }
 
-    public int dfs(TreeNode node, boolean canRob){
-        if(node==null)
-            return 0;
-
-        if (node.left == null && node.right == null)
-            return canRob ? node.val : 0;
-
-        if(canRob)
-            return node.val + dfs(node.left,false) + dfs(node.right,false);
-        else
-            return Math.max(dfs(node.left,true), dfs(node.left,false)) +
-                    Math.max(dfs(node.right,true), dfs(node.right,false));
-    }
-
-    /*
-    dfs + 记忆化搜索
-     */
-
-    HashMap<TreeNode,Integer> mapT= new HashMap<>();
-    HashMap<TreeNode,Integer> mapF= new HashMap<>();
-    public int rob3(TreeNode root) {
-        int robTrue=rob(root,true);
-        int robFalse=rob(root, false);
-
-        return Math.max(robTrue,robFalse);
-    }
-
-    public int rob(TreeNode node,boolean canRob){
+    public int rob(TreeNode node,boolean isInclude){
         if(node==null){
             return 0;
         }
-        if(canRob){
-            if(mapT.get(node)!=null){
-                return mapT.get(node);
+        if(isInclude){
+            if(mapInclude.get(node)!=null){
+                return mapInclude.get(node);
             }
             int rob=node.val+rob(node.left,false)+
                     rob(node.right,false);
-            mapT.put(node, rob);
+            mapInclude.put(node, rob);
             return rob;
         }
         else{
-            if(mapF.get(node)!=null){
-                return mapF.get(node);
+            if(mapExclude.get(node)!=null){
+                return mapExclude.get(node);
             }
             int leftMax=Math.max(rob(node.left,true),
                     rob(node.left,false));
             int rightMax=Math.max(rob(node.right,true),
                     rob(node.right,false));
             int rob=(leftMax+rightMax);
-            mapF.put(node, rob);
+            mapExclude.put(node, rob);
             return rob;
         }
     }

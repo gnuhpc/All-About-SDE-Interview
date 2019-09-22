@@ -1,5 +1,8 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyPow50 {
     public double myPow(double x, int n) {
         int sign=1;
@@ -9,7 +12,8 @@ public class MyPow50 {
         }
         return sign<0? 1/pow(x,n) : pow(x,n) ;
     }
-    public double pow(double x,int n){
+
+    private double pow(double x,int n){
         if(n==0) return 1;
         if(n==1) return x;
         if(n%2==0) {

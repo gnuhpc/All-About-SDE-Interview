@@ -93,7 +93,7 @@ public class Trie {
 		
 		while( countNumOfChildren(node) == 1 && !node.isLeaf) {
 			node = node.children[indexOfSingleChild];
-			lcp.append(String.valueOf((char) (indexOfSingleChild+'a')));
+			lcp.append((char) (indexOfSingleChild + 'a'));
 		}
 		
 		return lcp.toString();

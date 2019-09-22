@@ -16,7 +16,7 @@ public class MinPathSum64 {
     private int COL;
     private int visited = Integer.MAX_VALUE;
 
-    public int minPathSum(int[][] grid) {
+    public int minPathSum1(int[][] grid) {
         ROW = grid.length;
         if (ROW == 0) return 0;
         COL = grid[0].length;
@@ -51,28 +51,50 @@ public class MinPathSum64 {
     Method 2: dfs + Memorization //倒退法
      */
 
-    public int minPathSum2(int[][] grid) {
-        ROW = grid.length;
-        if (ROW == 0) return 0;
-        COL = grid[0].length;
-        if (COL == 0) return 0;
-        int[][] visited =new int[ROW][COL] ;
 
-        return dfs2(ROW-1,COL-1, grid, visited);
-    }
-    private int dfs2(int r, int c,int[][] grid, int[][] visited){
-        if(r==0&&c==0){
-            return grid[0][0];
+    public int minPathSum2(int[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
         }
-        if(!valid(r,c)){
+
+        int[][] memory = new int[grid.length][grid[0].length];
+
+        // Bug 1: forget to initilize
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                memory[i][j] = -1;
+            }
+        }
+
+        return dfs(grid, 0, 0, memory);
+    }
+
+    public int dfs(int[][] grid, int i, int j, int[][] memory) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        if (i >= rows || j >= cols) {
+            // 表示不可达
             return Integer.MAX_VALUE;
         }
-        if(visited[r][c]!=0){
-            return visited[r][c];
+
+        // The base case: arrive the destination.
+        if (i == rows - 1 && j == cols - 1) {
+            return grid[i][j];
         }
-        visited[r][c]=grid[r][c]+Math.min(dfs2(r-1,c,grid,visited), dfs2(r,c-1,grid,visited));
-        return visited[r][c];
+
+        // 已经搜索过的点不需要重复搜索
+        if (memory[i][j] != -1) {
+            return memory[i][j];
+        }
+
+        // 开始dfs 可能的路径,目前我们只有2种可能
+        // Record the memory
+        memory[i][j] =grid[i][j] + Math.min(dfs(grid, i + 1, j, memory), dfs(grid, i, j + 1, memory));
+
+        return memory[i][j];
     }
+
 
     /*
     Method 3 : 2D DP
@@ -111,7 +133,7 @@ public class MinPathSum64 {
 
     @Test
     public void test() {
-        System.out.println(minPathSum(new int[][]{
+        System.out.println(minPathSum1(new int[][]{
                 {1, 3, 1},
                 {1, 5, 1},
                 {4, 2, 1}

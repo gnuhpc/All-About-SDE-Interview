@@ -20,19 +20,15 @@ public class SubsetsWithDup90 {
         dfs(nums, 0, new ArrayList<>(), res);
         return res;
     }
+
     private void dfs(int[] nums, int start, List<Integer> temp,List<List<Integer>> res){
         res.add(new ArrayList<>(temp));
-        if(start == nums.length){
-            return;
-        }
 
-        Set<Integer> visited = new HashSet<>();
         for(int i = start; i < nums.length; i++){
-            if(visited.add(nums[i])){
-                temp.add(nums[i]);
-                dfs(nums, i + 1, temp,res);
-                temp.remove(temp.size() - 1);
-            }
+            if(i > start && nums[i] == nums[i-1]) continue;
+            temp.add(nums[i]);
+            dfs(nums, i + 1, temp,res);
+            temp.remove(temp.size() - 1);
         }
     }
 

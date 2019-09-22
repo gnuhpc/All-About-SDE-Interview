@@ -56,7 +56,7 @@ public class InterSectionofTwoArrays349 {
         return result;
     }
 
-    // version2 hash map
+    // version2 hash memo
     /**
      * @param nums1 an integer array
      * @param nums2 an integer array

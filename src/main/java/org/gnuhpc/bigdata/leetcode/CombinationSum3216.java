@@ -11,21 +11,22 @@ public class CombinationSum3216 {
         helper(1, k, n, new ArrayList<>(), res);
 
         return res;
-
     }
 
     private void helper(int start, int size, int sum, List<Integer> tempList, List<List<Integer>> res) {
-        if (tempList.size() > size || sum < 0) return;
-        if (tempList.size() == size && sum == 0) {
+        if (size <0 || sum < 0) return;
+        if (size == 0&& sum == 0) {
             res.add(new ArrayList<>(tempList));
         }
 
         for (int i = start; i <= 9; i++) {
             tempList.add(i);
-            helper(i+1, size, sum-i, tempList,res);
+            //注意size-1可以更加快速的通过给定数字个数已经用完而剪枝
+            helper(i+1, size-1, sum-i, tempList,res);
             tempList.remove(tempList.size()-1);
         }
     }
+
 
     @Test
     public void test(){

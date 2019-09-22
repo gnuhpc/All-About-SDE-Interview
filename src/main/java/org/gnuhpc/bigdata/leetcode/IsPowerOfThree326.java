@@ -15,10 +15,25 @@ public class IsPowerOfThree326 {
 
     //Without recursion or loop
     public boolean isPowerOfThree2(int n) {
-        int Max3PowerInt = 1162261467; // 3^19, 3^20 = 3486784401 > MaxInt32
-        if (n <= 0 || n > Max3PowerInt) return false;
-        return Max3PowerInt % n == 0;
+        if (n<=0) return false;
+
+        int left = 1, right = n/3;
+
+        while (left+1<right){
+            int mid = (right-left)/2 + left;
+            double temp = Math.pow(3,mid);
+
+            if (temp == n) return true;
+            else if (temp>n) right = mid;
+            else left = mid;
+        }
+
+        if (Math.pow(3,left) == n) return true;
+        if (Math.pow(3,right) == n) return true;
+
+        return false;
     }
+
 
     @Test
     public void test(){

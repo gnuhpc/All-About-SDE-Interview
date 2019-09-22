@@ -3,20 +3,29 @@ package org.gnuhpc.bigdata.leetcode;
 import org.junit.Test;
 
 public class FindNthDigit400 {
-    int findNthDigit(int n) {
-        int len = 1, base = 1;  // len表示当前数的位数, base表示当前位是个位、百位、千位等...
-        while (n > 9L * base * len) {
-            n -= 9 * base * len;
-            len++;
-            base *= 10;
+    /*
+    Straight forward way to solve the problem in 3 steps:
+    1. find the length of the number where the nth digit is from
+    2. find the actual number where the nth digit is from
+    3. find the nth digit and return
+     */
+    public int findNthDigit(int n) {
+        int len = 1;
+        long count = 9;
+        int start = 1;
+
+        while (n > len * count) {
+            n -= len * count;
+            len += 1;
+            count *= 10;
+            start *= 10;
         }
-        int curNum = (n - 1)/len + base, digit = 0;   // curNum是含有所找digit的那个数
-        for (int i = (n - 1) % len; i < len; ++i) {          // 根据偏移量找到所找的数字
-            digit = curNum % 10;
-            curNum /= 10;
-        }
-        return digit;
+
+        start += (n - 1) / len;
+        String s = Integer.toString(start);
+        return Integer.parseInt(s.charAt((n-1)%len)+"");
     }
+
 
     @Test
     public void test(){

@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.systemdesign.lru.LRUCache;
+import org.gnuhpc.bigdata.systemdesign.practice.lru.LRUCache;
 
 public class LRUCache146 {
     LRUCache<Integer, Integer> map;

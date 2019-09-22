@@ -297,4 +297,27 @@ public class Utils {
         return result;
     }
 
+    public static boolean isPalindrome(String s) {
+        int i = 0;
+        int j = s.length() - 1;
+        while (i <= j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    public static boolean isPalindrome(String s, int low, int high) {
+        while (low < high)
+            if (s.charAt(low++) != s.charAt(high--)) return false;
+        return true;
+    }
+
+    public static String reverseStr(String str) {
+        return new StringBuilder(str).reverse().toString();
+    }
+
 }

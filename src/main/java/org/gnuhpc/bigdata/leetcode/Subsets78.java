@@ -67,7 +67,7 @@ public class Subsets78 {
     }
 
     /*
-    Method3 : dfs 方法一和方法二的集合
+    Method3 : dfs 方法一和方法二的集合 TODO: DFS+回溯模板
      */
 
     public List<List<Integer>> subsets3(int[] nums) {
@@ -79,9 +79,7 @@ public class Subsets78 {
     public void dfs(int[] nums, List<List<Integer>> res, List<Integer> temp, int start) {
 
         res.add(new ArrayList<>(temp));
-        if (start == nums.length) {
-            return;
-        }
+
         for (int i = start; i < nums.length; i++) {
             temp.add(nums[i]);
             dfs(nums, res, temp, i + 1);

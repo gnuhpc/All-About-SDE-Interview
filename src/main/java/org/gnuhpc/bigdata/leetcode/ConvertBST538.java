@@ -2,7 +2,9 @@ package org.gnuhpc.bigdata.leetcode;
 
 
 import org.gnuhpc.bigdata.datastructure.linkedlist.basicimpl.LinkedList;
+import org.gnuhpc.bigdata.datastructure.tree.basicimpl.TreeCreator;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
+import org.junit.Test;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -33,24 +35,26 @@ public class ConvertBST538 {
     }
 
     public TreeNode convertBST2(TreeNode root) {
-        if (root == null)
-            return root;
+        if (root == null) return root;
         Deque<TreeNode> stack = new ArrayDeque<>();
         TreeNode node = root;
         while (node != null || !stack.isEmpty()) {
             while (node != null) {
-                stack.add(node);
+                stack.push(node);
                 node = node.right;
             }
             node = stack.pop();
             node.val += sum;
             sum = node.val;
-            if (node.left != null)
-                node = node.left;
-            else
-                node = null;
+            node = node.left;
         }
         return root;
+    }
+
+    @Test
+    public void test(){
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{5,2,13});
+        convertBST2(root);
     }
 
 }

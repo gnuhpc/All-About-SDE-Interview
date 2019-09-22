@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LengthOfLIS300 {
     /*
-    暴力搜索1
+    Method1: 暴力搜索, LTE
      */
 
     public int lengthOfLIS(int[] nums) {
@@ -43,60 +43,102 @@ Thus, we find out only the length of the LIS possible by not including the curre
     }
 
     /*
-    Method2: DP
+    Method2 : memo search ,TODO: 二维记忆搜索数组舒初始化方法
+     */
+
+    public int lengthOfLIS2(int[] nums) {
+        int memo[][] = new int[nums.length + 1][nums.length];
+        for (int[] l : memo) {
+            Arrays.fill(l, -1);
+        }
+        return lengthofLIS(nums, -1, 0, memo);
+    }
+    public int lengthofLIS(int[] nums, int previndex, int curpos, int[][] memo) {
+        if (curpos == nums.length) {
+            return 0;
+        }
+        if (memo[previndex + 1][curpos] >= 0) {
+            return memo[previndex + 1][curpos];
+        }
+        int taken = 0;
+        if (previndex < 0 || nums[curpos] > nums[previndex]) {
+            taken = 1 + lengthofLIS(nums, curpos, curpos + 1, memo);
+        }
+
+        int nottaken = lengthofLIS(nums, previndex, curpos + 1, memo);
+        int result = Math.max(taken, nottaken);
+        memo[previndex + 1][curpos] =  result;
+        return result;
+    }
+
+
+    /*
+    Method3: DP
      */
     //https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
     // 如果要求这个子序列，则参考：
     // https://www.hackerrank.com/challenges/longest-increasing-subsequent/problem
-    public int lengthOfLIS2(int[] nums) {
-        int n = nums.length;
-        if (n==0){ return 0;}
-        int lis[] = new int[n];
-        int i,j;
+    public int lengthOfLIS3(int[] nums) {
+        int[] dp = new int[nums.length];
+        // dp 数组全都初始化为 1
+        Arrays.fill(dp, 1);
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j])
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
 
-        /* Initialize LIS values for all indexes */
-        for ( i = 0; i < n; i++ )
-            lis[i] = 1;
-
-        /* Compute optimized LIS values in bottom up manner */
-        for ( i = 1; i < n; i++ )
-            for ( j = 0; j < i; j++ )
-                if ( nums[i] > nums[j] )
-                    lis[i] = Math.max(lis[i], lis[j] + 1);
-
-        /* Pick maximum of all LIS values */
-
-        return Arrays.stream(lis).max().getAsInt();
+        int res = 0;
+        for (int i = 0; i < dp.length; i++) {
+            res = Math.max(res, dp[i]);
+        }
+        return res;
     }
 
 
-    //二分法
-    public int lengthOfLIS3(int[] nums) {
-        if(nums.length == 0) return 0;
-        List<Integer> list = new ArrayList<>();
-        list.add(nums[0]);
-        for(int i = 1; i < nums.length; i++){
-            //遇到比头元素小的数字替换
-            if(nums[i] < list.get(0)) list.set(0, nums[i]);
-                //遇到比尾元素打的数字添加到末尾
-            else if(nums[i] > list.get(list.size() - 1)) list.add(nums[i]);
-                //如果遍历到的新元素比ends数组首元素大，比尾元素小时，
-                //用二分查找法找到第一个不小于此新元素的位置，覆盖掉位置的原来的数字
-            else{
-                int left = 0, right = list.size() - 1;
-                while(left < right){
-                    int mid = (left + right) / 2;
-                    if(nums[i] <= list.get(mid)) right = mid;
-                    else left = mid + 1;
-                }
-                list.set(left, nums[i]);
+    /*
+    Method4: 二分法
+    https://mp.weixin.qq.com/s?__biz=MzU2MDY5NTE4NA==&mid=2247484036&idx=1&sn=0c64b2fe828e76402cdd471ebd3b9834&chksm=fc05507bcb72d96d458a272437703410387e4f774f9541ba74bdcd12932af88713577eb3dac0&mpshare=1&scene=1&srcid=0917gmCIi8IKZYZkQ0AwHuyy&sharer_sharetime=1568712419437&sharer_shareid=c6956170fd4fb4420832b556d7c1fdc5#rd
+     */
+    public int lengthOfLIS4(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        // minLast[-1] is alwyas Integer.MAX_VALUE
+        int[] minLast = new int[nums.length + 1];
+        for (int i = 0; i <= nums.length; i++) {
+            minLast[i] = Integer.MAX_VALUE;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int index = binarySearch(minLast, nums[i]);
+            minLast[index] = nums[i];
+        }
+
+        return binarySearch(minLast, Integer.MAX_VALUE);
+    }
+
+    // find the first number >= num
+    private int binarySearch(int[] minLast, int num) {
+        int start = 0, end = minLast.length - 1;
+        while (start + 1 < end) {
+            int mid = (end - start) / 2 + start;
+            if (minLast[mid] < num) {
+                start = mid;
+            }
+            else {
+                end = mid;
             }
         }
-        return list.size();
+        if (minLast[start] >= num) {
+            return start;
+        }
+        return end;
     }
 
     @Test
     public void test(){
-        System.out.println(lengthOfLIS2(new int[]{10,9,2,5,3,7,101,18}));
+        System.out.println(lengthOfLIS3(new int[]{10,9,2,5,3,7,101,18}));
     }
 }

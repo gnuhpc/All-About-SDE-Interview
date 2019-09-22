@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class IntersectionTwoArrays350 {
+public class InterSectionTwoArrays350 {
     public static void main(String[] args) {
         int[] nums1 = {1, 2, 2, 1};
         int[] nums2 = {2, 2};
@@ -22,7 +22,7 @@ public class IntersectionTwoArrays350 {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         for(int i : nums2){
             if (map1.containsKey(i) && map1.get(i)>0){
-                result.add(Long.valueOf(i));
+                result.add((long) i);
                 Long value = map1.get(i);
                 map1.put(i,value-1);
             }

@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 /**
  * Description:
  * User: gnuhpc
@@ -8,7 +10,7 @@ package org.gnuhpc.bigdata.leetcode;
  */
 public class Convert6 {
     /*
-    简单字符串
+    从右往左看过去，将空格压缩掉就是这个结构
      */
     public String convert(String s, int numRows) {
         if (numRows<=1) return s;
@@ -22,5 +24,10 @@ public class Convert6 {
             idx+=k;
         }
         return String.join("", sb);
+    }
+
+    @Test
+    public void test(){
+        System.out.println(convert("PAYPALISHIRING",3));
     }
 }

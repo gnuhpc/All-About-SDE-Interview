@@ -16,38 +16,38 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) { continue; } // 跳过会�
 * */
 
     //https://www.youtube.com/watch?v=re9JDd7M-v8 上边有个图画的不错
-    List<List<Integer>> res = new ArrayList<>();
 
     public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
         if(nums==null || nums.length ==0)  return res;
 
-        boolean[] used = new boolean[nums.length];
+        boolean[] visited = new boolean[nums.length];
         List<Integer> list = new ArrayList<>();
 
         Arrays.sort(nums);
-        dfs(nums, used, list);
+        dfs(nums, visited, list, res);
         return res;
     }
 
-    public void dfs(int[] nums, boolean[] used, List<Integer> list) {
+    public void dfs(int[] nums, boolean[] visited, List<Integer> list, List<List<Integer>> res) {
         if(list.size()==nums.length) {
             //不能直接传进去list，否则对list的改动都体现在最终结果了
             res.add(new ArrayList<>(list));
             return ;
         }
         for (int i=0; i<nums.length; i++) {
-            // 当前位置的数已经在List中了 ,实际上是剪枝
-            if(used[i]) continue; // add by tina 这一行并不会被命中吧？？
+            // 当前位置的数已经在List中了 ,实际上是剪枝,
+            if(visited[i]) continue; // add by tina 这一行并不会被命中吧？ 当然会命中，因为每次都是从数据集的开始进行遍历的
             // 当前元素与其前一个元素值相同 且 前元素尚没有被加到list中，跳过该元素 （如果不跳过直接加入，则不是用了第一个1就是用了第二个1，从结果看来都是重复的排列）
-            if(i>0 && nums[i]==nums[i-1] && !used[i-1])   {
+            if(i>0 && nums[i]==nums[i-1] && !visited[i-1])   {
                 continue;//only insert duplicate element when the previous duplicate element has been inserted
             }
             // 深度优先搜索遍历
-            used[i]=true;
+            visited[i]=true;
             list.add(nums[i]);
-            dfs(nums, used, list);
+            dfs(nums, visited, list, res);
             list.remove(list.size()-1);
-            used[i]=false;
+            visited[i]=false;
         }
     }
 

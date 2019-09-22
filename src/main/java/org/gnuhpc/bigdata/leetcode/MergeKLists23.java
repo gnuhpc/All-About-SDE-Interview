@@ -50,18 +50,14 @@ public class MergeKLists23 {
 
     /*
     Method 2: Use heap. Suppose we have k lists, and for each list, there are at most n elements.
-
-Maintain a list of k elements. And always remove the first element from the list.
- After removing an element, add the element after it to the heap.
-
- We have to insert at most k*n nodes, and for each node to be in order in the heap, we need log(k) time (“Bottom Up Insertion”).
-  So total time complexity is also knlog(k).
-
+    Maintain a list of k elements. And always remove the first element from the list.
+    After removing an element, add the element after it to the heap.
+    We have to insert at most k*n nodes, and for each node to be in order in the heap, we need log(k) time (“Bottom Up Insertion”).
+    So total time complexity is also knlog(k).
      */
 
-
     public ListNode mergeKLists2(ListNode[] lists) {
-        Queue<ListNode> heap = new PriorityQueue<ListNode>(10, Comparator.comparingInt(l -> l.val));
+        Queue<ListNode> heap = new PriorityQueue<>(10, Comparator.comparingInt(l -> l.val));
 
         for (int i = 0; i < lists.length; i++){
             ListNode temp = lists[i];

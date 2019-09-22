@@ -19,7 +19,7 @@ public class SubarraySum560 {
             3. now, we have k and sum.
                   As long as we can find a sum[0, i - 1], we then get a valid subarray
                  which is as long as we have the hashmap-key,  we then get a valid subarray
-            4. Why don't map.put(sum[0, i - 1], 1) every time ?
+            4. Why don't memo.put(sum[0, i - 1], 1) every time ?
                   if all numbers are positive, this is fine
                   if there exists negative number, there could be preSum frequency > 1
         */
@@ -51,21 +51,21 @@ public class SubarraySum560 {
 
         ArrayList<Integer> ans = new ArrayList<Integer>();
         // <PrefixSum, position>
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> memo = new HashMap<Integer, Integer>();
 
-        map.put(0, -1);
+        memo.put(0, -1);
 
         int sum = 0;
         for (int i = 0; i < len; i++) {
             sum += nums[i];
 
-            if (map.containsKey(sum)) {
-                ans.add(map.get(sum) + 1);//起始位置
+            if (memo.containsKey(sum)) {
+                ans.add(memo.get(sum) + 1);//起始位置
                 ans.add(i);//结束位置
                 return ans;
             }
 
-            map.put(sum, i);
+            memo.put(sum, i);
         }
 
         return ans;

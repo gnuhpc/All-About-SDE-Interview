@@ -4,10 +4,20 @@ public class IsPowerOfFour342 {
     public boolean isPowerOfFour(int num) {
         if (num<=0) return false;
 
-        //Filter 2,8,...
+        int left = 1, right = num/8;
 
-        int res = num & (num-1);
-        int filter = num & 0x55555555;
-        return (res==0 && filter!=0);
+        while (left+1<right){
+            int mid = (right-left)/2 + left;
+            double temp = Math.pow(4,mid);
+
+            if (temp == num) return true;
+            else if (temp>num) right = mid;
+            else left = mid;
+        }
+
+        if (Math.pow(4,left) == num) return true;
+        if (Math.pow(4,right) == num) return true;
+
+        return false;
     }
 }

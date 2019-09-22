@@ -14,9 +14,9 @@ Specifically, immediately after visit of node 'n',
 the left-most child in the right sub-tree of node 'n' will be visited.
 
 2. If node 'n' does not have right child then -
-        a. If 'n' is a left child of its parent(parent.left == 'n'),
-        then parent is the in-order successor of 'n';
-        b. If 'n' is a right child of its parent(parent.right == 'n'),
+        a. If 'n' is a left child of its cor(cor.left == 'n'),
+        then cor is the in-order successor of 'n';
+        b. If 'n' is a right child of its cor(cor.right == 'n'),
         Travel down the tree, if a node’s data is greater than find’s data then go right side,
         otherwise go to left side.
 

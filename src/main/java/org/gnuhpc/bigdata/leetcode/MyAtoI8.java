@@ -5,14 +5,16 @@ public class MyAtoI8 {
         int index = 0;
         long out = 0;
         boolean positive = true;
-        while (index < str.length() && str.charAt(index) == ' '){
-            ++index;
-        }
-        if (index < str.length() && str.charAt(index) == '-'){
+
+        str = str.trim();
+
+        if (str.isEmpty()) return 0;
+
+        if (str.charAt(index) == '-') {
             positive = false;
             ++index;
         }
-        else if (index < str.length() && str.charAt(index) == '+'){
+        else if (str.charAt(index) == '+') {
             ++index;
         }
         while (index < str.length() && Character.isDigit(str.charAt(index))){

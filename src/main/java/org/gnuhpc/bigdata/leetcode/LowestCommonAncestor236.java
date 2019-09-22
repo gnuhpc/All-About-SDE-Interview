@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.util.Stack;
 
+import static org.gnuhpc.bigdata.datastructure.tree.basicimpl.TreeUtils.pathToX;
+
 public class LowestCommonAncestor236 {
     @Test
     public void test() {
@@ -50,31 +52,6 @@ public class LowestCommonAncestor236 {
 
 
 
-    public Stack<TreeNode> pathToX(TreeNode root, int x) {
-        if (root == null) {
-            return null;
-        }
-
-        if (root.val == x) {
-            Stack<TreeNode> path = new Stack<>();
-            path.push(root);
-            return path;
-        }
-
-        Stack<TreeNode> leftPath = pathToX(root.left, x);
-        if (leftPath != null) {
-            leftPath.push(root);
-            return leftPath;
-        }
-
-        Stack<TreeNode> rightPath = pathToX(root.right, x);
-        if (rightPath != null) {
-            rightPath.push(root);
-            return rightPath;
-        }
-
-        return null;
-    }
 
     /*
     Method2 : 递归方法
@@ -88,4 +65,5 @@ public class LowestCommonAncestor236 {
         TreeNode right = lowestCommonAncestor(root.right,p,q); //往右分支上寻找
         return left==null?right:right==null?left:root;
     }
+
 }

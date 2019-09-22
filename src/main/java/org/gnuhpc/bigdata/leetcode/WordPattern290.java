@@ -1,55 +1,41 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class WordPattern290 {
-    public static boolean wordPattern(String pattern, String str) {
-        char[] patterns = pattern.toCharArray();
-        Map<Character,String> maps = new HashMap<>();
-        String[] strs = str.split(" ");
-
-        if(patterns.length != strs.length)
-            return false;
-
-        for(int i = 0;i<patterns.length;i++){
-            char ch = patterns[i];
-            if(maps.containsKey(ch)){
-                String value = maps.get(ch);
-                if(!value.equals(strs[i]))
-                    return false;
-            }else{
-                if(maps.containsValue(strs[i]))
-                    return false;
-                maps.put(ch,strs[i]);
-            }
-        }
-        return true;
-    }
-
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         String pattern = "abba", str = "dog cat cat dog";
-
-        System.out.println(wordPattern2(pattern,str));
+        System.out.println(wordPattern(pattern, str));
     }
 
     // 2个map，判断包含key的方法，一个map就用containsKey和containsValue
-    public static boolean wordPattern2(String pattern, String str) {
-        Map<Character,String> mapPS = new HashMap<Character,String>();
-        Map<String,Character> mapSP = new HashMap<String,Character>();
+    public boolean wordPattern(String pattern, String str) {
+        if (pattern == null || str == null) return false;
         String[] strArr = str.split(" ");
-        if(strArr.length != pattern.length()) return false;
-        for(int i = 0; i< strArr.length; i++){
-            String s = strArr[i];
-            Character c = (Character) pattern.charAt(i);
-            if(mapPS.containsKey(c) && (!s.equals(mapPS.get(c)))) return false;
-            else if(mapSP.containsKey(s) && (c != mapSP.get(s))) return false;
+        char[] patternArr = pattern.toCharArray();
+        if (patternArr.length != strArr.length) return false;
+
+        Map<Character, String> map1 = new HashMap<>();
+        Map<String, Character> map2 = new HashMap<>();
+
+        for (int i = 0; i < strArr.length; i++) {
+            if (map2.containsKey(strArr[i])) {
+                Character c = map2.get(strArr[i]);
+                if (c != patternArr[i]) return false;
+            }
             else {
-                mapPS.put(c,s);
-                mapSP.put(s,c);
+                if (map1.containsKey(patternArr[i]) && !map1.get(patternArr[i]).equals(strArr[i])) {
+                    return false;
+                }
+                map1.put(patternArr[i], strArr[i]);
+                map2.put(strArr[i], patternArr[i]);
             }
         }
+
         return true;
-
-
     }
+
 }

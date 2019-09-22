@@ -87,7 +87,7 @@ public class SearchMatrix74 {
     }
 
     /*
-    Method3 : 利用单调上升特性, 从左上角开始向左和向下找
+    Method3 : 利用单调上升特性, 从右上角开始向左和向下找
      */
 
     public boolean searchMatrix3(int[][] matrix, int target) {

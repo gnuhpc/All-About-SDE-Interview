@@ -32,6 +32,17 @@ public class ClimbStairs70 {
         }
     }
 
+    // add by tina,DP的思想，即将上面自顶向下的思维方式，改成自底向上的方法来实现。
+    public int climbStairs2(int n) {
+        int[] memo = new int[n+1];//注意边界情况考虑，因为memo[n]不太可能为0
+        memo[0] = 1;
+        memo[1] = 1;
+        for(int i = 2; i<=n;i++){
+            memo[i] = memo[i-1] + memo[i-2];
+        }
+        return memo[n];
+    }
+
 
     @Test
     public void test(){

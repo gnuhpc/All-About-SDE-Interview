@@ -80,4 +80,36 @@ public class MaxProduct152 {
         //System.out.println(maxProduct(new int[]{-1,-2,-3,0}));
         System.out.println(maxProduct(new int[]{0,2}));
     }
+
+    // add by tina, DP
+    public int maxProduct2(int[] nums) {
+        assert nums.length > 0;
+        int max = nums[0], min = nums[0], maxAns = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            int mx = max, mn = min;
+            max = Math.max(Math.max(nums[i], mx * nums[i]), mn * nums[i]);
+            min = Math.min(Math.min(nums[i], mx * nums[i]), mn * nums[i]);
+            maxAns = Math.max(max, maxAns);
+        }
+        return maxAns;
+    }
+
+    // add by tina, 暴力解法
+    public int maxProduct3(int[] nums) {
+        int N = nums.length;
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < N; ++i) {
+            int cur = 1;
+            for (int j = i; j < N; ++j) {
+                if (j == i)
+                    cur = nums[i];
+                else
+                    cur = cur * nums[j];
+                res = Math.max(res, cur);
+            }
+        }
+        return res;
+    }
+
+
 }

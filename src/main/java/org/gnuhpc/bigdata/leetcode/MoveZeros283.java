@@ -60,6 +60,26 @@ public class MoveZeros283 {
         }
     }
 
+    //add by tina,思路与上面类似，但下面这个写法更容易想到
+    // 首先找到第一个0元素，然后将后面的非0元素与当前数组第一个0元素交换
+    // [i,cur)为0元素，注意边界的控制
+    public void moveZeroes(int[] nums) {
+        int i = 0;
+        int cur = 0;
+        while(cur<nums.length && nums[cur] != 0 ) cur++; // 找到第一个为0的元素
+        i = cur;
+
+        while(cur<nums.length && i<nums.length){
+            if(nums[cur] != 0) {
+                swap(nums,i,cur);
+                i++;
+            }
+            cur++;
+        }
+    }
+
+
+
     public static void main(String[] args) {
 
         int[] nums = new int[]{0, 1, 3, 0, 5, 0, 0, 1};

@@ -106,4 +106,28 @@ public class SummaryRanges228 {
 
         return res;
     }
+
+    // add by tina
+    public List<String> summaryRanges3(int[] nums) {
+        List<String> lst = new ArrayList<>();
+        if(nums == null || nums.length == 0) return lst;
+        int begin = nums[0];
+        int end = nums[0];
+        for(int i = 1;i<nums.length;i++){
+            if(nums[i-1]+1 == nums[i]){
+                end = nums[i];
+            }
+            else {
+                if(begin == end) lst.add(Integer.toString(begin));
+                else lst.add(begin+"->"+end);
+                begin = nums[i];
+                end = nums[i];
+            }
+
+        }
+        if(begin == end) lst.add(Integer.toString(begin));
+        else lst.add(begin+"->"+end);
+        return lst;
+    }
+
 }

@@ -94,4 +94,7 @@ public class SummaryRanges2352 {
 
         Utils.print2DArray(getIntervals());
     }
+
+
+
 }

@@ -112,6 +112,28 @@ public class MinSubArrayLen209 {
        return res;
    }
 
+   // add by tina,类似于方法2，连续长度子数组都可以用这个套路。
+    // 也可以解释为双指针i,j套路
+    public int minSubArrayLen4(int s, int[] nums) {
+        if(nums == null || nums.length == 0) return 0;
+        int[] sum = new int[nums.length];
+        int j = 0;
+        sum[0] = nums[0];
+        if(nums[0] >= s ) return 1;
+        int minlen = Integer.MAX_VALUE;
+        for(int i = 1; i<nums.length; i++){
+            sum[i] = sum[i-1]+nums[i];
+            if(sum[i] >= s){
+                while(sum[i] - sum[j] >= s) {
+                    j++;
+                }
+                minlen = Math.min(minlen,i-j+1);
+            }
+        }
+
+        return minlen==Integer.MAX_VALUE?0:minlen; //边界容易错
+    }
+
    @Test
    public void test(){
        System.out.println(minSubArrayLen3(7, new int[]{2,3,1,2,4,3}));

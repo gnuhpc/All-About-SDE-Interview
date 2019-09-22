@@ -47,4 +47,29 @@ public class SortColors75 {
         System.out.println();
         Arrays.stream(nums2).forEach(System.out::print);
     }
+
+    // add by tina, 双指针思想
+    public void sortColors3(int[] nums) {
+        if(nums == null || nums.length == 0 || nums.length == 1)  return;
+        // nums[0...red) == 0,nums(blue..length-1] == 2
+        int red = 0;
+        int blue = nums.length-1;
+        for(int cur = 0;cur<=blue;cur++){
+            if(nums[cur] == 0) {
+                swap(nums,cur,red);
+                red++;
+            }else if(nums[cur] == 2){
+                swap(nums,cur,blue);
+                blue--;cur--;
+            }
+        }
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = 0;
+        temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
 }

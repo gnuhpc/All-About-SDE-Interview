@@ -6,6 +6,7 @@ import java.util.PriorityQueue;
 
 public class KthSmallest378 {
     /*
+    将每一列视为一个有序链表，就和mergeklinkedlist题目一样了。
     minheap method
     Build a minHeap of elements from the first row.
     Do the following operations k-1 times :
@@ -15,7 +16,7 @@ public class KthSmallest378 {
      */
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
-        PriorityQueue<Tuple> pq = new PriorityQueue<Tuple>();
+        PriorityQueue<Tuple> pq = new PriorityQueue<>();
         for(int j = 0; j <= n-1; j++) pq.offer(new Tuple(0, j, matrix[0][j]));
         for(int i = 0; i < k-1; i++) {
             Tuple t = pq.poll();
@@ -40,20 +41,27 @@ public class KthSmallest378 {
         int len = matrix.length;
         //定义范围
         int low = matrix[0][0], high = matrix[len - 1][len - 1];
-        while (low <= high) {  // 注意是小于等于
+        while (low + 1< high) {  // 注意是小于等于
             int mid = low + (high - low) / 2;
             int count = helper(matrix, mid);
             // 如果这个count小于k，说明mid猜小了
             if (count < k)
-                low = mid + 1;
+                low = mid;
             else
                 // 否则说明mid猜大了
-                high = mid - 1; // 排除mid不在矩阵内的情况，所以只能等到low和high时才退出循环
+                high = mid;
         }
-        return low;
+
+        //这里一定要是大于等于，因为如果只是等于的话，如下例子就有问题
+        //1 1 1 1 1 1 2 3   k = 1
+        //          l h
+        // helper返回的是6，但是由于有重复的，low对应的1就是要返回的。
+        if (helper(matrix,low) >=k) return low;
+        else return high;
     }
 
     private static int helper(int[][] matrix, int mid) {
+        //从左下角的原因起是因为如果mid小于这个则一行都可以忽略并往上找
         int i = matrix.length - 1, j = 0;
         int res = 0;
         //逐行查找比mid小的 = count ， 这个也可以改为二分

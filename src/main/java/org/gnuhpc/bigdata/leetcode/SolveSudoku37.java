@@ -48,6 +48,7 @@ public class SolveSudoku37 {
 
         // if the given number is already in the box: the number cannot be part of the solution
         // 求出每一个box的左上角
+        // TODO
         int boxRowOffset = (row / 3) * 3;
         int boxColumnOffset = (col / 3) * 3;
 

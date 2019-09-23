@@ -1,7 +1,7 @@
 package org.gnuhpc.bigdata.algorithm.dynamicprogramming.lcs;
 
 
-public class LongestCommonSubsequence {
+public class LongestCommonSubsequenceDFS {
     public static void main(String args[]) {
         System.out.println("---------------Longest Common Subsequence Using Recursive Method-----------------");
         String string1 = "AGGTABNDSV";

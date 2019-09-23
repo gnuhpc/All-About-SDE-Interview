@@ -20,28 +20,29 @@ public class LongestIncreasingPath329 {
         return max;
     }
 
-    int dfs(int[][] matrix, int min, int i, int j, int n, int m, int[][] cache) {
+    int dfs(int[][] matrix, int tail, int i, int j, int n, int m, int[][] cache) {
 
         // check boundary limits
         if (i < 0 || j < 0 || i >= n || j >= m)
             return 0;
 
-        // check min condition
-        if (matrix[i][j] <= min)
+        // check tail condition
+        if (matrix[i][j] <= tail)
             return 0;
 
         // check into cache
         if (cache[i][j] != 0)
             return cache[i][j];
 
-        // update min
-        min = matrix[i][j];
+        // update tail
+        tail = matrix[i][j];
 
+        //TODO DFS 写法一
         // run dfs in all four directions
-        int a = dfs(matrix, min, i - 1, j, n, m, cache) + 1;
-        int b = dfs(matrix, min, i + 1, j, n, m, cache) + 1;
-        int c = dfs(matrix, min, i, j - 1, n, m, cache) + 1;
-        int d = dfs(matrix, min, i, j + 1, n, m, cache) + 1;
+        int a = dfs(matrix, tail, i - 1, j, n, m, cache) + 1;
+        int b = dfs(matrix, tail, i + 1, j, n, m, cache) + 1;
+        int c = dfs(matrix, tail, i, j - 1, n, m, cache) + 1;
+        int d = dfs(matrix, tail, i, j + 1, n, m, cache) + 1;
 
         // find max and update cache
         int max = Math.max(a, Math.max(b, Math.max(c, d)));
@@ -53,52 +54,37 @@ public class LongestIncreasingPath329 {
     /*
     写法二
      */
-    public static int n,m;
 
-    public static int f[][] = new int[1000][1000];
+    //TODO 二维数组遍历方式
+    public static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-    public static boolean check(int x,int y,int nx,int ny,int[][] mat){//能不能走到下一个格子，那些格子可以继续拓展
-        return x >=0 && y>= 0 && nx >=0 && ny >=0 && x < n && y <m && nx < n && ny <m && mat[x][y] > mat[nx][ny];
-    }
-
-    public int robot(int x,int y,int[][] mat){//最远能走多少步
-
-        if(f[x][y] > 0){
-            return f[x][y];
-        }
-
-        int max = 0;
-        for(int dx = -1;dx <= 1;dx++){
-            for (int dy = -1;dy <= 1;dy++){
-                if(Math.abs(dx + dy) == 1){ // 必须只在一个方向上走一步才是有效移动
-                    if(check(x,y,x+dx,y+dy,mat))
-                        max = Math.max(max,robot(x+dx,y+dy,mat)) ;
-                }
-            }
-        }
-        f[x][y] = max + 1;
-        return max+1;
-    }
-
-    //枚举最后中止的位置, 为什么从最终位置倒退，是因为递归
     public int longestIncreasingPath2(int[][] matrix) {
-        n = matrix.length;
-        if (n==0) return 0;
-        m = matrix[0].length;
-
-        for(int i = 0;i< n;i++){
-            for(int j = 0;j < m; j++){
-                f[i][j] = 0;
+        if(matrix.length == 0) return 0;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] cache = new int[m][n];
+        int max = 1;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int len = dfs(matrix, i, j, m, n, cache);
+                max = Math.max(max, len);
             }
         }
-
-        int ans = 0;
-        for(int i =0;i<n;i++){
-            for(int j = 0;j<m;j++){
-                ans = Math.max(ans,robot(i,j,matrix));
-            }
-        }
-        return ans;
+        return max;
     }
+
+    public int dfs(int[][] matrix, int i, int j, int m, int n, int[][] cache) {
+        if(cache[i][j] != 0) return cache[i][j];
+        int max = 1;
+        // TODO DFS写法二
+        for(int[] dir: dirs) {
+            int x = i + dir[0], y = j + dir[1];
+            if(x < 0 || x >= m || y < 0 || y >= n || matrix[x][y] <= matrix[i][j]) continue;
+            int len = 1 + dfs(matrix, x, y, m, n, cache);
+            max = Math.max(max, len);
+        }
+        cache[i][j] = max;
+        return max;
+    }
+
 
 }

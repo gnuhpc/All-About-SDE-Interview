@@ -286,7 +286,6 @@ public class Utils {
         return n | mask;
     }
 
-    //这个函数可以作为公共函数
     //reverse the byte, cached aside by the way
     public static int reverseBytes(byte n) {
         int result = 0;
@@ -319,5 +318,24 @@ public class Utils {
     public static String reverseStr(String str) {
         return new StringBuilder(str).reverse().toString();
     }
+
+    public static String intToBinary(int n){
+        return Integer.toBinaryString(n);
+    }
+
+    public static int binaryToInt(String str){
+        return Integer.parseInt(str,2);
+    }
+
+    public static int count_one(int n) {
+        int count = 0;
+        while(n!=0) {
+            n = n&(n-1);
+            count++;
+        }
+        return count;
+    }
+
+
 
 }

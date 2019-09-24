@@ -4,15 +4,14 @@ import java.util.Arrays;
 
 public class MissingNumber268 {
     public int missingNumber(int[] nums) {
-        return sumN(nums.length) - Arrays.stream(nums).sum();
-    }
-
-    private int sumN(int n) {
-        int sum = 0;
-        for (int i = 0; i <= n; i++) {
-            sum +=i;
+        if(nums == null || nums.length == 0) {
+            return 0;
         }
-
+        int n = nums.length + 1;
+        int sum = (n * (n - 1)) / 2;
+        for(int num : nums) {
+            sum -= num;
+        }
         return sum;
     }
 }

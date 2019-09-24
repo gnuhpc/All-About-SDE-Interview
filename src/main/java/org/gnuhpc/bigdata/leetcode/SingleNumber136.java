@@ -5,15 +5,14 @@ import java.util.Set;
 
 public class SingleNumber136 {
     public int singleNumber(int[] nums) {
-        Set<Integer> setresult = new HashSet<>();
+        Set<Integer> res = new HashSet<>();
 
         for (int i = 0; i < nums.length; i++) {
-            if(!setresult.remove(nums[i])){
-                setresult.add(nums[i]);
-
+            if(!res.remove(nums[i])){
+                res.add(nums[i]);
             }
         }
 
-        return (int) setresult.iterator().next();
+        return res.iterator().next();
     }
 }

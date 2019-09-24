@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-// 位操作基础如下：
-// https://www.vojtechruzicka.com/bit-manipulation-java-bitwise-bit-shift-operations/
 public class ReverseBits190 {
     // you need treat n as an unsigned value
     private Map<Byte, Integer> cache = new HashMap<>();
@@ -25,6 +23,20 @@ public class ReverseBits190 {
         int res = 0;
         for (int i = 0; i < 4; i++) res = (res << 8) ^ Utils.reverseBytes(bytes[i]);
         return res;
+    }
+
+    /*
+    Method2: 字符串操作
+     */
+    public int reverseBits2(int n) {
+        String str = Integer.toBinaryString(n);
+        StringBuilder sb = new StringBuilder(str).reverse();
+        for(int i = 0; i< 32 - str.length();i++){
+            sb.append('0');
+        }
+        String res = sb.toString();
+
+        return (int)Long.parseLong(res,2);
     }
 
 

@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import com.google.inject.internal.cglib.core.$Constants;
 import org.junit.Test;
 
 import java.util.*;
@@ -10,36 +11,35 @@ public class LadderLength127 {
        Method1 : BFS 自己画图即可看出
      */
     public int ladderLength(String start, String end, List<String> wordList) {
-        Set<String> dict = new HashSet<>();
-        for (String word : wordList) {
-            dict.add(word);
-        }
+        if (start == null || start.length() == 0 ||
+            wordList.size() == 0 || start.length() != end.length() ||
+            !wordList.contains(end))
+            return 0;
 
-        if (start.equals(end)) {
-            return 1;
-        }
+        Set<String> dict = new HashSet<>(wordList);
 
-        HashSet<String> hash = new HashSet<String>();
-        Queue<String> queue = new LinkedList<String>();
+        HashSet<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
         queue.offer(start);
-        hash.add(start);
+        visited.add(start);
 
         int length = 1;
         while (!queue.isEmpty()) {
-            length++;
+            length++; //注意BFS的层次记录
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 String word = queue.poll();
                 for (String nextWord : getNextWords(word, dict)) {
-                    if (hash.contains(nextWord)) {
+                    if (visited.contains(nextWord)) {
                         continue;
                     }
                     if (nextWord.equals(end)) {
                         return length;
                     }
 
-                    hash.add(nextWord);
+                    visited.add(nextWord);
                     queue.offer(nextWord);
+                    dict.remove(word);
                 }
             }
         }
@@ -58,15 +58,15 @@ public class LadderLength127 {
     // get connections with given word.
     // for example, given word = 'hot', dict = {'hot', 'hit', 'hog'}
     // it will return ['hit', 'hog']
-    private ArrayList<String> getNextWords(String word, Set<String> dict) {
-        ArrayList<String> nextWords = new ArrayList<String>();
-        for (char c = 'a'; c <= 'z'; c++) {
-            for (int i = 0; i < word.length(); i++) {
+    private List<String> getNextWords(String word, Set<String> wordSet) {
+        List<String> nextWords = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
                 if (c == word.charAt(i)) {
                     continue;
                 }
                 String nextWord = replace(word, i, c);
-                if (dict.contains(nextWord)) {
+                if (wordSet.contains(nextWord)) {
                     nextWords.add(nextWord);
                 }
             }
@@ -76,64 +76,64 @@ public class LadderLength127 {
 
 
     /*
-    Method 2: BFS with steps in the node
+    Method 2: BFS with steps in the node // TODO 学习这个记录distance 的方法,对于还原路径有作用
      */
-    HashMap<String, Integer> map = new HashMap<>();
+    HashMap<String, Integer> wordStepMap = new HashMap<>();
 
-    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
-        if (beginWord == null || beginWord.length() == 0 ||
-                wordList.size() == 0 || beginWord.length() != endWord.length() ||
-                wordList.indexOf(endWord) == -1)
+    public int ladderLength2(String start, String end, List<String> wordList) {
+        if (start == null || start.length() == 0 ||
+            wordList.size() == 0 || start.length() != end.length() ||
+            wordList.indexOf(end) == -1)
             return 0;
 
-        BFS(beginWord, endWord, wordList);
-        return map.getOrDefault(endWord, -1) + 1;
+        BFS(start, end, wordList);
+        return wordStepMap.getOrDefault(end, -1) + 1;
 
     }
 
-    private void BFS(String beginWord, String endWord, List<String> wordList) {
-        int len = beginWord.length();
+    private void BFS(String start, String end, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
         Queue<String> queue = new LinkedList<>();
-        queue.offer(beginWord);
-        map.put(beginWord, 0);
+        queue.offer(start);
+        wordStepMap.put(start, 0);
 
         while (!queue.isEmpty()) {
-            String str = queue.poll();
-            if (str.equals(endWord))
+            String word = queue.poll();
+            if (word.equals(end))
                 continue;
-            for (int i = 0; i < len; i++) {
-                char[] word = str.toCharArray();
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    word[i] = ch;
-                    String newWord = new String(word);
-                    if (wordSet.contains(newWord) &&
-                            !map.containsKey(newWord)) {
-                        map.put(newWord, map.get(str) + 1);
-                        queue.add(newWord);
-                        wordSet.remove(newWord);
-                    }
+            for (String nextWord : getNextWords(word, wordSet)) {
+                if (wordStepMap.containsKey(nextWord)) {
+                    continue;
                 }
+
+                wordStepMap.put(nextWord, wordStepMap.get(word) + 1);
+                queue.offer(nextWord);
+                wordSet.remove(word);
             }
         }
     }
 
     /*
-    Method 3: Bidirectional BFS
+    Method 3: Bidirectional BFS //TODO 双向BFS , 由于每次都是从小的数据集开始中间凑,因此速度非常快!
     https://zxi.mytechroad.com/blog/searching/127-word-ladder/
      */
 
-    public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength3(String start, String end, List<String> wordList) {
+        if (start == null || start.length() == 0 ||
+            wordList.size() == 0 || start.length() != end.length() ||
+            wordList.indexOf(end) == -1)
+            return 0;
+
         Set<String> wordSet = new HashSet<>(wordList);
 
-        if (!wordSet.contains(endWord)) return 0;
+        if (!wordSet.contains(end)) return 0;
 
+        //这里用Queue也可以,区别不大,而且set会更快
         Set<String> s1 = new HashSet<>();
         Set<String> s2 = new HashSet<>();
-        s1.add(beginWord);
-        s2.add(endWord);
+        s1.add(start);
+        s2.add(end);
 
-        int len = beginWord.length();
         int steps = 0;
 
         while (!s1.isEmpty() && !s2.isEmpty()) {
@@ -148,19 +148,14 @@ public class LadderLength127 {
 
             Set<String> tmpSet = new HashSet<>();
 
-            for (String w : s1) {
-                char[] chs = w.toCharArray();
-                for (int i = 0; i < len; ++i) {
-                    char ch = chs[i];
-                    for (char c = 'a'; c <= 'z'; ++c) {
-                        chs[i] = c;
-                        String newWord = new String(chs);
-                        if (s2.contains(newWord)) return steps + 1;
-                        if (!wordSet.contains(newWord)) continue;
-                        wordSet.remove(newWord);
-                        tmpSet.add(newWord);
+
+            for (String word : s1) {
+                for (String newWord : getNextWords(word, wordSet)) {
+                    if (s2.contains(newWord)) {
+                        return steps + 1;
                     }
-                    chs[i] = ch;
+                    wordSet.remove(word);
+                    tmpSet.add(newWord);
                 }
             }
 
@@ -169,10 +164,11 @@ public class LadderLength127 {
         return 0;
     }
 
+
     @Test
     public void test() {
         System.out.println(
-                ladderLength2("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log", "cog"))
+                ladderLength2("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log", "cog", "aot", "aog"))
         );
     }
 

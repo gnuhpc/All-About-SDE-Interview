@@ -85,18 +85,16 @@ public class UniquePaths62 {
      */
 
     public int uniquePaths4(int m, int n) {
-        int nums[][] = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (i == 0 || j == 0) {
-                    nums[i][j] = 1;
-                }
-                else {
-                    nums[i][j] = nums[i - 1][j] + nums[i][j - 1];
-                }
+        if(m<0||n<0) return 0;
+        if(m==0||n==0) return 1;
+        int[][] dp = new int[m][n];
+
+        for(int i = 0;i<m;i++)
+            for(int j=0;j<n;j++){
+                if(i==0 || j==0) dp[i][j] =1;
+                else dp[i][j] = dp[i][j-1] + dp[i-1][j];
             }
-        }
-        return nums[n - 1][m - 1];
+        return dp[m-1][n-1];
     }
 
 

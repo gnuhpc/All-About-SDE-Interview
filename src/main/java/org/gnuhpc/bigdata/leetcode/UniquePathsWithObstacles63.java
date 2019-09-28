@@ -114,7 +114,7 @@ public class UniquePathsWithObstacles63 {
     }
 
     //add by tina,通过定义私有属性，赋值方式，避免了对数组传参
-    // memo search
+    // memo search ，TO-DO
     private Integer[][] path; // Integer做判空比int要快很多
     private int[][] obstacleGrid;
     public int uniquePathsWithObstacles4(int[][] obstacleGrid) {
@@ -136,5 +136,25 @@ public class UniquePathsWithObstacles63 {
         if(i>=0 && j>=0) path[i][j] = search(i-1,j) + search(i,j-1);
         return path[i][j];
 
+    }
+
+    // add by tina,TODO
+    public int uniquePathsWithObstacles5(int[][] obstacleGrid) {
+        if(obstacleGrid == null || obstacleGrid[0] == null) return 0;
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        if(m<0||n<0) return 0;
+        if(m==0||n==0) return 1;
+        int[][] dp = new int[m][n];
+
+        for(int i = 0;i<m;i++)
+            for(int j=0;j<n;j++){//以下这些条件是有先后顺序的
+                if(obstacleGrid[i][j] == 1) dp[i][j] = 0;
+                else if(i==0&&j==0) dp[i][j] = 1;
+                else if(i==0 && j>0) dp[i][j] = dp[i][j-1];//第一行
+                else if(j==0 && i>0) dp[i][j] = dp[i-1][j];//第一列
+                else dp[i][j] = dp[i-1][j] + dp[i][j-1] ;
+            }
+        return dp[m-1][n-1];
     }
 }

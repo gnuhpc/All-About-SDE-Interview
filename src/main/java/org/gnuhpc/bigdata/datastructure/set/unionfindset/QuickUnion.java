@@ -83,4 +83,10 @@ public class QuickUnion extends QuickUnionAbstract{
 
         return max_count;
     }
+
+    //二维的时候计算ID使用
+    public int node(int cols, int i, int j) {
+        return i * cols + j;
+    }
+
 }

@@ -4,41 +4,47 @@ public class TotalNQueens52 {
     // res作为int型返回结果，最好放在类成员变量中，放在参数中不太好传递正确
     private int res = 0;
     public int totalNQueens(int n) {
-        char[][] matrix = new char[n][n];
+        char[][] board = new char[n][n];
         for(int i = 0;i<n;i++)
             for(int j = 0; j<n;j++){
-                matrix[i][j] = '.';
+                board[i][j] = '.';
             }
-        dfs(matrix,0,n);
+        dfs(board, 0, n);
         return res;
     }
 
-    public void dfs(char[][] matrix,int row,int n){
-        if(row == n) {
+    public void dfs(char[][] matrix, int col, int n) {
+        if (col == n) {
             res += 1;
             return;
         }
-        for(int col = 0; col<n;col++){
-            if(isValid(matrix,row,col)){
+        for (int row = 0; row < n; row++) {
+            if (isSafe(matrix, row, col)) {
                 matrix[row][col] = 'Q';
-                dfs(matrix,row+1,n);
+                dfs(matrix, col + 1, n);
                 matrix[row][col] = '.';
             }
 
         }
     }
 
-    public boolean isValid(char[][] matrix,int row,int col){
-        // 因为是按照行进行dfs的，所以肯定不会在同一行
-        // 放置的时候，仅需看是否已有Q在当前列
-        //斜对角线
-        for(int i = 0; i<row; i++)
-            for(int j = 0;j<matrix.length;j++){
-                // 小技巧： i+j == row+col || row-i == col-j 可以表示为
-                // row-i == Math.abs(col-j)
-                if(matrix[i][j] == 'Q' && ( j==col || i+j == row+col || row-i == col-j ) )
-                    return false;
-            }
+    private boolean isSafe(char[][] board, int row, int col) {
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][col] != '.') return false; //同一列已经放置了，返回false
+            if (board[row][i] != '.') return false; //同一行已经放置了，返回false
+        }
+
+        //两个对角线
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] != '.')
+                return false;
+        }
+
+        for (int i = row, j = col; i < board.length && j >= 0; i++, j--) {
+            if (board[i][j] != '.')
+                return false;
+        }
+
         return true;
     }
 
@@ -86,31 +92,4 @@ public class TotalNQueens52 {
         }
         return true;
     }
-
-    // 如何不设成员变量，通过传递参数的方法，返回结果
-    // 取了个巧，设计一个一维数组，长度为1
-    public int totalNQueens3(int n) {
-        if (n==0) return 0;
-        int[] res= new int[1];
-        int[] column=new int[n];
-        helper(res,1,n,column);
-        return res[0];
-    }
-    public void helper(int[] res, int row, int n, int[] column){
-        if(row>n) {
-            res[0]=res[0]+1;
-            return;
-        }
-        for(int i=0;i<n;i++){
-            column[row-1]=i;
-            if(isValid2(column,row-1,i)) helper(res,row+1,n,column);
-        }
-    }
-    public boolean isValid2(int[] column,int i, int j){
-        for(int k=0;k<i;k++){
-            if(column[k]==j || i-k==Math.abs(j-column[k])) return false;
-        }
-        return true;
-    }
-
 }

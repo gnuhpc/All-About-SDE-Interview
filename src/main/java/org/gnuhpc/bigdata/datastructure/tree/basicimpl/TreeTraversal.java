@@ -231,6 +231,7 @@ public class TreeTraversal {
 
     // TODO: BFS模板
     public static List<List<Integer>> level(TreeNode root){
+        int depth = 0; //使用BFS进行depth的算法
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
 
@@ -238,6 +239,7 @@ public class TreeTraversal {
         queue.offer(root);
         while (!queue.isEmpty()) {
             List<Integer> list = new ArrayList<>();
+            depth++;
             //关键地方，queue的大小即为这一层需要多少个节点。
             int size = queue.size();
             //那么在轮询的时候即按照这个大小来轮询
@@ -245,8 +247,8 @@ public class TreeTraversal {
                 TreeNode cur = queue.poll();
                 if (cur!=null){
                     list.add(cur.val);
-                    queue.offer(cur.left);
-                    queue.offer(cur.right);
+                    if (cur.left != null) queue.offer(cur.left);
+                    if (cur.right != null) queue.offer(cur.right);
                 }
             }
             res.add(list);
@@ -338,7 +340,7 @@ public class TreeTraversal {
 
     @Test
     public void test2() {
-        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, null, 2, 3});
-        System.out.println(inorderNonRecursive(root));
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 2, 2, 3, 4, 5, 6});
+        System.out.println(level(root));
     }
 }

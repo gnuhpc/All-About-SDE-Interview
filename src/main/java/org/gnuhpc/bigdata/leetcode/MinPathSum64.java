@@ -48,10 +48,9 @@ public class MinPathSum64 {
 
 
     /*
-    Method 2: dfs + Memorization //倒退法
+    Method 2: dfs + Memorization // TODO 将void改为返回值的dfs + memo
      */
-
-
+    private int min = Integer.MIN_VALUE;
     public int minPathSum2(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -59,7 +58,7 @@ public class MinPathSum64 {
 
         int[][] memory = new int[grid.length][grid[0].length];
 
-        // Bug 1: forget to initilize
+        // Bug May happen: forget to initilize
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 memory[i][j] = -1;

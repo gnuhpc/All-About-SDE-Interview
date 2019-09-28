@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //https://www.youtube.com/watch?v=Qf5R-uYQRPk
-public class LongestCommonSubsequenceWithMemoization {
+public class LongestCommonSubsequenceDFSWithMemoization {
     private static Map<String, String> subStringLcsMap = new HashMap<>();
 
     public static void main(String args[]) {

@@ -11,28 +11,29 @@ import static org.junit.Assert.assertEquals;
 
 public class FindCircleNum547 {
     /*
-    Method 1: dfs
+    Method 1: dfs  //TODO DFS套路
     Time: O(N^2) Space:O(N)
      */
-
     public int findCircleNum(int[][] M) {
         if(M == null || M.length == 0 || M[0] == null || M[0].length == 0) return 0;
         int N = M.length;
         int circle = 0;
+        // Step1: visited 标注节点是不是被访问过
         boolean[] visited = new boolean[N];
+        // Step2: 逐个节点进行，没有访问过的就dfs进去
         for(int i = 0; i < N; i++){
-            if(visited[i]) continue;
-            else{
+            if(!visited[i]) {
                 visited[i] = true;
-                circle++;
+                circle++; //没有被前边的dfs访问过的就是新的一个circle 的出现
                 dfs(M, visited, i);
             }
         }
         return circle;
     }
-    public void dfs(int[][] M, boolean[] visited, int stu){
+    public void dfs(int[][] M, boolean[] visited, int id){
         for(int i = 0; i < M.length; i++){
-            if(!visited[i] && M[stu][i] == 1){
+            // Step3: 把这个节点相关朋友联系的，且没有被访问过的统统标注为visited
+            if(!visited[i] && i!=id && M[id][i] == 1){
                 visited[i] = true;
                 dfs(M, visited, i);
             }
@@ -46,11 +47,11 @@ public class FindCircleNum547 {
         boolean[] visited = new boolean[M.length];// array to keep track of visited in dfs
         Deque<Integer> stack = new LinkedList<>();// stack to execute dfs
 
-        int res = 0;  // final ans stored in circles
+        int circle = 0;  // final ans stored in circles
 
         for(int i = 0; i < M.length; i++){
             if(!visited[i]){
-                res++;  // // person i unvisited so start new friend circle
+                circle++;  // // person i unvisited so start new friend circle
 
                 // dfs magic : {
                 // push to stack -
@@ -74,7 +75,7 @@ public class FindCircleNum547 {
             }
         }
 
-        return res;
+        return circle;
     }
 
     /*
@@ -143,7 +144,7 @@ public class FindCircleNum547 {
 
     @Test
     public void test(){
-        assertEquals(2,findCircleNum3(new int[][]{
+        assertEquals(2,findCircleNum(new int[][]{
                 {1,1,0},
                 {1,1,0},
                 {0,0,1}

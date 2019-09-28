@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
+
 import java.util.Arrays;
 
 import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
@@ -53,16 +55,10 @@ public class RemoveElement27 {
 
         for(int i = len-1; i >= 0; i--){
             if(nums[i] == val){
-                if(i != len-1) swap2(nums,i,len-1);
+                if(i != len-1) Utils.swap(nums,i,len-1);
                 len--;
             }
         }
         return len;
-    }
-
-    public void swap2(int[] nums,int i ,int j){
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
     }
 }

@@ -19,7 +19,7 @@ public class QuickSort {
         }
     }
 
-    /*
+    /* TODO 待整理
     分区写法： 双指针交换法；最好用，推荐记忆，从左边找一个不应该在左边的，从右边找一个不应该在右边的，然后交换
      */
     // 返回p, 使得arr[l...p-1] < pivot ; arr[p...r] >= pivot
@@ -32,8 +32,8 @@ public class QuickSort {
         int p = low+1;
         int q = high;
         while(p <= q){
-            while(nums[p] < pivot && p <= q) p++;
-            while(nums[q] >= pivot && p <= q) q--;
+            while(p <= q && nums[p] < pivot) p++;
+            while(p <= q && nums[q] >= pivot) q--;
             if(p < q){
                 swap(nums,p,q);
             }
@@ -61,7 +61,7 @@ public class QuickSort {
 
 
     /*
-    Method 2 : 三路，分成三部分， 推荐！
+    Method 2 : 三路，分成三部分， 推荐！ //TODO
      */
     public void quickSort3Ways(int[] numbers, int left, int right) {
         if (left >= right) return;

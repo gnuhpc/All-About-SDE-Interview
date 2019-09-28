@@ -1,7 +1,7 @@
 package org.gnuhpc.bigdata.algorithm.dynamicprogramming.lcs;
 
 //https://www.youtube.com/watch?v=cfCdtJSu5pc
-public class LCSDP {
+public class LongestCommonSubsequenceDP {
     public static void main(String args[]) {
         long timestamp1 = System.currentTimeMillis();
         System.out.println("---------------Longest Common Subsequence Using Recursive Method And Memoization-----------------");

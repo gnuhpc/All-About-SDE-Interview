@@ -112,4 +112,27 @@ public class UniquePathsWithObstacles63 {
         return numofpath[l-1];
 
     }
+
+    //add by tina,通过定义私有属性，赋值方式，避免了对数组传参
+    // memo search
+    private int[][] path;
+    private int[][] obstacleGrid;
+    public int uniquePathsWithObstacles4(int[][] obstacleGrid) {
+        if(obstacleGrid == null || obstacleGrid[0] == null) return 0;
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        this.obstacleGrid = obstacleGrid;
+        path = new int[m][n];
+        return search(m-1,n-1);
+    }
+
+    public int search(int i,int j){
+        if(i<0||j<0) return 0;  //因为下面这个条件需保证i,j合法性
+        if(obstacleGrid[i][j] == 1) return 0; //[[1]] == 0
+        if(i == 0 && j==0) return 1;
+        if(path[i][j] != 0) return path[i][j];
+        if(i>=0 && j>=0) path[i][j] = search(i-1,j) + search(i,j-1);
+        return path[i][j];
+
+    }
 }

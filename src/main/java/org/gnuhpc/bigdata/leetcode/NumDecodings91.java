@@ -79,4 +79,37 @@ public class NumDecodings91 {
         }
         return dp[n];
     }
+
+    //add by tina, memo search,类似于有条件的climb stairs
+    public int numDecodings3(String s) {
+        if(s.length()==0){
+            return 0;
+        }
+        Integer[] dp = new Integer[s.length()];
+
+        return dpSearch(dp, s, s.length()-1); // 注意是最后一位的索引
+    }
+
+    public int dpSearch(Integer[] dp, String s, int index){
+        if(index<0){
+            return 1; // 叶子节点
+        }
+        if(dp[index]!=null){ //Integer[]==null比int[]==0判断要快
+            return dp[index];
+        }
+        dp[index] = 0;
+        // 两种情况的加和，并且要求有条件
+        if(s.charAt(index)!='0'){
+            dp[index] += dpSearch(dp, s, index-1);
+        }
+
+        if(index>0 && s.charAt(index-1)!='0'){
+            int num = Integer.parseInt(s.substring(index-1, index+1));
+            if(num>=1 && num<=26){
+                dp[index] += dpSearch(dp, s, index-2);
+            }
+        }
+
+        return dp[index];
+    }
 }

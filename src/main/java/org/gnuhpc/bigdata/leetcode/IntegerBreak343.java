@@ -48,6 +48,48 @@ public class IntegerBreak343 {
         return maxProduct;
     }
 
+    //add by tina 自顶向下记忆化搜索方法，标准写法
+    // 理解清楚split和memo的含义，不要将memo放到for循环中判断
+    private int[] memo;
+    public int integerBreak2(int n) {
+        if(n<=1) return -1;
+        memo = new int[n+1];   //任意乘积不会到达0，所以按默认值赋值即可
+        return split(n);
+    }
+
+    // 将num进行分割（至少分割成2部分），可以获得最大的乘积
+    public int split(int num){
+        if(num == 1 ) return 1;
+        if(memo[num] != 0) return memo[num];
+
+        int max = 0;
+        for(int i = 1; i<num;i++){
+            //此处有陷阱，原本我的写法是
+            // max = Math.max(max,i*split(num-i,memo))
+            // 这样会把num-i不拆的情况，即i*(num-i)漏掉
+            max = Math.max(i*(num-i),Math.max(max,i*split(num-i)));
+        }
+        memo[num] = max;
+        return max;
+    }
+
+    public int integerBreak3(int n) {
+        if(n<=1) return -1;
+        memo = new int[n+1];   //任意乘积不会到达0，所以按默认值赋值即可
+        memo[1] = 1;
+
+        for(int i = 2;i<=n;i++){
+            for(int j = 1; j<=i-1; j++){
+                memo[i] = Math.max(j*(i-j),Math.max(memo[i],j*memo[i-j]));
+            }
+        }
+        return memo[n];
+    }
+
+
+
+
+
 
     @Test
     public void test(){

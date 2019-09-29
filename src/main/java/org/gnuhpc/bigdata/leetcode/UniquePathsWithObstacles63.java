@@ -113,7 +113,10 @@ public class UniquePathsWithObstacles63 {
 
     }
 
-    //add by tina,通过定义私有属性，赋值方式，避免了对数组传参
+    /*
+    Method4 : 倒着推 //TODO
+     */
+    // add by tina,通过定义私有属性，赋值方式，避免了对数组传参
     // memo search
     private Integer[][] path; // Integer做判空比int要快很多
     private int[][] obstacleGrid;

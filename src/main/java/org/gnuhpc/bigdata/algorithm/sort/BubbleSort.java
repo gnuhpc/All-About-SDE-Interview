@@ -5,7 +5,8 @@ import org.junit.Test;
 import static org.gnuhpc.bigdata.leetcode.utils.Utils.printArray;
 import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
 
-// 左边是unsorted， 右边是sorted， 把最大的一个个交换到sorted区域
+// 左边是unsorted， 右边是sorted，从左到右通过两两比较交换把最大的一个个交换到sorted区域
+// 应用场景:检测序列是否排序
 public class BubbleSort{
     //O(n^2) - because outer and inner loop ,stable
     public Void sort(int[] arr) {

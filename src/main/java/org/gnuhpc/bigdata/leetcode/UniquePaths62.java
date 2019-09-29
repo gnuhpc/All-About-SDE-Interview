@@ -81,22 +81,20 @@ public class UniquePaths62 {
         return uniquePaths3(m - 1, n) + uniquePaths3(m, n - 1);
     }
 
-    /* Method 4 :DP
+    /* Method 4 :DP //注意边界条件，1，1 返回1
      */
 
     public int uniquePaths4(int m, int n) {
-        int nums[][] = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (i == 0 || j == 0) {
-                    nums[i][j] = 1;
-                }
-                else {
-                    nums[i][j] = nums[i - 1][j] + nums[i][j - 1];
-                }
+        if(m<0||n<0) return 0;
+        if(m==0||n==0) return 1;
+        int[][] dp = new int[m][n];
+
+        for(int i = 0;i<m;i++)
+            for(int j=0;j<n;j++){
+                if(i==0 || j==0) dp[i][j] =1;
+                else dp[i][j] = dp[i][j-1] + dp[i-1][j];
             }
-        }
-        return nums[n - 1][m - 1];
+        return dp[m-1][n-1];
     }
 
 
@@ -104,5 +102,23 @@ public class UniquePaths62 {
     public void test() {
         System.out.println(uniquePaths(3, 2));
         System.out.println(uniquePaths2(3, 2));
+    }
+
+    // add by tina,memo search，相对于方法二模板，写法更简洁。从后往前追溯到(0,0).
+    private int[][] path;
+    public int uniquePaths5(int m, int n) {
+        path = new int[m][n];
+        return search(m-1,n-1);
+    }
+
+    public int search(int i,int j){
+        if(i==0 && j==0)  return 1;
+        if(i<0||j<0) return 0;//边界
+        if(path[i][j] != 0) return path[i][j];
+
+        if(i>=0 && j>=0){
+            path[i][j] = search(i-1,j) + search(i,j-1);
+        }
+        return path[i][j];
     }
 }

@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import com.google.inject.internal.util.$AbstractMapEntry;
 import org.junit.Test;
 
 import java.util.*;
@@ -142,7 +143,7 @@ public class FindLadders126 {
 
     /*
     Method3 ：BFS + DFS ，先用BFS构建出从beginWord到wordList（beginWord也加在dict中）中各个word的steps
-    然后DFS的时候根据步数进行 ， 偶尔超时
+    然后DFS的时候根据步数进行
      */
     //word - step
     HashMap<String, Integer> map = new HashMap<>();
@@ -189,6 +190,7 @@ public class FindLadders126 {
             }
         }
     }
+
 
     private void DFS(String currWord, String endWord, List<String> ans, List<List<String>> res) {
         if (currWord.equals(endWord)) {
@@ -318,7 +320,7 @@ public class FindLadders126 {
 
         //boundary case
         if (start.equals(end)) {
-            result.add(new ArrayList<String>(temp));
+            result.add(new ArrayList<>(temp));
             return;
         }
 
@@ -349,7 +351,7 @@ public class FindLadders126 {
 
 //        System.out.println(findLadders("hit", "cog", arr));
 //        System.out.println(findLadders2("hit", "cog", arr));
-        System.out.println(findLadders3("hit", "cog", arr));
+        System.out.println(findLadders2("hit", "cog", arr));
 
 //        arr.clear();
 //        arr.add("a");

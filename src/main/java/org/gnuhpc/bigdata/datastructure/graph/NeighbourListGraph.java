@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.datastructure.graph;
 
+import com.google.inject.internal.asm.$ClassWriter;
 import lombok.Data;
 
 import java.util.*;

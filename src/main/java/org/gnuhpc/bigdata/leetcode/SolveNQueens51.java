@@ -15,11 +15,11 @@ public class SolveNQueens51 {
             for(int j = 0; j < n; j++)
                 board[i][j] = '.';
         List<List<String>> res = new ArrayList<>();
-        robot(board, 0, res);
+        dfs(board, 0, res);
         return res;
     }
 
-    private void robot(char[][] board, int col, List<List<String>> res) {
+    private void dfs(char[][] board, int col, List<List<String>> res) {
         if(col == board.length) {
             res.add(construct(board));
             return;
@@ -29,7 +29,7 @@ public class SolveNQueens51 {
             if(isSafe(board, row, col)) {
                 board[row][col] = 'Q';
                 //放出一个小机器人
-                robot(board, col + 1, res);
+                dfs(board, col + 1, res);
                 //机器人返回后要重置条件
                 board[row][col] = '.';  //backtracking
             }

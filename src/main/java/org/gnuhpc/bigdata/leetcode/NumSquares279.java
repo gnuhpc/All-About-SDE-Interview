@@ -85,5 +85,42 @@ public class NumSquares279 {
         numSquares(12);
     }
 
+    // add by tina,记忆化搜索的标准写法
+    private int[] memo;
+    public int numSquares3(int n) {
+        memo = new int[n+1];   //n最坏的可能是拆解成n个1，所以最多由n个数组成
+        return help(n);
+    }
+
+    // 含义：和为n的最小平方数和
+    public int help(int n){
+        if(n==0) return 0;
+        if(n==1) return 1;
+        if(memo[n] != 0) return memo[n];
+        int mn = Integer.MAX_VALUE;
+        for(int i =1;i*i <=n;i++){//最好的情况有可能是n为平方序列中的一个数
+            mn = Math.min(mn,1+help(n-i*i)); //n=sn[i]+x;
+    }
+        memo[n] = mn;
+        return mn;
+    }
+    //add by tina,DP写法
+    //DP[i] = Math.min(DP[i],DP[i-j*j]+1)
+    public int numSquares4(int n) {
+        int[] dp = new int[n+1];   //n最坏的可能是拆解成n个1，所以最多由n个数组成
+        for(int i = 1;i<=n;i++){
+            dp[i] = Integer.MAX_VALUE;
+        }
+        dp[0] = 0;
+        for(int i = 1;i<=n;i++){
+            for(int j = 1;j*j<=i;j++){
+                System.out.println("i="+i+",j="+j);
+                dp[i] = Math.min(dp[i-j*j]+1,dp[i]);//从小于i的平方数中挑选一个出来，看剩下的数最小路径是多少
+            }
+            System.out.println("dp[i]="+dp[i]);
+        }
+        return dp[n];
+    }
+
 
 }

@@ -14,17 +14,18 @@ public class MinStack155 {
     }
 
     public void push(int x) {
+        elementsStack.push(x);
         if (minStack.isEmpty() || x<=minStack.peek()){
             minStack.push(x);
         }
-        elementsStack.push(x);
     }
 
     public void pop() {
-        if (!minStack.isEmpty() && elementsStack.peek()<=minStack.peek()){
+        int ePop = elementsStack.pop();
+        //如果需要更新最小值stack,则pop最小值stack
+        if (!minStack.isEmpty() && ePop == minStack.peek()) {
             minStack.pop();
         }
-        elementsStack.pop();
     }
 
     public int top() {

@@ -23,7 +23,7 @@ public class BasicCalculate224227 {
     private int calcResult(String[] postfix) {
         Stack<Integer> stack = new Stack<>();
         for (String str : postfix) {
-            if (isLetterOrDigit(str)) {
+            if (isInteger(str)) {
                 stack.push(Integer.parseInt(str));
             } else {
                 int b = stack.pop();
@@ -34,12 +34,26 @@ public class BasicCalculate224227 {
         return stack.isEmpty() ? 0 : stack.pop();
     }
 
-    public String[] infix2postfix(String expr) {
+    public boolean isInteger(String s) { //TODO 整理到utils
+        try {
+            Integer.parseInt(s);
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+        catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
+    public String[] infix2postfix(String expr) { // TODO 后缀表达式 转换方法
         String[] infix = toStringArray(expr);
         List<String> list = new ArrayList<>();
         Stack<String> stack = new Stack<>(); // precedence strictly-increasing stack
         for (String s : infix) {
-            if (isLetterOrDigit(s)) {//如果是字母或者数字，则添加到list中
+            if (isInteger(s)) {//如果是字母或者数字，则添加到list中
                 list.add(s);
             } else if (s.equals("(")) { //如果是左括号添加到stack中
                 stack.push(s);
@@ -66,77 +80,9 @@ public class BasicCalculate224227 {
         return list.stream().toArray(String[]::new);
     }
 
-
-
-    //方法2：两个stack
-    public int calculate2(String expression){
-        String[] tokenArray = toStringArray(expression);
-
-        // Stack for numbers: 'profits'
-        Stack<Integer> values = new Stack<Integer>();
-
-        // Stack for Operators: 'ops'
-        Stack<Character> ops = new Stack<Character>();
-
-        for (String s:tokenArray)
-        {
-            // Current token is a number, push it to stack for numbers
-            if (isLetterOrDigit(s))
-            {
-                values.push(Integer.valueOf(s));
-            } else{
-                char token = s.charAt(0);
-
-                // Current token is an opening brace, push it to 'ops'
-                if (token == '(')
-                    ops.push(token);
-
-                    // Closing brace encountered, solve entire brace
-                else if (token == ')')
-                {
-                    while (ops.peek() != '(') doOps(values,ops);
-                    ops.pop();
-                }
-
-                // Current token is an operator.
-                else if (token == '+' || token == '-' ||
-                         token == '*' || token  == '/') {
-                    // While top of 'ops' has same or greater precedence to current
-                    // token, which is an operator. Apply operator on top of 'ops'
-                    // to top two elements in profits stack
-                    while (!ops.empty() &&
-                            precedence(String.valueOf(token))<=precedence(String.valueOf(ops.peek()))
-                            ){
-                        doOps(values, ops);
-                    }
-
-                    // Push current token to 'ops'.
-                    ops.push(token);
-                }
-            }
-
-        }
-
-        // Entire expression has been parsed at this point, apply remaining
-        // ops to remaining profits
-        while (!ops.empty()){
-            doOps(values, ops);
-        }
-
-        // Top of 'profits' contains result, return it
-        return values.pop();
-    }
-
-    private void doOps(Stack<Integer> stack, Stack<Character> ops) {
-        int b = stack.pop();
-        int a = stack.pop();
-        stack.push(applyOp(ops.pop(), a,b));
-    }
-
     // Sample utility method to apply an operator 'op' on operands 'a'
     // and 'b'. Return the result.
-    private int applyOp(char op, int a, int b)
-    {
+    private int applyOp(char op, int a, int b) {
         switch (op)
         {
             case '+':
@@ -179,16 +125,6 @@ public class BasicCalculate224227 {
         return list.stream().toArray(String[]::new);
     }
 
-    public boolean isLetterOrDigit(String s) {
-        char[] chs = s.toCharArray();
-        for (char ch : chs) {
-            if (!(ch >= 48 && ch <= 57 || ch >= 65 && ch <= 90 || ch >= 97 && ch <= 122 || ch=='-')) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public int precedence(String s) {
         int prec = 0;
         switch (s) {
@@ -213,10 +149,89 @@ public class BasicCalculate224227 {
         return prec;
     }
 
+    public int calculate227(String s) {
+        int pre = 0, curr = 0, sign = 1, op = 0, num = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                num = num * 10 + (s.charAt(i) - '0');
+                if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
+                    curr = (op == 0 ? num : (op == 1 ? curr * num : curr / num));
+                }
+
+            }
+            else if (s.charAt(i) == '*' || s.charAt(i) == '/') {
+                op = (s.charAt(i) == '*' ? 1 : -1);
+                num = 0;
+
+            }
+            else if (s.charAt(i) == '+' || s.charAt(i) == '-') {
+                pre += sign * curr;
+                sign = (s.charAt(i) == '+' ? 1 : -1);
+                op = 0;
+                num = 0;
+            }
+        }
+
+        return pre + sign * curr;
+    }
+
+    /*
+
+    Only 5 possible input we need to pay attention:
+
+ 1. digit: it should be one digit from the current number
+ 2. '+': number is over, we can add the previous number and start a new number
+ 3. '-': same as above
+ 4. '(': push the previous result and the sign into the stack, set result to 0, just calculate the new result within the parenthesis.
+ 5. ')': pop out the top two numbers from stack, first one is the sign before this pair of parenthesis, second is the temporary result before this pair of parenthesis. We add them together.
+
+
+Finally if there is only one number, from the above solution, we haven't add the number to the result, so we do a check see if the number is zero.
+     */
+    public int calculate224(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int result = 0;
+        int number = 0;
+        int sign = 1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                number = 10 * number + (int) (c - '0');
+            }
+            else if (c == '+') {
+                result += sign * number;
+                number = 0;
+                sign = 1;
+            }
+            else if (c == '-') {
+                result += sign * number;
+                number = 0;
+                sign = -1;
+            }
+            else if (c == '(') {
+                //we push the result first, then sign;
+                stack.push(result);
+                stack.push(sign);
+                //reset the sign and result for the value in the parenthesis
+                sign = 1;
+                result = 0;
+            }
+            else if (c == ')') {
+                result += sign * number;
+                number = 0;
+                result *= stack.pop();    //stack.pop() is the sign before the parenthesis
+                result += stack.pop();   //stack.pop() now is the result calculated before the parenthesis
+            }
+        }
+        if (number != 0) result += sign * number;
+        return result;
+    }
+
     @Test
     public void test() {
 //        calculate("(21+1)*2-5");
 //        calculate2("(21+1)*2-5");
-        calculate2("(1+(4+5+2)-3)+(6+8)");
+        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
     }
 }

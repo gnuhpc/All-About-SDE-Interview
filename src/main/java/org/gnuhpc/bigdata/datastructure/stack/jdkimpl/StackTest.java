@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class StackTest {
     @Test
     public void whenPushToStackThenShouldRetrieveIt() {
-        //推荐使用这个collections,注意是Deque
+        //推荐使用这个collections,注意是Deque 或者是linkedlist也行
         Deque<String> stack = new ArrayDeque<>();
 
         stack.push("a");

@@ -1,27 +1,71 @@
 package org.gnuhpc.bigdata.leetcode.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
   Copyright gnuhpc 2019/9/28
  */
-public interface NestedInteger {
+public class NestedInteger {
+    private List<NestedInteger> list;
+    private Integer             integer;
 
-    // @return true if this NestedInteger holds a single integer, rather than a nested list.
-    public boolean isInteger();
+    public NestedInteger(List list) {
+        this.list = list;
+    }
 
-    // @return the single integer that this NestedInteger holds, if it holds a single integer
-    // Return null if this NestedInteger holds a nested list
-    public Integer getInteger();
+    public void add(NestedInteger nestedInteger) {
+        if (this.list != null) {
+            this.list.add(nestedInteger);
+        }
+        else {
+            this.list = new ArrayList<>();
+            this.list.add(nestedInteger);
+        }
+    }
 
-    // Set this NestedInteger to hold a single integer.
-    public void setInteger(int value);
+    public void setInteger(int num) {
+        this.integer = num;
+    }
 
-    // Set this NestedInteger to hold a nested list and adds a nested integer to it.
-    public void add(NestedInteger ni);
+    public NestedInteger(Integer integer) {
+        this.integer = integer;
+    }
 
-    // @return the nested list that this NestedInteger holds, if it holds a nested list
-    // Return null if this NestedInteger holds a single integer
-    public List<NestedInteger> getList();
+    public NestedInteger() {
+        this.list = new ArrayList<>();
+    }
 
+    public boolean isInteger() {
+        return integer != null;
+    }
+
+    public Integer getInteger() {
+        return integer;
+    }
+
+    public List<NestedInteger> getList() {
+        return list;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder string = new StringBuilder();
+
+        if (null != integer) {
+            string.append(integer);
+        }
+        if (null != list) {
+            string.append("[");
+            for (NestedInteger current : list) {
+                string.append(current.toString() + ",");
+            }
+            if (string.length() != 1) {
+                string.delete(string.length() - 1, string.length());
+            }
+            string.append("]");
+        }
+        return string.toString();
+    }
 }

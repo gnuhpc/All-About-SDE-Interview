@@ -120,7 +120,8 @@ public class Rob198 {
         return tryRob(nums,nums.length-1);
 
     }
-    //考虑偷取[0,...,x]范围里的房子
+
+    //考虑偷取[0,...,x]范围里的房子 倒着来
     public int tryRob5(int[] nums,int index){
         if(index <0) return 0;
         if(memo[index] != -1) return memo[index];
@@ -148,6 +149,29 @@ public class Rob198 {
                 dp[i] = Math.max(dp[i],nums[j]+(j-2>=0 ? dp[j-2]:0));
             }
         return dp[n-1];
+    }
+
+    /*
+    Method7 : 从后往前 TODO
+     */
+    public int rob7(int[] nums) {
+        if (nums.length == 1) return nums[0];
+        res = new int[nums.length];
+        Arrays.fill(res, -1);
+        //自顶向下，一般从最后的开始, 从最后一家开始抢，规模缩小
+        return solve(0, nums.length - 1, nums);
+    }
+
+
+    private int solve(int end, int idx, int[] nums) {
+        if (idx < end) return 0;
+        if (res[idx] != -1) return res[idx];
+
+        //包含两种决策
+        int max = Math.max(nums[idx] + solve(end, idx - 2, nums), solve(end, idx - 1, nums));
+        res[idx] = max;
+
+        return max;
     }
 
 }

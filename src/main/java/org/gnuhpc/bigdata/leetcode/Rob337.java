@@ -87,6 +87,29 @@ public class Rob337 {
         return res;
     }
 
+    //add by tina:TODO memo search，需要想清楚状态方程，容易错
+    private HashMap<TreeNode,Integer> map;
+    public int rob5(TreeNode root) {
+        if(root == null ) return 0;
+        map = new HashMap<>();
+        return memoSearch( root);
+    }
+
+    public int memoSearch(TreeNode root){
+        if(root == null) return 0;
+        if(map.containsKey(root)) return map.get(root);
+        int res = 0;
+        res = Math.max(
+                root.val+
+                (root.left==null?0:memoSearch(root.left.left))+
+                (root.left==null?0:memoSearch(root.left.right))+
+                (root.right==null?0:memoSearch(root.right.left))+
+                (root.right==null?0:memoSearch(root.right.right)),
+                memoSearch(root.left)+memoSearch(root.right));
+        map.put(root,res);//第一版写成6行数据作比较了，严重跑偏
+        return res;
+    }
+
 
 
 }

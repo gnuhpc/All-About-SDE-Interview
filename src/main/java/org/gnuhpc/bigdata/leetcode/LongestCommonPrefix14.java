@@ -74,4 +74,24 @@ public class LongestCommonPrefix14 {
         assertEquals("al", longestCommonPrefix2(strs));
         assertEquals("al", longestCommonPrefix3(strs));
     }
+
+    // add by tina,1ms
+    // 暴力解 o(n^2)
+    public String longestCommonPrefix4(String[] strs) {
+        if(strs == null || strs.length == 0) return "";
+        StringBuilder sb = new StringBuilder("");
+        int flen = strs[0].length();
+        int j = 0;
+        while(j<flen){
+            char c = strs[0].charAt(j);
+            for(int i = 1;i<strs.length;i++){
+                if(j>=strs[i].length()
+                        ||strs[i].charAt(j) != c) return sb.toString();
+            }
+            sb.append(c);
+            j++;
+        }
+        return sb.toString();
+
+    }
 }

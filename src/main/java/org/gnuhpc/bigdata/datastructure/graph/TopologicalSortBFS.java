@@ -88,7 +88,7 @@ public class TopologicalSortBFS {
             cnt++;
         }
 
-        // Check if there was a cycle
+        // Check if there was a cycle 判断有环
         if (cnt != countV) {
             System.out.println("There exists a cycle in the graph");
             return;

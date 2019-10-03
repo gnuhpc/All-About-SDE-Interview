@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.datastructure.set.unionfindset.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 
 public class FindRedundantConnection684 {
     public int[] findRedundantConnection(int[][] edges) {

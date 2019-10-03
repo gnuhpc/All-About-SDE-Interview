@@ -1,10 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.datastructure.set.unionfindset.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Copyright gnuhpc 2019/9/22

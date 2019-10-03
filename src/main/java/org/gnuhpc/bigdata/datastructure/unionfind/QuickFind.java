@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.datastructure.set.unionfindset;
+package org.gnuhpc.bigdata.datastructure.unionfind;
 
 // Eager solution 使用比较少
 /*

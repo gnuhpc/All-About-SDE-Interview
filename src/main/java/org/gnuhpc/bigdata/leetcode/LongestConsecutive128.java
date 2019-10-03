@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.datastructure.set.unionfindset.WeightedQuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.WeightedQuickUnion;
 import org.junit.Test;
 
 import java.util.HashMap;

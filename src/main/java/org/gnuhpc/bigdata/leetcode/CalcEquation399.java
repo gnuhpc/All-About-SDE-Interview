@@ -145,12 +145,13 @@ public class CalcEquation399 {
     }
 
     private String find(Map<String, String> graph, Map<String, Double> ratio, String str) {
-        if (str.equals(graph.get(str))) return str;
-        String parent = graph.get(str);
-        String ancestor = find(graph, ratio, parent);
-        graph.put(str, ancestor);
-        ratio.put(str, ratio.get(str)*ratio.get(parent));
-        return ancestor;
+        if (!str.equals(graph.get(str))) {
+            String parent = graph.get(str);
+            String ancestor = find(graph, ratio, parent);
+            graph.put(str, ancestor);
+            ratio.put(str, ratio.get(str) * ratio.get(parent)); //记得更新ratio
+        }
+        return graph.get(str);
     }
 
 

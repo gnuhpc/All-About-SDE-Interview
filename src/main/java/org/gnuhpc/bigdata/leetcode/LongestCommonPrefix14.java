@@ -76,7 +76,7 @@ public class LongestCommonPrefix14 {
     }
 
     // add by tina,1ms
-    // 暴力解 o(n^2)
+    // 暴力解 o(strs.length*strs[i].length())
     public String longestCommonPrefix4(String[] strs) {
         if(strs == null || strs.length == 0) return "";
         StringBuilder sb = new StringBuilder("");

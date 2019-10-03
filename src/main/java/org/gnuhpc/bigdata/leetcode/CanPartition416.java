@@ -87,4 +87,109 @@ public class CanPartition416 {
 
         return dp[sum];
     }
+
+    // add by tina, memoSearch,将这道题理解成
+    // 在n个物品中，找到组合去【填满】容量为sum/2的背包问题，使用背包问题的标准模板
+    /// Memory Search
+    /// Time Complexity: O(len(nums) * O(sum(nums)))
+    /// Space Complexity: O(len(nums) * O(sum(nums)))
+    // 状态定义：从[0,...,n-1]中找到物品组合，填满容量为sum/2的背包
+    // F(i,c) = F(i-1,c) || F(i-1,c-nums(i-1))
+    private int[][] memo;
+    public boolean canPartition3(int[] nums) {
+        if(nums == null || nums.length == 0||nums.length==1) return false;
+        int sum = 0;
+        int n = nums.length ;
+        for(int i = 0;i<n;i++){
+            sum+=nums[i];
+        }
+        if(sum%2 !=0) return false;
+        memo = new int[n][sum/2+1];
+        return memoSearch(nums,n-1,sum/2);
+
+    }
+    // 从[0,...,index]范围内找到数，使其装满容量c的背包
+    public boolean memoSearch(int[] nums,int index,int c){
+        if(index<0||c<0) return false;
+        if(c==0) return true;
+        if(memo[index][c] != 0) return memo[index][c] == 1;
+
+        boolean res= memoSearch(nums,index-1,c) ||
+                memoSearch(nums,index-1,c-nums[index]);
+        memo[index][c] = res?1:-1;
+        return res;
+    }
+    //add by tina, DP
+    // Time Complexity: O(len(nums) * O(sum(nums)))
+    // Space Complexity: O(len(nums) * O(sum(nums)))
+    // 函数中会写2个优化，
+    // 一个是将Space Complexity优化到O(2*C),与物品个数没有关系
+    // 进一步优化成O(C)
+    public boolean canPartition4(int[] nums) {
+        if(nums == null || nums.length == 0||nums.length==1) return false;
+        int sum = 0;
+        int n = nums.length ;
+        for(int i = 0;i<n;i++){
+            sum+=nums[i];
+        }
+        if(sum%2 !=0) return false;
+        int c= sum/2;
+       /* boolean[][] dp = new boolean[n][c+1];
+        // 因为从状态方程可以看出，i的状态只和i-1相关
+        //初始化，考虑把编号为0的物品(数据)，装满容量为j的背包
+        for(int j = 0;j<=c;j++){
+            if(j==nums[0]) dp[0][j] = true;
+            else dp[0][j] = false;
+        }
+
+        for(int i = 1;i<n;i++){
+            for(int j = 0;j<=c;j++){
+                dp[i][j] = dp[i-1][j];
+                if(j>=nums[i]) dp[i][j] = dp[i-1][j]||dp[i-1][j-nums[i]];
+            }
+        }
+        return dp[n-1][c];*/
+
+        /* Space Complexity优化到O(2*C)，奇数行和偶数行交替赋到dp[1],dp[0]
+        详细原理，参考bobo视频
+        boolean[][] dp = new boolean[2][c+1];
+        // 因为从状态方程可以看出，i的状态只和i-1相关
+        //初始化，考虑把编号为0的物品(数据)，装满容量为j的背包
+        for(int j = 0;j<=c;j++){
+            if(j==nums[0]) dp[0][j] = true;
+            else dp[0][j] = false;
+        }
+
+        for(int i = 1;i<n;i++){
+            for(int j = 0;j<=c;j++){
+                dp[i%2][j] = dp[(i-1)%2][j];
+                if(j>=nums[i]) dp[i%2][j] = dp[(i-1)%2][j]||dp[(i-1)%2][j-nums[i]];
+            }
+        }
+        return dp[(n-1)%2][c];*/
+
+        // Space Complexity优化到O(C)，
+        // 还是双重循环，注意从后往前刷新一维数组
+        boolean[] dp = new boolean[c+1];
+        // 因为从状态方程可以看出，i的状态只和i-1相关
+        //初始化，考虑把编号为0的物品(数据)，装满容量为j的背包
+        for(int j = 0;j<=c;j++){
+            if(j==nums[0]) dp[j] = true;
+            else dp[j] = false;
+        }
+
+        for(int i = 1;i<n;i++){
+            for(int j = c;j>=0;j--){
+                if(j>=nums[i]) return dp[j] ||dp[j-nums[i]] ;
+            }
+        }
+        return dp[c];
+
+
+
+
+
+
+    }
+
 }

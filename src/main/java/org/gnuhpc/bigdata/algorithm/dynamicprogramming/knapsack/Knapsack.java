@@ -106,4 +106,31 @@ public class Knapsack {
 			}
 		}
 	}
+
+	// add by tina,memo search
+	// 状态定义
+	// F(n,C) 考虑将n个物品放入容量为C的背包，时期价值最大化
+	// F(i,C) = max(F(i-1,C),v(i)+F(i-1,C-w(i)))
+	// 2个限制条件，2个参数，用二维数组表示
+	private int[][] memo;//用一个hashmap<String,Integer>也可以
+	public int Knapsack3(int[] w, int[] v, int C){
+		int n = w.length;
+		memo = new int[n][n];
+		return maxProfit(w, v,n-1,C);
+
+	}
+
+	// [0,...,index]范围内的物品，填充容积为c的背包的最大价值
+	public int maxProfit(int[] w, int[] v,int index,int c){
+		if(index<0||c<=0) return 0;
+		if(memo[index][c] != 0) return memo[index][c];
+		int res = maxProfit(w,v,index-1,c);
+		//需要注意的是，这里需要加一下边界判断
+		//不宜直接比较两个路径，因为c<w[index]属于不合法情况，但是会返回0
+		if(c>=w[index])
+			res = Math.max(res,v[index]+maxProfit(w,v,index-1,c-w[index]));
+		memo[index][c] = res;
+		return res;
+	}
+
 }

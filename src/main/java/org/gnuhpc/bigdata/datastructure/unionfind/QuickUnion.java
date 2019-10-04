@@ -37,7 +37,7 @@ public class QuickUnion extends QuickUnionAbstract{
     }
 
     public int find(int i) {
-        if (i != id[i]) {
+        if (i != id[i]) { //不等于他就递归的赋值进去
             // path compression , 小技巧
             id[i] = find(id[i]);
         }
@@ -56,14 +56,14 @@ public class QuickUnion extends QuickUnionAbstract{
         return find(p) == find(q);
     }
 
-    public void resort() {
+    public void rebalance() {
         for (int i = 0; i < id.length; i++) {
             find(i);
         }
     }
 
     public int maxCount() {
-        resort();
+        rebalance();
 
         Map<Integer, Integer> hp = new HashMap<>();
         for (int i = 0; i < id.length; i++) {

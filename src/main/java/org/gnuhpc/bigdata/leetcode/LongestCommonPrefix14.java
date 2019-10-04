@@ -79,6 +79,20 @@ public class LongestCommonPrefix14 {
     // 暴力解 o(strs.length*strs[i].length())
     public String longestCommonPrefix4(String[] strs) {
         if(strs == null || strs.length == 0) return "";
+        /* 可以先找到最短的那个,放在最前边
+        int minIdx = 0;
+        int minLength = strs[0].length();
+        for (int i = 1; i < strs.length; i++) {
+            if (strs[i].length() < minLength){
+                minIdx = i;
+                minLength = strs[i].length();
+            }
+        }
+
+        String temp = strs[0];
+        strs[0] = strs[minIdx];
+        strs[minIdx] = temp;
+         */
         StringBuilder sb = new StringBuilder("");
         int flen = strs[0].length();
         int j = 0;
@@ -92,6 +106,5 @@ public class LongestCommonPrefix14 {
             j++;
         }
         return sb.toString();
-
     }
 }

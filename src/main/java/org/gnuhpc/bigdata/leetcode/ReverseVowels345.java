@@ -69,4 +69,32 @@ public class ReverseVowels345 {
         strArray[tail] = temp;
     }
 
+    //add by tina,新开一个数组，用于记录元音字母序列
+    public String reverseVowels2(String s) {
+        if(s == null || s.length() == 0) return s;
+        int n = s.length();
+        char[] ch = new char[n];
+        HashSet<Character> hset = new HashSet<>(); //定义hashset
+        hset.add('a');
+        hset.add('e');
+        hset.add('i');
+        hset.add('o');
+        hset.add('u');
+
+        StringBuilder sb = new StringBuilder();
+        int k = 0;
+        for(int i = 0;i<n;i++){
+            char c = s.charAt(i);
+            if(hset.contains(Character.toLowerCase(c))) ch[k++] = c;
+        }
+
+        for(int i = 0;i<n;i++){
+            char c = s.charAt(i);
+            if(hset.contains(Character.toLowerCase(c))) sb.append(ch[--k]);
+            else sb.append(c);
+        }
+        return sb.toString();
+
+    }
+
 }

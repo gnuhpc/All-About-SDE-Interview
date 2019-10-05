@@ -27,7 +27,9 @@ Quick Union is Faster than Quick Find ,一般都采用这种
  */
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 //视频讲解:https://www.youtube.com/watch?v=YB3_c11GPEo
 public class QuickUnion extends QuickUnionAbstract{
@@ -82,6 +84,19 @@ public class QuickUnion extends QuickUnionAbstract{
         }
 
         return max_count;
+    }
+
+    public int count() {
+        rebalance();
+        Set<Integer> set = new HashSet<>();
+        int count = 0;
+        for (int i = 0; i < id.length; i++) {
+            set.add(id[i]);
+            if (id[i] == i)
+                count++;
+        }
+
+        return set.size() - count;
     }
 
     //二维的时候计算ID使用

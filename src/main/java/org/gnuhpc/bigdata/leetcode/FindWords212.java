@@ -3,49 +3,52 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.datastructure.trie.Trie;
 import org.gnuhpc.bigdata.datastructure.trie.TrieNode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+//TODO 二维匹配 Trie 快速剪枝
 public class FindWords212 {
-    Set<String> res = new HashSet<String>();
-
     public List<String> findWords(char[][] board, String[] words) {
         Trie trie = new Trie();
-        for (String word : words) {
+        for (String word : words)
             trie.insert(word);
-        }
 
         int m = board.length;
         int n = board[0].length;
         boolean[][] visited = new boolean[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                dfs(board, visited, "", i, j, trie);
-            }
+        Set<String> resultSet = new HashSet<>();
+
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j)
+                search(board, visited, i, j, m, n, trie.root, resultSet);
         }
 
-        return new ArrayList<String>(res);
+        return new LinkedList<String>(resultSet);
     }
 
-    public void dfs(char[][] board, boolean[][] visited, String str, int x, int y, Trie trie) {
-        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length) return;
-        if (visited[x][y]) return;
 
-        str += board[x][y];
-        if (!trie.startsWith(str)) return;
+    private void search(char[][] board,
+                        boolean[][] visited,
+                        int i,
+                        int j,
+                        int m,
+                        int n,
+                        TrieNode node,
+                        Set<String> result) {
+        if (i < 0 || j < 0 || i >= m || j >= n || visited[i][j])
+            return;
 
-        if (trie.search(str)) {
-            res.add(str);
-        }
+        node = node.children[board[i][j] - 'a'];
+        if (node == null)
+            return;
 
-        visited[x][y] = true;
-        dfs(board, visited, str, x - 1, y, trie);
-        dfs(board, visited, str, x + 1, y, trie);
-        dfs(board, visited, str, x, y - 1, trie);
-        dfs(board, visited, str, x, y + 1, trie);
-        visited[x][y] = false;
+        if (node.word != null)
+            result.add(node.word);
+
+        visited[i][j] = true;
+        search(board, visited, i - 1, j, m, n, node, result);
+        search(board, visited, i + 1, j, m, n, node, result);
+        search(board, visited, i, j - 1, m, n, node, result);
+        search(board, visited, i, j + 1, m, n, node, result);
+        visited[i][j] = false;
     }
-
 }

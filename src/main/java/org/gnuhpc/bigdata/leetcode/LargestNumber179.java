@@ -4,6 +4,7 @@ import com.google.inject.internal.util.$FinalizableSoftReference;
 import org.junit.Test;
 
 import java.util.*;
+//https://www.programcreek.com/2014/02/leetcode-largest-number-java/
 
 public class LargestNumber179 {
     public String largestNumber(int[] nums) {
@@ -12,7 +13,7 @@ public class LargestNumber179 {
         Arrays.sort(h, (a, b) -> {
             if (a.charAt(0)!= b.charAt(0)) {
                 return b.charAt(0) - a.charAt(0);
-            }
+            } //这一段略显多余
             String l1=a+b;
             String l2=b+a;
             return l2.compareTo(l1);

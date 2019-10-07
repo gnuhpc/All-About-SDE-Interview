@@ -1,70 +1,45 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class LRUCache146_2 {
-    class Node {
-        public int key;
-        public int val;
-
-        public Node(int key,int val){
-            this.key = key;
-            this.val = val;
-        }
-    }
-
-
-    private Map<Integer, Node> map = new HashMap<>();
-    private int capacity;
-    private Deque<Node> l = new LinkedList<>();
+    private int                   capacity;
+    private Deque<Integer>        list;
+    private Map<Integer, Integer> map;
 
     public LRUCache146_2(int capacity) {
         this.capacity = capacity;
+        this.list = new ArrayDeque<>();
+        this.map = new HashMap<>();
     }
 
     public int get(int key) {
-        if (!map.containsKey(key)) {
+        if (map.containsKey(key)) {
+            list.remove(Integer.valueOf(key));
+            list.addFirst(key);//Move to latest
+        }
+        Integer value = map.get(key);
+        if (value == null)
             return -1;
+        else return value;
         }
-        Node current = map.get(key);
-        deleteNode(current);
-        moveToLastestUsed(current);
-        return current.val;
-    }
+
     public void put(int key, int value) {
-        //get will update the use frequency;
-        if (get(key) != -1) {
-            map.get(key).val= value;
-            return;
+        if (map.containsKey(key)) {
+            list.remove(Integer.valueOf(key));
+            list.addFirst(key);
         }
-        if (map.size() == capacity) {
-            Node n = fetchLeastUsed();
-            removeLeastUsed();
-            map.remove(n.key);
+        else if (list.size() >= capacity) {
+            int evicted = list.removeLast();
+            map.remove(evicted);
+            list.addFirst(key);
         }
-        Node insert = new Node(key, value);
-        map.put(key, insert);
-        moveToLastestUsed(insert);
+        else {
+            list.addFirst(key);
+        }
+        map.put(key, value);
     }
 
-    private void deleteNode(Node current) {
-        l.remove(current);
-    }
-
-    private Node fetchLeastUsed() {
-        return l.getLast();
-    }
-
-    private void moveToLastestUsed(Node n) {
-        l.addFirst(n);
-    }
-
-    private void removeLeastUsed() {
-        l.removeLast();
-    }
 
     public static void main(String[] args) {
         LRUCache146_2 cache = new LRUCache146_2( 2 /* 缓存容量 */ );

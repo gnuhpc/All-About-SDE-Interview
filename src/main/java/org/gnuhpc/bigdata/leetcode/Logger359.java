@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.datastructure;
+package org.gnuhpc.bigdata.leetcode;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,6 +2,9 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.systemdesign.practice.lru.LRUCache;
 
+/*
+投机取巧
+ */
 public class LRUCache146 {
     LRUCache<Integer, Integer> map;
 

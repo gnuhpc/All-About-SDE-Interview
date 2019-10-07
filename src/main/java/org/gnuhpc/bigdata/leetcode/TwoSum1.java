@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class TwoSum1 {
 
         twoSumUsingSort(nums,target);
 
-        Arrays.stream(twoSum(nums,target)).forEach(System.out::println);
+        Utils.printArray(twoSum(nums, target));
     }
 
     // construct distanceMap <num, idx>

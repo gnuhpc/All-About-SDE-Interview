@@ -30,10 +30,11 @@ public class ValidWordAbbr288 {
     }
 
     public boolean isUnique(String word) {
-        return !map.containsKey(getKey(word)) || map.get(getKey(word)).equals(word);
+        String key = getKey(word);
+        return !map.containsKey(key) || map.get(key).equals(word);
     }
 
-    String getKey(String str) {
+    private String getKey(String str) {
         if (str.length() <= 2) return str;
         return str.charAt(0) + Integer.toString(str.length() - 2) + str.charAt(str.length() - 1);
     }

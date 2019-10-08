@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.*;
 /*
-什么时候使用BFS：
+什么时候使用BFS： TODO
 图 的遍 历 Traversal in Graph
 • 层级遍历 Level Order Traversal
 • 由点及面 Connected Component
@@ -32,7 +32,7 @@ class GraphNode {
 }
 
 @Data
-public class NeighbourListGraph {
+public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
     private List<GraphNode> nodes = new ArrayList<>();
     private Queue<GraphNode> queue = new LinkedList<>();;
     // Recursive DFS
@@ -65,14 +65,25 @@ public class NeighbourListGraph {
         }
     }
 
+    //注意,注意,注意!!!!!!!
+    // 这种表达方式在BFS\DFS中碰到类似如下这种,假设从1开始遍历就走不到所有的节点
+    //而邻接矩阵表达方式就不会出现这种情况
+    //如果一定要使用邻接列表的方式表达图,则需要对每个节点进行DFS/BFS
+    /*
+        1
+      /
+    0
+      \
+        2
+
+     */
     public void bfs(GraphNode node) {
         queue.add(node);
         node.visited=true;
-        while (!queue.isEmpty())
-        {
+        while (!queue.isEmpty()) {
 
             GraphNode element=queue.remove();
-            System.out.print(element.data +" ");
+            System.out.print(element.data + " ");
             for (GraphNode n : element.getNeighbours()) {
                 if (n != null && !n.visited) {
                     queue.add(n);
@@ -122,6 +133,21 @@ public class NeighbourListGraph {
 
         System.out.println("\nThe BFS traversal of the graph");
         graph.bfs(node40);
+        GraphNode node0 = new GraphNode(0);
+        GraphNode node1 = new GraphNode(1);
+        GraphNode node2 = new GraphNode(2);
+
+        node0.neighbours.add(node2);
+        node0.neighbours.add(node1);
+
+        NeighbourListGraph graph1 = new NeighbourListGraph();
+        graph1.getNodes().add(node2);
+        graph1.getNodes().add(node1);
+        graph1.getNodes().add(node0);
+
+        System.out.println("\nThe BFS traversal of the graph");
+        graph1.bfs(node1);
+
     }
 
     public void clearVisitedFlags() {

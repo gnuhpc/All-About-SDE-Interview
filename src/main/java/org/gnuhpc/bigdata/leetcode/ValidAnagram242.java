@@ -40,4 +40,24 @@ public class ValidAnagram242 {
 
         return true;
     }
+
+    // add by tina,不如上面的写法，空间复杂度比较高
+    public boolean isAnagram2(String s, String t) {
+        if(s == null || t == null ) return false;
+        if(s.length() != t.length()) return false;
+        int n = s.length();
+        int[] ss = new int[26];
+        int[] tt = new int[26];
+
+        for(int i = 0;i<n;i++){
+            ss[s.charAt(i)-'a']++;
+        }
+        for(int i = 0;i<n;i++){
+            tt[t.charAt(i)-'a']++;
+        }
+        for(int i = 0;i<26;i++){
+            if(ss[i] != tt[i] ) return false;
+        }
+        return true;
+    }
 }

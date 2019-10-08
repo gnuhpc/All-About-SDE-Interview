@@ -5,7 +5,7 @@ import org.junit.Test;
 
 //O(n^2), unstable, 对于小数组很快，比插入排序写入cost小
 public class SelectionSort {
-    //整体分为sorted 和 unsorted部分，从0 开始sorted部分开始一个个增加
+    //整体分为sorted(左) 和 unsorted部分(右)，从0 开始sorted部分开始一个个增加
     public static Void sort(int[] arr){
         for (int sorted = 0; sorted < arr.length; sorted++) {
             int minIndex = sorted;

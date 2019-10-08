@@ -11,35 +11,26 @@ class RandomListNode {
 
 public class CopyRandomList138 {
     public RandomListNode copyRandomList(RandomListNode head) {
-        if (head == null) {
-            return null;
+        if (head == null) return null;
+
+        Map<RandomListNode, RandomListNode> map = new HashMap();
+
+        // loop 1. copy all the nodes
+        RandomListNode node = head;
+        while (node != null) {
+            map.put(node, new RandomListNode(node.label));
+            node = node.next;
         }
 
-        Map<RandomListNode, RandomListNode> map = new HashMap<>();
-        RandomListNode dummy = new RandomListNode(0);
-        RandomListNode pre = dummy, newNode;
-        while (head != null) {
-            if (map.containsKey(head)) {
-                newNode = map.get(head);
-            } else {
-                newNode = new RandomListNode(head.label);
-                map.put(head, newNode);
-            }
-            pre.next = newNode;
-
-            if (head.random != null) {
-                if (map.containsKey(head.random)) {
-                    newNode.random = map.get(head.random);
-                } else {
-                    newNode.random = new RandomListNode(head.random.label);
-                    map.put(head.random, newNode.random);
-                }
-            }
-
-            pre = newNode;
-            head = head.next;
+        // loop 2. assign next and random pointers
+        node = head;
+        while (node != null) {
+            map.get(node).next = map.get(node.next);
+            map.get(node).random = map.get(node.random);
+            node = node.next;
         }
 
-        return dummy.next;
+        return map.get(head);
+
     }
 }

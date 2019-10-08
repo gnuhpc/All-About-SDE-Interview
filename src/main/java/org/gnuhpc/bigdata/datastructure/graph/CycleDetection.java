@@ -5,36 +5,37 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-class MyVertex {
-
-	private String name;
-	//注意添加的这两个访问的状态，也可以用一个变量enum类型进行区分
-	private boolean visited; //最终状态
-	private boolean beingVisited; // 中间状态
-	private List<MyVertex> adjacenciesList;
-
-	public MyVertex(String name) {
-		this.name = name;
-		this.adjacenciesList = new ArrayList<>();
-	}
-
-	public void addNeighbour(MyVertex vertex) {
-		this.adjacenciesList.add(vertex);
-	}
-
-	@Override
-	public String toString() {
-		return this.name;
-	}
-}
 
 public class CycleDetection {
 
+	@Data
+	public static class MyVertex {
+
+		private String         name;
+		//注意添加的这两个访问的状态，也可以用一个变量enum类型进行区分
+		private boolean        visited; //最终状态
+		private boolean        beingVisited; // 中间状态
+		private List<MyVertex> adjacenciesList;
+
+		public MyVertex(String name) {
+			this.name = name;
+			this.adjacenciesList = new ArrayList<>();
+		}
+
+		public void addNeighbour(MyVertex vertex) {
+			this.adjacenciesList.add(vertex);
+		}
+
+		@Override
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public void detectCycle(List<MyVertex> vertexList) {
-		
+
 		for(MyVertex vertex : vertexList) {
-			
+
 			if( !vertex.isVisited() ){
 				dfs(vertex);
 			}
@@ -42,10 +43,10 @@ public class CycleDetection {
 	}
 
 	private void dfs(MyVertex vertex) {
-		
+
 		System.out.println("DFS on vertex " + vertex);
 		vertex.setBeingVisited(true);
-		
+
 		for(MyVertex v : vertex.getAdjacenciesList()){
 			//这部分不是标准的DFS
 			System.out.println("Visiting the neighbours of vertex "+vertex);
@@ -61,7 +62,7 @@ public class CycleDetection {
 				dfs(v);
 			}
 		}
-		
+
 		System.out.println("Set vertex "+vertex+" setBeingVisited(false) and visited(true)");
 		vertex.setBeingVisited(false);
 		vertex.setVisited(true);

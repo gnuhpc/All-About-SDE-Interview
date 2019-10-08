@@ -2,7 +2,7 @@ package org.gnuhpc.bigdata.leetcode;
 
 import java.util.*;
 
-public class CloneGraph113 {
+public class CloneGraph133 {
     class UndirectedGraphNode {
         int label;
         List<UndirectedGraphNode> neighbors;
@@ -14,7 +14,7 @@ public class CloneGraph113 {
     }
 
     /*
-    Method1 :BFS 能够用 BFS 解决的问题，一定 不要用 DFS 去做！!
+    Method1 :BFS + HashMap
      */
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null) {
@@ -22,10 +22,10 @@ public class CloneGraph113 {
         }
 
         // use bfs algorithm to traverse the graph and get all nodes.
-        ArrayList<UndirectedGraphNode> nodes = getNodes(node);
+        List<UndirectedGraphNode> nodes = getNodes(node);
 
         // copy nodes, store the old->new mapping information in a hash memo
-        HashMap<UndirectedGraphNode, UndirectedGraphNode> mapping = new HashMap<>();
+        Map<UndirectedGraphNode, UndirectedGraphNode> mapping = new HashMap<>();
         for (UndirectedGraphNode n : nodes) {
             mapping.put(n, new UndirectedGraphNode(n.label));
         }
@@ -42,9 +42,9 @@ public class CloneGraph113 {
         return mapping.get(node);
     }
 
-    private ArrayList<UndirectedGraphNode> getNodes(UndirectedGraphNode node) {
+    private List<UndirectedGraphNode> getNodes(UndirectedGraphNode node) {
         Queue<UndirectedGraphNode> queue = new LinkedList<>();
-        HashSet<UndirectedGraphNode> set = new HashSet<>();
+        Set<UndirectedGraphNode> set = new HashSet<>();
 
         queue.offer(node);
         set.add(node);
@@ -83,4 +83,32 @@ public class CloneGraph113 {
         return cloned;
     }
 
+    /*
+    Method3 : BFS 更简洁
+     */
+
+    public UndirectedGraphNode cloneGraph3(UndirectedGraphNode node) {
+        if (node == null) return null;
+
+        UndirectedGraphNode newNode = new UndirectedGraphNode(node.label); //new node for return
+        HashMap<Integer, UndirectedGraphNode> map = new HashMap(); //store visited nodes
+
+        map.put(newNode.label, newNode); //add first node to HashMap
+
+        LinkedList<UndirectedGraphNode> queue = new LinkedList(); //to store **original** nodes need to be visited
+        queue.add(node); //add first **original** node to queue
+
+        while (!queue.isEmpty()) { //if more nodes need to be visited
+            UndirectedGraphNode n = queue.pop(); //search first node in the queue
+            for (UndirectedGraphNode neighbor : n.neighbors) {
+                if (!map.containsKey(neighbor.label)) { //add to map and queue if this node hasn't been searched before
+                    map.put(neighbor.label, new UndirectedGraphNode(neighbor.label));
+                    queue.add(neighbor);
+                }
+                map.get(n.label).neighbors.add(map.get(neighbor.label)); //add neighbor to new created nodes
+            }
+        }
+
+        return newNode;
+    }
 }

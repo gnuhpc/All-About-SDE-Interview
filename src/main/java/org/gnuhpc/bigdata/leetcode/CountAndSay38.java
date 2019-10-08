@@ -41,7 +41,7 @@ public class CountAndSay38 {
                 if (str.charAt(j) == num) count++;
                 else {
                     sb.append(count);
-                    sb.append(num - '0');
+                    sb.append(num - '0');//可以直接append(num);
                     count = 1;
                     num = str.charAt(j);
                 }
@@ -51,7 +51,7 @@ public class CountAndSay38 {
             sb.append(num - '0');
 
             str = sb.toString();
-            sb.delete(0, sb.length());
+            sb.delete(0, sb.length()); //sb = new StringBuilder();
         }
 
         return str;

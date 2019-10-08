@@ -23,4 +23,21 @@ public class ReverseWords151 {
         System.out.println(reverseWords("hello   world!  "));
     }
 
+    // add by tina,首尾交换
+    public String reverseWords2(String s) {
+        if(s == null || s.length() == 0) return s;
+        String[] strs = s.trim().split("\\s+");
+        for(int i=0,j=strs.length-1;i<j;i++,j--){
+            String temp = strs[i];
+            strs[i] = strs[j];
+            strs[j] = temp;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i<strs.length;i++){
+            sb.append(strs[i]).append(" ");
+        }
+        return sb.toString().trim();
+
+    }
+
 }

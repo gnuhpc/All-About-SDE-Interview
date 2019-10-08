@@ -1,5 +1,8 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
+import org.junit.Test;
+
 import java.util.*;
 
 public class CalcEquation399 {
@@ -107,9 +110,9 @@ public class CalcEquation399 {
     public double[] calcEquation3(List<List<String>> equations,
                                   double[] values,
                                   List<List<String>> queries) {
-        Map<String, String> graph = new HashMap<>();
+        Map<String, String> graph = new HashMap<>(); //TODO Union-Find的字符串表示
         Map<String, Double> ratio = new HashMap<>();
-        for (int i = 0; i < equations.size(); i++) {
+        for (int i = 0; i < equations.size(); i++) { //把能union先union起来, 顺带计算比例
             union(graph, ratio, equations.get(i).get(0), equations.get(i).get(1), values[i]);
         }
 
@@ -126,11 +129,11 @@ public class CalcEquation399 {
     }
 
     private void union(Map<String, String> graph, Map<String, Double> ratio, String s1, String s2, double value) {
-        if (!graph.containsKey(s1)) {
+        if (!graph.containsKey(s1)) {// 初始化
             graph.put(s1, s1);
             ratio.put(s1, 1.0d);
         }
-        if (!graph.containsKey(s2)) {
+        if (!graph.containsKey(s2)) {// 初始化
             graph.put(s2, s2);
             ratio.put(s2, 1.0d);
         }
@@ -138,16 +141,39 @@ public class CalcEquation399 {
         String p2 = find(graph, ratio, s2);
         graph.put(p1, p2);
 
-        ratio.put(p1, value*ratio.get(s2)/ratio.get(s1));
+        ratio.put(p1, value * ratio.get(s2) / ratio.get(s1)); // 这个有点绕,举个例子去看
     }
 
     private String find(Map<String, String> graph, Map<String, Double> ratio, String str) {
-        if (str.equals(graph.get(str))) return str;
-        String parent = graph.get(str);
-        String ancestor = find(graph, ratio, parent);
-        graph.put(str, ancestor);
-        ratio.put(str, ratio.get(str)*ratio.get(parent));
-        return ancestor;
+        if (!str.equals(graph.get(str))) {
+            String parent = graph.get(str);
+            String ancestor = find(graph, ratio, parent);
+            graph.put(str, ancestor);
+            ratio.put(str, ratio.get(str) * ratio.get(parent)); //记得更新ratio
+        }
+        return graph.get(str);
+    }
+
+
+    @Test
+    public void test() {
+        List<List<String>> equations = new ArrayList<>();
+        equations.add(Arrays.asList("a", "b"));
+        equations.add(Arrays.asList("b", "c"));
+
+        double[] values = new double[]{2.0, 3.0};
+
+        List<List<String>> queries = new ArrayList<>();
+        queries.add(Arrays.asList("a", "c"));
+        queries.add(Arrays.asList("b", "a"));
+        queries.add(Arrays.asList("a", "e"));
+        queries.add(Arrays.asList("a", "a"));
+        queries.add(Arrays.asList("x", "x"));
+
+        for (double r : calcEquation3(equations, values, queries)) {
+            System.out.print(r + ", ");
+        }
+
     }
 
 }

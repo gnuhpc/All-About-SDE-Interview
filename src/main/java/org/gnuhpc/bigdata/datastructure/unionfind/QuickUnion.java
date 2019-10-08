@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.datastructure.set.unionfindset;
+package org.gnuhpc.bigdata.datastructure.unionfind;
 
 /*
 lazy approach
@@ -27,7 +27,9 @@ Quick Union is Faster than Quick Find ,一般都采用这种
  */
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 //视频讲解:https://www.youtube.com/watch?v=YB3_c11GPEo
 public class QuickUnion extends QuickUnionAbstract{
@@ -37,7 +39,7 @@ public class QuickUnion extends QuickUnionAbstract{
     }
 
     public int find(int i) {
-        if (i != id[i]) {
+        if (i != id[i]) { //不等于他就递归的赋值进去
             // path compression , 小技巧
             id[i] = find(id[i]);
         }
@@ -56,14 +58,14 @@ public class QuickUnion extends QuickUnionAbstract{
         return find(p) == find(q);
     }
 
-    public void resort() {
+    public void rebalance() {
         for (int i = 0; i < id.length; i++) {
             find(i);
         }
     }
 
     public int maxCount() {
-        resort();
+        rebalance();
 
         Map<Integer, Integer> hp = new HashMap<>();
         for (int i = 0; i < id.length; i++) {
@@ -82,6 +84,19 @@ public class QuickUnion extends QuickUnionAbstract{
         }
 
         return max_count;
+    }
+
+    public int count() {
+        rebalance();
+        Set<Integer> set = new HashSet<>();
+        int count = 0;
+        for (int i = 0; i < id.length; i++) {
+            set.add(id[i]);
+            if (id[i] == i)
+                count++;
+        }
+
+        return set.size() - count;
     }
 
     //二维的时候计算ID使用

@@ -2,17 +2,19 @@ package org.gnuhpc.bigdata.leetcode;
 
 public class NumMatrix304 {
     int[][] summatrix;
+
+    //TODO 矩阵求和的一个套路,就是减切出来这个面积
     public NumMatrix304(int[][] matrix) {
-        if(matrix==null || matrix.length==0)
+        if(matrix == null || matrix.length == 0)
             return;
         summatrix = new int[matrix.length][matrix[0].length];
-        for(int i=0;i<matrix.length;i++){
-            for(int j=0;j<matrix[i].length;j++){
-                if(i==0 && j==0)
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                if(i == 0 && j == 0)
                     summatrix[i][j] = matrix[i][j];
-                else if(i==0)
-                    summatrix[i][j] = summatrix[i][j-1] + matrix[i][j];
-                else if(j==0)
+                else if(i == 0)
+                    summatrix[i][j] = summatrix[i][j - 1] + matrix[i][j];
+                else if(j == 0)
                     summatrix[i][j] = summatrix[i-1][j] + matrix[i][j];
                 else
                     summatrix[i][j] = summatrix[i-1][j] + summatrix[i][j-1] - summatrix[i-1][j-1] + matrix[i][j];

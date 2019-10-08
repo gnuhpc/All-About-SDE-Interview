@@ -3,7 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.Point;
 
 public class MaxPoints149 {
-    public int maxPoints(Point[] points) {
+    public int maxPoints(int[][] points) {
         if (points == null) {
             return 0;
         }
@@ -14,16 +14,16 @@ public class MaxPoints149 {
         int max = 2;
         Point a, b, c;
         for (int i = 1; i < n; i++) {
-            a = points[i - 1];
-            b = points[i];
+            a = new Point(points[i - 1][0], points[i - 1][1]);
+            b = new Point(points[i][0], points[i][1]);
             double k = getSlop(a, b);
             int count = 2;
             for (int j = 0; j < n; j++) {
                 if (j == i || j == i - 1) {
                     continue;
                 }
-                c = points[j];
-                if (overlap(a, c) || overlap(b, c) || k == getSlop(b, c)) {
+                c = new Point(points[j][0], points[j][1]);
+                if (a.equals(c) || b.equals(c) || k == getSlop(b, c)) {
                     count++;
                 }
             }
@@ -32,14 +32,11 @@ public class MaxPoints149 {
         return max;
     }
 
-    private boolean overlap(Point a, Point b) {
-        return a.x == b.x && a.y == b.y;
-    }
-
     private double getSlop(Point a, Point b) {
         if (a.x == b.x) {
             return Double.POSITIVE_INFINITY;
-        } else {
+        }
+        else {
             return ((double) a.y - b.y) / ((double) a.x - b.x);
         }
     }

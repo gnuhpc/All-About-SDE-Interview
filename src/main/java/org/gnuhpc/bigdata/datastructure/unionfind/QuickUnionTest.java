@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.datastructure.set.unionfindset;
+package org.gnuhpc.bigdata.datastructure.unionfind;
 
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
 

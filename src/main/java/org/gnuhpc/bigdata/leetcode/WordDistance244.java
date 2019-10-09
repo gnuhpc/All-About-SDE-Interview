@@ -19,6 +19,8 @@ import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,43 +32,32 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class WordDistance244 {
-    private HashMap<String, ArrayList<Integer>> hmap = new HashMap<>();
-    private HashMap<String,Integer> resMap = new HashMap<>();
+    private Map<String, List<Integer>> hmap = new HashMap<>();
     // 构造函数
     public WordDistance244(String[] words){
         for(int i = 0; i < words.length;i++){
             String word = words[i];
-            if(!hmap.containsKey(word)) hmap.put(word,new ArrayList<>());
-            hmap.get(word).add(i);
+            List<Integer> list = hmap.get(word);
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            list.add(i);
+            hmap.put(word, list);
         }
     }
 
     // 抽象出的问题：求2个有序数组的最短距离
-    public int shortest(String word1,String word2){
-        ArrayList<Integer> lst1 = hmap.get(word1);
-        ArrayList<Integer> lst2 = hmap.get(word2);
-        int i = 0;
-        int j = 0;
-        int res = Integer.MAX_VALUE;
-        // 首先判定是个while循环来做，循环结束的条件
-        // -有一个列表遍历完毕
-        while(i < lst1.size() && j < lst2.size()){
-            res = Math.min(res,Math.abs(lst1.get(i)-lst2.get(j)));
-            if(lst1.get(i) < lst2.get(j)) i++;
-            else j++;
-        }
-
-        return res;
-    }
-
+    // 双指针
     // 抽象出的问题：求2个有序数组的最短距离
     // 因为同一组参数可能会被重复调用，我们可以加一个cache,提升效率
-    public int shortest2(String word1,String word2){
+    private Map<String, Integer> resMap = new HashMap<>();
+
+    public int shortest(String word1, String word2) {
         String word = word1.compareTo(word2) < 0?word1+word2:word2+word1;
         if(resMap.containsKey(word)) return resMap.get(word);
 
-        ArrayList<Integer> lst1 = hmap.get(word1);
-        ArrayList<Integer> lst2 = hmap.get(word2);
+        List<Integer> lst1 = hmap.get(word1);
+        List<Integer> lst2 = hmap.get(word2);
         int i = 0;
         int j = 0;
         int res = Integer.MAX_VALUE;
@@ -84,10 +75,11 @@ public class WordDistance244 {
     }
 
 
+
     public static void main(String[] args){
         String[] words = {"practice", "makes", "perfect", "coding", "makes"};
         WordDistance244 wd = new WordDistance244(words);
-        System.out.println(wd.shortest2("coding","makes"));
+        System.out.println(wd.shortest("coding", "makes"));
 
     }
 

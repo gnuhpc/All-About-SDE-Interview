@@ -97,7 +97,7 @@ public class FindCircleNum547 {
                 //当M[i][j]=1时，同学i和同学j是直接朋友，因此他们一定在一个朋友圈里。
                 if(M[i][j]==1){
                     //判断i和j是不是在并查集中已经相连
-                    if(!qu.connected(i,j)){
+                    if (!qu.isConnected(i, j)) {
                         //如果没有则合并
                         qu.union(i,j);
                         count--;

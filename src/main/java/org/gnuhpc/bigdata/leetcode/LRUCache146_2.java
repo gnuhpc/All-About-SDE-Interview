@@ -9,13 +9,13 @@ public class LRUCache146_2 {
 
     public LRUCache146_2(int capacity) {
         this.capacity = capacity;
-        this.list = new ArrayDeque<>();
+        this.list = new LinkedList<>();
         this.map = new HashMap<>();
     }
 
     public int get(int key) {
         if (map.containsKey(key)) {
-            list.remove(Integer.valueOf(key));
+            list.remove(key); //O(n)的
             list.addFirst(key);//Move to latest
         }
         Integer value = map.get(key);
@@ -26,7 +26,7 @@ public class LRUCache146_2 {
 
     public void put(int key, int value) {
         if (map.containsKey(key)) {
-            list.remove(Integer.valueOf(key));
+            list.remove(key);
             list.addFirst(key);
         }
         else if (list.size() >= capacity) {

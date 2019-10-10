@@ -1,7 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.*;
 
@@ -10,52 +9,70 @@ import java.util.*;
  */
 public class NumIslands2305 {
 
-    private int[] POINTS = {0, -1, 0, 1, 0};
+    private int[] ids;
+    private int   rows, cols;
+    private int[][] dr = new int[][]{
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1},
+            };
+
+    //维护当前每个孤岛的parent id，也就是领头羊，领头羊的个数也就是孤岛区域的个数
+    private Set<Integer> set = new HashSet<>();
 
     public List<Integer> numIslands2(int rows, int cols, int[][] positions) {
         List<Integer> res = new ArrayList<>();
-        // store all the ids element
-        Set<Integer> set = new HashSet<>();
-        int[] ids = new int[rows * cols];
+        this.rows = rows;
+        this.cols = cols;
+        ids = new int[rows * cols];
+        //原来没有岛，都是水，因此都初始化为-1.
+        //注意这个与number of island里面假设每个岛都是一个独立的岛，然后count去减合并数的思路相反
         Arrays.fill(ids, -1);
         for (int[] position : positions) {
             int curRow = position[0];
             int curCol = position[1];
-            add(set, ids, curRow, curCol, rows, cols);
+            add(curRow, curCol);
             res.add(set.size());
         }
         return res;
     }
 
-    private void add(Set<Integer> set, int[] ids, int curRow, int curCol, int rows, int cols) {
+    private void add(int curRow, int curCol) {
         int idx = curRow * cols + curCol;
-        ids[idx] = idx;
-        set.add(idx);
-        for (int i = 0; i < POINTS.length - 1; i++) {
-            int newRow = curRow + POINTS[i];
-            int newCol = curCol + POINTS[i + 1];
+        //如果idx是一个新加入的岛
+        if (ids[idx] == -1) {
+            //先把新加入的点当做一个孤立的点，自己是自己的领头羊
+            ids[idx] = idx; //初始化自己是自己的父亲
+            set.add(idx);
+        }
+
+        //然后上下左右看看有没有其他的领头羊，如果有就进行连接，如果已经连接了就退出，不影响个数
+        for (int[] d : dr) {
+            int newRow = curRow + d[0];
+            int newCol = curCol + d[1];
             int newIdx = newRow * cols + newCol;
             if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && ids[newIdx] != -1) {
-                union(set, ids, idx, newIdx);
+                union(idx, newIdx);
             }
         }
     }
 
-    private int find(int[] ids, int i) {
-        if (ids[i] == i) {
-            return i;
+    private int find(int i) {
+        if (i != ids[i]) {
+            ids[i] = find(ids[i]);
         }
-        ids[i] = find(ids, ids[i]);
         return ids[i];
     }
 
-    private void union(Set<Integer> set, int[] ids, int i, int j) {
-        int parentI = find(ids, i);
-        int parentJ = find(ids, j);
+    private void union(int i, int j) {
+        int parentI = find(i);
+        int parentJ = find(j);
+        // 如果原来没有连接，现在可以连一下了
         if (parentI != parentJ) {
-            ids[parentI] = parentJ;
-            set.remove(parentI);//注意如果建立关系要在set中维护的这个独立点
+            set.remove(parentI);//注意如果建立关系要在set中维护这个独立点，既然连接了就要去掉这个set
         }
+        ids[parentI] = parentJ;
     }
 
 

@@ -145,7 +145,7 @@ public class NumIslands200 {
                         int y = j+d[1];
 
                         if(x>=0&&x<r&&y>=0&&y<c&&grid[x][y]=='1'){
-                            if (!qu.connected(i*c+j,x*c+y)){
+                            if (!qu.isConnected(i * c + j, x * c + y)) {
                                 //合并
                                 qu.union(i*c+j,x*c+y);
                                 //总数减1

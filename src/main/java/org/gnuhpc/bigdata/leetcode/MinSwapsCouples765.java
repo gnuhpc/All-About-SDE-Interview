@@ -97,7 +97,7 @@ public class MinSwapsCouples765 {
         for (int i = 0; i < N; i++) {
             int a = row[2*i];
             int b = row[2*i + 1];
-            if (!uf.connected(a/2,b/2)){
+            if (!uf.isConnected(a / 2, b / 2)) {
                 count--;
             }
             uf.union(a/2, b/2);

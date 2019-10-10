@@ -1,7 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -27,7 +26,8 @@ When we need update the cache for a key, we first use the HashMap to located the
  */
 
 //自己构造双向链表,速度最快
-public class LRUCache146_4 {
+//head放most recent结果
+public class LRUCache146_3 {
     class Node { //双向链表
         int  key;
         int  value;
@@ -41,9 +41,9 @@ public class LRUCache146_4 {
     }
 
     static class Worker implements Callable<Integer> {
-        private final LRUCache146_4 cache;
+        private final LRUCache146_3 cache;
 
-        public Worker(LRUCache146_4 lruCache) {
+        public Worker(LRUCache146_3 lruCache) {
             this.cache = lruCache;
         }
 
@@ -65,7 +65,7 @@ public class LRUCache146_4 {
     int                    count; //记录已用cache个数
     Node                   head, tail;
 
-    public LRUCache146_4(int capacity) { //构造函数
+    public LRUCache146_3(int capacity) { //构造函数
         this.capacity = capacity;
         map = new HashMap<>();
         head = new Node(0, 0);
@@ -78,18 +78,15 @@ public class LRUCache146_4 {
     }
 
     public int get(int key) {
-        if (map.get(key) != null) { //HashMap中查找
-            Node node = map.get(key);
-            int result = node.value;
-            deleteNode(node);
-            addToHead(node);
-            return result;
-        }
-        return -1;
+        if (!map.containsKey(key)) return -1;
+        Node node = map.get(key);
+        deleteNode(node);
+        addToHead(node);
+        return node.value;
     }
 
     public void put(int key, int value) {
-        if (map.get(key) != null) {//已经在cache中
+        if (map.containsKey(key)) {//已经在cache中
             Node node = map.get(key);
             node.value = value;
             deleteNode(node);
@@ -110,21 +107,21 @@ public class LRUCache146_4 {
         }
     }
 
-    public void addToHead(Node node) {
+    public void addToHead(Node node) {//注意这个顺序的依赖
+        //画个图，先对右边的进行，然后对左边的进行
         node.next = head.next;
         node.next.pre = node;
         head.next = node;
         node.pre = head;
     }
 
-    public void deleteNode(Node node) {
+    public void deleteNode(Node node) { //O(1) 这也是和方案2 的最大差别
         node.pre.next = node.next;
         node.next.pre = node.pre;
     }
 
-
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        LRUCache146_4 cache = new LRUCache146_4(10 /* 缓存容量 */);
+        LRUCache146_3 cache = new LRUCache146_3(10 /* 缓存容量 */);
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 

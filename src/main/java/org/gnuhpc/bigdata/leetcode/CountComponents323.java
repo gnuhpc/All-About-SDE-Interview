@@ -39,7 +39,7 @@ There are k loops and each loop processing the find array costs log(n). Therefor
         QuickUnion qu = new QuickUnion(n);
 
         for (int[] edge : edges) {
-            if (!qu.connected(edge[0], edge[1])) {
+            if (!qu.isConnected(edge[0], edge[1])) {
                 qu.union(edge[0], edge[1]);
             }
         }

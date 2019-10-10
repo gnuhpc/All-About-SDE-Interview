@@ -1,10 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import io.netty.handler.codec.redis.IntegerRedisMessage;
-import org.gnuhpc.bigdata.datastructure.unionfind.QuickFind;
 import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 import org.junit.Test;
-import scala.math.Equiv;
 
 import java.util.*;
 
@@ -41,7 +38,7 @@ public class ValidTree261 {
         QuickUnion qu = new QuickUnion(n);
 
         for (int[] edge : edges) {
-            if (qu.connected(edge[0], edge[1])) {//Already connected
+            if (qu.isConnected(edge[0], edge[1])) {//Already connected
                 return false;
             }
             else {

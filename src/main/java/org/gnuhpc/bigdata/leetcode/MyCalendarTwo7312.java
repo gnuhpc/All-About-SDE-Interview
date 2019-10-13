@@ -1,41 +1,32 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MyCalendarTwo7312 {
-    private TreeMap<Integer, Integer> calendar = new TreeMap<>();
 
+    private TreeMap<Integer, Integer> map = new TreeMap<>();
 
     public boolean book(int start, int end) {
-
-        // 尝试添加至日程中
-        calendar.put(start, calendar.getOrDefault(start, 0) + 1);
-        calendar.put(end, calendar.getOrDefault(end, 0) - 1);
-
-        // 记录活跃的日程数
-        int active = 0;
-
-        for (int d : calendar.values()) {
-            // 以时间线统计日程
-            active += d;
-
-            // 中途活跃日程>=3时，返回 false
-            if (active >= 3) {
-
-                // 恢复现场
-                calendar.put(start, calendar.get(start) - 1);
-                calendar.put(end, calendar.get(end) + 1);
-
-                // remove this part, it can passes. but this will only costs more spaces.
-                if (calendar.get(start) == 0)
-                    calendar.remove(start);
-
+        map.put(start, map.getOrDefault(start, 0) + 1);
+        map.put(end, map.getOrDefault(end, 0) - 1);
+        int count = 0;
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            count += entry.getValue();
+            if(count > 2) {
+                map.put(start, map.get(start) - 1);
+                if(map.get(start) == 0) { //可以不要，但是这个可以节省内存也节省运行时间
+                    map.remove(start);
+                }
+                map.put(end, map.get(end) + 1);//同上的优化
+                if(map.get(end) == 0) {
+                    map.remove(end);
+                }
                 return false;
             }
         }
         return true;
-
     }
 
 

@@ -5,13 +5,13 @@ import java.util.*;
 /*
 PriorityQueue
  */
-public class LFUCache {
+public class LFUCache460 {
     Queue<KVNode>        queue     = null;
     Map<Integer, KVNode> cache     = new HashMap<>();
     int                  cap       = 0;
     int                  globalAge = 0;
 
-    public LFUCache(int capacity) {
+    public LFUCache460(int capacity) {
         cache = new HashMap<>();
         cap = capacity;
         if (cap != 0) queue = new PriorityQueue<>(capacity, (o1, o2) -> {
@@ -79,7 +79,7 @@ public class LFUCache {
     }
 
     public static void main(String[] args) {
-        LFUCache cache = new LFUCache(2 /* 缓存容量 */);
+        LFUCache460 cache = new LFUCache460(2 /* 缓存容量 */);
         cache.put(1, 1);
         cache.put(2, 2);
         System.out.println(cache.get(1));       // returns 1

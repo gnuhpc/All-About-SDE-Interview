@@ -51,6 +51,7 @@ public class QuickUnion extends QuickUnionAbstract{
     public void union(int p, int q) {
         int pid = find(p);
         int qid = find(q);
+        if (pid == qid) return; //注意如果已经connected就不做了，因为count要--，这个不是幂等性操作
         id[pid] = qid;
         count--;
     }
@@ -91,7 +92,7 @@ public class QuickUnion extends QuickUnionAbstract{
         return count;
     }
 
-    //二维的时候计算ID使用
+    //二维的时候计算ID使用 TODO 这也是matrix 转化为一维的一个方法
     public int node(int cols, int i, int j) {
         return i * cols + j;
     }

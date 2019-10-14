@@ -8,8 +8,8 @@ import java.util.*;
  * Copyright gnuhpc 2019/10/2
  */
 public class RandomizedCollection381 {
-    private List<Integer>               list;
-    private Map<Integer, List<Integer>> posMap;
+    private List<Integer>               list; // val list for random access
+    private Map<Integer, List<Integer>> posMap; //val -- position list
     private int                         tail;
     private Random                      random;
 

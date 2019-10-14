@@ -8,11 +8,11 @@ import java.util.Random;
  */
 
 //https://www.youtube.com/watch?v=LP7YQdT5eps
-public class Shuffle {
+public class Shuffle384 {
     private int[]  nums;
     private Random r;
 
-    public Shuffle(int[] nums) {
+    public Shuffle384(int[] nums) {
         this.nums = nums;
         r = new Random();
     }

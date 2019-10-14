@@ -9,14 +9,27 @@ import java.util.Map;
 
 public class IsSubsequence392 {
     /*
+    Method0 indexOf 注意fromIndex这个，可以保证是往后找 这个方法实际最快
+     */
+
+    public boolean isSubsequence(String s, String t) {
+        int index = -1;
+        for (char c : s.toCharArray()){
+            index = t.indexOf(c, index+1);
+            if (index == -1) return false;
+        }
+        return true;
+    }
+
+    /*
     Method1 : 递归
      */
-    public boolean isSubsequence(String s, String t) {
+    public boolean isSubsequence1(String s, String t) {
         if (s.isEmpty()) return true;
 
         for (int i = 0; i < t.length(); i++) {
             if (t.charAt(i) == s.charAt(0)){
-                return isSubsequence(s.substring(1),t.substring(i+1));
+                return isSubsequence1(s.substring(1),t.substring(i+1));
             }
         }
 
@@ -27,16 +40,17 @@ public class IsSubsequence392 {
     Method2: 双指针
      */
     public boolean isSubsequence2(String s, String t) {
-        if (s.length() == 0) return true;
-        int indexS = 0, indexT = 0;
-        while (indexT < t.length()) {
-            if (t.charAt(indexT) == s.charAt(indexS)) {
-                indexS++;
-                if (indexS == s.length()) return true;
+        if (s.isEmpty()) return true;
+        int i = 0, j = 0;
+        while (i < s.length() && j < t.length()) {
+            if (s.charAt(i) == t.charAt(j)) {
+                ++i; ++j;
+            } else {
+                ++j;
             }
-            indexT++;
         }
-        return false;
+        return i == s.length();
+
     }
 
     /**

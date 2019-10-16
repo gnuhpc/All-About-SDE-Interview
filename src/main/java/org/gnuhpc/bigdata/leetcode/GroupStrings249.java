@@ -12,8 +12,7 @@ public class GroupStrings249 {
         for(int i = 0;i<n;i++){
             String cur = strings[i];
             String cs = basic(cur);
-            if(hmap.containsKey(cs)) hmap.get(cs).add(cur);
-            else hmap.put(cs,new ArrayList<>(Arrays.asList(cur)));
+            hmap.computeIfAbsent(cs, k -> new ArrayList<>()).add(cur);
         }
         return new ArrayList(hmap.values());
     }
@@ -57,5 +56,18 @@ public class GroupStrings249 {
             sb.append(String.valueOf((s.charAt(i)-c+26) % 26) + ",");
         }
         return sb.toString();
+    }
+
+    public String basic4(String s) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < s.length(); i++) {
+            int n = s.charAt(i) - s.charAt(i - 1);
+            if (n >= 0) sb.append(n + "");
+            else sb.append(n + 26 + "");
+        }
+
+        return sb.toString();
+
     }
 }

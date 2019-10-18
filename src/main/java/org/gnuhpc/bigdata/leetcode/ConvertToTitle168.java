@@ -24,4 +24,24 @@ public class ConvertToTitle168 {
     public void test(){
         System.out.println(convertToTitle(28));
     }
+
+    //add by tina
+    // The key is n--. The minimum in 26-bit number is mapped to 1, not 0.
+    public String convertToTitle2(int n) {
+        if(n <= 0){
+            throw new IllegalArgumentException("Input is not valid!");
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        while(n > 0){
+            n--;
+            char ch = (char) (n % 26 + 'A');
+            n /= 26;
+            sb.append(ch); //sb.insert(0,ch);
+        }
+
+        sb.reverse();
+        return sb.toString();
+    }
 }

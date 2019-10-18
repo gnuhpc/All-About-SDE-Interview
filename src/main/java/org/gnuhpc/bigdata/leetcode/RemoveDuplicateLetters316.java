@@ -38,6 +38,7 @@ public class RemoveDuplicateLetters316 {
 
     /*
     Method2 : 非递归， 发现不对再删除
+    https://www.youtube.com/watch?v=SrlvMmfG8sA
      */
     public String removeDuplicateLetters2(String s) {
         if (s == null || s.length() == 0) {

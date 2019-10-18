@@ -175,7 +175,7 @@ public class Solve130 {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (qu.connected(qu.node(cols, i, j), dummyNode)) {
+                if (qu.isConnected(qu.node(cols, i, j), dummyNode)) {
                     // 和dummyNode 在一个连通区域的,那么就是O；
                     board[i][j] = 'O';
                 }

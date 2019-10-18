@@ -7,8 +7,6 @@ public class ShortestDistance245 {
         int p = -1; //初始化为-1，初始值不参与距离计算
         int q = -1;
         int res = Integer.MAX_VALUE;
-        boolean same = false;
-        if(word1.equals(word2)) same = true;
 
         int n = words.length;
         for(int i = 0; i<n; i++){
@@ -20,7 +18,8 @@ public class ShortestDistance245 {
             }
             if(words[i].equals(word2)) {
                 q = i;
-                if(!same && p != -1) res = Math.min(res,Math.abs(p-q));
+                //如果p和q是同一个位置,说明words[i] = word1 = word2, 这个距离是无效的,因此跳过去不计算就可以了.
+                if (p != q && p != -1) res = Math.min(res, Math.abs(p - q));
             }
         }
         return res;

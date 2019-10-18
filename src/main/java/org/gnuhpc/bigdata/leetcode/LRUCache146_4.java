@@ -8,7 +8,7 @@ import java.time.Duration;
 
 public class LRUCache146_4 {
     private final JedisPool jedisPool;
-    private int capacity;
+    private       int       capacity;
 
     private static final String ZSETKEY = "MyLRU";
     private static final String HASHKEY = "LRUHASH";
@@ -39,41 +39,42 @@ public class LRUCache146_4 {
     public int get(int key) {
         String strKey = String.valueOf(key);
         try (Jedis jedis = jedisPool.getResource()) {
-            if (!jedis.hexists(HASHKEY,strKey)){
+            if (!jedis.hexists(HASHKEY, strKey)) {
                 return -1;
             }
             String mruKey = jedis.zrevrange(ZSETKEY, 0, 0).iterator().next();
             double highestScore = jedis.zscore(ZSETKEY, mruKey);
-            jedis.zadd(ZSETKEY,highestScore+1,strKey);
-            return Integer.parseInt(jedis.hget(HASHKEY,strKey));
+            jedis.zadd(ZSETKEY, highestScore + 1, strKey);
+            return Integer.parseInt(jedis.hget(HASHKEY, strKey));
         }
     }
+
     public void put(int key, int value) {
         String strKey = String.valueOf(key);
         try (Jedis jedis = jedisPool.getResource()) {
             //get will update the use frequency;
             if (get(key) != -1) {
-                jedis.hset(HASHKEY,strKey, String.valueOf(value));
+                jedis.hset(HASHKEY, strKey, String.valueOf(value));
                 return;
             }
             if (jedis.hlen(HASHKEY) == capacity) {
                 String lruKey = jedis.zrange(ZSETKEY, 0, 0).iterator().next();
-                jedis.hdel(HASHKEY,lruKey);
-                jedis.zrem(ZSETKEY,lruKey);
+                jedis.hdel(HASHKEY, lruKey);
+                jedis.zrem(ZSETKEY, lruKey);
             }
 
-            jedis.hset(HASHKEY,strKey, String.valueOf(value));
+            jedis.hset(HASHKEY, strKey, String.valueOf(value));
             double highestScore = 0;
-            if (jedis.zcard(ZSETKEY)!=0) {
+            if (jedis.zcard(ZSETKEY) != 0) {
                 String mruKey = jedis.zrevrange(ZSETKEY, 0, 0).iterator().next();
                 highestScore = jedis.zscore(ZSETKEY, mruKey);
             }
-            jedis.zadd(ZSETKEY,highestScore+1,strKey);
+            jedis.zadd(ZSETKEY, highestScore + 1, strKey);
         }
     }
 
     public static void main(String[] args) {
-        LRUCache146_4 cache = new LRUCache146_4( 2 /* 缓存容量 */ );
+        LRUCache146_3 cache = new LRUCache146_3(2 /* 缓存容量 */);
 
         cache.put(1, 1);
         cache.put(2, 2);

@@ -1,19 +1,51 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.HashMap;
+import java.util.Map;
 
 public class MaxSubArrayLen {
     public int maxSubArrayLen(int[] nums, int k) {
-        // Write your code here
-        int sum = 0, max = 0;
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (int i = 0; i < nums.length; i++) {
-            sum = sum + nums[i];
-            if (sum == k) max = i + 1; //特殊情况
-            else if (map.containsKey(sum - k)) max = Math.max(max, i - map.get(sum - k));
-            // 只保留第一个sum及index，这样sum-k能取到更大的区间
-            if (!map.containsKey(sum)) map.put(sum, i);
+        int ans = 0;
+
+        //相要的值 -- 和终止的对应位置
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int n = nums.length;
+        int[] sums = new int[n + 1];
+        for (int i = 0; i < n; ++i) {
+            sums[i + 1] = sums[i] + nums[i];
+            map.put(sums[i + 1] - k, i + 1);
         }
-        return max;
+
+        for (int i = 0; i < n; ++i) {
+            Integer j = map.get(sums[i]);
+            if (j!=null){
+                ans = Math.max(ans,j-i);
+            }
+        }
+
+        return ans;
     }
+
+    public int maxSubArrayLen2(int[] nums, int k) {
+        int n = nums.length, ans = 0, sum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+
+
+        for (int i = 0; i < n; ++i) {
+            map.putIfAbsent(sum, i);
+
+            sum += nums[i];
+            ans = Math.max(ans, i + 1 - map.getOrDefault(sum - k, i + 1));
+        }
+
+        return ans;
+    }
+
+    @Test
+    public void test() {
+        System.out.println(maxSubArrayLen(new int[]{1, 2, 3,2}, 6));
+    }
+
 }

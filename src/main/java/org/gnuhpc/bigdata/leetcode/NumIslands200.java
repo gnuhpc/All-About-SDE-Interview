@@ -145,7 +145,7 @@ public class NumIslands200 {
                         int y = j+d[1];
 
                         if(x>=0&&x<r&&y>=0&&y<c&&grid[x][y]=='1'){
-                            if (!qu.connected(i*c+j,x*c+y)){
+                            if (!qu.isConnected(i * c + j, x * c + y)) {
                                 //合并
                                 qu.union(i*c+j,x*c+y);
                                 //总数减1
@@ -185,16 +185,16 @@ public class NumIslands200 {
 
     private void bfs(char[][] grid, int x, int y){
         visited[x][y] = true;
-        Queue<Point> q = new LinkedList<>();
-        q.offer(new Point(x,y));
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x,y});
         while(!q.isEmpty()){
-            Point p = q.poll();
+            int[] p = q.poll();
             for(int[] dir:dr){ //相当于getNeighbourList了
-                int newX = p.x+dir[0];
-                int newY = p.y+dir[1];
+                int newX = p[0]+dir[0];
+                int newY = p[1]+dir[1];
                 if(isValid(newX,newY) && grid[newX][newY]=='1' && !visited[newX][newY]) {
                     visited[newX][newY] = true;
-                    q.offer(new Point(newX,newY));
+                    q.offer(new int[]{newX,newY});
                 }
             }
         }

@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class addTwoNumbers445 {
+public class AddTwoNumbers445 {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int l1Size = getLinkedListSize(l1);
         int l2Size = getLinkedListSize(l2);

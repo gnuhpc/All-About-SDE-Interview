@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.*;
 
 public class BinaryTreePaths257 {
-    /** DFS
+    /** Method1: DFS
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths
      */
@@ -17,13 +17,16 @@ public class BinaryTreePaths257 {
         return answer;
     }
 
-    private void searchBT(TreeNode root, String path, List answer) {
+    private void searchBT(TreeNode root, String path, List<String> answer) {
         if (root.left == null && root.right == null) answer.add(path + root.val);
         if (root.left != null) searchBT(root.left, path + root.val + "->", answer);
         if (root.right != null) searchBT(root.right, path + root.val + "->", answer);
     }
 
-    public List binaryTreePaths1(TreeNode root) {
+    /*
+    Method2: DFS 非递归
+     */
+    public List binaryTreePaths2(TreeNode root) {
         List<String> list = new ArrayList<>();
         Stack<TreeNode> sNode = new Stack<>();
         Stack<String> sStr = new Stack<>();
@@ -49,11 +52,12 @@ public class BinaryTreePaths257 {
     }
 
 
-    /** Divide and Conquer Recursion
+    /**
+     * Method3： Divide and Conquer Recursion
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths
      */
-    public List<String> binaryTreePaths2(TreeNode root) {
+    public List<String> binaryTreePaths3(TreeNode root) {
         //递归三要素 1. 返回
         List<String> paths = new ArrayList<>();
         if (root == null) {
@@ -81,10 +85,10 @@ public class BinaryTreePaths257 {
     }
 
     /*
-    Method3: BFS
+    Method4: BFS
      */
-    public List binaryTreePaths3(TreeNode root) {
-        List list = new ArrayList();
+    public List<String> binaryTreePaths4(TreeNode root) {
+        List<String> list = new ArrayList<>();
         Queue<TreeNode> qNode = new LinkedList<>();
         Queue<String> qStr = new LinkedList<>();
 

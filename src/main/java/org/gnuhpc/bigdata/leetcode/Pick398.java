@@ -1,7 +1,5 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,10 +19,10 @@ import java.util.stream.Collectors;
     然后从第 k+1 个元素开始，以 k/n 的概率来决定该元素是否被替换到数组中（数组中的元素被替换的概率是相同的）。
     当遍历完所有元素之后，数组中剩下的元素即为所需采取的样本。
      */
-public class Solution398 {
+public class Pick398 {
     private int[] nums;
 
-    public Solution398(int[] nums) {
+    public Pick398(int[] nums) {
         this.nums = nums;
     }
 
@@ -43,7 +41,7 @@ public class Solution398 {
     }
 
     public static void main(String[] args) {
-        Solution398 s = new Solution398(new int[]{1, 2, 3, 4, 5, 4, 4, 4, 3});
+        Pick398 s = new Pick398(new int[]{1, 2, 3, 4, 5, 4, 4, 4, 3});
         List<Integer> res = new ArrayList<>();
         for (int i = 0; i < 100000; i++) {
             res.add(s.pick(4));

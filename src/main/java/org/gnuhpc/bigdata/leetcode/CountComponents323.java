@@ -20,6 +20,7 @@ Note:
 You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
  */
 
+import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -35,39 +36,18 @@ There are k loops and each loop processing the find array costs log(n). Therefor
      */
     public int countComponents(int n, int[][] edges) {
         int count = n;
+        QuickUnion qu = new QuickUnion(n);
 
-        int[] root = new int[n];
-        // initialize each node is an island
-        for(int i=0; i<n; i++){
-            root[i]=i;
-        }
-
-        // 构建并差集
-        for(int i=0; i<edges.length; i++){
-            int x = edges[i][0];
-            int y = edges[i][1];
-
-            int xRoot = root(root, x);
-            int yRoot = root(root, y);
-
-            //合并，表示相连
-            if(xRoot!=yRoot){
-                root[xRoot]=yRoot;
-                count--;
+        for (int[] edge : edges) {
+            if (!qu.isConnected(edge[0], edge[1])) {
+                qu.union(edge[0], edge[1]);
             }
-
         }
 
-        return count;
+        return qu.count();
     }
 
-    public int root(int[] arr, int id){
-        while(arr[id]!=id){
-            arr[id]= arr[arr[id]];
-            id=arr[id];
-        }
-        return id;
-    }
+
 
     /*
     Method 2: dfs

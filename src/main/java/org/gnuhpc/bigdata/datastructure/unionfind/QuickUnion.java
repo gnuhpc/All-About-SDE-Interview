@@ -31,12 +31,14 @@ import java.util.Map;
 
 //视频讲解:https://www.youtube.com/watch?v=YB3_c11GPEo
 public class QuickUnion extends QuickUnionAbstract{
+    int count = 0;
 
     public QuickUnion(int N) {
         super(N);
+        this.count = N;
     }
 
-    public int find(int i) {
+    public int find(int i) { //path compression
         if (i != id[i]) { //不等于他就递归的赋值进去
             // path compression , 小技巧
             id[i] = find(id[i]);
@@ -49,21 +51,23 @@ public class QuickUnion extends QuickUnionAbstract{
     public void union(int p, int q) {
         int pid = find(p);
         int qid = find(q);
+        if (pid == qid) return; //注意如果已经connected就不做了，因为count要--，这个不是幂等性操作
         id[pid] = qid;
+        count--;
     }
 
-    public boolean connected(int p, int q) {
+    public boolean isConnected(int p, int q) {
         return find(p) == find(q);
     }
 
-    public void rebalance() {
+    public void reBalance() {
         for (int i = 0; i < id.length; i++) {
             find(i);
         }
     }
 
     public int maxCount() {
-        rebalance();
+        reBalance();
 
         Map<Integer, Integer> hp = new HashMap<>();
         for (int i = 0; i < id.length; i++) {
@@ -84,7 +88,11 @@ public class QuickUnion extends QuickUnionAbstract{
         return max_count;
     }
 
-    //二维的时候计算ID使用
+    public int count() {
+        return count;
+    }
+
+    //二维的时候计算ID使用 TODO 这也是matrix 转化为一维的一个方法
     public int node(int cols, int i, int j) {
         return i * cols + j;
     }

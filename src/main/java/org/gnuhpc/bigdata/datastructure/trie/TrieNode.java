@@ -15,13 +15,18 @@ public class TrieNode {
 	public TrieNode[] children;
 	public boolean isLeaf;
 
+	//If isLeaf is  true, you can store the whole word
+	public String word;
+
 	public TrieNode(String character) {
 		this.character = character;
+		this.word = null;
 		children = new TrieNode[ALPHABETSIZE];
 	}
 
 	public TrieNode() {
 		this.character = "";
+		this.word = null;
 		children = new TrieNode[ALPHABETSIZE];
 	}
 

@@ -36,6 +36,7 @@ public class Trie {
 		}
 
 		node.isLeaf = true;
+		node.word = word;
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class Trie {
 
 	//Return the search result of the prefix
 	public List<String> allWordsWithPrefix(String prefix) {
-		
+
 		List<String> res = new ArrayList<>();
 		//首先找到前缀最深的那个TrieNode
 		TrieNode node = searchNode(prefix);
@@ -85,43 +86,43 @@ public class Trie {
 		collect(node, prefix, res);
 		return res;
 	}
-	
+
 	public String longestCommonPrefix() {
-		
+
 		TrieNode node = root;
 		StringBuilder lcp = new StringBuilder();
-		
+
 		while( countNumOfChildren(node) == 1 && !node.isLeaf) {
 			node = node.children[indexOfSingleChild];
 			lcp.append((char) (indexOfSingleChild + 'a'));
 		}
-		
+
 		return lcp.toString();
 	}
 
 	private int countNumOfChildren(TrieNode node) {
-		
+
 		int numOfChildren = 0;
-		
+
 		for(int i = 0; i< node.children.length; ++i) {
 			if( node.children[i] != null ) {
 				numOfChildren++;
 				indexOfSingleChild = i;
 			}
 		}
-		
+
 		return numOfChildren;
 	}
 
 	//recursive
 	private void collect(TrieNode node, String prefix, List<String> res) {
-		
+
 		if( node == null ) return;
-		
+
 		if( node.isLeaf){
 			res.add(prefix);
 		}
-		
+
 		for(TrieNode n : node.children) {
 			if( n == null ) continue;
 			String childCharacter = n.character;

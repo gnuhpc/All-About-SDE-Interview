@@ -19,6 +19,7 @@ public class GetPermutation60 {
     }
 
     private void dfs(int[] nums, boolean[] visited, StringBuilder sb, int k) {
+        if (res!="") return;
         if (sb.length() == nums.length){
             counter++;
             if (counter == k){

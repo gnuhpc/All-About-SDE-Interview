@@ -1,6 +1,9 @@
 package org.gnuhpc.bigdata.datastructure.graph;
 
-import com.google.inject.internal.cglib.core.$VisibilityPredicate;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 import org.junit.Test;
 
 import java.util.*;
@@ -87,6 +90,34 @@ public class UnDirectedGraphCycleDetection {
 		}
 	}
 
+
+	public void detectCycleByUF(List<NLNode> graph) {
+		QuickUnion qu = new QuickUnion(graph.size()+1);
+		//先将邻接矩阵换为edge表示
+		Set<Edge> edges = makeEdges(graph);
+
+		for (Edge edge: edges){
+			System.out.println("Detect edge " + edge.start + "--" + edge.end);
+			if (qu.isConnected(edge.start,edge.end)){
+				System.out.println("Backward edge ... so there is a cycle");
+			} else {
+				qu.union(edge.start, edge.end);
+			}
+		}
+	}
+
+	private Set<Edge> makeEdges(List<NLNode> graph) {
+	    Set<Edge> res = new HashSet<>();
+		for (NLNode vertex: graph){
+			for (NLNode v: vertex.neighbours){
+			    int start = Math.min(vertex.data,v.data);
+				int end = Math.max(vertex.data,v.data);
+				res.add(new Edge(start,end));
+			}
+		}
+		return res;
+	}
+
 	@Test
 	public void test(){
 		NLNode vertex1 = new NLNode(1);
@@ -111,6 +142,9 @@ public class UnDirectedGraphCycleDetection {
 		vertex4.addNeighbour(vertex5);
 		vertex5.addNeighbour(vertex4);
 
+		vertex5.addNeighbour(vertex1);
+		vertex1.addNeighbour(vertex5);
+
 
 		List<NLNode> graph = new ArrayList<>();
 		graph.add(vertex1);
@@ -121,9 +155,18 @@ public class UnDirectedGraphCycleDetection {
 
 
 		UnDirectedGraphCycleDetection cycleDetection = new UnDirectedGraphCycleDetection();
-		cycleDetection.detectCycleByDFS(graph);
+//		cycleDetection.detectCycleByDFS(graph);
 		System.out.println("==========================");
-		cycleDetection.detectCycleByBFS(graph);
+//		cycleDetection.detectCycleByBFS(graph);
+		System.out.println("==========================");
+		cycleDetection.detectCycleByUF(graph);
 
+	}
+
+	@AllArgsConstructor
+	@EqualsAndHashCode
+	private class Edge {
+		public int start;
+		public int end;
 	}
 }

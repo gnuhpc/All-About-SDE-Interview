@@ -1,9 +1,5 @@
 package org.gnuhpc.bigdata.datastructure.graph;
 
-import com.google.inject.internal.util.$ToStringBuilder;
-import lombok.Data;
-import lombok.ToString;
-import org.gnuhpc.bigdata.leetcode.MyCalendarTwo731;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,7 +44,7 @@ public class DirectedGraphCycleDetection {
 
 			MyVertex node = (MyVertex) v;
 
-			System.out.println("Visiting the neighbours of vertex "+vertex);
+			System.out.println("Visiting the neighbours of vertex "+ node);
 			if( node.beingVisited ) { //如果得到的是中间状态，说明由绕回来了，就是有环
 				System.out.println("Backward edge ... so there is a cycle");
 				return;
@@ -77,10 +73,11 @@ public class DirectedGraphCycleDetection {
 
 		vertex1.addNeighbour(vertex2);
 		vertex2.addNeighbour(vertex3);
+		vertex1.addNeighbour(vertex3);
 		vertex4.addNeighbour(vertex1);
 		vertex4.addNeighbour(vertex5);
 		vertex5.addNeighbour(vertex6); //Add this line to add a cycle
-		vertex6.addNeighbour(vertex4);
+		vertex6.addNeighbour(vertex5);
 
 		List<MyVertex> graph = new ArrayList<>();
 		graph.add(vertex1);

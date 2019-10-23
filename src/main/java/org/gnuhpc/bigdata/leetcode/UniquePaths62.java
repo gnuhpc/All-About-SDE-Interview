@@ -72,21 +72,10 @@ public class UniquePaths62 {
         return r < ROW && r >= 0 && c < COL && c >= 0;
     }
 
-    /*
-    Method 3: recursion
+    /* Method 3 :DP
      */
 
     public int uniquePaths3(int m, int n) {
-        if (m == 1 || n == 1) return 1;
-        return uniquePaths3(m - 1, n) + uniquePaths3(m, n - 1);
-    }
-
-    /* Method 4 :DP //注意边界条件，1，1 返回1
-     */
-
-    public int uniquePaths4(int m, int n) {
-        if(m<0||n<0) return 0;
-        if(m==0||n==0) return 1;
         int[][] dp = new int[m][n];
 
         for(int i = 0;i<m;i++)
@@ -104,9 +93,10 @@ public class UniquePaths62 {
         System.out.println(uniquePaths2(3, 2));
     }
 
-    // add by tina,memo search，相对于方法二模板，写法更简洁。从后往前追溯到(0,0).
+    // add by tina,memo search，相对于方法二模板，写法更简洁。从后往前追溯到(0,0). TODO
     private int[][] path;
-    public int uniquePaths5(int m, int n) {
+
+    public int uniquePaths4(int m, int n) {
         path = new int[m][n];
         return search(m-1,n-1);
     }

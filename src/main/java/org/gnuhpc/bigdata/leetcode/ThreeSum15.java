@@ -5,14 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ThreeSum15 {
-    public static void main(String[] args) {
+    public void test() {
         int[] nums = new int[]{-1, 0, 1, 2, -1, -4};
         int[] nums2 = new int[] {0,0,0,0};
 
-       // threeSum(nums);
+        threeSum(nums);
         threeSum(nums2);
         System.out.println();
-
     }
 
 
@@ -25,7 +24,7 @@ public class ThreeSum15 {
      * @param nums : Give an array numbers of n integer
      * @return : Find all unique triplets in the array which gives the sum of zero.
      */
-    public static List<List<Integer>> threeSum(int[] nums) {
+    public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> results = new ArrayList<>();
 
         if (nums == null || nums.length < 3) {
@@ -49,7 +48,7 @@ public class ThreeSum15 {
         return results;
     }
 
-    public static void twoSum(int[] nums,
+    public void twoSum(int[] nums,
                        int left,
                        int right,
                        int target,
@@ -64,7 +63,7 @@ public class ThreeSum15 {
 
                 left++;
                 right--;
-                // skip duplicate pairs with the same left
+                // skip duplicate pairs with the same left TODO
                 while (left < right && nums[left] == nums[left - 1]) {
                     left++;
                 }

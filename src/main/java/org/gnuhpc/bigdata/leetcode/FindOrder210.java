@@ -15,12 +15,13 @@ public class FindOrder210 {
             indegree[prerequisites[i][0]]++;
 
         Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++)
+        for (int i = 0; i < numCourses; i++) {
             if (indegree[i] == 0) {
                 // Add the course to the order because it has no prerequisites.
                 order[index++] = i;
                 queue.offer(i);
             }
+        }
 
         // How many courses don't need prerequisites.
         while (!queue.isEmpty()) {

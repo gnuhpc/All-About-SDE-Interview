@@ -1,6 +1,5 @@
 package org.gnuhpc.bigdata.datastructure.graph;
 
-import com.google.inject.internal.asm.$ClassWriter;
 import lombok.Data;
 
 import java.util.*;
@@ -15,31 +14,37 @@ import java.util.*;
 • 即，图中每条边长度都是1，且没有方向
  */
 
-@Data
-class GraphNode {
-    int data;
-    boolean visited; //或者有一个HashMap标注visited
-    List<GraphNode> neighbours;
+class NLNode {
+    public int data;
+    public boolean visited; //或者有一个HashMap标注visited
+    public List<NLNode> neighbours;
 
-    public GraphNode(int data) {
+    public NLNode(int data) {
         this.data=data;
         this.neighbours=new ArrayList<>();
     }
 
-    public void addNeighbours(GraphNode neighbourNode){
+    public void addNeighbour(NLNode neighbourNode){
         this.neighbours.add(neighbourNode);
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "data=" + data +
+                '}';
     }
 }
 
 @Data
 public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
-    private List<GraphNode> nodes = new ArrayList<>();
-    private Queue<GraphNode> queue = new LinkedList<>();;
+    private List<NLNode> nodes = new ArrayList<>();
+    private Queue<NLNode> queue = new LinkedList<>();;
     // Recursive DFS
-    public  void dfs(GraphNode node) {
+    public  void dfs(NLNode node) {
         System.out.print(node.data + " ");
         node.visited=true;
-        for (GraphNode n : node.getNeighbours()) {
+        for (NLNode n : node.neighbours) {
             if (n != null && !n.visited) {
                 dfs(n);
             }
@@ -47,16 +52,16 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
     }
 
     // Iterative DFS using stack
-    public  void dfsUsingStack(GraphNode node)
+    public  void dfsUsingStack(NLNode node)
     {
-        Stack<GraphNode> stack= new Stack<>();
+        Stack<NLNode> stack= new Stack<>();
         stack.add(node);
         node.visited=true;
         while (!stack.isEmpty()) {
-            GraphNode element=stack.pop();
+            NLNode element=stack.pop();
             System.out.print(element.data + " ");
 
-            for (GraphNode n : element.getNeighbours()) {
+            for (NLNode n : element.neighbours) {
                 if (n != null && !n.visited) {
                     stack.add(n);
                     n.visited = true;
@@ -77,14 +82,14 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
         2
 
      */
-    public void bfs(GraphNode node) {
+    public void bfs(NLNode node) {
         queue.add(node);
         node.visited=true;
         while (!queue.isEmpty()) {
 
-            GraphNode element=queue.remove();
+            NLNode element=queue.remove();
             System.out.print(element.data + " ");
-            for (GraphNode n : element.getNeighbours()) {
+            for (NLNode n : element.neighbours) {
                 if (n != null && !n.visited) {
                     queue.add(n);
                     n.visited = true;
@@ -95,24 +100,24 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
     }
 
     public static void main(String[] arg) {
-        GraphNode node40 =new GraphNode(40);
-        GraphNode node10 =new GraphNode(10);
-        GraphNode node20 =new GraphNode(20);
-        GraphNode node30 =new GraphNode(30);
-        GraphNode node60 =new GraphNode(60);
-        GraphNode node50 =new GraphNode(50);
-        GraphNode node70 =new GraphNode(70);
+        NLNode node40 =new NLNode(40);
+        NLNode node10 =new NLNode(10);
+        NLNode node20 =new NLNode(20);
+        NLNode node30 =new NLNode(30);
+        NLNode node60 =new NLNode(60);
+        NLNode node50 =new NLNode(50);
+        NLNode node70 =new NLNode(70);
 
-        node40.addNeighbours(node10);
-        node40.addNeighbours(node20);
-        node10.addNeighbours(node30);
-        node20.addNeighbours(node10);
-        node20.addNeighbours(node30);
-        node20.addNeighbours(node60);
-        node20.addNeighbours(node50);
-        node30.addNeighbours(node60);
-        node60.addNeighbours(node70);
-        node50.addNeighbours(node70);
+        node40.addNeighbour(node10);
+        node40.addNeighbour(node20);
+        node10.addNeighbour(node30);
+        node20.addNeighbour(node10);
+        node20.addNeighbour(node30);
+        node20.addNeighbour(node60);
+        node20.addNeighbour(node50);
+        node30.addNeighbour(node60);
+        node60.addNeighbour(node70);
+        node50.addNeighbour(node70);
 
         NeighbourListGraph graph = new NeighbourListGraph();
         graph.getNodes().add(node10);
@@ -133,9 +138,9 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
 
         System.out.println("\nThe BFS traversal of the graph");
         graph.bfs(node40);
-        GraphNode node0 = new GraphNode(0);
-        GraphNode node1 = new GraphNode(1);
-        GraphNode node2 = new GraphNode(2);
+        NLNode node0 = new NLNode(0);
+        NLNode node1 = new NLNode(1);
+        NLNode node2 = new NLNode(2);
 
         node0.neighbours.add(node2);
         node0.neighbours.add(node1);
@@ -151,7 +156,7 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
     }
 
     public void clearVisitedFlags() {
-        for (GraphNode node : nodes) {
+        for (NLNode node : nodes) {
             node.visited = false;
         }
     }

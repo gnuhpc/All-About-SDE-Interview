@@ -97,4 +97,42 @@ public class FindSubstring30 {
 //        System.out.println(findSubstring("barfoothefoobarman", new String[]{"foo", "bar"}));
         ;
     }
+
+    //add by tina，思路同解法一，但是写法上更好一些
+    public List<Integer> findSubstring3(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        if(s == null || words == null || words.length == 0) return res;
+        Map<String,Integer> map = new HashMap<>();
+        for(String word:words){
+            Integer freq = map.get(word);
+            if(freq == null) map.put(word,1);
+            else map.put(word,freq+1);
+        }
+
+        int len = words[0].length();
+        int n = words.length;
+        int l = 0;
+
+        for(int i = 0;i<s.length()-len*n+1;i++){
+            int cnt = 0;
+            l = i;
+            Map<String,Integer> curMap = new HashMap<>();
+            while(l-i<=len*words.length-len){
+                String word = s.substring(l,l+len);
+                if(map.containsKey(word)){
+                    curMap.put(word,curMap.getOrDefault(word,0)+1);
+                    cnt++;
+                    if(curMap.get(word)>map.get(word)) break;
+                }else{
+                    break;
+                }
+                if(cnt == words.length){
+                    res.add(i);
+                }
+                l += len;
+            }
+
+        }
+        return res;
+    }
 }

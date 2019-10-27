@@ -45,7 +45,7 @@ public class LengthOfLongestSubstring3 {
         int ans = 0 , l = 0, r = 0;
         while (r<sc.length){
             char c = sc[r];
-            cnt[c]++;
+            cnt[c]++;//无论有没有重复，先加上，在while循环中处理
             while (cnt[c] > 1) { //直到这个重复的字符不再出现在新的字符串上
                 cnt[sc[l]]--;
                 l++;

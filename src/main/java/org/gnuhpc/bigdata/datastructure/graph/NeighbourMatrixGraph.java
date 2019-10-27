@@ -14,6 +14,13 @@ class NMNode {
     NMNode(int data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "data=" + data +
+                '}';
+    }
 }
 
 @Data

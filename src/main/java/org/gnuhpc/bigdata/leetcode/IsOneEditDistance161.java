@@ -49,14 +49,15 @@ public class IsOneEditDistance161 {
         return (ns + 1 == nt);
     }
 
+    // Str1_Str2 -- their distances
     Map<String, Integer> cache = new HashMap<>();
 
     public boolean isOneEditDistance2(String s, String t) {
-        return distance(s, t, false) == 1;
+        return distance(s, t) == 1;
     }
 
-    //isReturn means if the first char from two strings is different, return 1 directly
-    private int distance(String s, String t, boolean isReturn) {
+    private int distance(String s, String t) {
+        //s must be shorter than t
         if (s.length() > t.length()) {
             String temp = s;
             s = t;
@@ -65,33 +66,32 @@ public class IsOneEditDistance161 {
 
         String key = s + "-" + t;
         if (cache.containsKey(key)) return cache.get(key);
-        if (Math.abs(s.length() - t.length()) > 1) {
-            cache.put(key, 2);//return a distance greater than 2 is already enough for this problem
-            return 2;
-        }
-
 
         if (s.isEmpty()) {
-            cache.put(key, s.equals(t) ? 0 : 1);
+            cache.put(key, t.isEmpty() ? 0 : 1);
             return cache.get(key);
         }
 
-        if (s.charAt(0) == t.charAt(0)) {
-            return distance(s.substring(1), t.substring(1), isReturn);
-        } else { // First Chars are not the same
-            if (isReturn) {
-                return 10;
+        int lengthDiff = t.length() - s.length();
+        if (lengthDiff > 1) {
+            cache.put(key, lengthDiff);//return a distance greater than 2 is already enough for this problem
+            return lengthDiff;
+        } else if(lengthDiff == 1){
+            if (s.charAt(0) == t.charAt(0)) {
+                return distance(s.substring(1), t.substring(1));
+            } else{
+                return 1+distance(s,t.substring(1));//delete the first char of t and continue
             }
-            if (s.length() == t.length()) {
-                return 1 + distance(s.substring(1), t.substring(1), true);
-            } else {
-                return 1 + distance(s, t.substring(1), true);
+        } else if(lengthDiff == 0){
+            if (s.charAt(0) == t.charAt(0)) {
+                return distance(s.substring(1), t.substring(1));
+            } else{
+                return 1+distance(s.substring(1), t.substring(1));
             }
+        } else{ //Never reach because s is shorted than t
+            return -1;
         }
     }
-
-
-
 
     @Test
     public void test() {

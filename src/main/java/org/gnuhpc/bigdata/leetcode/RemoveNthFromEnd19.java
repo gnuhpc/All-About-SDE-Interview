@@ -9,11 +9,11 @@ public class RemoveNthFromEnd19 {
 
         ListNode slow = dummy, fast = dummy;
 
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i <n; i++) {
             fast = fast.next;
         }
 
-        while (fast!=null){
+        while (fast.next!=null){
             fast = fast.next;
             slow = slow.next;
         }
@@ -22,4 +22,17 @@ public class RemoveNthFromEnd19 {
 
         return dummy.next;
     }
+
+    /*
+    递归做法
+     */
+    int i;
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        if(head == null) return null;
+        head.next = removeNthFromEnd(head.next,n);
+        i++;
+        if(i==n) return head.next;
+        return head;
+    }
+
 }

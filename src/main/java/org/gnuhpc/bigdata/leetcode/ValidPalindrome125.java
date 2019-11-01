@@ -57,4 +57,30 @@ public class ValidPalindrome125 {
     private boolean isSame(char a, char b){
         return Character.toLowerCase(a) == Character.toLowerCase(b);
     }
+
+
+    // add by tina
+    public boolean isPalindrome2(String s) {
+        if(s == null ) return false;
+        if(s.trim().isEmpty()) return true;
+
+        int i = 0;int j = s.length()-1;
+        while(i<j){
+            char ci = Character.toLowerCase(s.charAt(i));
+            char cj = Character.toLowerCase(s.charAt(j));
+            if( !((ci >= 'a' && ci <= 'z') || (ci >= '0' && ci <= '9'))) i++;
+            if(!((cj >= 'a' && cj <= 'z' ) || (cj >= '0' && cj <= '9' ))) j--;
+            if(((ci >= 'a' && ci <= 'z') || (ci >= '0' && ci <= '9')) &&((cj >= 'a' && cj <= 'z' ) || (cj >= '0' && cj <= '9' ))){
+                //System.out.println("ci"+ci + ",cj="+cj);
+                if(ci != cj) return false;
+                else{
+                    i++;
+                    j--;
+                }
+            }
+        }
+        return true;
+    }
 }
+
+

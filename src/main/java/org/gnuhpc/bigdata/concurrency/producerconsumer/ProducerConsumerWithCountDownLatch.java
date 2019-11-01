@@ -60,7 +60,7 @@ public class ProducerConsumerWithCountDownLatch {
     }
 
     public static void main(String args[]) throws Exception {
-        List<Integer> queue = new ArrayList<Integer>();
+        List<Integer> queue = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(1);
         Thread producer1 = new Thread(new Producer(queue, latch));
         Thread consumer1 = new Thread(new Consumer(queue, latch));

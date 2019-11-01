@@ -1,0 +1,1 @@
+cat words.txt|awk '{split($0,a);for(key in a){b[a[key]]++;}}END{for(key in b)print key, b[key];}'|sort -k2 -rn

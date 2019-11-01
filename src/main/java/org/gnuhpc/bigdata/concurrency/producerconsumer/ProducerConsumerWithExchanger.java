@@ -44,8 +44,8 @@ public class ProducerConsumerWithExchanger {
         }
     }
 
-    public static void main(String args[]) throws Exception {
-        Exchanger<Integer> exchanger=new Exchanger<Integer>();
+    public static void main(String args[]) {
+        Exchanger<Integer> exchanger= new Exchanger<>();
         Thread producer1 = new Thread(new Producer(exchanger));
         Thread consumer1 = new Thread(new Consumer(exchanger));
         producer1.start();

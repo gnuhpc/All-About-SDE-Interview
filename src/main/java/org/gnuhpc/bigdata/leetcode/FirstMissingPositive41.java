@@ -5,26 +5,30 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
+
 
 public class FirstMissingPositive41 {
     // 题目要求o(n)的时间复杂度，且O(1)的空间复杂度
     // 一种类似于桶排序的思想 ，把数字放到该放的位置（注意错1，因为从0 开始）
     // 另外注意相等的情况，跳过去以免来回交换不往下进行
-    public int firstMissingPositive(int[] nums) {
-        if (nums == null) return -1;
+    public int firstMissingPositive(int[] A) {
+        if (A ==null)// write your code in Java SE 8
+            return -1;
 
-        for (int i = 0; i < nums.length; i++) {
-            while (nums[i] <= nums.length && nums[i] > 0 && nums[nums[i] - 1] != nums[i]){
-                Utils.swap(nums, nums[i]-1,i);
+        for(int i = 0; i < A.length; i++){
+            while(A[i]<=A.length && A[i] > 0 && A[A[i]-1] != A[i]){
+                swap(A,A[i]-1,i);
             }
         }
 
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != i +1){
-                return i+1;
+        for(int i =1; i <= A.length; i++){
+            if(A[i-1]!=i){
+                return i;
             }
         }
-        return nums.length + 1;
+
+        return A.length + 1;
     }
 
     // add by Tina，一个不符合题意对空间和时间的要求，但是是常规能想到的暴力解法

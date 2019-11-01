@@ -49,7 +49,7 @@ public class ProducerConsumerWithBlockingQueue {
     }
 
     public static void main(String args[]) throws Exception {
-        BlockingQueue<Integer> queue = new LinkedBlockingQueue<Integer>(1);
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
         Thread producer1 = new Thread(new Producer(queue));
         Thread producer2 = new Thread(new Producer(queue));
         Thread consumer1 = new Thread(new Consumer(queue));

@@ -59,32 +59,4 @@ public class CountOfRoads{
     public void test(){
         Utils.printArray(solution(new int[]{9, 1, 4, 9, 0, 4, 8, 9, 0, 1}));
     }
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        long n = sc.nextLong();
-        int m = sc.nextInt();
-        sc.nextLine();
-
-        long[] array = new long[(int) (n+1)];
-        int begin,end;
-        long sum,max=0,x=0;
-        for (int i = 0; i < m; i++) {
-            begin = sc.nextInt();
-            end = sc.nextInt();
-            sum = sc.nextLong();
-            array[begin] += sum;
-            if(end+1<=n){
-                array[end+1] -= sum;
-            }
-        }
-
-        for (int i = 1; i < n+1; i++) {
-            x += array[i];
-            if (x>max){
-                max = x;
-            }
-        }
-
-        System.out.println(max);
-    }
 }

@@ -1,7 +1,6 @@
 package org.gnuhpc.bigdata.algorithm.search;
 
 //查找最大/小的第k个数字
-// TODO QuickSelect
 public class QuickSelect {
 
 	private int[] nums;
@@ -14,11 +13,12 @@ public class QuickSelect {
 		if(!(k>=1 && k<=nums.length)) return -1;
 		//Step1: 圈定quickselect范围 0 , len - 1, 求第k-1的数
 		// （因为是从0开始记录，求第0小的就是求最小）
-		return quickselect(0, nums.length - 1, k - 1);
+        return quickselect(0, nums.length - 1, k);
 	}
 
 	private int partition(int low, int high) {
-		swap(low , (int)(Math.random()*(high-low+1))+low );
+        //优化点
+        //swap(low , (int)(Math.random()*(high-low+1))+low );
 		int pivotIdx = low;
 		int pivot = nums[pivotIdx];
 		int p = low+1;
@@ -41,15 +41,16 @@ public class QuickSelect {
 		int idx = partition(indexFirst, indexLast);
 
 		// Step3： 判断这个idx和k 的关系，如果相等，说明正好
-		//如果idx > k ,说明左半边有正确答案
-		if (idx > k) {
+        //如果idx > k -1  ,说明左半边有正确答案
+        if (idx > k - 1) {
 			return quickselect(indexFirst, idx-1, k);
-		//如果idx < k ,说明右半边有正确答案
-		} else if (idx < k) {
+            //如果idx < k - 1 ,说明右半边有正确答案
+        }
+        else if (idx < k - 1) {
 			return quickselect(idx+1, indexLast, k);
 		}
-		
-		return nums[k];
+
+        return nums[k - 1];
 	}
 
 	private void swap(int i, int j) {
@@ -59,6 +60,6 @@ public class QuickSelect {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(new QuickSelect(new int[]{1,3,4,5,7,9}).select(6));
+        System.out.println(new QuickSelect(new int[]{6, 3, 4, 5, 7, 9}).select(4));
 	}
 }

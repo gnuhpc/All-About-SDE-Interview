@@ -1,0 +1,22 @@
+给数组分区
+
+一般有两种方法:
+
+1. two ways
+详见QuickSort.java中的partition2Ways
+
+2. three ways
+这种分区方法是将等于这个区域单独分出来,步骤如下
+    2.1 和two ways一样取low作为pivotIdx,并记录pivot的值
+    2.2 划定lr\gt 初始值为low和high
+    2.3 i从lr开始遍历, 碰到比pivot小的,则交换lt++同时i++,碰到比pivot大的则交换gt, 如果相等则i++,整个过程保持:
+                lt位置的左边都是小于pivot的
+                lt到i都是等于pivot的
+                i到gt都是不知道的
+                gt的右边的都是大于pivot的
+
+                a[l,lt-1] < pivot
+                a[lt, i-1] = pivot
+                a[i,gt] = unseen, 直到i到gt，最后 a[lt,gt] = pivot
+                a[gt+1, r] > pivot
+    2.4 返回lt\gt

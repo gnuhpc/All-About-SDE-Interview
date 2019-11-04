@@ -3,16 +3,7 @@ package org.gnuhpc.bigdata.datastructure.graph;
 import lombok.Data;
 
 import java.util.*;
-/*
-什么时候使用BFS： TODO
-图 的遍 历 Traversal in Graph
-• 层级遍历 Level Order Traversal
-• 由点及面 Connected Component
-• 拓扑排序 Topological Sorting
-最短路径 Shortest Path in Simple Graph
-• 仅限简单图求最短路径
-• 即，图中每条边长度都是1，且没有方向
- */
+
 
 class NLNode {
     public int data;

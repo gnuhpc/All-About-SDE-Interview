@@ -1,0 +1,24 @@
+什么时候使用BFS：
+图 的遍 历 Traversal in Graph
+• 层级遍历 Level Order Traversal
+• 由点及面 Connected Component
+• 拓扑排序 Topological Sorting
+最短路径 Shortest Path in Simple Graph
+• 仅限简单图求最短路径
+• 即，图中每条边长度都是1，且没有方向
+
+BFS的过程
+1. 构建队列
+2. 将要遍历的结构中的起始遍历元素放入队列中, 如果可能绕回来,则注意他同时维护visited数组对其进行已访问标识
+3. 进入遍历循环, 条件为!queue.isEmpty()
+    3.0 这个时候的queue size是这一层的元素的个数,如果需要计数可以在这一步进行, 同时也可以维护一个depth在这一步++进行层数的记录
+    3.1 取出该元素
+    3.2 遍历该元素的邻居, 进行运算后放入队列中,同时设置visited
+
+
+LC相关题目
+102
+429
+107
+637
+

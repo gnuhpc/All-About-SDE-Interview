@@ -13,16 +13,16 @@ public class LevelOrderBottom107 {
 
         q.offer(root);
         while (!q.isEmpty()){
-            List<Integer> subRes = new ArrayList<>();
+            List<Integer> tmp = new ArrayList<>();
             int size = q.size();
             for (int i = 0; i < size; i++) {
                 TreeNode n = q.poll();
-                subRes.add(n.val);
+                tmp.add(n.val);
                 if (n.left!=null) q.offer(n.left);
                 if (n.right!=null) q.offer(n.right);
             }
 
-            res.addFirst(subRes);
+            res.addFirst(tmp);
         }
 
         return res;

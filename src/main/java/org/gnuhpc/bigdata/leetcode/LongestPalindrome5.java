@@ -22,10 +22,12 @@ public class LongestPalindrome5 {
         for (int i = 0; i < len - 1; i++) {
             //求出奇数点为中心的情况
             String s1 = expandAroundCenter(s, i, i);
-            //求出偶数点为中心的情况
-            String s2 = expandAroundCenter(s, i, i + 1);
             if (s1.length() > longest.length()) longest = s1;
-            if (s2.length() > longest.length()) longest = s2;
+            //如果前后两个相等，则求出偶数点为中心的情况
+            if (s.charAt(i) == s.charAt(i+1)) {
+                String s2 = expandAroundCenter(s, i, i + 1);
+                if (s2.length() > longest.length()) longest = s2;
+            }
         }
         return longest;
     }

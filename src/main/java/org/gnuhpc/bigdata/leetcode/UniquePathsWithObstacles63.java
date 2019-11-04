@@ -10,40 +10,40 @@ public class UniquePathsWithObstacles63 {
     private int[] stepY = new int[]{1, 0};
     private int ROW;
     private int COL;
+    private Integer[][] memo;
 
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         this.ROW = obstacleGrid.length;
         this.COL = obstacleGrid[0].length;
+        this.memo = new Integer[this.ROW][this.COL];
         if (!valid(0,0,obstacleGrid)) return 0;
-        return dfs(0, 0, obstacleGrid, new HashMap<>());
+        return dfs(0, 0, obstacleGrid);
     }
 
 
-    public int dfs(int r, int c, int[][]grid, Map<String, Integer> memo) {
+    public int dfs(int r, int c, int[][]grid) {
         if (r == ROW-1 && c == COL-1) {
-            if (memo.isEmpty())
-                return (grid[r][c]==1)? 0:1;
-            else
-                return 1;
+            return (grid[r][c]==1)? 0:1;
         }
 
-        String key = r + "," + c;
-        if (memo.containsKey(key))
-            return memo.get(key);
+
+        if (memo[r][c]!=null)
+            return memo[r][c];
 
         int res = 0;
         for (int i = 0; i < 2; i++) {
             if (valid(r + stepX[i],c + stepY[i], grid)){
-                res += dfs(r + stepX[i], c + stepY[i], grid, memo);
+                res += dfs(r + stepX[i], c + stepY[i], grid);
             }
         }
-        memo.put(key, res);
+        memo[r][c]= res;
         return res;
     }
 
     private boolean valid(int r, int c, int[][] grid) {
         return r < ROW && r >=0 && c<COL && c>=0 && grid[r][c]!=1;
     }
+
 
     @Test
     public void test(){
@@ -114,7 +114,7 @@ public class UniquePathsWithObstacles63 {
     }
 
     /*
-Method4 : 倒着推 //TODO
+Method4 : 倒着推
  */
     //add by tina,通过定义私有属性，赋值方式，避免了对数组传参
     // memo search

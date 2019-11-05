@@ -107,12 +107,31 @@ public class LRUCache146_3 {
         }
     }
 
-    public void addToHead(Node node) {//注意这个顺序的依赖
+    public void addToHead(Node entry) {//注意这个顺序的依赖
         //画个图，先对右边的进行，然后对左边的进行
-        node.next = head.next;
-        node.next.pre = node;
-        head.next = node;
-        node.pre = head;
+        // begin is the actual first LRUCacheItem, which is after dummy head
+        Node begin = this.head.next;
+        if (entry == begin || entry == null) {
+            return;
+        }
+        Node next = entry.next;
+        Node previous = entry.pre;
+
+        // remove entry between next and previous
+        if (next != null) {
+            next.pre = previous;
+        }
+        if (previous != null) {
+            previous.next = next;
+        }
+
+        // Add entry between dummy head and begin
+        begin.pre = entry;
+        this.head.next = entry;
+
+        // adjust entry
+        entry.pre = this.head;
+        entry.next = begin;
     }
 
     public void deleteNode(Node node) { //O(1) 这也是和方案2 的最大差别

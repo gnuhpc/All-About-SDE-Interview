@@ -3,7 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import java.util.*;
 
 /*
-PriorityQueue
+PriorityQueue 是LRU、LFU的通解 ,但都不是最优解
  */
 public class LRUCache146_1 {
     Queue<KVNode>        queue     = null;
@@ -23,8 +23,8 @@ public class LRUCache146_1 {
         globalAge++;
         node.age = globalAge;
         //TODO PriorityQueue reheatify的方法
-        queue.remove(node);
-        queue.add(node);
+        reHeapify(node);
+
         return node.value;
     }
 
@@ -36,8 +36,7 @@ public class LRUCache146_1 {
             node = cache.get(key);
             node.value = value;
             node.age = globalAge;
-            queue.remove(node);
-            queue.add(node);
+            reHeapify(node);
         }
         else {
             if (queue.size() == cap) {
@@ -48,6 +47,11 @@ public class LRUCache146_1 {
             cache.put(key, node);
             queue.add(node);
         }
+    }
+
+    private void reHeapify(KVNode node) {
+        queue.remove(node);
+        queue.add(node);
     }
 
     private class KVNode {

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 
 /*
 Two HashMap + LinkedHashSet : bucket
+速度最快
  */
 public class LFUCache4603 {
     /**

@@ -4,6 +4,7 @@ import java.util.*;
 
 public class LRUCache146_2 {
     private int                   capacity;
+    //Head -> most recent
     private Deque<Integer>        list;
     private Map<Integer, Integer> map;
 
@@ -14,30 +15,24 @@ public class LRUCache146_2 {
     }
 
     public int get(int key) {
-        if (map.containsKey(key)) {
-            list.remove(key); //O(n)的
-            list.addFirst(key);//Move to latest
-        }
-        Integer value = map.get(key);
-        if (value == null)
-            return -1;
-        else return value;
-        }
+        if (!map.containsKey(key)) return -1;
+        list.remove(key); //O(n)的 ,这里面比自己维护要慢得多
+        list.addFirst(key);//Move to latest
+        return map.get(key);
+    }
 
     public void put(int key, int value) {
         if (map.containsKey(key)) {
-            list.remove(key);
-            list.addFirst(key);
+            list.remove(key);//update LRU deque
+        } else{
+            if (list.size() >= capacity) { //evicted
+                int evicted = list.removeLast();
+                map.remove(evicted);
+            }
         }
-        else if (list.size() >= capacity) {
-            int evicted = list.removeLast();
-            map.remove(evicted);
-            list.addFirst(key);
-        }
-        else {
-            list.addFirst(key);
-        }
-        map.put(key, value);
+
+        map.put(key,value);//update cache
+        list.addFirst(key);
     }
 
 

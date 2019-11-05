@@ -18,40 +18,45 @@ public class WordBreak140 {
         max = Integer.MIN_VALUE;
         for (String word : wordDict) {
             int l = word.length();
-            max = l > max ? l : max;
-            min = l < min ? l : min;
+            max = Math.max(l, max);
+            min = Math.min(l, min);
         }
 
-        return word_Break(s, wordSet, 0);
+        return doBreak(s, wordSet, 0);
     }
 
 
     Map<Integer, List<String>> memo = new HashMap<>();
 
-    public List<String> word_Break(String s, Set<String> wordSet, int start) {
+    public List<String> doBreak(String s, Set<String> wordSet, int start) {
+
         if (memo.containsKey(start)) {
             return memo.get(start);
         }
 
         List<String> res = new LinkedList<>();
+        if (start == s.length()) {
+            res.add("");//返回空为最后处理结果提供方便
+        }
 
         for (int end = start + min; end <= s.length(); end++) {
-            if (end - start > max) break;
             String subStr = s.substring(start, end);
-            if (wordSet.contains(subStr)) {
-                List<String> list = word_Break(s, wordSet, end);
-                if (!list.isEmpty()) {
-                    for (String l : list) {
-                        res.add(subStr + " " + l);
-                    }
-                }
-                else { // list 为空可能是两件事 ，如果是end到头了，则加入substr，如果是不匹配则substr不符合
-                    if (end == s.length()) res.add(subStr);
+            if(isValid(subStr, wordSet)){
+                List<String> list = doBreak(s, wordSet, end);
+                for (String l : list) {
+                    res.add(subStr + (l.equals("") ? "" : " ") + l);
                 }
             }
         }
         memo.put(start, res);
         return res;
+    }
+
+    private boolean isValid(String subStr, Set<String> wordSet) {
+        boolean b1 = (subStr.length() <= max);
+        boolean b2 = wordSet.contains(subStr);
+
+        return b1 && b2;
     }
 
 

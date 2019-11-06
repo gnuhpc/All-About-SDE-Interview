@@ -1,0 +1,23 @@
+1. pathToX  返回从root到值为x的路径. 前序递归求解先判断中间的,不是的话左右查找,
+    找到后将rootpush进去后返回
+2. findNode 查找一个节点. 前序递归求解先判断中间的,不是的话左右查找, 找到返回判断是不是null
+    不是null直接返回. 或者用层次遍历也可以
+
+3. findMax 求树中最大值, 首先root为null的时候返回Integer最小值作为基准,然后在左右子树上查找两边最大值,
+    加上root的值,三者求出最大即可
+
+4. sizeofTree 求树的节点个数 左右求出来 + 1 (root) 返回即可
+
+5. heightOfTree 求树的高度. 比如只有一个root,则高度为1. 分别求左右子树的高度,求max后+1
+
+6. findDeepestNode 求最深的节点 level遍历得到最后一个节点
+
+7. sizeOfLeaves 求叶子节点的个数 level遍历,当节点没有左右子树时计数. 也可以用递归的方式求左右子树然后加起来
+    同样用level遍历可以求出只有一边子树节点的个数以及非叶子节点的个数
+8. getAllAncestors 获取该节点的所有祖先, 和pathToX类似,注意递归结束条件为左或者右子树为val
+    这个时候需要将root添加进结果
+
+9. removeHalfNodes 删除只有一个子树的节点, 然后一点点构建整个树
+https://www.geeksforgeeks.org/given-a-binary-tree-how-do-you-remove-all-the-half-nodes/
+
+10. removeLeafNodes 前序遍历

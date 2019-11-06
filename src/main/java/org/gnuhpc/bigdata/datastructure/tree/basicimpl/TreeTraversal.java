@@ -36,6 +36,9 @@ public class TreeTraversal {
     /*
     Merhod 2： Non recursive , 和下边方法的区别是这个方法一直在左边进行，不得以才进行右边的节点
      */
+    /*
+    DFS模板方法
+    */
     public static List<Integer> preorderNonRecursive(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
@@ -53,10 +56,7 @@ public class TreeTraversal {
         return res;
     }
 
-    /*
-    DFS模板方法 // TODO: DFS模板， 这个方法的特点是通过stack将右边的先记录下来,平时两种都行，
-                但是牵涉到二叉树结构修改了优先有这种，不会导致丢失
-    */
+
     public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
         List<Integer> result = new ArrayList<>();
 
@@ -229,7 +229,6 @@ public class TreeTraversal {
         return res;
     }
 
-    // TODO: BFS模板
     public static List<List<Integer>> level(TreeNode root){
         int depth = 0; //使用BFS进行depth的算法
         List<List<Integer>> res = new ArrayList<>();

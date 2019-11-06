@@ -82,7 +82,7 @@ public class TreeUtils {
         int max,leftMax,rightMax;
 
         if(root==null){ //到了叶子节点的null左右节点，
-            // 则直接返回最小值，那么无论叶子节点是什么值，这部分的最小值都是叶子节点的值
+            // 则直接返回最小值,作为基准
             return Integer.MIN_VALUE;
         }
 
@@ -320,9 +320,11 @@ public class TreeUtils {
 
     public static TreeNode removeLeafNodes(TreeNode root){
         if (root == null) return null;
+
         if (root.left==null && root.right==null) {
             return null;
         }
+
         root.left = removeLeafNodes(root.left);
         root.right = removeLeafNodes(root.right);
 
@@ -357,6 +359,8 @@ public class TreeUtils {
     @Test
     public void test(){
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1,2,3,4,5,null,7,8});
+
+        removeLeafNodes(root);
 
         System.out.println(findMax(root));
         System.out.println(findMaxNonRecusive(root));

@@ -1,9 +1,3 @@
-DFS magic spell: 1]push to stack, 2] pop top , 3] retrieve unvisited neighbours of top, push them to stack 4] repeat 1,2,3 while stack not empty. Now form a rap !
-
-
-https://medium.com/leetcode-patterns/leetcode-pattern-1-bfs-dfs-25-of-the-problems-part-1-519450a84353
-
-
 当遇到一个可以用到回溯法的时候需要按照如下步骤进行：
 1. 确定问题的一个解空间树， 这个解空间树至少包含一个你需要的那个解， 否则这个树就完全没有意义了
 2. 组织好这棵树， 弄明白这棵树的每一个节点代表什么， 每一个分支代表什么

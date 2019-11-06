@@ -228,9 +228,10 @@ public class TreeUtils {
         return res;
     }
 
-    public static int sizeOfLeavesRecursive(TreeNode root){
+    static int size = 0;
+    public static int sizeOfLeavesRecursive(TreeNode root) {
         if (root == null) return 0;
-        if (root.right==null && root.left == null) return 1;
+        if (root.right == null && root.left == null) return 1;
         return sizeOfLeavesRecursive(root.left) + sizeOfLeavesRecursive(root.right);
     }
 
@@ -307,6 +308,7 @@ public class TreeUtils {
         if (root == null) return null;
         root.left = removeHalfNodes(root.left);
         root.right = removeHalfNodes(root.right);
+        if (root.left != null && root.right !=null) return root;
         if (root.left!=null && root.right ==null) {
             return root.left;
         }
@@ -331,34 +333,61 @@ public class TreeUtils {
         return root;
     }
 
+    public TreeNode removeLeafNodeByValue(TreeNode root, int val){
+        if (root == null)
+            return null;
 
-    //TODO 统计所有可能的path
-    public void getAllPaths(TreeNode root, List<ArrayList<Integer>> allPaths, ArrayList<Integer> temp) {
-        if (root == null) { return;}
-
-        temp.add(root.val);
-        if (root.left == null && root.right == null) {
-            allPaths.add(new ArrayList<>(temp));
-            return;
+        if (root.val == val && root.left == null && root.right == null) {
+            return null;
         }
-        else {
-            if (root.left != null) {
-                getAllPaths(root.left, allPaths, temp);
-                //回溯
-                temp.remove(temp.size() - 1);
-            }
+        root.left = removeLeafNodeByValue(root.left, val);
+        root.right = removeLeafNodeByValue(root.right, val);
 
-            if (root.right != null) {
-                getAllPaths(root.right, allPaths, temp);
-                //回溯
-                temp.remove(temp.size() - 1);
-            }
+        return root;
+    }
+
+
+
+    /**
+     * 二叉树的宽度：各层节点数的最大值
+     * @param root 二叉树的根节点
+     * @return 二叉树的宽度
+     */
+    public static int widthOfTree(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
+        //当前二叉树最大宽度=根节点
+        int maxWith = 1;
+        int currentWidth = 0;
+        //队列：先进先出，每次循环后保留一层树的某一层的所有节点
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (queue.size() > 0) {
+            currentWidth = queue.size();
+            //遍历当前层的所有节点，并将所有节点的子节点加入到队列中
+            for (int i = 0; i < currentWidth; i++) {
+                TreeNode node = queue.peek();
+                queue.poll();
+                if (node.left!= null) {
+                    queue.add(node.left);
+                }
+                if (node.right!= null) {
+                    queue.add(node.right);
+                }
+            }
+            maxWith = Math.max(maxWith, queue.size());
+        }
+        return maxWith;
     }
 
     @Test
     public void test(){
-        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1,2,3,4,5,null,7,8});
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1,5,3,null,5,4,null});
+
+        System.out.println(sizeOfLeavesRecursive(root));
+
+        removeLeafNodeByValue(root,5);
 
         removeLeafNodes(root);
 

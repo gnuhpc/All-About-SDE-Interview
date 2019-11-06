@@ -56,7 +56,6 @@ public class TreeTraversal {
         return res;
     }
 
-
     public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
         List<Integer> result = new ArrayList<>();
 

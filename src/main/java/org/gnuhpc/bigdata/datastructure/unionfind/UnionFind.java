@@ -1,5 +1,8 @@
 package org.gnuhpc.bigdata.datastructure.unionfind;
 
+import java.util.HashMap;
+import java.util.Map;
+
 //考试用模板
 public class UnionFind {
     int[] id, size;
@@ -36,5 +39,28 @@ public class UnionFind {
             id[i] = find(id[i]); // path compression
         }
         return id[i];
+    }
+
+    //二维的时候计算ID使用, 这也是matrix 转化为一维的一个方法
+    public int node(int cols, int i, int j) {
+        return i * cols + j;
+    }
+
+    public void reBalance() {
+        for (int i = 0; i < id.length; i++) {
+            find(i);
+        }
+    }
+
+    public int maxCount() {
+        reBalance();
+
+        int max_count = 0;
+
+        for (int i : size) {
+            max_count = Math.max(max_count, i);
+        }
+
+        return max_count;
     }
 }

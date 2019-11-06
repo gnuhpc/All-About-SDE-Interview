@@ -92,7 +92,7 @@ public class QuickUnion extends QuickUnionAbstract{
         return count;
     }
 
-    //二维的时候计算ID使用 TODO 这也是matrix 转化为一维的一个方法
+    //二维的时候计算ID使用 也是matrix 转化为一维的一个方法
     public int node(int cols, int i, int j) {
         return i * cols + j;
     }

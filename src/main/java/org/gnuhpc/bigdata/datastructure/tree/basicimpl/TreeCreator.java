@@ -93,8 +93,35 @@ public class TreeCreator {
         return root;
     }
 
+    public TreeNode createBST(int[] nums){
+        TreeNode root = null;
+        for (int n: nums){
+            root = addBSTNode(root, n);
+        }
+
+        return root;
+    }
+
+    private TreeNode addBSTNode(TreeNode root, int val) {
+        if (root == null) {
+            root = new TreeNode(val);
+        } else {
+            if (val <= root.val){
+                root.left = addBSTNode(root.left,val);
+            } else {
+                root.right = addBSTNode(root.right, val);
+            }
+        }
+
+        return root;
+    }
+
     @Test
     public void test(){
         TreeNode root = createTreeByLevel(new Integer[]{1,2,3,4,5,6,7});
+        TreeNode bstRoot = createBST(new int[]{5,1,6,3});
+
+
+        System.out.println();
     }
 }

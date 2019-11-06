@@ -18,6 +18,15 @@
     这个时候需要将root添加进结果
 
 9. removeHalfNodes 删除只有一个子树的节点, 然后一点点构建整个树
+    之所以用后续遍历是在删除中还要保留下边的节点，因此要从下边开始
 https://www.geeksforgeeks.org/given-a-binary-tree-how-do-you-remove-all-the-half-nodes/
 
-10. removeLeafNodes 前序遍历
+10. removeLeafNodes 删除叶子节点，前序遍历，原因是除了叶子节点外其余都保留，自顶向下可以到达这个目的。
+
+11. removeLeafNodeByValue 删除某个节点值为val的叶子节点 , 前序遍历
+    注意如果新生成的leaf有val的如果也要删除，则用后续遍历
+    -- 这是个重要规律，如果调整后的树还需要删除则就是使用后续遍历进行
+
+12. 二叉树的宽度， BFS 每一层求最值
+
+LC相关题目

@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.*;
 
 public class BinaryTreePaths257 {
-    /** Method1: DFS
+    /** Method1: DFS inorder
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths
      */
@@ -24,21 +24,21 @@ public class BinaryTreePaths257 {
     }
 
     /*
-    Method2: DFS 非递归
+    Method2: DFS 非递归 inorder
      */
-    public List binaryTreePaths2(TreeNode root) {
-        List<String> list = new ArrayList<>();
+    public List<String> binaryTreePaths2(TreeNode root) {
+        List<String> res = new ArrayList<>();
         Stack<TreeNode> sNode = new Stack<>();
         Stack<String> sStr = new Stack<>();
 
-        if (root == null) return list;
+        if (root == null) return res;
         sNode.push(root);
         sStr.push("");
         while (!sNode.isEmpty()) {
             TreeNode curNode = sNode.pop();
             String curStr = sStr.pop();
 
-            if (curNode.left == null && curNode.right == null) list.add(curStr + curNode.val);
+            if (curNode.left == null && curNode.right == null) res.add(curStr + curNode.val);
             if (curNode.left != null) {
                 sNode.push(curNode.left);
                 sStr.push(curStr + curNode.val + "->");
@@ -48,7 +48,7 @@ public class BinaryTreePaths257 {
                 sStr.push(curStr + curNode.val + "->");
             }
         }
-        return list;
+        return res;
     }
 
 

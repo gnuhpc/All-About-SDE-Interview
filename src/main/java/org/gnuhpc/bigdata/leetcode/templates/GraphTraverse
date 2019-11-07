@@ -1,0 +1,23 @@
+1. 图遍历的时候一定要设置visited。
+2. DFS的过程
+对所有节点进行遍历，首先判断是否访问过，如果没有的话放入visited然后进入DFS,
+DFS函数对该节点的邻居遍历，也是先判断是否访问过，如果没有的话放入visited然后进入DFS.
+
+LC相关题目：
+721
+
+3. BFS 的过程
+创建queue， visited， 添加第一个节点
+进入循环后取出来节点n，进行处理，然后对n的邻居挨个判断是不是visited，如果没有则放入queue，并添加visited中
+
+LC相关题目：
+
+4. 对于有权图的权重加权计算，在DFS、BFS中遍历邻居的时候可以进行
+在DFS中可以直接使用递归进行结果计算，例如LC 399中的DFS解法
+
+在BFS中可以使用如下的结构进行存储
+// KeyName <-> Accumulated Value
+Map<String, Double> value = new HashMap<>();    //distance from starting point
+
+LC相关题目：
+399

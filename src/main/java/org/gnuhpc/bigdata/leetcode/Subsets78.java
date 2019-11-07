@@ -5,12 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-//组合类的
-/*
-问题模型：求出所有满足条件的“组合”。
-判断条件：组合中的元素是顺序无关的。
-时间复杂度：与 2^n 相关。
- */
+
 public class Subsets78 {
     /*
     分别求长度为0到n的子集
@@ -67,7 +62,7 @@ public class Subsets78 {
     }
 
     /*
-    Method3 : dfs 方法一和方法二的集合 TODO: DFS+回溯模板
+    Method3 : dfs 方法一和方法二的集合
      */
 
     public List<List<Integer>> subsets3(int[] nums) {
@@ -88,26 +83,26 @@ public class Subsets78 {
     }
 
     /*
-    Method 4 : Robot ，TODO 重要方法
+    Method 4 : Robot ，重要方法
      */
 
-    public static boolean[] v = new boolean[100];
+    public static boolean[] selected = new boolean[100];
     public static List<List<Integer>> ans = new ArrayList<>();
 
     public void robot(int idx, int[] nums) {
         if (idx >= nums.length) {
             List<Integer> r = new ArrayList<>();
             for (int i = 0; i < nums.length; ++i) {
-                if (v[i]) {
+                if (selected[i]) {
                     r.add(nums[i]);
                 }
             }
             ans.add(r);
             return;
         }
-        v[idx] = true;
+        selected[idx] = true;
         robot(idx + 1, nums); //yes
-        v[idx] = false;
+        selected[idx] = false;
         robot(idx + 1, nums); //no
     }
 

@@ -1,0 +1,20 @@
+图的构建
+
+1. 有向有权图
+// g[A][B] = k -> A / B = k
+Map<String, Map<String, Double>> g = new HashMap<>();
+
+2. 无向有权图
+Map<String, Map<String, Double>> g = new HashMap<>();
+由于是无向的，因此A-B和B-A都要放进去
+
+3. 有向无权图
+Map<String, List<String>> g = new HashMap<>();
+
+4. 无向无权图
+Map<String, List<String>> g = new HashMap<>();
+由于是无向的，因此A-B和B-A都要放进去
+
+LC相关题目
+399
+

@@ -351,4 +351,28 @@ public class Utils {
         }
         return result;
     }
+
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        }
+        catch (NumberFormatException | NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
+
+    public static boolean isLong(String s) {
+        try {
+            Long.parseLong(s);
+        }
+        catch (NumberFormatException | NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
 }

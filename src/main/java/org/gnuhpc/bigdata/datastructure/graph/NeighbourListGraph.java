@@ -84,7 +84,6 @@ public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
                 if (n != null && !n.visited) {
                     queue.add(n);
                     n.visited = true;
-
                 }
             }
         }

@@ -2,20 +2,22 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 import static org.gnuhpc.bigdata.leetcode.utils.Utils.isInteger;
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.isLong;
 
-public class BasicCalculate224227 {
-
+public class Calculate772 {
     // 首先转换为后缀表达式
     public int calculate(String s) {
         if (s == null || s.trim().length() == 0) {
             return 0;
         }
+
         String[] postfix = infix2postfix(s);
         System.out.println(Arrays.toString(postfix));
 
@@ -23,26 +25,31 @@ public class BasicCalculate224227 {
     }
 
     private int calcResult(String[] postfix) {
-        Stack<Integer> stack = new Stack<>();
+        Stack<Long> stack = new Stack<>();
         for (String str : postfix) {
-            if (isInteger(str)) {
-                stack.push(Integer.parseInt(str));
+            if (isLong(str)) {
+                stack.push(Long.parseLong(str));
             } else {
-                int b = stack.pop();
-                int a = stack.pop();
+                long b = stack.pop();
+                long a = 0;
+                if(!stack.isEmpty()) a = stack.pop();
+
                 stack.push(applyOp(str.charAt(0),a,b));
             }
         }
-        return stack.isEmpty() ? 0 : stack.pop();
+
+        long res = stack.isEmpty() ? 0 : stack.pop();
+        return (int)res;
     }
 
 
     public String[] infix2postfix(String expr) { // 后缀表达式 转换方法
         String[] infix = toStringArray(expr);
+        System.out.println(Arrays.toString(infix));
         List<String> list = new ArrayList<>();
         Stack<String> stack = new Stack<>(); // precedence strictly-increasing stack
         for (String s : infix) {
-            if (isInteger(s)) {//如果是字母或者数字，则添加到list中
+            if (isLong(s)) {//如果是字母或者数字，则添加到list中
                 list.add(s);
             } else if (s.equals("(")) { //如果是左括号添加到stack中
                 stack.push(s);
@@ -71,7 +78,7 @@ public class BasicCalculate224227 {
 
     // Sample utility method to apply an operator 'op' on operands 'a'
     // and 'b'. Return the result.
-    private int applyOp(char op, int a, int b) {
+    private long applyOp(char op, long a, long b) {
         switch (op)
         {
             case '+':
@@ -99,7 +106,14 @@ public class BasicCalculate224227 {
                 if (!num.equals("")) {
                     list.add(num);
                     num = "";
-                }  //其次判断c不是空格，那就是运算符
+                } else {
+                    if (c == '-' ){
+                        if(list.isEmpty()|| list.get(list.size()-1).equals("("))
+                            list.add("0");
+                    }
+                }
+
+                //其次判断c不是空格，那就是运算符
                 if (c != ' ') {
                     list.add(String.valueOf(c));
                 }
@@ -138,89 +152,12 @@ public class BasicCalculate224227 {
         return prec;
     }
 
-    public int calculate227(String s) {
-        int pre = 0, curr = 0, sign = 1, op = 0, num = 0;
-
-        for (int i = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i))) {
-                num = num * 10 + (s.charAt(i) - '0');
-                if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
-                    curr = (op == 0 ? num : (op == 1 ? curr * num : curr / num));
-                }
-
-            }
-            else if (s.charAt(i) == '*' || s.charAt(i) == '/') {
-                op = (s.charAt(i) == '*' ? 1 : -1);
-                num = 0;
-
-            }
-            else if (s.charAt(i) == '+' || s.charAt(i) == '-') {
-                pre += sign * curr;
-                sign = (s.charAt(i) == '+' ? 1 : -1);
-                op = 0;
-                num = 0;
-            }
-        }
-
-        return pre + sign * curr;
-    }
-
-    /*
-
-    Only 5 possible input we need to pay attention:
-
- 1. digit: it should be one digit from the current number
- 2. '+': number is over, we can add the previous number and start a new number
- 3. '-': same as above
- 4. '(': push the previous result and the sign into the stack, set result to 0, just calculate the new result within the parenthesis.
- 5. ')': pop out the top two numbers from stack, first one is the sign before this pair of parenthesis, second is the temporary result before this pair of parenthesis. We add them together.
-
-
-Finally if there is only one number, from the above solution, we haven't add the number to the result, so we do a check see if the number is zero.
-     */
-    public int calculate224(String s) {
-        Stack<Integer> stack = new Stack<>();
-        int result = 0;
-        int number = 0;
-        int sign = 1;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (Character.isDigit(c)) {
-                number = 10 * number + (c - '0');
-            }
-            else if (c == '+') {
-                result += sign * number;
-                number = 0;
-                sign = 1;
-            }
-            else if (c == '-') {
-                result += sign * number;
-                number = 0;
-                sign = -1;
-            }
-            else if (c == '(') {
-                //we push the result first, then sign;
-                stack.push(result);
-                stack.push(sign);
-                //reset the sign and result for the value in the parenthesis
-                sign = 1;
-                result = 0;
-            }
-            else if (c == ')') {
-                result += sign * number;
-                number = 0;
-                result *= stack.pop();    //stack.pop() is the sign before the parenthesis
-                result += stack.pop();   //stack.pop() now is the result calculated before the parenthesis
-            }
-        }
-        if (number != 0) result += sign * number;
-        return result;
-    }
-
     @Test
-    public void test() {
-//        calculate("(21+1)*2-5");
-//        calculate2("(21+1)*2-5");
-        System.out.println(calculate("(1+(4+5+2)-3)+(6+81)"));
+    public void test(){
+      //  System.out.println(calculate("(   ((  (8+3) *(  4  -  10)  ) -   2  ) +(   (5  +   (   10/  2  )  )+   (  ( 9   + 5   )+(   2  +  2 ) )  )   )"));
+//          System.out.println(calculate("0-2147483648"));
+        System.out.println(calculate("-1+4*3/3/3"));
+
     }
+
 }

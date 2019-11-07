@@ -1,12 +1,12 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import org.gnuhpc.bigdata.leetcode.utils.Utils;
+import org.gnuhpc.bigdata.datastructure.unionfind.StringRatioUnionFind;
 import org.junit.Test;
 
 import java.util.*;
 
 public class CalcEquation399 {
-    //Method 1: DFS  TODO: 有权有向图DFS
+    //Method 1: DFS  有权有向图DFS
     // g[A][B] = k -> A / B = k
     Map<String, Map<String, Double>> g = new HashMap<>();
 
@@ -30,7 +30,7 @@ public class CalcEquation399 {
         return ans;
     }
 
-    //TODO: 有权有向图构建
+    //有权有向图构建
     private void buildGraph(List<List<String>> equations, double[] values) {
         for (int i = 0; i < equations.size(); ++i) {
             String x = equations.get(i).get(0);
@@ -59,7 +59,7 @@ public class CalcEquation399 {
     }
 
 
-    // Method 2: BFS  TODO: 有权有向图BFS
+    // Method 2: BFS  有权有向图BFS
     public double[] calcEquation2(List<List<String>> equations,
                                  double[] values,
                                  List<List<String>> queries) {
@@ -68,35 +68,35 @@ public class CalcEquation399 {
         double[] ans = new double[queries.size()];
 
         for (int i = 0; i < ans.length; i++) {
-            ans[i] = getValue(queries.get(i).get(0), queries.get(i).get(1));
+            ans[i] = divide2(queries.get(i).get(0), queries.get(i).get(1));
         }
 
         return ans;
     }
 
-    public double getValue(String vexStart, String vexEnd) {
-        if (g.get(vexStart) == null || g.get(vexEnd) == null) {
+    public double divide2(String strX, String strY) {
+        if (g.get(strX) == null || g.get(strY) == null) {
             return -1;
         }
 
         Queue<String> queue = new LinkedList<>();   //queue uesd for bfs
         // KeyName <-> Accumulated Value
-        Map<String, Double> value = new HashMap<>();    //distance from vexStart
+        Map<String, Double> value = new HashMap<>();    //distance from strX
         Set<String> visited = new HashSet<>();   //check if the vertex has been in the queue
 
         //init
-        queue.add(vexStart);
-        visited.add(vexStart);
-        value.put(vexStart, 1d);
+        queue.add(strX);
+        visited.add(strX);
+        value.put(strX, 1d);
 
         String currentNode, nextNode;
         while (!queue.isEmpty()) {
-            currentNode = queue.remove();
+            currentNode = queue.poll();
             for (Map.Entry<String, Double> arc : g.get(currentNode).entrySet()) {
                 nextNode = arc.getKey();
                 value.put(nextNode, value.get(currentNode) * arc.getValue());
-                if (nextNode.equals(vexEnd)) {
-                    return value.get(vexEnd);
+                if (nextNode.equals(strY)) {
+                    return value.get(strY);
                 } else if (!visited.contains(nextNode)) {
                     queue.add(nextNode);
                     visited.add(nextNode);
@@ -107,53 +107,28 @@ public class CalcEquation399 {
     }
 
     //Method 3: Union Find
-    public double[] calcEquation3(List<List<String>> equations,
-                                  double[] values,
+    public double[] calcEquation3(List<List<String>> equations, double[] values,
                                   List<List<String>> queries) {
-        Map<String, String> graph = new HashMap<>(); //TODO Union-Find的字符串表示
-        Map<String, Double> ratio = new HashMap<>();
-        for (int i = 0; i < equations.size(); i++) { //把能union先union起来, 顺带计算比例
-            union(graph, ratio, equations.get(i).get(0), equations.get(i).get(1), values[i]);
+
+        StringRatioUnionFind u = new StringRatioUnionFind();
+
+        for (int i = 0; i < equations.size(); ++i)
+            u.union(equations.get(i).get(0), equations.get(i).get(1), values[i]);
+
+        double[] ans = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); ++i) {
+            StringRatioUnionFind.Node rx = u.find(queries.get(i).get(0));
+            StringRatioUnionFind.Node ry = u.find(queries.get(i).get(1));
+
+            if (rx == null || ry == null || !rx.parent.equals(ry.parent))
+                ans[i] = -1.0;
+            else
+                ans[i] = rx.ratio / ry.ratio;
         }
 
-        double[] res = new double[queries.size()];
-        for (int i = 0; i < queries.size(); i++) {
-            String s1 = queries.get(i).get(0), s2 = queries.get(i).get(1);
-            if (!graph.containsKey(s1) || !graph.containsKey(s2) || !find(graph, ratio, s1).equals(find(graph, ratio, s2))) {
-                res[i] = -1.0d;
-            } else {
-                res[i] = ratio.get(s1)/ratio.get(s2);
-            }
-        }
-        return res;
+        return ans;
     }
-
-    private void union(Map<String, String> graph, Map<String, Double> ratio, String s1, String s2, double value) {
-        if (!graph.containsKey(s1)) {// 初始化
-            graph.put(s1, s1);
-            ratio.put(s1, 1.0d);
-        }
-        if (!graph.containsKey(s2)) {// 初始化
-            graph.put(s2, s2);
-            ratio.put(s2, 1.0d);
-        }
-        String p1 = find(graph, ratio, s1);
-        String p2 = find(graph, ratio, s2);
-        graph.put(p1, p2);
-
-        ratio.put(p1, value * ratio.get(s2) / ratio.get(s1)); // 这个有点绕,举个例子去看
-    }
-
-    private String find(Map<String, String> graph, Map<String, Double> ratio, String str) {
-        if (!str.equals(graph.get(str))) {
-            String parent = graph.get(str);
-            String ancestor = find(graph, ratio, parent);
-            graph.put(str, ancestor);
-            ratio.put(str, ratio.get(str) * ratio.get(parent)); //记得更新ratio
-        }
-        return graph.get(str);
-    }
-
 
     @Test
     public void test() {

@@ -1,6 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 
 import java.util.*;
@@ -43,7 +44,7 @@ public class AccountsMerge721 {
         Set<String> visited = new HashSet<>();
         List<List<String>> res = new LinkedList<>();
         // DFS search the graph, 逐个的Email找到和他相连的其他Email
-        // TODO: DFS 无权无向图
+        // DFS 无权无向图
         for (String email : emailUsername.keySet()) {
             List<String> list = new LinkedList<>();
 
@@ -72,10 +73,10 @@ public class AccountsMerge721 {
         }
     }
 
-    //Method 2: Union Find TODO: 并查集ID映射
+    //Method 2: Union Find 并查集ID映射
 
     public ArrayList accountsMerge2(List<List<String>> accounts) {
-        QuickUnion qu = new QuickUnion(10001);
+        UnionFind uf = new UnionFind(10001);
         Map<String, String> emailToName = new HashMap<>();
         Map<String, Integer> emailToID = new HashMap<>();
 
@@ -90,14 +91,14 @@ public class AccountsMerge721 {
                 }
 
                 //构建连接
-                qu.union(emailToID.get(account.get(1)), emailToID.get(email));
+                uf.union(emailToID.get(account.get(1)), emailToID.get(email));
             }
         }
 
         //查找一组Email
         Map<Integer, List<String>> ans = new HashMap<>();
         for (String email: emailToName.keySet()) {
-            int index = qu.find(emailToID.get(email));
+            int index = uf.find(emailToID.get(email));
             ans.computeIfAbsent(index, x-> new ArrayList<>()).add(email);
         }
 
@@ -106,7 +107,7 @@ public class AccountsMerge721 {
             Collections.sort(component);
             component.add(0, emailToName.get(component.get(0)));
         }
-        return new ArrayList(ans.values());
+        return new ArrayList<>(ans.values());
     }
 
 

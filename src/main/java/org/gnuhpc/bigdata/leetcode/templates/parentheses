@@ -10,10 +10,10 @@
 if (c == '[') {
 
    int toMatch = 1, end = idx + 1;
-   //TODO 找到最后一个匹配的括号
+   //找到最后一个匹配的括号
    while (end < n && toMatch > 0) {
        char cc = s.charAt(end);
-       if (cc == '[') toMatch++; //TODO 记录左右括号匹配个数
+       if (cc == '[') toMatch++; //记录左右括号匹配个数
        if (cc == ']') toMatch--;
        end++;
    }

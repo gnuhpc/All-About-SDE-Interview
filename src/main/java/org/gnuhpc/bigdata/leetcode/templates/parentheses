@@ -1,0 +1,36 @@
+括号型问题
+主要分两类，匹配型和计算型，基本上都和栈有关系，
+
+1. 通过stack进行括号的匹配位置
+394
+
+2. 还有一种找到对应括号的方法是计数
+当遇到左括号的时候，设置一个toMatch为1，然后设置end接着下一个位置往后找，碰到左括号toMatch++,碰到右括号toMatch--
+直到尽头或者toMatch == 0， 这个时候end-1即是对应的右括号
+if (c == '[') {
+
+   int toMatch = 1, end = idx + 1;
+   //TODO 找到最后一个匹配的括号
+   while (end < n && toMatch > 0) {
+       char cc = s.charAt(end);
+       if (cc == '[') toMatch++; //TODO 记录左右括号匹配个数
+       if (cc == ']') toMatch--;
+       end++;
+   }
+
+    String sub = s.substring(idx + 1, end - 1);
+
+394
+536
+
+2. 嵌套括号的问题一般还都可以用递归的方式来做。
+394
+536
+
+3. 有时候还可以维护一个全局的idx作为遍历str的位置，在递归或者非递归的时候都用这个进行迭代
+536
+187
+
+
+
+

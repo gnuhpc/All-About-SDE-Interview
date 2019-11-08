@@ -13,6 +13,9 @@ import java.util.Map;
  * Copyright gnuhpc 2019/9/30
  */
 public class DecodeString394 {
+    /*
+    Method1: recursion
+     */
     Map<Integer, Integer> matchMap = new HashMap<>();
 
     public String decodeString(String s) {
@@ -21,18 +24,17 @@ public class DecodeString394 {
     }
 
     private String decode(String s, int start, int end) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder resSb = new StringBuilder();
         char[] arr = s.toCharArray();
 
         int time = 0;
-        StringBuilder str = new StringBuilder();
         for (int i = start; i < end; i++) {
             char c = arr[i];
             if (Character.isDigit(c)) {
                 time = time * 10 + (c - '0');
             }
             if (c == '[') {
-                sb.append(
+                resSb.append(
                         makeDup(
                                 time,
                                 decode(s, i + 1, matchMap.get(i) + 1)
@@ -44,16 +46,11 @@ public class DecodeString394 {
             }
 
             if (Character.isLetter(c)) {
-                if (time == 0) {
-                    sb.append(c);
-                }
-                else {
-                    str.append(c);
-                }
+                resSb.append(c);
             }
         }
 
-        return sb.toString();
+        return resSb.toString();
     }
 
     private void match(String s) {
@@ -75,45 +72,42 @@ public class DecodeString394 {
 
         return sb.toString();
     }
+
     /*
     Method2 : Without construct match  map
      */
 
     public String decodeString2(String s) {
-        String ans = "", cnt = "";
-        int index = 0, n = s.length();
+        String ans = "", times = "";
+        int idx = 0, n = s.length();
         if (n == 0) return "";
 
-        while (index < n) {
-            char ch = s.charAt(index);
+        while (idx < n) {
+            char c = s.charAt(idx);
 
-            if (ch >= '0' && ch <= '9') cnt += ch;
-            else if (ch == '[') {
+            if (c >= '0' && c <= '9') times += c;
+            else if (c == '[') {
 
-                int toMatch = 1, end = index + 1;
-                //TODO 找到最后一个匹配的括号
+                int toMatch = 1, end = idx + 1;
+                //找到最后一个匹配的括号
                 while (end < n && toMatch > 0) {
                     char cc = s.charAt(end);
-                    if (cc == '[') toMatch++; //TODO 记录左右括号匹配个数
+                    if (cc == '[') toMatch++; //记录待匹配左括号的个数
                     if (cc == ']') toMatch--;
                     end++;
                 }
-                String sub = s.substring(index + 1, end - 1);
+                String sub = s.substring(idx + 1, end - 1);
                 // System.out.println(sub);
                 String res = decodeString(sub);
-                int times = Integer.parseInt(cnt);
-                StringBuilder temp = new StringBuilder();
-                for (int i = 0; i < times; i++) {
-                    temp.append(res);
-                }
-                ans += temp.toString();
-                index = end - 1;
-                cnt = "";
+                int timeInt = Integer.parseInt(times);
+                ans += makeDup(timeInt,res);
+                idx = end - 1;
+                times = "";
             }
             else {
-                ans += ch;
+                ans += c;
             }
-            index++;
+            idx++;
         }
         return ans;
     }

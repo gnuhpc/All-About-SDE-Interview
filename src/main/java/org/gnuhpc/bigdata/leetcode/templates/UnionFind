@@ -1,4 +1,9 @@
-1. 熟练掌握模板，详见UnionFind.java
+并查集
+主要是计算连通性的时候使用, 熟练掌握模板，详见UnionFind.javaa
+
+1. 计算有多少个连通区域
+LC相关题目
+323
 
 2. 学会进行ID映射
 将题目中的string或者其他的对象以一个hashmap的方式进行entity - ID来映射。

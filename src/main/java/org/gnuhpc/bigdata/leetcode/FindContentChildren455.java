@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  */
 public class FindContentChildren455 {
     public int findContentChildren(int[] g, int[] s) {
-        //TODO 数组逆序排序
+
         Arrays.sort(g);
         Arrays.sort(s);
 

@@ -21,6 +21,7 @@ You can assume that no duplicate edges will appear in edges. Since all edges are
  */
 
 import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -36,17 +37,16 @@ There are k loops and each loop processing the find array costs log(n). Therefor
      */
     public int countComponents(int n, int[][] edges) {
         int count = n;
-        QuickUnion qu = new QuickUnion(n);
+        UnionFind uf = new UnionFind(n);
 
         for (int[] edge : edges) {
-            if (!qu.isConnected(edge[0], edge[1])) {
-                qu.union(edge[0], edge[1]);
+            if (!uf.isConnected(edge[0], edge[1])) {
+                uf.union(edge[0], edge[1]);
             }
         }
 
-        return qu.count();
+        return uf.count;
     }
-
 
 
     /*
@@ -87,6 +87,42 @@ There are k loops and each loop processing the find array costs log(n). Therefor
         }
 
         return count;
+    }
+
+    public int countComponents3(int n, int[][] edges) {
+        //转化为邻接矩阵
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i<n; i++) adjList.add(new ArrayList<>());
+        for (int[] edge : edges){
+            int from = edge[0];
+            int to = edge[1];
+
+            adjList.get(from).add(to);
+            adjList.get(to).add(from);
+        }
+
+        //dfs
+        boolean[] visited = new boolean[n];
+        int count=0;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                count++;
+                dfs(visited, adjList, i);
+            }
+        }
+        return count;
+    }
+
+    private void dfs(boolean[] visited, List<List<Integer>> adjList, int i) {
+        visited[i] = true;
+        List<Integer> adjs = adjList.get(i);
+
+        for (Integer adj: adjs){
+            if (!visited[adj]){
+                dfs(visited,adjList,adj);
+            }
+        }
     }
 
     @Test

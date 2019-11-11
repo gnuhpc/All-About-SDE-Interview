@@ -10,9 +10,9 @@ import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
 
 //https://www.youtube.com/watch?v=Hoixgm4-P4M
 
-// TODO 如何查找一个数字的中位数： findKthLargest(nums, (nums.length + 1) / 2);
+//
 /*
-Method 1 : 分治+快排分区 //TODO 整理这个方法
+Method 1 : 分治+快排分区
  */
 public class FindKthLargest215{
     @Test
@@ -38,26 +38,7 @@ public class FindKthLargest215{
         }
     }
 
-
-    public int partition(int[] nums, int left, int right) {
-        int pivotVal = nums[left];
-
-        //pos为分界线
-        int pos= left;
-        for (int i = left+1; i <= right; i++) {
-            //i is valid, swap it with pos
-            if (nums[i]>pivotVal){
-                swap(nums,++pos,i);
-            }
-        }
-        swap(nums,left,pos);
-
-        return pos;
-    }
-
-
-
-    private int partition2(int[] numbers, int low, int high){
+    private int partition(int[] numbers, int low, int high){
         int pivot = numbers[low];
 
         int i = low+1, j = high;
@@ -87,29 +68,20 @@ Space complexity is O(k) for storing the top k numbers.
      */
     public int findKthLargest1(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
+        //Step1: 填充pq
+        for (int i = 0; i < k; i++) {
+            pq.offer(nums[i]);
+        }
 
-        for (int n: nums){
-            pq.offer(n);
-
-            if (pq.size() > k){
+        //Step2: 判断堆顶元素，这是待抛弃的一个元素，如果发现大的就抛弃（求第k个最小的则发现小的就抛弃）
+        for (int i = k; i < nums.length ; i++) {
+            if (pq.peek() < nums[i]){
                 pq.poll();
+                pq.offer(nums[i]);
             }
         }
 
         return pq.peek();
     }
 
-    public int findKthLargest2(int[] nums, int k) {
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-
-        for (int n: nums){
-            pq.offer(n);
-        }
-
-        for (int i = 0; i < k - 1; i++) {
-            pq.poll();
-        }
-
-        return pq.peek();
-    }
 }

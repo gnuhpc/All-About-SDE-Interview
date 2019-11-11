@@ -1,12 +1,9 @@
 package org.gnuhpc.bigdata.datastructure.unionfind;
 
-import java.util.HashMap;
-import java.util.Map;
-
 //考试用模板
 public class UnionFind {
-    int[] id, size;
-    int count;
+    public int[] id, size;
+    public int count;
 
     public UnionFind(int len) {
         this.id = new int[len];

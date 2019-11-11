@@ -1,6 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 
 import java.util.Deque;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class FindCircleNum547 {
     /*
-    Method 1: dfs  //TODO DFS套路
+    Method 1: dfs
     Time: O(N^2) Space:O(N)
      */
     public int findCircleNum(int[][] M) {
@@ -23,22 +24,24 @@ public class FindCircleNum547 {
         // Step2: 逐个节点进行，没有访问过的就dfs进去
         for(int i = 0; i < N; i++){
             if(!visited[i]) {
-                visited[i] = true;
-                circle++; //没有被前边的dfs访问过的就是新的一个circle 的出现
                 dfs(M, visited, i);
+                circle++; //没有被前边的dfs访问过的就是新的一个circle 的出现
             }
         }
         return circle;
     }
     public void dfs(int[][] M, boolean[] visited, int id){
+        visited[id] = true;
         for(int i = 0; i < M.length; i++){
             // Step3: 把这个节点相关朋友联系的，且没有被访问过的统统标注为visited
-            if(!visited[i] && i!=id && M[id][i] == 1){
+            if(!visited[i] && M[id][i] == 1){
                 visited[i] = true;
                 dfs(M, visited, i);
             }
         }
     }
+
+
 
     /*
     Method 2: dfs Iterative
@@ -90,16 +93,16 @@ public class FindCircleNum547 {
         // 由于我们知道每个人都是自己的朋友，
         // 因此我们在初始化时，这个图有N个子图，每个子图都只包含一个节点。
 
-        QuickUnion qu = new QuickUnion(count);
+        UnionFind uf = new UnionFind(count);
 
         for(int i=0;i<M.length;i++){
             for(int j=0;j<M[0].length;j++){
                 //当M[i][j]=1时，同学i和同学j是直接朋友，因此他们一定在一个朋友圈里。
                 if(M[i][j]==1){
                     //判断i和j是不是在并查集中已经相连
-                    if (!qu.isConnected(i, j)) {
+                    if (!uf.isConnected(i, j)) {
                         //如果没有则合并
-                        qu.union(i,j);
+                        uf.union(i,j);
                         count--;
                     }
                 }

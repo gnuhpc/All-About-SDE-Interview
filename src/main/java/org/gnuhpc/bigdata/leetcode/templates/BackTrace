@@ -5,24 +5,47 @@
 4. 当搜索到了叶子节点的时候就回溯
 5. 不断的重复这个3， 4步骤
 
+什么时候只用DFS不用回溯：
+如果DFS进去visited的值需要保留的，则不进行回溯
+
 DFS回溯问题框架：
-void dfs(int 当前状态)
-	{
-	      if(当前状态为边界状态)
-	      {
-	        记录或输出
-	        return;
-	      }
-	      for(i=0;i<n;i++)		//横向遍历解答树所有子节点
-	     {
-	           //扩展出一个子状态。
-	           修改了全局变量
-	           if(子状态满足约束条件)
-	            {
-	              dfs(子状态)
-	           }
-	            恢复全局变量//回溯部分
-	        }
-	}
+1)设置visited为全局数组,
+2)遍历所有节点进行如下dfs
+
+    void dfs(int 当前状态){
+        if(当前状态为边界状态)
+        {
+            记录或输出
+            return;
+        }
+
+        标记visited
+        for(i=0;i<n;i++)		//横向遍历所有相邻子节点
+        {
+              if(子状态满足约束条件)
+              {
+                  dfs(子状态)
+              }
+        }
+    }
+
+1. 二维数组设置
+private int d[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+在遍历的时候判断是不是越界,以及是不是访问过
+    public boolean isValid(int x, int y) {
+        return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
+    }
+
+遍历方式为：
+            for (int i = 0; i < 4; i++) {
+                int newX = x + d[i][0];
+                int newY = y + d[i][1];
+                if (isValid(newX,newY)){
+                 dfs(newX,newY);
+                }
+            }
+
+LC相关题目：
+79
 
 

@@ -12,8 +12,8 @@ DFS模式：
 二、非递归模式
 1. 使用stack, 在某些使用维护visited
 2. 对每个节点进行遍历，如果没有visit就放入stack
-3. 然后进入while循环，条件为!stack.isEmpty() ，弹出一个后对下一步（比如相邻节点）进行遍历后push回stack。
-   注意判断visited
+3. 然后进入while循环，条件为!stack.isEmpty() ，弹出一个后，标注visited，然后对相邻节点进行遍历
+   push(注意判断visited)回stack。
 LC相关题目：
 62
 63
@@ -21,6 +21,20 @@ LC相关题目：
 323
 140
 139
+547
+
+1.判断连通性（染色法）
+设置visited、随后遍历每个节点
+如果不在visited里，进入dfs， dfs之后可以进行计数代表连通区域的个数
+dfs中放入visited，对其相邻节点进行递归标注,注意要判断visited、满足染色条件
+LC相关题目：
+547
+323
+
+2. 对称二维数组可以将visited作为一维数组进行
+LC相关题目
+547
+323
 
 
 

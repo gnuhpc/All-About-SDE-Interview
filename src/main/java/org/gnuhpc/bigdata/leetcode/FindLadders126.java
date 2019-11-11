@@ -10,7 +10,7 @@ public class FindLadders126 {
     /*
     Method1 : DFS, 超时
      */
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+    public List<List<String>> findLadders1(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         List<String> temp = new ArrayList<>();
         temp.add(beginWord);
@@ -22,7 +22,7 @@ public class FindLadders126 {
                      String currWord, String endWord, List<String> wordList) {
         if (currWord.equals(endWord)) {
             if (!res.isEmpty() && res.get(0).size() > tempList.size()) {
-                res.clear();
+                res.clear(); //求最短
             }
             res.add(new ArrayList<>(tempList));
         }
@@ -51,6 +51,59 @@ public class FindLadders126 {
         }
 
         return (num == 1);
+    }
+    Map<String, Set<String>> graph;
+    Map<String, Boolean> visited;
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        graph = new HashMap<>();
+        visited = new HashMap<>();
+
+        wordList.add(beginWord);
+
+        for (String word: wordList){
+            graph.put(word, new HashSet<>());
+            visited.put(word,false);
+        }
+
+        for (String word1: wordList){
+            for (String word2: wordList){
+                if (diffOneChar(word1,word2)){
+                    graph.get(word1).add(word2);
+                    graph.get(word2).add(word1);
+                }
+            }
+        }
+
+        dfs(beginWord, endWord, res, new ArrayList<>());
+
+        return res;
+    }
+
+    private void dfs(String currWord, String endWord, List<List<String>> res, List<String> tmp) {
+        if (currWord.equals(endWord)){
+            if (res.isEmpty()){
+                res.add(new ArrayList<>(tmp));
+            } else{
+                if (res.get(0).size()>tmp.size()) {
+                    res.clear();
+                    res.add(new ArrayList<>(tmp));
+                }
+                else if (res.get(0).size() == tmp.size()) res.add(new ArrayList<>(tmp));
+                return;
+            }
+        }
+
+        tmp.add(currWord);
+        visited.put(currWord,true);
+        for (String nWord: graph.get(currWord)){
+            if (visited.get(nWord)) continue;
+            tmp.add(nWord);
+            visited.put(nWord,true);
+            dfs(nWord,endWord,res,tmp);
+            tmp.remove(tmp.size()-1);
+            visited.put(nWord,false);
+        }
     }
 
     /*
@@ -351,7 +404,7 @@ public class FindLadders126 {
 
 //        System.out.println(findLadders("hit", "cog", arr));
 //        System.out.println(findLadders2("hit", "cog", arr));
-        System.out.println(findLadders2("hit", "cog", arr));
+        System.out.println(findLadders("hit", "cog", arr));
 
 //        arr.clear();
 //        arr.add("a");

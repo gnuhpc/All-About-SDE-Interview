@@ -26,3 +26,25 @@ LC相关题目
 637
 139
 
+1. BFS可以做计步
+    class WordNode {
+        String word;
+        int numSteps;
+        WordNode pre;
+
+        public WordNode(String word, int numSteps, WordNode pre) {
+            this.word = word;
+            this.numSteps = numSteps;
+            this.pre = pre;
+        }
+    }
+
+往下回溯用最后一个节点即可,另外numsteps在每一层+1 , 维护unvisited和visited,在明确到下一层的时候将unvisited更新
+
+LC相关题目
+126
+
+2. BFS过去实际上是最短路径，可以通过map进行标注，完事儿用DFS进行汇总
+LC相关题目
+126
+

@@ -10,36 +10,6 @@ public class FindLadders126 {
     /*
     Method1 : DFS, 超时
      */
-    public List<List<String>> findLadders1(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> res = new ArrayList<>();
-        List<String> temp = new ArrayList<>();
-        temp.add(beginWord);
-        dfs(res, temp, beginWord, endWord, wordList);
-        return res;
-    }
-
-    private void dfs(List<List<String>> res, List<String> tempList,
-                     String currWord, String endWord, List<String> wordList) {
-        if (currWord.equals(endWord)) {
-            if (!res.isEmpty() && res.get(0).size() > tempList.size()) {
-                res.clear(); //求最短
-            }
-            res.add(new ArrayList<>(tempList));
-        }
-
-        if (wordList.isEmpty() || (res.size() > 0 && tempList.size() >= res.get(0).size())) return;
-        for (int i = 0; i < wordList.size(); i++) {
-            String temp = wordList.get(i);
-            if (diffOneChar(currWord, temp)) {
-                tempList.add(temp);
-                wordList.remove(i);
-                dfs(res, tempList, temp, endWord, wordList);
-                wordList.add(i, temp);
-                tempList.remove(tempList.size() - 1);
-            }
-        }
-    }
-
     //字符长度相差1
     private boolean diffOneChar(String curr, String s) {
         char[] currArr = curr.toCharArray();
@@ -75,7 +45,10 @@ public class FindLadders126 {
             }
         }
 
-        dfs(beginWord, endWord, res, new ArrayList<>());
+        visited.put(beginWord, true);
+        List<String> tmp = new ArrayList<>();
+        tmp.add(beginWord);
+        dfs(beginWord, endWord, res, tmp);
 
         return res;
     }
@@ -94,8 +67,6 @@ public class FindLadders126 {
             }
         }
 
-        tmp.add(currWord);
-        visited.put(currWord,true);
         for (String nWord: graph.get(currWord)){
             if (visited.get(nWord)) continue;
             tmp.add(nWord);
@@ -151,7 +122,6 @@ public class FindLadders126 {
                     }
 
                     if (top.numSteps == minStep && minStep != 0) {
-                        //nothing
                         ArrayList<String> t = new ArrayList<>();
                         t.add(top.word);
                         //往回找
@@ -166,6 +136,7 @@ public class FindLadders126 {
                 }
 
                 if (preNumSteps < currNumSteps) {
+                    // 当明确已经到达下一层的时候,上一层不再用了,因此将所有visited里面的节点从unvisited里面去掉
                     unvisited.removeAll(visited);
                 }
 
@@ -272,124 +243,99 @@ public class FindLadders126 {
     /*
     Method4 : bidirectional bfs + dfs 速度最快，25ms.... TODO 双向BFS 重点！
      */
+
     public List<List<String>> findLadders4(String beginWord, String endWord, List<String> wordList) {
-        //we use bi-directional BFS to find shortest path
-
-        Set<String> s1 = new HashSet<>();
-        s1.add(beginWord);
-
-        Set<String> s2 = new HashSet<>();
-        s2.add(endWord);
-
+        // 结果集
         List<List<String>> res = new ArrayList<>();
-        if (wordList.indexOf(endWord)==1) return res;
-
-        Map<String, List<String>> graph = new HashMap<>();
-        BFS(s1, s2, new HashSet<>(wordList), false, graph);
-
-
-        //if two parts cannot be connected, then return empty list
-        if (!isConnected) return res;
-
-        //we need to add start node to temp list as there is no other node can get start node
-        List<String> temp = new ArrayList<>();
-        temp.add(beginWord);
-        DFS(res, temp, beginWord, endWord, graph);
-
+        Set<String> words = new HashSet<>(wordList);
+        // 字典中不包含目标单词
+        if (!words.contains(endWord)) {
+            return res;
+        }
+        // 存放关系：每个单词可达的下层单词
+        Map<String, List<String>> mapTree = new HashMap<>();
+        Set<String> begin = new HashSet<>(), end = new HashSet<>();
+        begin.add(beginWord);
+        end.add(endWord);
+        if (buildTree(words, begin, end, mapTree, true)) {
+            dfs(res, mapTree, beginWord, endWord, new LinkedList<>());
+        }
         return res;
     }
 
-    //flag of whether we have connected two parts
-    boolean isConnected = false;
-
-    public void BFS(Set<String> s1, Set<String> s2, Set<String> dict, boolean swap, Map<String, List<String>> graph) {
-        //do BFS on every node of s1 direction
-        //to force our path to be shortest, we will not do BFS if we have found shortest path(isConnected = true)
-        while (!isConnected) {
-            //boundary check
-            if (s1.isEmpty() || s2.isEmpty()) {
-                return;
-            }
-
-            //we always do BFS on direction with less nodes
-            //here we assume s1 set has less nodes, if not, we swap them
-            if (s1.size() > s2.size()) {
-                Set<String> tmp = s1;
-                s1 = s2;
-                s2 = tmp;
-                swap =!swap;
-            }
-
-            //remove all s1/s2 words from dict to avoid duplicate addition
-            dict.removeAll(s1);
-            dict.removeAll(s2);
-
-            //new set contains all new nodes from s1 set
-            Set<String> nextSet = new HashSet<>();
-
-            for (String str : s1) {
-                //try to change each char of str
-                for (int i = 0; i < str.length(); i++) {
-                    //try to replace current char with every chars from a to z
-                    char[] ary = str.toCharArray();
-                    for (char j = 'a'; j <= 'z'; j++) {
-                        ary[i] = j;
-                        String newWord = new String(ary);
-
-                        if (newWord.equals(str)) continue;
-
-                        //we skip this string if it is not in dict nor in s2
-                        if (!s2.contains(newWord) && !dict.contains(newWord)) {
-                            continue;
+    // 双向BFS，构建每个单词的层级对应关系
+    private boolean buildTree(Set<String> words,
+                              Set<String> begin,
+                              Set<String> end,
+                              Map<String, List<String>> mapTree,
+                              boolean isFront) {
+        if (begin.size() == 0) {
+            return false;
+        }
+        // 始终以少的进行探索
+        if (begin.size() > end.size()) {
+            return buildTree(words, end, begin, mapTree, !isFront);
+        }
+        // 在已访问的单词集合中去除
+        words.removeAll(begin);
+        // 标记本层是否已到达目标单词
+        boolean isMeet = false;
+        // 记录本层所访问的单词
+        Set<String> nextLevel = new HashSet<>();
+        for (String word : begin) {
+            char[] chars = word.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                char temp = chars[i];
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    chars[i] = ch;
+                    String str = String.valueOf(chars);
+                    if (words.contains(str)) {
+                        nextLevel.add(str);
+                        // 根据访问顺序，添加层级对应关系：始终保持从上层到下层的存储存储关系
+                        // true: 从上往下探索：word -> str
+                        // false: 从下往上探索：str -> word（查找到的 str 是 word 上层的单词）
+                        String key = isFront ? word : str;
+                        String nextWord = isFront ? str : word;
+                        // 判断是否遇见目标单词
+                        if (end.contains(str)) {
+                            isMeet = true;
                         }
-
-                        //we follow s1 direction
-                        String key = !swap ? str : newWord;
-                        String val = !swap ? newWord : str;
-
-                        if (!graph.containsKey(key)) graph.put(key, new ArrayList<>());
-
-                        //if newWord string is in s2 set, then it will connect two parts
-                        if (s2.contains(newWord)) {
-                            graph.get(key).add(val);
-                            isConnected = true;
+                        if (!mapTree.containsKey(key)) {
+                            mapTree.put(key, new ArrayList<>());
                         }
-
-                        //if newWord is in dict, then we can add it to nextSet as new nodes in next layer
-                        if (!isConnected && dict.contains(newWord)) {
-                            graph.get(key).add(val);
-                            nextSet.add(newWord);
-                        }
+                        mapTree.get(key).add(nextWord);
                     }
-
                 }
-                s1 = nextSet;
+                chars[i] = temp;
             }
         }
+        if (isMeet) {
+            return true;
+        }
+        return buildTree(words, nextLevel, end, mapTree, isFront);
     }
 
-    public void DFS(List<List<String>> result, List<String> temp, String start, String end, Map<String, List<String>> hs) {
-        //we will use DFS, more specifically backtracking to build paths
-
-        //boundary case
-        if (start.equals(end)) {
-            result.add(new ArrayList<>(temp));
+    // DFS: 组合路径
+    private void dfs(List<List<String>> res,
+                     Map<String, List<String>> mapTree,
+                     String beginWord,
+                     String endWord,
+                     LinkedList<String> list) {
+        list.add(beginWord);
+        if (beginWord.equals(endWord)) {
+            res.add(new ArrayList<>(list));
+            list.removeLast();
             return;
         }
-
-        //not each node in hs is valid node in shortest path, if we found current node does not have children node,
-        //then it means it is not in shortest path
-        if (!hs.containsKey(start)) {
-            return;
+        if (mapTree.containsKey(beginWord)) {
+            for (String word : mapTree.get(beginWord)) {
+                dfs(res, mapTree, word, endWord, list);
+            }
         }
-
-        for (String s : hs.get(start)) {
-            temp.add(s);
-            DFS(result, temp, s, end, hs);
-            temp.remove(temp.size() - 1);
-
-        }
+        list.removeLast();
     }
+
+
 
     @Test
     public void test() {
@@ -404,7 +350,7 @@ public class FindLadders126 {
 
 //        System.out.println(findLadders("hit", "cog", arr));
 //        System.out.println(findLadders2("hit", "cog", arr));
-        System.out.println(findLadders("hit", "cog", arr));
+        System.out.println(findLadders4("hit", "cog", arr));
 
 //        arr.clear();
 //        arr.add("a");

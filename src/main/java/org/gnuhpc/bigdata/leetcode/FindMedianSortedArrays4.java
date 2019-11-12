@@ -49,7 +49,7 @@ public class FindMedianSortedArrays4 {
     }
 
     //一个有序数组arr中小于等于number的数字个数
-    //TODO 二分法的一个变种
+    //二分法的一个变种
     private int countSmallerOrEqual(int[] arr, int number) {
         //这是对idx进行二分
         int start = 0, end = arr.length - 1;

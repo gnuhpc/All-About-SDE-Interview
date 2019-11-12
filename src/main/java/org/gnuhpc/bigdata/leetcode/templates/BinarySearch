@@ -1,0 +1,29 @@
+二分搜索
+
+熟练掌握四大要点
+
+1. 可以求一个有序数组arr中小于等于number的数字个数
+    private int countSmallerOrEqual(int[] arr, int number) {
+        //这是对idx进行二分
+        int start = 0, end = arr.length - 1;
+
+        // find first index that arr[index] > number;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] <= number) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+
+        if (arr[start] > number) {
+            return start;
+        }
+
+        if (arr[end] > number) {
+            return end;
+        }
+
+        return arr.length;
+    }

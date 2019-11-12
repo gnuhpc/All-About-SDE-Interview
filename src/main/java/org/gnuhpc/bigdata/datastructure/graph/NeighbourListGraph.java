@@ -8,7 +8,7 @@ import java.util.*;
 class NLNode {
     public int data;
     public boolean visited; //或者有一个HashMap标注visited
-    public List<NLNode> neighbours;
+    public List<NLNode> neighbours; //用set也行
 
     public NLNode(int data) {
         this.data=data;
@@ -30,7 +30,7 @@ class NLNode {
 @Data
 public class NeighbourListGraph {  // 无向图优先使用邻接矩阵算法
     private List<NLNode> nodes = new ArrayList<>();
-    private Queue<NLNode> queue = new LinkedList<>();;
+    private Queue<NLNode> queue = new LinkedList<>();
     // Recursive DFS
     public  void dfs(NLNode node) {
         System.out.print(node.data + " ");

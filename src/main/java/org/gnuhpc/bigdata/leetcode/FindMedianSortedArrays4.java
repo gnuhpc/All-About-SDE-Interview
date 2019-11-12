@@ -77,7 +77,7 @@ public class FindMedianSortedArrays4 {
 
     // add by tina
     // 注意k从1开始
-    public double findMedianSortedArrays3(int[] nums1, int[] nums2) {
+    public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
         int m = nums1.length, n = nums2.length, left = (m + n + 1) / 2, right = (m + n + 2) / 2;
         return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right)) / 2.0;
     }

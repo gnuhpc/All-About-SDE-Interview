@@ -1,9 +1,10 @@
 package org.gnuhpc.bigdata.leetcode;
 
-import com.google.inject.internal.util.$AbstractMapEntry;
 import org.junit.Test;
 
 import java.util.*;
+
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.getNextWords;
 
 
 public class FindLadders126 {
@@ -22,8 +23,10 @@ public class FindLadders126 {
 
         return (num == 1);
     }
+
     Map<String, Set<String>> graph;
     Map<String, Boolean> visited;
+
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         List<List<String>> res = new ArrayList<>();
         graph = new HashMap<>();
@@ -31,14 +34,14 @@ public class FindLadders126 {
 
         wordList.add(beginWord);
 
-        for (String word: wordList){
+        for (String word : wordList) {
             graph.put(word, new HashSet<>());
-            visited.put(word,false);
+            visited.put(word, false);
         }
 
-        for (String word1: wordList){
-            for (String word2: wordList){
-                if (diffOneChar(word1,word2)){
+        for (String word1 : wordList) {
+            for (String word2 : wordList) {
+                if (!word1.equals(word2) && diffOneChar(word1, word2)) {
                     graph.get(word1).add(word2);
                     graph.get(word2).add(word1);
                 }
@@ -54,33 +57,31 @@ public class FindLadders126 {
     }
 
     private void dfs(String currWord, String endWord, List<List<String>> res, List<String> tmp) {
-        if (currWord.equals(endWord)){
-            if (res.isEmpty()){
+        if (currWord.equals(endWord)) {
+            if (res.isEmpty()) {
                 res.add(new ArrayList<>(tmp));
-            } else{
-                if (res.get(0).size()>tmp.size()) {
+            } else {
+                if (res.get(0).size() > tmp.size()) {
                     res.clear();
                     res.add(new ArrayList<>(tmp));
-                }
-                else if (res.get(0).size() == tmp.size()) res.add(new ArrayList<>(tmp));
+                } else if (res.get(0).size() == tmp.size()) res.add(new ArrayList<>(tmp));
                 return;
             }
         }
 
-        for (String nWord: graph.get(currWord)){
+        for (String nWord : graph.get(currWord)) {
             if (visited.get(nWord)) continue;
             tmp.add(nWord);
-            visited.put(nWord,true);
-            dfs(nWord,endWord,res,tmp);
-            tmp.remove(tmp.size()-1);
-            visited.put(nWord,false);
+            visited.put(nWord, true);
+            dfs(nWord, endWord, res, tmp);
+            tmp.remove(tmp.size() - 1);
+            visited.put(nWord, false);
         }
     }
 
     /*
     Method 2: BFS 修改了判断两个单词距离的方法，采用遍历的方法，另外BFS在获得步数的同时获得结果
      */
-
 
     //记录上一个节点
     class WordNode {
@@ -155,7 +156,6 @@ public class FindLadders126 {
                             queue.add(new WordNode(newWord, top.numSteps + 1, top));
                             visited.add(newWord);
                         }
-
                         arr[k] = temp;
                     }
                 }
@@ -165,177 +165,160 @@ public class FindLadders126 {
         return result;
     }
 
-    /*
-    Method3 ：BFS + DFS ，先用BFS构建出从beginWord到wordList（beginWord也加在dict中）中各个word的steps
-    然后DFS的时候根据步数进行
-     */
-    //word - step
-    HashMap<String, Integer> map = new HashMap<>();
+    /* 这个方法最推荐
+    Method3 ：BFS + DFS ，
+    在第一步BFS的过程中, 利用一个hash map记录start到每一个结点的最短距离.
 
+    那么在第二步DFS的过程中, 可以利用那个distance的hash map, 在继续往下之前,
+    check下一个结点的最短距离是否是当前结点最短距离加一. 是的话就继续, 不是的话就根本不需要visit那个结点了.
+     */
     public List<List<String>> findLadders3(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> res = new ArrayList<>();
-        if (beginWord == null || beginWord.length() == 0 ||
-                wordList.size() == 0 || beginWord.length() != endWord.length() ||
-                wordList.indexOf(endWord) == -1)
-            return res;
-
-        BFS(beginWord, endWord, wordList);
-        if (map.size() == 1)
-            return res;
-
-        DFS(beginWord, endWord, new ArrayList<>(), res);
-
+        final List<List<String>> res = new ArrayList<>();
+        final Set<String> dict = new HashSet<>(wordList);
+        if (!dict.contains(endWord)) return res;
+        final Map<String, Set<String>> graph = new HashMap<>();
+        final Map<String, Integer> dist = new HashMap<>();
+        bfs(beginWord, endWord, dict, graph, dist);
+        if (!dist.containsKey(endWord) || dist.get(endWord) == 0) return res;
+        List<String> list = new ArrayList<>(Arrays.asList(beginWord));
+        dfs(beginWord, endWord, graph, dist, res, list);
         return res;
-
     }
 
-    private void BFS(String beginWord, String endWord, List<String> wordList) {
-        Set<String> wordSet = new HashSet<>(wordList);
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(beginWord);
-        map.put(beginWord, 0);
-
+    private void bfs(final String beginWord, final String endWord, final Set<String> dict,
+                     final Map<String, Set<String>> graph, final Map<String, Integer> dist) {
+        final Queue<String> queue = new LinkedList<>();
+        queue.add(beginWord);
+        dist.put(beginWord, 1);
+        int depth = 0;
         while (!queue.isEmpty()) {
-            String str = queue.poll();
-            if (str.equals(endWord))
-                break;
-            for (int i = 0; i < beginWord.length(); i++) {
-                char[] word = str.toCharArray();
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    word[i] = ch;
-                    String newWord = new String(word);
-                    if (wordSet.contains(newWord)) {
-                        if (!map.containsKey(newWord)) {
-                            map.put(newWord, map.get(str) + 1);
-                            queue.add(newWord);
-                        }
+            int size = queue.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                String curr = queue.poll();
+                graph.put(curr, new HashSet<>());
+                if (curr.equals(endWord)) return;
+                for (String nextWord : getNextWords(curr, dict)) {
+                    graph.putIfAbsent(nextWord, new HashSet<>());
+                    graph.get(curr).add(nextWord);
+                    if (!dist.containsKey(nextWord)) {
+                        dist.put(nextWord, depth + 1);
+                        queue.add(nextWord);
                     }
                 }
             }
         }
     }
 
-
-    private void DFS(String currWord, String endWord, List<String> ans, List<List<String>> res) {
-        if (currWord.equals(endWord)) {
-            ans.add(currWord);
-            res.add(ans);
+    private void dfs(String beginWord, String endWord, Map<String, Set<String>> graph,
+                     Map<String, Integer> dist,
+                     List<List<String>> res, List<String> tmp) {
+        if (beginWord.equals(endWord)) {
+            res.add(new ArrayList<>(tmp));
             return;
         }
-        if (map.get(currWord) == null)
-            return;
-        ans.add(currWord);
-        int nextStep = map.get(currWord) + 1;
-        for (int i = 0; i < currWord.length(); i++) {
-            char[] word = currWord.toCharArray();
-            for (char ch = 'a'; ch <= 'z'; ch++) {
-                word[i] = ch;
-                String newWord = new String(word);
-                if (map.getOrDefault(newWord, -1) == nextStep) {
-                    ArrayList<String> ll = new ArrayList<>(ans);
-                    DFS(newWord, endWord, ll, res);
-                }
+        int len = dist.get(beginWord);
+        for (String adj : graph.get(beginWord)) {
+            if (dist.get(adj) == len + 1) {
+                tmp.add(adj);
+                dfs(adj, endWord, graph, dist, res, tmp);
+                tmp.remove(tmp.size() - 1);
             }
         }
     }
-
 
     /*
-    Method4 : bidirectional bfs + dfs 速度最快，25ms.... TODO 双向BFS 重点！
+    Method4 : bidirectional bfs + dfs 速度最快，25ms.... 双向BFS 重点！
      */
-
     public List<List<String>> findLadders4(String beginWord, String endWord, List<String> wordList) {
-        // 结果集
         List<List<String>> res = new ArrayList<>();
-        Set<String> words = new HashSet<>(wordList);
-        // 字典中不包含目标单词
-        if (!words.contains(endWord)) {
+        HashSet<String> dict = new HashSet<>(wordList);
+        if (!dict.contains(endWord)) {
             return res;
         }
-        // 存放关系：每个单词可达的下层单词
-        Map<String, List<String>> mapTree = new HashMap<>();
-        Set<String> begin = new HashSet<>(), end = new HashSet<>();
-        begin.add(beginWord);
-        end.add(endWord);
-        if (buildTree(words, begin, end, mapTree, true)) {
-            dfs(res, mapTree, beginWord, endWord, new LinkedList<>());
-        }
+        HashSet<String> beginSet = new HashSet<>();
+        HashSet<String> endSet = new HashSet<>();
+
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        HashMap<String, List<String>> map = new HashMap<>();
+        bfs(map, beginSet, endSet, dict, false);
+
+        List<String> path = new ArrayList<>();
+        path.add(beginWord);
+        dfs(res, path, map, beginWord, endWord);
         return res;
     }
 
-    // 双向BFS，构建每个单词的层级对应关系
-    private boolean buildTree(Set<String> words,
-                              Set<String> begin,
-                              Set<String> end,
-                              Map<String, List<String>> mapTree,
-                              boolean isFront) {
-        if (begin.size() == 0) {
-            return false;
-        }
-        // 始终以少的进行探索
-        if (begin.size() > end.size()) {
-            return buildTree(words, end, begin, mapTree, !isFront);
-        }
-        // 在已访问的单词集合中去除
-        words.removeAll(begin);
-        // 标记本层是否已到达目标单词
-        boolean isMeet = false;
-        // 记录本层所访问的单词
-        Set<String> nextLevel = new HashSet<>();
-        for (String word : begin) {
-            char[] chars = word.toCharArray();
-            for (int i = 0; i < chars.length; i++) {
-                char temp = chars[i];
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    chars[i] = ch;
-                    String str = String.valueOf(chars);
-                    if (words.contains(str)) {
-                        nextLevel.add(str);
-                        // 根据访问顺序，添加层级对应关系：始终保持从上层到下层的存储存储关系
-                        // true: 从上往下探索：word -> str
-                        // false: 从下往上探索：str -> word（查找到的 str 是 word 上层的单词）
-                        String key = isFront ? word : str;
-                        String nextWord = isFront ? str : word;
-                        // 判断是否遇见目标单词
-                        if (end.contains(str)) {
-                            isMeet = true;
-                        }
-                        if (!mapTree.containsKey(key)) {
-                            mapTree.put(key, new ArrayList<>());
-                        }
-                        mapTree.get(key).add(nextWord);
-                    }
-                }
-                chars[i] = temp;
-            }
-        }
-        if (isMeet) {
-            return true;
-        }
-        return buildTree(words, nextLevel, end, mapTree, isFront);
-    }
-
-    // DFS: 组合路径
-    private void dfs(List<List<String>> res,
-                     Map<String, List<String>> mapTree,
-                     String beginWord,
-                     String endWord,
-                     LinkedList<String> list) {
-        list.add(beginWord);
-        if (beginWord.equals(endWord)) {
-            res.add(new ArrayList<>(list));
-            list.removeLast();
+    private void bfs(HashMap<String, List<String>> map,
+                     HashSet<String> beginSet, HashSet<String> endSet,
+                     HashSet<String> dict, boolean flip) {
+        if (beginSet.isEmpty()) {
             return;
         }
-        if (mapTree.containsKey(beginWord)) {
-            for (String word : mapTree.get(beginWord)) {
-                dfs(res, mapTree, word, endWord, list);
+
+        if (beginSet.size() > endSet.size()) {
+            bfs(map, endSet, beginSet, dict, !flip);
+            return;
+        }
+
+        boolean done = false;
+        dict.removeAll(beginSet);
+        dict.removeAll(endSet);
+
+        HashSet<String> next = new HashSet<>();
+        for (String str : beginSet) {
+            char[] chs = str.toCharArray();
+            for (int i = 0; i < chs.length; i++) {
+                char temp = chs[i];
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    if (chs[i] != ch) {
+                        chs[i] = ch;
+                        String word = new String(chs);
+
+                        String key = flip ? word : str;
+                        String val = flip ? str : word;
+
+                        List<String> list = map.get(key) == null ? new ArrayList<>() : map.get(key);
+
+                        if (endSet.contains(word)) {
+                            done = true;
+                            list.add(val);
+                            map.put(key, list);
+                        } else {
+                            if (dict.contains(word)) {
+                                next.add(word);
+                                list.add(val);
+                                map.put(key, list);
+                            }
+                        }
+                    }
+                }
+                chs[i] = temp;
             }
         }
-        list.removeLast();
+
+        if (!done) {
+            bfs(map, endSet, next, dict, !flip);
+        }
     }
 
+    private void dfs(List<List<String>> res, List<String> path, HashMap<String, List<String>> map, String start, String end) {
+        if (start.equals(end)) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
 
+        if (!map.containsKey(start)) {
+            return;
+        }
+
+        for (String next : map.get(start)) {
+            path.add(next);
+            dfs(res, path, map, next, end);
+            path.remove(path.size() - 1);
+        }
+    }
 
     @Test
     public void test() {
@@ -350,7 +333,7 @@ public class FindLadders126 {
 
 //        System.out.println(findLadders("hit", "cog", arr));
 //        System.out.println(findLadders2("hit", "cog", arr));
-        System.out.println(findLadders4("hit", "cog", arr));
+        System.out.println(findLadders3("hit", "cog", arr));
 
 //        arr.clear();
 //        arr.add("a");

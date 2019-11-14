@@ -22,3 +22,20 @@ Map<String, Double> value = new HashMap<>();    //distance from starting point
 
 LC相关题目：
 399
+
+5. 图转化为树的时候树根是入度是0，具体出入度计算如下
+        //由于是从1开始，因此开n+1的数组
+        int[] in = new int[n + 1],out = new int[n + 1];//记录每个节点的出度与入度
+        for(int[] nums:edges){
+            graph[nums[0]].add(nums[1]);
+            out[nums[0]]++;
+            in[nums[1]]++;
+        }
+
+LC相关题目
+685
+
+6. 连通性的问题都可以用DFS+visited进行
+LC相关题目
+685
+

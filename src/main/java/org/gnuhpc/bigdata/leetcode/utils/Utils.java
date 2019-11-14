@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode.utils;
 
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -396,5 +398,20 @@ public class Utils {
             }
         }
         return nextWords;
+    }
+
+    public List<String> reverseList(List<String> list){
+        String[] res = new String[list.size()];
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            res[i] = list.get(list.size()-i-1);
+        }
+
+        return Arrays.asList(res);
+    }
+
+    @Test
+    public void test(){
+        System.out.println(reverseList(Arrays.asList("abcd","efg","lmn","xyz")));
     }
 }

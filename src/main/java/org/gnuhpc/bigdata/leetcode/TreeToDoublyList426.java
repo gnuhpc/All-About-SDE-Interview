@@ -57,31 +57,57 @@ public class TreeToDoublyList426 {
 
         Deque<Node> stack = new LinkedList<>();
         Node pre = new Node(0, null, null);
-        Node res = pre;
+        Node dummy = pre;
 
         while (root != null || !stack.isEmpty()) {
-            if (root != null) {
+            while (root != null) {
                 stack.push(root);
                 root = root.left;
-            } else {
-                root = stack.pop();
-                pre.right = root;
-                root.left = pre;
-                pre = root;
-                root = root.right;
             }
+            root = stack.pop();
+            //注意下边这三行和后边递归方法的是一样的
+            pre.right = root;
+            root.left = pre;
+            pre = root;
+            root = root.right;//别忘了转向右子树
         }
         //最后处理头尾
-        pre.right = res.right;
-        res.right.left = pre;
+        pre.right = dummy.right;
+        dummy.right.left = pre;
 
-        return res.right;
+        return dummy.right;
     }
 
-    /*
-    Method3 : 递归 inplace
-     */
+
+    Node pre = null; //怎么在DFS中记录上一个元素
     public Node treeToDoublyList3(Node root) {
+        if (root == null){
+            return null;
+        }
+        Node dummy = new Node(0, null, null);
+        pre = dummy;
+        helper(root);
+        //connect tail with head;
+        pre.right = dummy.right;
+        dummy.right.left = pre;
+        return dummy.right;
+    }
+
+    private void helper(Node root){
+        if (root == null){
+            return;
+        }
+        helper(root.left);
+        pre.right = root;
+        root.left = pre;
+        pre = root;
+        helper(root.right);
+    }
+    /*
+       Method3 : 递归 inplace
+        */
+
+    public Node treeToDoublyList4(Node root) {
         if (root == null) return null;
         Node left = treeToDoublyList3(root.left);
         Node right = treeToDoublyList3(root.right);
@@ -101,31 +127,6 @@ public class TreeToDoublyList426 {
         left.left = lastRight;
 
         return left;
-    }
-
-    Node prev = null; //TODO 怎么在DFS中记录上一个元素
-    public Node treeToDoublyList4(Node root) {
-        if (root == null){
-            return null;
-        }
-        Node dummy = new Node(0, null, null);
-        prev = dummy;
-        helper(root);
-        //connect tail with head;
-        prev.right = dummy.right;
-        dummy.right.left = prev;
-        return dummy.right;
-    }
-
-    private void helper(Node cur){
-        if (cur == null){
-            return;
-        }
-        helper(cur.left);
-        prev.right = cur;
-        cur.left = prev;
-        prev = cur;
-        helper(cur.right);
     }
 
 

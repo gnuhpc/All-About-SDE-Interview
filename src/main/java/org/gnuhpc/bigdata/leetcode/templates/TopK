@@ -1,6 +1,6 @@
 TopK问题一般有两种情况: 求第K个最大的/求前K个最大的
 
-1. 使用PriorityQueue (通解)
+方法1：使用PriorityQueue (首选，通解)
 记忆要点:求最大的k个数 则用最小堆,反之用最大堆
 步骤:(以求最大k为例)
 1) 构建最小堆
@@ -9,14 +9,14 @@ TopK问题一般有两种情况: 求第K个最大的/求前K个最大的
    也就是最可能被淘汰的.
 4) 如此往复存下其余数字, 最后堆里面剩下的k个数字便是最大的k个数,而堆顶就是第K个最大的数
 
-时间复杂度O(log(n))
+时间复杂度O(nlog(k))
 空间复杂度O(k)
 
 LC相关题目:
 347
 215
 
-2.使用quickselect (只能求第k个小的) 见QuickSelect.java
+方法2：使用quickselect (只能求第k个小的) 见QuickSelect.java
 给定一个数组nums和一个k,求第k个小的元素
 1)首先进行partition,目标是将数组分为两部分
     1-1: 取得pivot的idx和值,一般取low的地方,pivot作为分割的标尺
@@ -28,5 +28,21 @@ LC相关题目:
 LC相关题目:
 215
 
-3. 衍生出来的一个问题是如何查找一个数字的中位数：
+方法3：使用桶排序，将freq=i的元素映射到List[i]中
+LC相关题目：
+347 Method2
+692 Method2
+
+方法4：使用排序对所有元素进行排序求解
+
+1. 衍生出来的一个问题是如何查找一个数字的中位数：
 findKthLargest(nums, (nums.length + 1) / 2);
+
+2. 对于一个map而言，如果需要对他的key进行排序，则可以在comparator中对value进行比较
+LC相关题目：
+347 Method1
+
+3. 在用自定义comparator的时候别忘了在后边比较堆顶的时候用同样的comparator
+queue.comparator().compare(key, queue.peek()) > 0
+LC相关题目
+692 Method1

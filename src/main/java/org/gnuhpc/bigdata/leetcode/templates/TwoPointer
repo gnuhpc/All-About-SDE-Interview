@@ -1,0 +1,25 @@
+双指针，主要是处理滑动窗口问题的
+
+模板
+int left = 0, right = 0;
+
+while (right < s.size()) {
+    window.add(s[right]);
+    right++;
+
+    while (valid) {
+        window.remove(s[left]);
+        left++;
+    }
+}
+
+类型1：都从一边开始，l和r都是0，然后r往外扩展，到达一定条件后l往里缩，不满足一定条件后r继续往外扩展
+LC相关题目
+76
+438
+
+1. 如果牵涉到计数，可以扣成负数，表述超额扣除的
+LC相关题目
+76
+438
+

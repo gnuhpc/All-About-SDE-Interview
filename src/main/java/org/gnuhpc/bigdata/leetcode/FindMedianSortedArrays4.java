@@ -20,11 +20,21 @@ public class FindMedianSortedArrays4 {
 
     // 查找A，B两个有序数组合并后的第k个数， k is not zero-based, it starts from 1
     public int findKth(int[] A, int[] B, int k) {
-        if (A.length == 0) {
+        if (A.length == 0) { //判断空
             return B[k - 1];
         }
-        if (B.length == 0) {
+        if (B.length == 0) { //判断空
             return A[k - 1];
+        }
+
+        if (A[A.length-1]<B[0]){ //判断根本没有交集 ， B整体大于A
+            if (A.length >= k) return A[k-1];
+            else return B[k-A.length-1];
+        }
+
+        if (B[B.length-1] < A[0]){ // 判断根本没有交集， A整体大于B
+            if (B.length >= k) return B[k-1];
+            else return A[k-B.length-1];
         }
 
         //这是对数值进行二分

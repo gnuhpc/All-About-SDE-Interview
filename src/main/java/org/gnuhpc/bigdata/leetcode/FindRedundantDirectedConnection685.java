@@ -13,11 +13,12 @@ public class FindRedundantDirectedConnection685 {
     public int[] findRedundantDirectedConnection(int[][] edges) {
         int n = edges.length;
 
-        //TODO: 有向无权图构建和输入度记录
+        //有向无权图构建和输入度记录
         List<Integer>[] graph = new ArrayList[n + 1];//构图
         for(int i = 0;i < n + 1;i++){
             graph[i] = new ArrayList<>();
         }
+        //由于是从1开始，因此开n+1的数组
         int[] in = new int[n + 1],out = new int[n + 1];//记录每个节点的出度与入度
         for(int[] nums:edges){
             graph[nums[0]].add(nums[1]);
@@ -33,11 +34,12 @@ public class FindRedundantDirectedConnection685 {
             if(root == -1){//这条边不能删除
                 continue;
             }
+            //注意这里的包装类，因此你要删除的j不是idx而是数值
             graph[i].remove(new Integer(j)); //在 graph中 移除该边信息。如果移错了，后面应该补回来
             dfs(root,visited,graph); //深度遍历，之后查看visited除了visited[0]外是否都为true  若都为true，则表明应删除该边
             boolean tag = false;
             for(int m = 1;m < visited.length;m++){
-                if(!visited[m]) { //有一个为false，则表面不应该删除该边
+                if(!visited[m]) { //若有一个false，则代表删除该边以后有不连通的顶点了，因此不应该删除该边
                     tag = true;
                     break;
                 }
@@ -45,7 +47,7 @@ public class FindRedundantDirectedConnection685 {
             if(tag){ //不应该删除该边，则应该把之前对这两个节点的度信息的“误操作”补偿回来，以及把边补回到图中
                 out[i]++;
                 in[j]++;
-                graph[i].add(j);
+                graph[i].add(new Integer(j));
                 Arrays.fill(visited,false);//一次dfs后，visited全部重置为false
             }else return new int[]{i,j};
         }

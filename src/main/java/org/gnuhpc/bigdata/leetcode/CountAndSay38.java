@@ -10,25 +10,6 @@ import java.util.stream.Collectors;
  * Copyright gnuhpc 19-8-12
  */
 public class CountAndSay38 {
-    class Tuple {
-        private final int num;
-        private final int count;
-
-        public Tuple(int count, int num) {
-            this.count = count;
-            this.num = num;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(count);
-            sb.append(num);
-
-            return sb.toString();
-        }
-    }
-
     public String countAndSay(int n) {
         String str = "1";
         StringBuilder sb = new StringBuilder();

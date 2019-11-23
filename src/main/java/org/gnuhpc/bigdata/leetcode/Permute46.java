@@ -177,6 +177,6 @@ we can only use those unused numbers to generate the remaining part of the permu
 
     @Test
     public void test() {
-        System.out.println(permute3(new int[]{1, 2, 3}));
+        System.out.println(permute2(new int[]{1, 2, 3}));
     }
 }

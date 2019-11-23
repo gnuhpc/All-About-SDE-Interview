@@ -74,7 +74,7 @@ public class Base62UrlShorter {
     @Test
     public void testLongUrl2Short() {
         Base62UrlShorter shorter = new Base62UrlShorter();
-        String longUrl = "www.google.com";
+        String longUrl = "www.baiduadasd.com";
         String shortUrl = shorter.shorten(longUrl);
         System.out.println("short url:" + shortUrl);
         System.out.println(shorter.lookup(shortUrl));

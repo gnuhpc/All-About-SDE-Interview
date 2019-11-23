@@ -397,4 +397,13 @@ public class Utils {
         }
         return nextWords;
     }
+
+    public static void printLinkedList(ListNode head) {
+        ListNode node = head;
+
+        while (node != null) {
+            System.out.println(node.val);
+            node = node.next;
+        }
+    }
 }

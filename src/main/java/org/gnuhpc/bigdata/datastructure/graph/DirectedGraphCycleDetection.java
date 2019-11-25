@@ -8,15 +8,19 @@ import java.util.List;
 
 //有向图判断有环
 /*
-1. 定义顶点，注意增加一个visiting状态
+1. 定义顶点，注意增加一个beingVisited状态
 2. 构造图
 3. 判断有环： 对每个没有visited的顶点进行DFS
 4. DFS具体实现：
 	首先将此节点设置为正在访问
 	然后对这个节点的邻接节点进行遍历
-		如果已经是visiting说明有环
+		如果已经是beingVisited说明有环
 		如果不是visited，则进一步DFS深入
-	最后别忘了对这一层的节点状态置为visited，并取消visiting状态
+	最后别忘了对这一层的节点状态置为visited，并取消beingVisited状态
+ */
+
+/*
+判断是否为DAG, 有Spark面试会已这个问题切入
  */
 public class DirectedGraphCycleDetection {
 

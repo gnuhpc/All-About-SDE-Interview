@@ -11,7 +11,7 @@ import java.util.*;
 
 //无向图判断有环
 /*
-1. 定义顶点，注意增加一个visiting状态
+1. 定义顶点，注意增加一个visited状态
 2. 构造图
 3. 判断有环： 对每个没有visited的顶点进行DFS, 传入null表示其父节点（初始为null）
 4. DFS具体实现：

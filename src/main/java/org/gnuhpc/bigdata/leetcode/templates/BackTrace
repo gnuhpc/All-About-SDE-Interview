@@ -1,4 +1,4 @@
-当遇到一个可以用到回溯法的时候需要按照如下步骤进行：
+当遇到一个可以用到回溯法的时候脑子中有决策树，需要按照如下步骤进行：
 1. 确定问题的一个解空间树， 这个解空间树至少包含一个你需要的那个解， 否则这个树就完全没有意义了
 2. 组织好这棵树， 弄明白这棵树的每一个节点代表什么， 每一个分支代表什么
 3. 从这棵树的根节点不断的向下深搜， 当遇到不合适的节点的时候直接跳过以这个节点为根的子树
@@ -8,7 +8,7 @@
 什么时候只用DFS不用回溯：
 如果DFS进去visited的值需要保留的，则不进行回溯
 
-DFS回溯问题框架：
+回溯问题框架：
 1)设置visited为全局数组,
 2)遍历所有节点进行如下dfs
 
@@ -29,23 +29,44 @@ DFS回溯问题框架：
         }
     }
 
-1. 二维数组设置
-private int d[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-在遍历的时候判断是不是越界,以及是不是访问过
+1. 二维数组回溯架构
+1.1 定义全局变量
+    private int[][] dr = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+    };
+    private int m, n;
+    private boolean[][] visited;
+
+1.2 主程序判断边界，准备全局变量
+    m = board.length;
+    n = board[0].length;
+    visited = new boolean[m][n];
+
+1.3 逐行逐列进行
+   for (int i = 0; i < m; ++i) {
+       for (int j = 0; j < n; ++j)
+           dfs(board, i, j, xxx, resultSet);
+   }
+
+1.4 在dfs中
+   1.4.1 判断是否可以剪枝：是否可以往结果集加入临时结果集或者是否符合往下再进行的条件
+   1.4.2 标注此节点visited: visited[x][y] = true;
+   1.4.3 对dr进行遍历，得到newX和newY，判断节点是不是越界并没有被访问过，如果满足则dfs进入newX和newY
+           for (int[] d : dr) {
+               int newX = x + d[0];
+               int newY = y + d[1];
+               if (isValid(newX, newY)) {
+                   dfs(board, newX, newY, node, result);
+               }
+           }
+
+    其中在遍历的时候判断是不是越界,以及是不是访问过:
     public boolean isValid(int x, int y) {
         return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
     }
-
-遍历方式为：
-            for (int i = 0; i < 4; i++) {
-                int newX = x + d[i][0];
-                int newY = y + d[i][1];
-                if (isValid(newX,newY)){
-                 dfs(newX,newY);
-                }
-            }
+   1.4.4 回溯，去标注此节点visited: visited[x][y] = false;
 
 LC相关题目：
-79
+79, 212(加了Trie 快速剪枝)
 
 

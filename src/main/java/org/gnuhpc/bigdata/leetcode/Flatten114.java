@@ -8,29 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Flatten114 {
-    /*
-    Method1 : preorder 递归 前序遍历放在一个数组里， 最无脑也是有一定额外空间的
-     */
-    public void flatten1(TreeNode root) {
-        List<TreeNode> list = new ArrayList<>();
-        preorder(root, list);
-        for (int i = 0; i < list.size() - 1; i++) {
-            list.get(i).right = list.get(i + 1);
-            list.get(i).left = null;
-        }
-
-    }
-
-    public void preorder(TreeNode root, List<TreeNode> list) {
-        if (root != null) {
-            list.add(root);
-            preorder(root.left, list);
-            preorder(root.right, list);
-        }
-    }
 
     /*
-    Method2 : preorder TODO
+    Method1 : preorder
      */
 
     /*
@@ -51,7 +31,7 @@ public class Flatten114 {
 
     private TreeNode pre;
 
-    public void flatten2(TreeNode root) {
+    public void flatten1(TreeNode root) {
         if (root == null) return;
         //如果pre不是null先进行连接
         if (pre != null) {
@@ -64,12 +44,12 @@ public class Flatten114 {
 
         TreeNode left = root.left;
         TreeNode right = root.right;
-        flatten2(left);
-        flatten2(right);
+        flatten1(left);
+        flatten1(right);
     }
 
     /*
-    Method22: 和上一种方法基本一致，返回尾部
+    Method2: 尾部法：和上一种方法基本一致，返回尾部
      */
     /*
     假设某节点的左右子树T(root->left)和T(root->right)已经flatten成linked list了：
@@ -89,7 +69,7 @@ public class Flatten114 {
     root->left = NULL
     leftTail->right = temp
      */
-    public void flatten22(TreeNode root) {
+    public void flatten2(TreeNode root) {
         flattenTail(root);
     }
 
@@ -114,7 +94,7 @@ public class Flatten114 {
     }
 
     /*
-    Method3 : 递归,递归的时候求出左节点的最右孩子即可
+    Method3 : Postorder
      */
 
     public void flatten3(TreeNode root) {

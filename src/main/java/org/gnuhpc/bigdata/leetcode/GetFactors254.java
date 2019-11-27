@@ -11,22 +11,25 @@ import java.util.List;
 public class GetFactors254 {
     public List<List<Integer>> getFactors(int n) {
         List<List<Integer>> res = new ArrayList<>();
-        if (n < 2) {
-            return res;
-        }
-        helper(n, 2, new ArrayList<>(), res);
+        if (n <= 3) return res;
+        dfs(n, 2, res, new ArrayList<>());
         return res;
+
     }
 
-    public void helper(int n, int start, List<Integer> tmp, List<List<Integer>> res) {
-        for (int i = start; i <= Math.sqrt(n); i++) {
+    private void dfs(int n, int start, List<List<Integer>> res, List<Integer> temp) {
+        if (n <= 1) {
+            if (temp.size() > 1) {
+                res.add(new ArrayList<>(temp));
+            }
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
             if (n % i == 0) {
-                tmp.add(i);
-                tmp.add(n / i);
-                res.add(new ArrayList<Integer>(tmp)); //TODO 注意这种DFS的套路
-                tmp.remove(tmp.size() - 1);
-                helper(n / i, i, tmp, res);
-                tmp.remove(tmp.size() - 1);
+                temp.add(i);
+                dfs(n / i, i, res, temp);
+                temp.remove(temp.size() - 1);
             }
         }
     }

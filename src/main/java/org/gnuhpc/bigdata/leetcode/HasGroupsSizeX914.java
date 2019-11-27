@@ -34,29 +34,6 @@ public class HasGroupsSizeX914 {
         return res;
     }
 
-    //Method 2; GCD
-    public boolean hasGroupsSizeX2(int[] deck) {
-        int[] count = new int[10000];
-        for (int c: deck)
-            count[c]++;
-
-        int X = -1;
-        for (int i = 0; i < 10000; ++i)
-            if (count[i] > 0) {
-                if (X == -1)
-                    X = count[i];
-                else
-                    X = gcd(X, count[i]);
-            }
-
-        return X >= 2;
-    }
-
-    //TODO 求最大公约数
-    public int gcd(int a, int b) {
-        return a == 0 ? b : gcd(b%a, a);
-    }
-
     @Test
     public void test(){
         System.out.println(hasGroupsSizeX(new int[]{1,1,2,2,2,2}));

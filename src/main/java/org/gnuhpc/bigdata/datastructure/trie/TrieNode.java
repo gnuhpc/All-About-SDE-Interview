@@ -35,4 +35,5 @@ public class TrieNode {
 		return this.character;
 	}
 
+
 }

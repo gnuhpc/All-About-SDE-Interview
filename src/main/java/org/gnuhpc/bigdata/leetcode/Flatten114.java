@@ -30,7 +30,7 @@ public class Flatten114 {
     }
 
     /*
-    Method2 : preorder
+    Method2 : preorder TODO
      */
 
     /*
@@ -40,7 +40,7 @@ public class Flatten114 {
 指针修改：
 用一个全局变量pre保存上一个节点：将pre右子树指针指向当前节点root；将pre左子树指针清空。
 进入下轮递归前，将当前节点root赋给pre；
-由于在self.flatten(root.left)方法执行后执行flatten(root.right)，但root.right指向节点可能已经改变，造成错误的递归顺序，因此需要在执行此方法前存储root.right至right变量，用此变量做每个节点的右子树递归。
+由于在flatten(root.left)方法执行后执行flatten(root.right)，但root.right指向节点可能已经改变，造成错误的递归顺序，因此需要在执行此方法前存储root.right至right变量，用此变量做每个节点的右子树递归。
 本题无需返回值，时空间复杂度均为O(N)。
 
 作者：jyd
@@ -53,7 +53,6 @@ public class Flatten114 {
 
     public void flatten2(TreeNode root) {
         if (root == null) return;
-        TreeNode right = root.right, left = root.left;
         //如果pre不是null先进行连接
         if (pre != null) {
             pre.right = root;
@@ -63,12 +62,14 @@ public class Flatten114 {
         //不管是不是连接pre都指向root， 走向tail
         pre = root;
 
+        TreeNode left = root.left;
+        TreeNode right = root.right;
         flatten2(left);
         flatten2(right);
     }
 
     /*
-    Method22: 和上一种方法基本一致，更好理解,推荐
+    Method22: 和上一种方法基本一致，返回尾部
      */
     /*
     假设某节点的左右子树T(root->left)和T(root->right)已经flatten成linked list了：

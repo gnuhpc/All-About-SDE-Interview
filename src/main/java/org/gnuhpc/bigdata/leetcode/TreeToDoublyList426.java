@@ -79,28 +79,30 @@ public class TreeToDoublyList426 {
     }
 
 
-    Node pre = null; //怎么在DFS中记录上一个元素
     public Node treeToDoublyList3(Node root) {
         if (root == null){
             return null;
         }
-        Node dummy = new Node(0, null, null);
-        pre = dummy;
+        Node head = root;
+        while (head.left!=null) head = head.left;
         helper(root);
         //connect tail with head;
-        pre.right = dummy.right;
-        dummy.right.left = pre;
-        return dummy.right;
+        prev.right = head;
+        head.left = prev;
+        return head;
     }
 
+    Node prev = null; //怎么在DFS中记录上一个元素
     private void helper(Node root){
         if (root == null){
             return;
         }
         helper(root.left);
-        pre.right = root;
-        root.left = pre;
-        pre = root;
+        if (prev!=null){
+            prev.right = root;
+            root.left = prev;
+        }
+        prev = root;
         helper(root.right);
     }
     /*

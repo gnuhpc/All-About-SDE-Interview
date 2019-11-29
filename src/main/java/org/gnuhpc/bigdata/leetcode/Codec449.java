@@ -3,48 +3,45 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 
 public class Codec449 {
+
+    //BST的前序遍历结果， 利用BST的特性
+    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if(root==null) return "";
+        if (root == null) return "";
         StringBuilder sb = new StringBuilder();
-        serialize(root,sb);
-        return sb.toString();
+        helper(root, sb);
+        return sb.substring(0, sb.length() - 1);
     }
 
-    public void serialize(TreeNode root,StringBuilder sb){
-        if(root ==null) return;
-        sb.append(root.val).append("#");
-        serialize(root.left,sb);
-        serialize(root.right,sb);
+    private void helper(TreeNode root, StringBuilder sb) {
+        if (root == null) return;
+        //拼接当前节点
+        sb.append(root.val).append(",");
+        helper(root.left, sb);
+        helper(root.right, sb);
     }
 
     // Decodes your encoded data to tree.
-    TreeNode node = null;
     public TreeNode deserialize(String data) {
-        if(data.equals("")){
-            return null;
-        }
-        String[] nums = data.split("#");
-        node = new TreeNode(Integer.parseInt(nums[0]));
-        for(int i=1;i<nums.length;i++){
-            int num = Integer.parseInt(nums[i]);
-            insert(node,num);
-        }
-        return node;
-
+        if (data == null || data.length() == 0) return null;
+        String[] arr = data.split(",");
+        return builder(arr, 0, arr.length - 1);
     }
-    public void insert(TreeNode node ,int num){
-        if(node.val>=num){
-            if(node.left==null){
-                node.left = new TreeNode(num);
-                return;
-            }else
-                insert(node.left,num);
-        }else{
-            if(node.right==null){
-                node.right = new TreeNode(num);
-                return;
-            }else
-                insert(node.right,num);
+
+    private TreeNode builder(String[] arr, int lo, int hi) {
+        if (lo > hi) return null;
+        TreeNode root = new TreeNode(Integer.valueOf(arr[lo]));
+        //找到第一个比首元素大的元素位置
+        int index = hi + 1;
+        for (int i = lo + 1; i <= hi; i++) {
+            if (Integer.valueOf(arr[i]) > root.val) {
+                index = i;
+                break;
+            }
         }
+        //递归构建子树
+        root.left = builder(arr, lo + 1, index - 1);
+        root.right = builder(arr, index, hi);
+        return root;
     }
 }

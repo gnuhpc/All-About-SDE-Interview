@@ -51,7 +51,7 @@ class Base62 {
 }
 
 public class Base62UrlShorter {
-    private long autoIncrId = 10000;
+    private long autoIncrId = 10001;
 
     Map<Long, String> longUrlIdMap = new HashMap<>();
 

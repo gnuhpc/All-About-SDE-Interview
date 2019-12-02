@@ -10,7 +10,7 @@ public class IsValidSudoku36 {
             for (int j=0; j<9; ++j) {
                 char number = board[i][j];
                 if (number != '.')
-                    //TODO 用一个集合存入多个信息的方法
+                    //用一个集合存入多个信息的方法
                     if (!seen.add(number + " in row " + i) ||
                             !seen.add(number + " in column " + j) ||
                             !seen.add(number + " in block " + i/3 + "-" + j/3))

@@ -7,28 +7,29 @@ import org.junit.Test;
  * Copyright gnuhpc 2019/9/22
  */
 public class MaxAreaOfIsland695 {
-    //TODO 二维DFS 模板
+    //二维DFS 模板
     private int[][] dr = {
             {-1, 0},
             {0, 1},
             {1, 0},
             {0, -1}
     };
+    private int r;
+    private int c;
+    private boolean[][] visited;
 
     public int maxAreaOfIsland(int[][] grid) {
         if (grid == null || grid.length == 0) return 0;
 
-        int r = grid.length;
-        int c = grid[0].length;
+        r = grid.length;
+        c = grid[0].length;
         int max = 0;
 
-        boolean[][] visited = new boolean[r][c];
+        visited = new boolean[r][c];
 
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                if (grid[i][j] == 1 && !visited[i][j]) {
-                    max = Math.max(max, dfs(grid, i, j, visited));
-                }
+                max = Math.max(max, dfs(grid, i, j, visited));
             }
         }
 
@@ -36,13 +37,16 @@ public class MaxAreaOfIsland695 {
     }
 
     private int dfs(int[][] grid, int x, int y, boolean[][] visited) {
+        if (grid[x][y]!=1) return 0;
+
         visited[x][y] = true;
         int res = 1;
         for (int i = 0; i < dr.length; i++) {
             int newX = x + dr[i][0];
             int newY = y + dr[i][1];
-            if ((newX >= 0 && newX < grid.length) && (newY >= 0 && newY < grid[0].length)) {
-                if (grid[newX][newY] == 1 && !visited[newX][newY]) {
+            if ((newX >= 0 && newX < grid.length) && (newY >= 0 && newY < grid[0].length) &&
+                !visited[newX][newY] ){
+                if (grid[newX][newY] == 1) {
                     res += dfs(grid, newX, newY, visited);
                 }
             }

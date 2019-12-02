@@ -11,34 +11,33 @@ import java.util.Queue;
 public class LongestConsecutive298 {
 
     /**
-     * Method1 : Post-order DFS TODO
+     * Method1 : Post-order DFS
      */
-    int ret = 0;
+    int res= 0;
 
     public int longestConsecutive(TreeNode root) {
         dfs(root);
-        return ret;
+        return res;
     }
 
     private int dfs(TreeNode root) {
         if (root == null) return 0;
-        int leftSum = dfs(root.left);
-        int rightSum = dfs(root.right);
+        int leftLength = dfs(root.left);
+        int rightLength = dfs(root.right);
 
         if (root.left != null && root.left.val != root.val + 1) {
-            leftSum = 0;
+            leftLength = 0;
         }
         if (root.right != null && root.right.val != root.val + 1) {
-            rightSum = 0;
+            rightLength = 0;
         }
 
-        ret = Math.max(ret, Math.max(leftSum, rightSum) + 1);
-        return Math.max(leftSum, rightSum) + 1;
-
+        res = Math.max(res, Math.max(leftLength, rightLength) + 1);
+        return Math.max(leftLength, rightLength) + 1;
     }
 
     /*
-    Method2: DFS TODO如何在下一层迭代中传入上一层的value
+    Method2: pre order 如何在下一层迭代中传入上一层的value
      */
 
     public int longestConsecutive2(TreeNode root) {
@@ -52,7 +51,7 @@ public class LongestConsecutive298 {
         else len = 1;
         int left = helper(root.left, len, root.val);
         int right = helper(root.right, len, root.val);
-        return Math.max(Math.max(left, right), len);//max bt 3
+        return Math.max(Math.max(left, right), len);//max
         //len means length from root, need when single element or longest path start from root.
     }
 
@@ -60,7 +59,7 @@ public class LongestConsecutive298 {
     Method3: BFS
      */
 
-    public int longestConsecutive333(TreeNode root) {
+    public int longestConsecutive3(TreeNode root) {
         if (root == null)
             return 0;
 
@@ -68,16 +67,16 @@ public class LongestConsecutive298 {
         Queue<Integer> sizeQueue = new LinkedList<>();
 
         nodeQueue.offer(root);
-        sizeQueue.offer(1); //弄了一个先进先出队列记录 TODO
+        sizeQueue.offer(1); //弄了一个先进先出队列记录
         int max = 1;
 
         while (!nodeQueue.isEmpty()) {
-            TreeNode head = nodeQueue.poll();
+            TreeNode node = nodeQueue.poll();
             int size = sizeQueue.poll();
 
-            if (head.left != null) {
+            if (node.left != null) {
                 int leftSize = size;
-                if (head.val == head.left.val - 1) {
+                if (node.val == node.left.val - 1) {
                     leftSize++;
                     max = Math.max(max, leftSize);
                 }
@@ -85,13 +84,13 @@ public class LongestConsecutive298 {
                     leftSize = 1;
                 }
 
-                nodeQueue.offer(head.left);
+                nodeQueue.offer(node.left);
                 sizeQueue.offer(leftSize);
             }
 
-            if (head.right != null) {
+            if (node.right != null) {
                 int rightSize = size;
-                if (head.val == head.right.val - 1) {
+                if (node.val == node.right.val - 1) {
                     rightSize++;
                     max = Math.max(max, rightSize);
                 }
@@ -99,11 +98,9 @@ public class LongestConsecutive298 {
                     rightSize = 1;
                 }
 
-                nodeQueue.offer(head.right);
+                nodeQueue.offer(node.right);
                 sizeQueue.offer(rightSize);
             }
-
-
         }
 
         return max;

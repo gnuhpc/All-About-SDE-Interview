@@ -36,22 +36,6 @@ public class LongestPalindromeSubseq516 {
         System.out.println(longestPalindromeSubseq("bbbab"));
     }
 
-    int[][] memo;
-
-    private int helper(String s, int l, int r) { //TODO 从短字符串推出长字符串的方法
-        if (l == r) return 1;
-        if (l > r) return 0;
-
-        if (memo[l][r] != -1) return memo[l][r];
-
-        memo [l][r] = s.charAt(l) == s.charAt(r)?
-                2 + helper(s, l + 1, r - 1)
-                :
-                Math.max(helper(s, l + 1, r), helper(s, l, r - 1));
-
-        return memo[l][r];
-    }
-
     /*
     Method2 : memorization
      */
@@ -64,5 +48,22 @@ public class LongestPalindromeSubseq516 {
         }
 
         return helper(s, 0, s.length() - 1);
+    }
+
+
+    int[][] memo;
+
+    private int helper(String s, int l, int r) { //从短字符串推出长字符串的方法
+        if (l == r) return 1;
+        if (l > r) return 0;
+
+        if (memo[l][r] != -1) return memo[l][r];
+
+        memo [l][r] = s.charAt(l) == s.charAt(r)?
+                2 + helper(s, l + 1, r - 1)
+                :
+                Math.max(helper(s, l + 1, r), helper(s, l, r - 1));
+
+        return memo[l][r];
     }
 }

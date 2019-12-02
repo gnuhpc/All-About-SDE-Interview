@@ -22,7 +22,7 @@ public class LRUCache146_1 {
         KVNode node = cache.get(key);
         globalAge++;
         node.age = globalAge;
-        //TODO PriorityQueue reheatify的方法
+        //PriorityQueue reheatify的方法
         reHeapify(node);
 
         return node.value;

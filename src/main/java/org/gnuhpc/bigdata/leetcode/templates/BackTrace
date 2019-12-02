@@ -42,13 +42,13 @@
     n = board[0].length;
     visited = new boolean[m][n];
 
-1.3 逐行逐列进行
+1.3 逐行逐列进行，可以什么都不判断
    for (int i = 0; i < m; ++i) {
        for (int j = 0; j < n; ++j)
            dfs(board, i, j, xxx, resultSet);
    }
 
-1.4 在dfs中
+1.4 在dfs中 (5步曲：结果集->剪枝->标注->判断valid->遍历)
    1.4.1 判断是否可以剪枝：是否可以往结果集加入临时结果集或者是否符合往下再进行的条件
    1.4.2 标注此节点visited: visited[x][y] = true;
    1.4.3 对dr进行遍历，得到newX和newY，判断节点是不是越界并没有被访问过，如果满足则dfs进入newX和newY
@@ -60,13 +60,13 @@
                }
            }
 
-    其中在遍历的时候判断是不是越界,以及是不是访问过:
+    其中在遍历的时候判断是不是越界,以及是不是访问过(重点！！！):
     public boolean isValid(int x, int y) {
         return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
     }
-   1.4.4 回溯，去标注此节点visited: visited[x][y] = false;
+   1.4.4 （尝试型的题目需要）回溯，去标注此节点visited: visited[x][y] = false;
 
 LC相关题目：
-79, 212(加了Trie 快速剪枝)
+79, 212(加了Trie 快速剪枝), 329
 
 

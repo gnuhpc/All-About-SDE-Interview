@@ -3,3 +3,13 @@
 
 LC相关题目：
 36
+
+
+2. PQ的节点参与排序的变量值有所变化时需要重新reheapify
+    private void reHeapify(KVNode node) {
+        queue.remove(node);
+        queue.add(node);
+    }
+
+LC相关题目：
+146 解法1

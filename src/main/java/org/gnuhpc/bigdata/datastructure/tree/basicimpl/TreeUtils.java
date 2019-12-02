@@ -134,7 +134,7 @@ public class TreeUtils {
     }
 
 
-    //非递归从level遍历
+    //求树的节点个数
     public static int sizeofTree(TreeNode root){
         if (root==null){
             return 0;
@@ -379,6 +379,15 @@ public class TreeUtils {
             maxWith = Math.max(maxWith, queue.size());
         }
         return maxWith;
+    }
+
+
+    //如果判断是不是BST
+    public static boolean isValidBST(TreeNode root, Integer min, Integer max) {
+        if (root == null) return true;
+        if (min >= root.val) return false;
+        if (max <= root.val) return false;
+        return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
     }
 
     @Test

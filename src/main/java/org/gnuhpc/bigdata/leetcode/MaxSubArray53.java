@@ -25,7 +25,7 @@ public class MaxSubArray53 {
     }
 
 
-    //PrefixSum 方法 TODO 很通用的一个模板
+    //PrefixSum 方法 很通用的一个模板
     // The basic idea is to use pre-sum array
     // max =  Math.max(max, sum[i] - minSum).
     // (minSum is the minimum sum before A[i])
@@ -110,38 +110,4 @@ So I change the format of the sub problem into something like: `maxSubArray(int 
 
         System.out.println(maxSubArray(arr));
     }
-
-    // add by tina
-    public int maxSubArray5(int[] nums) {
-        if (nums.length == 0) return 0;
-        return helper(nums, 0, nums.length - 1);
-    }
-    public int helper(int[] nums, int left, int right) {
-        if (left >= right) return nums[left];
-        int mid = left + (right - left) / 2;
-        int lmax = helper(nums, left, mid - 1);
-        int rmax = helper(nums, mid + 1, right);
-        int mmax = nums[mid], t = mmax;
-        for (int i = mid - 1; i >= left; --i) {
-            t += nums[i];
-            mmax = Math.max(mmax, t);
-        }
-        t = mmax;
-        for (int i = mid + 1; i <= right; ++i) {
-            t += nums[i];
-            mmax = Math.max(mmax, t);
-        }
-        return Math.max(mmax, Math.max(lmax, rmax));
-    }
-
-    // add by tina, 最简单的方法
-    public int maxSubArray6(int[] nums) {
-        int res = Integer.MIN_VALUE, curSum = 0;
-        for (int num : nums) {
-            curSum = Math.max(curSum + num, num); //当累加和比当前值还小时，新开一个子串
-            res = Math.max(res, curSum);
-        }
-        return res;
-    }
-
 }

@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class MaxProduct318 {
             String word = words[i];
             for (int j = 0; j < word.length(); j++) {
                 char c = word.charAt(j);
-                encodedWords[i] |= (1 << (c - 'a'));//TODO 位运算置位
+                encodedWords[i] = Utils.setBit(encodedWords[i],c-'a'); //位运算置位
             }
         }
 
@@ -78,6 +79,6 @@ public class MaxProduct318 {
 
     @Test
     public void test(){
-        System.out.println(maxProduct(new String[]{"abcw","baz","foo","bar","xtfn","abcdef"}));
+        System.out.println(maxProduct2(new String[]{"abcw","baz","foo","bar","xtfn","abcdef"}));
     }
 }

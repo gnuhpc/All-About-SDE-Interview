@@ -4,7 +4,7 @@ import org.gnuhpc.bigdata.leetcode.utils.ListNode;
 import org.junit.Test;
 
 public class MiddleNode876 {
-    //TODO 模板
+    //模板
     public ListNode middleNode(ListNode head) {
         if (head == null) return null;
         if (head.next == null) return head;

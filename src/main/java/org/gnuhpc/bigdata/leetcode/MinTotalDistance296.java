@@ -77,7 +77,7 @@ public class MinTotalDistance296 {
         QuickSelect qs1 = new QuickSelect(x.stream().mapToInt(i -> i).toArray());
         QuickSelect qs2 = new QuickSelect(y.stream().mapToInt(i -> i).toArray());
 
-        // get median of x[] and y[] using quick select //TODO 求中位数
+        // get median of x[] and y[] using quick select //求中位数
         int mx = qs1.select(x.size()/2+1);
         int my = qs2.select(y.size()/2+1);
 

@@ -17,3 +17,17 @@ LC相关题目：
 3. 判断两个string是否有同样的字符可以使用setbit后进行与的模式进行判定
 LC相关题目：
 318 解法二
+
+
+4. Map的操作如果value是一个集合类注意使用computeIfAbsent
+map.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);//如果是null就添加
+
+5. Map的操作如果是计数则注意使用如下的方法简化代码
+    for (int i = 0; i < n; i++)
+        map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+
+6. 想在Java中表示key-value对的，可以使用Map.Entry<Character, Integer>
+
+7. frame的一个窗口处理的，可以使用deque或者list对一些数据进行暂存
+LC相关题目
+358

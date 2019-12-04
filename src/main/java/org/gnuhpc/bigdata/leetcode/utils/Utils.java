@@ -420,6 +420,14 @@ public class Utils {
         }
     }
 
+    public static void constructMap(Map<Character, List<Integer>> map, String s) {
+        char[] arr = s.toCharArray();
+
+        for (int i = 0; i < arr.length; i++) {
+            map.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);//如果是null就添加
+        }
+    }
+
     @Test
     public void test(){
         System.out.println(reverseList(Arrays.asList("abcd","efg","lmn","xyz")));

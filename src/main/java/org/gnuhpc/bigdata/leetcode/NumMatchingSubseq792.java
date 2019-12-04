@@ -2,10 +2,11 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.constructMap;
 
 //same with the LC 392 follow up
 public class NumMatchingSubseq792 {
@@ -22,9 +23,9 @@ public class NumMatchingSubseq792 {
         for (String word : words) {
             if (isSubseqence(word)) {
                 res++;
-                cache.put(word,true);
+                cache.put(word, true);
             } else {
-                cache.put(word,false);
+                cache.put(word, false);
             }
         }
 
@@ -75,13 +76,6 @@ public class NumMatchingSubseq792 {
             return idxs.get(end);
     }
 
-    private void constructMap(Map<Character, List<Integer>> map, String s) {
-        char[] arr = s.toCharArray();
-
-        for (int i = 0; i < arr.length; i++) {
-            map.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);//TODO 如果是null就添加
-        }
-    }
 
     /*
     Method2: 暴力解 （实质更快）
@@ -92,18 +86,9 @@ public class NumMatchingSubseq792 {
         boolean sub;
         for (String word : words) {
             if (cache.containsKey(word)) {
-                count += cache.get(word)?1:0;
+                count += cache.get(word) ? 1 : 0;
             } else {
-                index = -1;
-                sub = true;
-                for (int i = 0; i < word.length(); i++) {
-                    index = S.indexOf(word.charAt(i), index + 1);
-                    if (index < 0) {
-                        sub = false;
-                        break;
-                    }
-                }
-                if (sub) {
+                if (isSubsequence(word, S)) {
                     count++;
                     cache.put(word, true);
                 } else {
@@ -114,8 +99,23 @@ public class NumMatchingSubseq792 {
         return count;
     }
 
+    private boolean isSubsequence(String s, String t) {
+        if (s.isEmpty()) return true;
+        int i = 0, j = 0;
+        while (i < s.length() && j < t.length()) {
+            if (s.charAt(i) == t.charAt(j)) {
+                ++i;
+                ++j;
+            } else {
+                ++j;
+            }
+        }
+        return i == s.length();
+    }
+
+
     @Test
-    public void test(){
-        System.out.println(numMatchingSubseq("abcde", new String[]{"a", "bb", "acd", "ace"}));
+    public void test() {
+        System.out.println(numMatchingSubseq2("abcde", new String[]{"a", "bb", "acd", "ace"}));
     }
 }

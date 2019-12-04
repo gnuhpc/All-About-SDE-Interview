@@ -1,7 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
 public class NumberOfPatterns351 {
-    //TODO 非常标准的回溯， 在valid中判断所有场景
+    //非常标准的回溯， 在valid中判断所有场景
     /*
 
 Intuitively, we could use DFS backtracking to solve this problem.
@@ -10,9 +10,6 @@ The difficulty is that at a current state, how do we check which number we can g
 
 We create a skip array to handle this.
 
-skip[i][j] denotes if we go from i to j, which number we cannot skip.
-
-skip[i][j] == 0 代表没有数字不能skip
 
 In other words, if we skip this number, the output will be invalid.
 
@@ -24,6 +21,9 @@ This means that if we know the total number of valid patterns start from 1, we k
 
 If we know the total number of valid patterns start from 2, we know the numbers start from 4, 6, and 8.
      */
+
+    //skip[i][j] denotes if we go from i to j, which number we cannot skip.
+    //skip[i][j] == 0 代表没有数字不能skip
     public final int[][] skip = new int[10][10];
 
     public int numberOfPatterns(int m, int n) {
@@ -37,7 +37,8 @@ If we know the total number of valid patterns start from 2, we know the numbers 
         int result = 0;
         //visited 为本次是否被访问的标记
         boolean[] visited = new boolean[10];
-        //visited[0]则表示没有需要跳过的数字，恒定为true，见visited[skip[curr][next]]
+        //visited[0]则表示没有需要跳过的数字，恒定为true，见visited[skip[curr][next]].
+        //进一步解释下这个true，因为skip默认为0就是没有要跳过的数字，也就是说visited[0]要是true
         visited[0] = true;
         for (int i = m; i <= n; i++) {
             result += dfs(1, visited, i - 1) * 4;
@@ -50,9 +51,10 @@ If we know the total number of valid patterns start from 2, we know the numbers 
         if (remain == 0) { //返回
             return 1;
         }
-        int result = 0;
+        int result = 0; //直接在DFS中定义这个结果
         visited[curr] = true;
         for (int next = 1; next <= 9; next++) {
+            if (next == curr) continue; //和当前点一样就跳过
             if(isValid(visited[next], visited[skip[curr][next]])){
                 result += dfs(next, visited, remain - 1);
             }

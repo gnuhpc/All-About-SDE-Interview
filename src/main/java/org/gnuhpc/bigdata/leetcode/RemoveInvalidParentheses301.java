@@ -86,11 +86,12 @@ public class RemoveInvalidParentheses301 {
                 found = true;
             }
 
+            //最小数量的，发现valid的话，下边的遍历树就不用遍历了
             if (found) continue;
 
             // generate all possible states
             for (int i = 0; i < s.length(); i++) {
-                // we only try to remove left or right paren
+                // we only try to remove left or right paren for 输入可能包含了除 ( 和 ) 以外的字符。
                 if (s.charAt(i) != '(' && s.charAt(i) != ')') continue;
 
                 String t = s.substring(0, i) + s.substring(i + 1);
@@ -113,7 +114,9 @@ public class RemoveInvalidParentheses301 {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c == '(') count++;
-            if (c == ')' && count-- == 0) return false;
+            if (c == ')') count--;
+
+            if (count > 0) return false;
         }
 
         return count == 0;

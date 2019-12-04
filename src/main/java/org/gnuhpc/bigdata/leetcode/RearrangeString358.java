@@ -7,7 +7,7 @@ import java.util.*;
 public class RearrangeString358 {
     /**
      * 统计每个字符个数，每次优先放字符个数多的。
-     *
+     * <p>
      * 我们需要一个哈希表来建立字符和其出现次数之间的映射，
      * 然后需要一个堆来保存这每一堆映射，按照出现次数来排序。
      * 然后如果堆不为空我们就开始循环，我们找出k和str长度之间的较小值，
@@ -17,36 +17,31 @@ public class RearrangeString358 {
      * 如果减1后的个数仍大于0，则我们将此映射加入临时集合v中，
      * 同时str的个数len减1，遍历完一次，
      * 我们把临时集合中的映射对由加入堆中。
+     *
      * @param str
      * @param k
      * @return
      */
     public String rearrangeString(String str, int k) {
-        if(k==0)
+        if (k == 0)
             return str;
 
-        //initialize the counter for each character
-        final HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for(int i=0; i<str.length(); i++){
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if(map.containsKey(c)){
-                map.put(c, map.get(c)+1);
-            }else{
-                map.put(c, 1);
-            }
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
 
+
         //sort the chars by frequency
-        PriorityQueue<Character> queue = new PriorityQueue<Character>(new Comparator<Character>(){
-            public int compare(Character c1, Character c2){
-                if(map.get(c2).intValue()!=map.get(c1).intValue()){
-                    return map.get(c2)-map.get(c1);
-                }else{
-                    return c1.compareTo(c2);
-                }
+        PriorityQueue<Character> queue = new PriorityQueue<>((c1, c2) -> {
+            if (map.get(c2).intValue() != map.get(c1).intValue()) {
+                return map.get(c2) - map.get(c1);
+            } else {
+                return c1.compareTo(c2);
             }
         });
-        /**为什么要对Integer调用intValue函数
+        /*为什么要对Integer调用intValue函数
          * Integer i = new Integer(10);
          * Integer j = new Integer(10);
          * if (!(i == j)) {
@@ -56,38 +51,36 @@ public class RearrangeString358 {
          *     System.out.println("Cool, matches now!");
          * }
          */
-        for(char c: map.keySet())
+        for (char c : map.keySet())
             queue.offer(c);
 
         StringBuilder sb = new StringBuilder();
 
-        int len = str.length();
+        while (!queue.isEmpty()) {
 
-        while(!queue.isEmpty()){
+            List<Character> temp = new ArrayList<>();
 
-            int cnt = Math.min(k, len);
-            ArrayList<Character> temp = new ArrayList<Character>();
-
-            for(int i=0; i<cnt; i++){
-                if(queue.isEmpty())
-                    return ""; //需要cnt个不同的数来组成这一轮k间隔数据
-
-                char c = queue.poll();
-                sb.append(String.valueOf(c));
-
-                map.put(c, map.get(c)-1);
-
-                if(map.get(c)>0){
-                    temp.add(c);
+            for (int i = 0; i < k; i++) {
+                if (queue.isEmpty()) { //如果已经完成了就彻底结束了，如果还没到长度说明不能组成
+                    if (sb.length() != str.length()) return "";//需要cnt个不同的数来组成这一轮k间隔数据
+                    else break;
                 }
 
-                len--;
+                char c = queue.poll();
+                sb.append(c);
+
+                map.put(c, map.get(c) - 1);
+
+                //如果这个字符还有没有用完的，则需要后边再塞回pq中，此刻先暂存
+                if (map.get(c) > 0) {
+                    temp.add(c);
+                }
             }
 
-            for(char c: temp)
-                queue.offer(c);
+            queue.addAll(temp);
         }
         return sb.toString();
+
     }
 
 
@@ -99,14 +92,13 @@ public class RearrangeString358 {
         int n = arr.length;
 
         Map<Character, Integer> map = new HashMap<>();
-        //TODO 注意这种表示Key-Value 的方式，不用自定义类
+        //注意这种表示Key-Value 的方式，不用自定义类
         PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
 
         for (int i = 0; i < n; i++) {
             char c = arr[i];
-            //TODO 注意这种map 的值累加的方法
-            int count = map.getOrDefault(c, 0) + 1;
-            map.put(c, count);
+            //注意这种map 的值累加的方法
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
         pq.addAll(map.entrySet());
 
@@ -122,7 +114,7 @@ public class RearrangeString358 {
             int newVal = entry.getValue() - 1;
             entry.setValue(newVal);
 
-            //queue是暂存区，先进先出，到了size=k的时候就安全了，就一个一个的放回pq TODO
+            //queue是暂存区，先进先出，到了size=k的时候就安全了，就一个一个的放回pq
             queue.offer(entry);
             if (queue.size() == k) {
                 Map.Entry<Character, Integer> poll = queue.poll();
@@ -130,68 +122,6 @@ public class RearrangeString358 {
                     pq.add(poll);
                 }
             }
-        }
-
-        return sb.toString();
-    }
-
-    /*
-    Method2
-     */
-
-    public String rearrangeString3(String s, int k) {
-        if (k <=1)
-            return s;
-
-        //initialize the counter for each character
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (map.containsKey(c)) {
-                map.put(c, map.get(c) + 1);
-            } else {
-                map.put(c, 1);
-            }
-        }
-
-        //sort the chars by frequency TODO
-        Queue<Character> queue = new PriorityQueue<>((c1, c2) -> {
-            if (map.get(c2).intValue() != map.get(c1).intValue()) {
-                return map.get(c2) - map.get(c1);
-            } else {
-                return c1.compareTo(c2);
-            }
-        });
-
-        for (char c : map.keySet())
-            queue.offer(c);
-
-        StringBuilder sb = new StringBuilder();
-
-        int len = s.length();
-
-        while (!queue.isEmpty()) {
-            int cnt = Math.min(k, len);
-            ArrayList<Character> temp = new ArrayList<Character>();
-
-            for (int i = 0; i < cnt; i++) {
-                if (queue.isEmpty())
-                    return "";
-
-                char c = queue.poll();
-                sb.append(c);
-
-                map.put(c, map.get(c) - 1);
-
-                if (map.get(c) > 0) {
-                    temp.add(c);
-                }
-
-                len--;
-            }
-
-            for (char c : temp)
-                queue.offer(c);
         }
 
         return sb.toString();

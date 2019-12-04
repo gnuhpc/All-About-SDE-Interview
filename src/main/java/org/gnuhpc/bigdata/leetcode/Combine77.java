@@ -35,9 +35,12 @@ public class Combine77 {
 
     @Test
     public void test() {
-        System.out.println(combine2(4, 2));
+        System.out.println(combine(4, 2));
     }
 
+    /*
+    Robot方法
+     */
     boolean[] selected;
     List<List<Integer>> res;
     int[] sets;

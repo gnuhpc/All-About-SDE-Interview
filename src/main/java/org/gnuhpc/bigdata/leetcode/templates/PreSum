@@ -11,8 +11,13 @@ for (int i = 1; i <= nums.length; i++) {
     preSum[i] = preSum[i-1] + nums[i-1];
 }
 
-则区间和[i,k] = preSum[k-1] - preSum[i];
+则区间和[i,k] = preSum[k+1] - preSum[i]; 注意开闭区间，有必要的时候举一些简单的例子说明和验证
 
 LC相关题目：
+303 模板
 53 解法2
 
+
+1. 推至2维的区域和就是叠加减去重叠的，补充反复被减去的
+LC相关题目：
+304

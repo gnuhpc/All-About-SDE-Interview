@@ -2,7 +2,7 @@ package org.gnuhpc.bigdata.leetcode;
 
 public class NumMatrix304 {
 
-    //TODO 矩阵求和的一个套路,就是减切出来这个面积
+    //矩阵求和的一个套路,就是减切出来这个面积
     // 具体实施上， shift by 1 to add 0
     private int[][] summatrix;
 

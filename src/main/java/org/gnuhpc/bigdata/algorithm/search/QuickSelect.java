@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.algorithm.search;
 
-//查找最大/小的第k个数字
+//查找最大/小的第k个数字, O(N)
 public class QuickSelect {
 
 	private int[] nums;

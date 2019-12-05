@@ -1,12 +1,14 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class RemoveInvalidParentheses301 {
     /*
     Method1: DFS
 
-    We all know how to check a string of parentheses is valid using a stack. 
+    We all know how to check a string of parentheses is valid using a stack.
     Or even simpler use a counter.The counter will increase when it is ( and decrease when it is ).
     Whenever the counter is negative, we have more ) than ( in the prefix.
     To make the prefix valid, we need to remove a ).
@@ -50,7 +52,7 @@ public class RemoveInvalidParentheses301 {
     }
 
     /*
-    Method2 :BFS //TODO BFS 暴力法
+    Method2 :BFS //BFS 暴力法
     The idea is straightforward, with the input string `s`,
     we generate all possible states by removing one `(` or `)`,
     check if they are valid, if found valid ones on the current level,
@@ -100,8 +102,10 @@ public class RemoveInvalidParentheses301 {
                     // for each state, if it's not visited, add it to the queue
                     queue.add(t);
                     visited.add(t);
+                    System.out.println(t);
                 }
             }
+            System.out.println();
         }
 
         return res;
@@ -116,9 +120,14 @@ public class RemoveInvalidParentheses301 {
             if (c == '(') count++;
             if (c == ')') count--;
 
-            if (count > 0) return false;
+            if (count < 0) return false;
         }
 
         return count == 0;
+    }
+
+    @Test
+    public void test() {
+        System.out.println(removeInvalidParentheses2("()())()"));
     }
 }

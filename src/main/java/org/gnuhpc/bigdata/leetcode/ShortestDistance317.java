@@ -5,7 +5,12 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.Queue;
 
-//TODO 二维计算距离的BFS
+/*
+二维计算距离的BFS
+1. 计算每个建筑物到每个空地的最短距离，同时统计每个空地能够到达的建筑的个数；
+2. 取最短的距离且能够全部到达所有的建筑物。
+ */
+
 public class ShortestDistance317 {
     int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     public int shortestDistance(int[][] grid) {
@@ -14,10 +19,10 @@ public class ShortestDistance317 {
             return 0;
         }
         int n = grid[0].length;
-        //记录某个点到所有1的距离之和
-        int[][] d = new int[m][n];
-        //记录某个点可以到达1的个数
-        int[][] count = new int[m][n];
+        //记录某个0点到所有1的距离之和
+        int[][] distances = new int[m][n];
+        //记录某个0点可以到达1的个数
+        int[][] counts = new int[m][n];
         //记录所有1的个数
         int cnt = 0;
         int res = Integer.MAX_VALUE;
@@ -34,16 +39,16 @@ public class ShortestDistance317 {
                         int x = v[0];
                         int y = v[1];
                         int dist = v[2];
-                        d[x][y] += dist; //更新d
+                        distances[x][y] += dist; //更新d
                         for (int[] dir : dirs) {
-                            int x1 = x + dir[0];
-                            int y1 = y + dir[1];
-                            if (x1 < 0 || y1 < 0 || x1 >= m || y1 >= n || visited[x1][y1] || grid[x1][y1] != 0) {
+                            int newX = x + dir[0];
+                            int newY = y + dir[1];
+                            if (newX < 0 || newY < 0 || newX >= m || newY >= n || visited[newX][newY] || grid[newX][newY] != 0) {
                                 continue;
                             }
-                            queue.add(new int[] {x1, y1, dist + 1});
-                            visited[x1][y1] = true;
-                            count[x1][y1]++;
+                            queue.add(new int[] {newX, newY, dist + 1});
+                            visited[newX][newY] = true;
+                            counts[newX][newY]++;
                         }
                     }
                 }
@@ -51,8 +56,8 @@ public class ShortestDistance317 {
         }
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (count[i][j] == cnt) {
-                    res = Math.min(res, d[i][j]);
+                if (counts[i][j] == cnt) {
+                    res = Math.min(res, distances[i][j]);
                 }
             }
         }

@@ -72,3 +72,13 @@ LC相关题目
 found == true的时候就continue直到queue弹出所有的结果，这一层遍历完毕。
 LC相关题目
 301
+
+6. 在计算距离的时候可以使用坐标+到这点的距离放入queue中进行BFS
+Queue<int[]> queue = new LinkedList<>();
+queue.add(new int[] {i, j, 0});
+
+poll出来后使用一个数组进行记录:distances[x][y] += dist; //更新d
+然后再遍历外围一层的时候 queue.add(new int[] {newX, newY, dist + 1});
+
+LC相关题目
+317

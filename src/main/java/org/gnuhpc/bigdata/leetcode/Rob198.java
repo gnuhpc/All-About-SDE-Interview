@@ -35,28 +35,29 @@ public class Rob198 {
     }
 
 
-    private int[] res;
-    /* TODO DFS+memorization -> DP 的典型案例
+
+    /* DFS+memorization -> DP 的典型案例
     DP ,这个完全可以通过上边的步骤改出来，-- 本质递推
      */
 
+    private int[] dp;
     public int rob2(int[] nums) {
         if (nums.length==0) { return 0;}
         if (nums.length==1) { return nums[0];}
-        res = new int[nums.length];
-        Arrays.fill(res,-1);
+        dp = new int[nums.length];
+        Arrays.fill(dp,-1);
 
-        res[0] = nums[0];
-        res[1] = Math.max(nums[0],nums[1]);
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0],nums[1]);
 
         for (int idx = 2; idx < nums.length; idx++) {
-            res[idx] = Math.max(
-                    nums[idx] + res[idx - 2],
-                    res[idx-1]
+            dp[idx] = Math.max(
+                    nums[idx] + dp[idx - 2],
+                    dp[idx-1]
             );
         }
 
-        return res[nums.length-1];
+        return dp[nums.length-1];
     }
 
     //add by tina
@@ -92,72 +93,13 @@ public class Rob198 {
         return mx;
     }
 
-    public int rob4(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
-        //因为数组是非负整数，递归遍历中可能取单个元素的组合，故需要初始化为-1，而不是0
-        // DP双重循环,考虑偷取[x,...,n-1]范围里的房子
-        // 初始状态DP[n-1] = nums[n-1];DP[n-2] = max(nums[n-2],DP[n-1])
-        // DP[i] = max{nums[i]+dp[i+2],nums[i+1]+dp[i+3],...,nums[n-1]}
-        int n = nums.length;
-        int[] dp = new int[n];
-        dp[n-1] = nums[n-1];
-        for(int i = n-2; i>=0;i--)
-            for(int j = i;j<n;j++){
-                //因为要用dp[j+2]，需对j+2做合法判断
-                dp[i] = Math.max(dp[i],nums[j]+(j+2<n ? dp[j+2]:0));
-            }
-        return dp[0];
-    }
-
-    // memo search
-    // f(n-1) = max{v(n-1)+f(n-3),v(n-2)+f(n-4),...,v(2)+f(0),v(1),v(0)}
-    public int rob5(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
-        //因为数组是非负整数，递归遍历中可能取单个元素的组合，故需要初始化为-1，而不是0
-        //也可以定义为Integer[] memo，做判空处理
-        memo = new int[nums.length];
-        Arrays.fill(memo,-1);
-        return tryRob(nums,nums.length-1);
-
-    }
-
-    //考虑偷取[0,...,x]范围里的房子 倒着来
-    public int tryRob5(int[] nums,int index){
-        if(index <0) return 0;
-        if(memo[index] != -1) return memo[index];
-        int mx = 0;
-        for(int i = index;i>=0;i++){//注意i从index开始
-            mx = Math.max(mx,nums[index] + tryRob(nums,i-2));
-        }
-        memo[index] = mx;
-        return mx;
-    }
-
-    // DP[i] = max{nums[i]+DP[i-2],nums[i-1]+DP[i-3],...,nums[2]+DP[0],nums[1],nums[0])
-    public int rob6(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
-        //因为数组是非负整数，递归遍历中可能取单个元素的组合，故需要初始化为-1，而不是0
-        // DP双重循环,考虑偷取[x,...,n-1]范围里的房子
-        // 初始状态DP[0] = nums[0];DP[1] = max(nums[1],DP[0])
-
-        int n = nums.length;
-        int[] dp = new int[n];
-        dp[0] = nums[0];
-        for(int i = 0; i<n;i++)
-            for(int j = i;j>=0;j--){
-                //因为要用dp[j+2]，需对j+2做合法判断
-                dp[i] = Math.max(dp[i],nums[j]+(j-2>=0 ? dp[j-2]:0));
-            }
-        return dp[n-1];
-    }
-
     /*
-    Method7 : 从后往前 TODO
+    Method4 : 从后往前
      */
-    public int rob7(int[] nums) {
+    public int rob4(int[] nums) {
         if (nums.length == 1) return nums[0];
-        res = new int[nums.length];
-        Arrays.fill(res, -1);
+        dp = new int[nums.length];
+        Arrays.fill(dp, -1);
         //自顶向下，一般从最后的开始, 从最后一家开始抢，规模缩小
         return solve(0, nums.length - 1, nums);
     }
@@ -165,11 +107,11 @@ public class Rob198 {
 
     private int solve(int end, int idx, int[] nums) {
         if (idx < end) return 0;
-        if (res[idx] != -1) return res[idx];
+        if (dp[idx] != -1) return dp[idx];
 
         //包含两种决策
         int max = Math.max(nums[idx] + solve(end, idx - 2, nums), solve(end, idx - 1, nums));
-        res[idx] = max;
+        dp[idx] = max;
 
         return max;
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SolveNQueens51 {
     /*
-    Method : DFS TODO 深度优先标准方法
+    Method : DFS 深度优先标准方法
      */
     public List<List<String>> solveNQueens(int n) {
         char[][] board = new char[n][n];
@@ -26,18 +26,16 @@ public class SolveNQueens51 {
         }
 
         for(int row = 0; row < board.length; row++){
-            if(isSafe(board, row, col)) {
+            if(isValid(board, row, col)) {
                 board[row][col] = 'Q';
-                //放出一个小机器人
                 dfs(board, col + 1, res);
-                //机器人返回后要重置条件
                 board[row][col] = '.';  //backtracking
             }
         }
     }
 
     /////Common Function
-    private boolean isSafe(char[][] board, int row, int col) {
+    private boolean isValid(char[][] board, int row, int col) {
         for(int i=0; i<board.length; i++) {
             if(board[i][col]!='.') return false; //同一列已经放置了，返回false
             if(board[row][i]!='.') return false; //同一行已经放置了，返回false

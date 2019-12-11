@@ -13,19 +13,19 @@ import java.util.*;
 To tell whether a graph is a valid tree, we have to:
 
 1. Make sure there is no cycle in the graph - this has to be a none-cyclic graph;
-https://www.geeksforgeeks.org/detect-cycle-undirected-graph/  TODO
+https://www.geeksforgeeks.org/detect-cycle-undirected-graph/
 https://www.geeksforgeeks.org/detect-cycle-in-an-undirected-graph-using-bfs/
 https://www.techiedelight.com/union-find-algorithm-cycle-detection-graph/
 
 2. Make sure every node is reached - this has to be a connected graph;
-https://www.geeksforgeeks.org/connectivity-in-a-directed-graph/ TODO
+https://www.geeksforgeeks.org/connectivity-in-a-directed-graph/
 https://www.sanfoundry.com/java-program-check-whether-undirected-graph-connected-using-bfs/
 https://www.programcreek.com/2014/05/leetcode-number-of-connected-components-in-an-undirected-graph-java/
 
  */
 public class ValidTree261 {
     /*
-    判断一个无向图是否有环的三种方法 TODO
+    判断一个无向图是否有环的三种方法
      */
 
     /*

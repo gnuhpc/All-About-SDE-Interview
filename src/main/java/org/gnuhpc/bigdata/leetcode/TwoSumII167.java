@@ -7,7 +7,7 @@ public class TwoSumII167 {
     @Test
     public void test() {
         int[] nums = new int[]{2,7,11,15};
-        Utils.printArray(findTwoSumII(nums, 22));
+        Utils.printArray(findTwoSumII2(nums, 9));
     }
 
     //有序数组的对撞指针解法
@@ -38,22 +38,26 @@ public class TwoSumII167 {
             if(pos>i){
                 result[0] = i+1;
                 result[1] = pos+1;
+                break;
             }
         }
         return result;
     }
 
-    private int binarySearch(int[] numbers, int left, int right, int m) {
-        while(left<=right){
-            int mid = right-(right-left)/2;
-            if(numbers[mid] == m){
-                return mid;
-            } else if (numbers[mid] > m){
-                right = mid -1;
+    private int binarySearch(int[] numbers, int left, int right, int target) {
+        while(left+1<right){
+            int mid = left + (right-left)/2;
+            if(numbers[mid] == target){
+                right = mid;
+            } else if (numbers[mid] > target){
+                right = mid;
             } else {
-                left = mid + 1;
+                left = mid;
             }
         }
+
+        if (numbers[left] == target) return left;
+        if (numbers[right] == target) return right;
 
         return -1;
     }

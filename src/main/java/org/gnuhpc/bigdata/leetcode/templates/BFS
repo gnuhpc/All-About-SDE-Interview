@@ -79,6 +79,7 @@ queue.add(new int[] {i, j, 0});
 
 poll出来后使用一个数组进行记录:distances[x][y] += dist; //更新d
 然后再遍历外围一层的时候 queue.add(new int[] {newX, newY, dist + 1});
+Or use an array to memo the distance
 
 LC相关题目
-317
+317, 286

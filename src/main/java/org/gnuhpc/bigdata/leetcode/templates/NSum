@@ -1,0 +1,24 @@
+这一系列问题的出发点是Two Sum
+
+Two Sum： 构造一个num-idx 的map，然后遍历数字，试图在map中找和当前数字的.有序的情况可以使用对撞指针，甚至二分法进行
+Three Sum: 思路类似，固定一个num，求后边数据的中的twosum等于target-num。如果需要去重可以通过排序+对撞指针进行
+Four Sum: 先通过i固定一个数字、再通过j固定一个数字，完事儿对撞指针
+
+固定数字的时候去重：
+    if (i > 0 && nums[i] == nums[i - 1])
+        continue; // prevents duplicate result in ans list
+对撞期间相等的时候也注意去重：
+      // skip duplicate pairs with the same left
+        while (left < right && nums[left] == nums[left - 1]) {
+            left++;
+        }
+        // skip duplicate pairs with the same right
+        while (left < right && nums[right] == nums[right + 1]) {
+            right--;
+        }
+
+LC相关题目：
+1
+167
+15
+18

@@ -13,7 +13,7 @@ import java.util.TreeMap;
  */
 
 public class TimeMap9812 {
-    //比较典型的一个使用treemap 的方法 TODO
+    //比较典型的一个使用treemap 的方法
     private Map<String, TreeMap<Integer, String>> map;
     /** Initialize your data structure here. */
     public TimeMap9812() {

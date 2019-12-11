@@ -1,0 +1,21 @@
+洗牌算法
+核心就是从后往前遍历，取当前i的0到i范围的随机idx，然后交换idx与i
+
+  public int[] shuffle() {
+        if (nums == null) return null;
+        int[] a = Arrays.copyOf(nums, nums.length);
+        int n = a.length;
+        // Start from the last element and swap one by one. We don't
+        // need to run for the first element that's why i > 0
+        for (int i = n - 1; i > 0; i--) {
+            // Pick a random index from 0 to i
+            int j = r.nextInt(i + 1);
+
+            // Swap arr[i] with the element at random index
+            swap(a, i, j);
+        }
+        return a;
+    }
+
+LC相关题目
+384

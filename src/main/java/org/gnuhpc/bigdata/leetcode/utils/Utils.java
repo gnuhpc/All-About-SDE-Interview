@@ -400,6 +400,41 @@ public class Utils {
         return nextWords;
     }
 
+    public static int findKthLargest(int[] nums, int k) {
+        if(nums==null || nums.length == 0) return -1;
+        int left = 0, right = nums.length-1;
+
+        while (true){
+            int pos = partition(nums,left,right);
+            if (pos + 1 > k){
+                right = pos -1 ;
+            } else if (pos + 1 < k) {
+                left = pos + 1;
+            } else {
+                return nums[pos];
+            }
+        }
+    }
+
+    private static int partition(int[] numbers, int low, int high){
+        int pivot = numbers[low];
+
+        int i = low+1, j = high;
+
+        while(i<=j){
+            while (i<=j && numbers[i] > pivot) i++;
+            while (i<=j && numbers[j] <= pivot) j--;
+
+            if (i<=j){
+                swap(numbers,i,j);
+            }
+        }
+
+        swap(numbers,low,j);
+        return j;
+    }
+
+
     public List<String> reverseList(List<String> list){
         String[] res = new String[list.size()];
 

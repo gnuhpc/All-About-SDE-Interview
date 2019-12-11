@@ -8,7 +8,7 @@ import java.util.Random;
  */
 
 //https://www.youtube.com/watch?v=LP7YQdT5eps
-//TODO shuffle算法
+//shuffle算法
 //https://www.itcodemonkey.com/article/15641.html
 public class Shuffle384 {
     private int[]  nums;

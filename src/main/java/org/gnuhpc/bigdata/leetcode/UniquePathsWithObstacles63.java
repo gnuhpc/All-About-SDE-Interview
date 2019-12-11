@@ -2,46 +2,53 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class UniquePathsWithObstacles63 {
-    private int[] stepX = new int[]{0, 1};
-    private int[] stepY = new int[]{1, 0};
-    private int ROW;
-    private int COL;
-    private Integer[][] memo;
+    private int[][] dr = new int[][]{
+            {0,1},
+            {1,0}
+    };
+    private int r;
+    private int c;
+    private int[][] memo;
 
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        this.ROW = obstacleGrid.length;
-        this.COL = obstacleGrid[0].length;
-        this.memo = new Integer[this.ROW][this.COL];
-        if (!valid(0,0,obstacleGrid)) return 0;
+        this.r = obstacleGrid.length;
+        this.c = obstacleGrid[0].length;
+        this.memo = new int[this.r][this.c];
+        for(int[] tmp: memo){
+            Arrays.fill(tmp,-1);
+        }
+        if (!isValid(0,0,obstacleGrid)) return 0;
         return dfs(0, 0, obstacleGrid);
     }
 
 
     public int dfs(int r, int c, int[][]grid) {
-        if (r == ROW-1 && c == COL-1) {
+        if (r == this.r -1 && c == this.c -1) {
             return (grid[r][c]==1)? 0:1;
         }
 
 
-        if (memo[r][c]!=null)
+        if (memo[r][c]!=-1)
             return memo[r][c];
 
         int res = 0;
-        for (int i = 0; i < 2; i++) {
-            if (valid(r + stepX[i],c + stepY[i], grid)){
-                res += dfs(r + stepX[i], c + stepY[i], grid);
+        for(int[] d:dr){
+            int newX = r + d[0];
+            int newY = c + d[1];
+            if (isValid(newX, newY, grid)){
+                res += dfs(newX, newY, grid);
             }
         }
+
         memo[r][c]= res;
         return res;
     }
 
-    private boolean valid(int r, int c, int[][] grid) {
-        return r < ROW && r >=0 && c<COL && c>=0 && grid[r][c]!=1;
+    private boolean isValid(int r, int c, int[][] grid) {
+        return r < this.r && r >=0 && c< this.c && c>=0 && grid[r][c]!=1;
     }
 
 
@@ -53,74 +60,13 @@ public class UniquePathsWithObstacles63 {
     }
 
     /*
-    Method 2: DP
-     */
-
-    public int uniquePathsWithObstacles2(int[][] obstacleGrid) {
-        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0].length == 0) return 0;
-        int ROW = obstacleGrid.length;
-        int COL = obstacleGrid[0].length;
-        for (int i = 0; i < ROW; i++)
-            for (int j = 0; j < COL; j++) {
-                obstacleGrid[i][j] = 1 - obstacleGrid[i][j];
-                if (obstacleGrid[i][j] > 0) { //not obstacke
-                    if (i != 0 || j!= 0)
-                        obstacleGrid[i][j] = ((i > 0) ? obstacleGrid[i-1][j] : 0) + ((j > 0) ? obstacleGrid[i][j-1] : 0);
-                }
-            }
-
-        return obstacleGrid[ROW-1][COL-1];
-    }
-
-    /*
-    Method 3: DP with O(n) space
-     */
-
-    public int uniquePathsWithObstacles3(int[][] obstacleGrid) {
-    /*
-    Dynamic Programming
-    Every point in the grid has two approaches to reach, either from above or from left point. So a way to reach a given point is numofpath[i][j] = numofpath[i][j-1] + numofpath[i-1][j]
-    However, consider that there is obstacles in this grid, we should let the numofpath of those points whose value is 1(obstacle) to be 0 since they cannot be passed.
-    At the same time, since we don't need to reconstruct the path, we only need to keep track of the current row we are calculating. And based on the function above, we have to calculat from left to right and replace old values gradually.
-    Then the last one of the array, after the whole loop ends, is what we need.
-    O(m*n) time and O(n) space.
+    Method2 : 倒着推
     */
-        if (obstacleGrid == null || obstacleGrid.length == 0){
-            return 0;
-        }
-
-        int l = obstacleGrid[0].length; //the number of grids in one row
-        int h = obstacleGrid.length; // the number of rows.
-        int[] numofpath = new int[l];
-
-        //initialize the array. if there is only one row in the grid, then all points on the right side of the obstacle have 0 path to reach.
-        //if there is only one point in the grid, we have to consider if it is a obstacle or not.
-        numofpath[0] = obstacleGrid[0][0] == 1? 0 : 1;
-        for (int i = 0; i < h; i++){
-            // the first column of points can only have paths if this point is not an obstacle and its above rows have paths.
-            numofpath[0] = (obstacleGrid[i][0] == 0) && (numofpath[0] != 0)? 1 : 0;
-            for (int j = 1; j < l; j++){
-                if (obstacleGrid[i][j] == 0){ //there is no obstacle on this grid
-                    numofpath[j] += numofpath[j-1];
-                }
-                if(obstacleGrid[i][j] == 1){ //there is an obstacle on this grid
-                    numofpath[j] = 0;
-                }
-            }
-        }
-
-        return numofpath[l-1];
-
-    }
-
-    /*
-Method4 : 倒着推
- */
     //add by tina,通过定义私有属性，赋值方式，避免了对数组传参
     // memo search
     private Integer[][] path; // Integer做判空比int要快很多
     private int[][] obstacleGrid;
-    public int uniquePathsWithObstacles4(int[][] obstacleGrid) {
+    public int uniquePathsWithObstacles2(int[][] obstacleGrid) {
         if(obstacleGrid == null || obstacleGrid[0] == null) return 0;
         int m = obstacleGrid.length;
         int n = obstacleGrid[0].length;
@@ -138,26 +84,37 @@ Method4 : 倒着推
 
         if(i>=0 && j>=0) path[i][j] = search(i-1,j) + search(i,j-1);
         return path[i][j];
-
     }
 
-    // add by tina,TODO，对比62，仅是DP的条件有变化
-    public int uniquePathsWithObstacles5(int[][] obstacleGrid) {
-        if(obstacleGrid == null || obstacleGrid[0] == null) return 0;
-        int m = obstacleGrid.length;
-        int n = obstacleGrid[0].length;
-        if(m<0||n<0) return 0;
-        if(m==0||n==0) return 1;
-        int[][] dp = new int[m][n];
+    // add by tina, 对比62，仅是DP的条件有变化
+    public int uniquePathsWithObstacles3(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid.length <= 0) {
+            return 0;
+        }
+        int r = obstacleGrid.length;
+        int c = obstacleGrid[0].length;
+        int[][] dp = new int[r][c];
 
-        for(int i = 0;i<m;i++)
-            for(int j=0;j<n;j++){//以下这些条件是有先后顺序的
-                if(obstacleGrid[i][j] == 1) dp[i][j] = 0;
-                else if(i==0&&j==0) dp[i][j] = 1;
-                else if(i==0 && j>0) dp[i][j] = dp[i][j-1];//第一行，保持和DP[0][0]一致
-                else if(j==0 && i>0) dp[i][j] = dp[i-1][j];//第一列
-                else dp[i][j] = dp[i-1][j] + dp[i][j-1] ;
+        for (int i = 0; i < c; i++)
+            if (obstacleGrid[0][i] == 1) {
+                dp[0][i] = 0;
+                break;   // 遇到障碍后面的都无法到达直接返回就行 默认就是0
             }
-        return dp[m-1][n-1];
+            else dp[0][i] = 1;
+
+        for (int i = 0; i < r; i++)
+            if (obstacleGrid[i][0] == 1) {
+                dp[i][0] = 0;
+                break;  // 遇到障碍后面的都无法到达直接返回就行 默认就是0
+            }
+            else dp[i][0] = 1;
+
+        for (int i = 1; i < r; i++) {
+            for (int j = 1; j < c; j++) {
+                if (obstacleGrid[i][j] == 1)  dp[i][j] = 0; // 遇到障碍就是0
+                else dp[i][j] = dp[i - 1][j] + dp[i][j - 1]; // dp
+            }
+        }
+        return dp[r - 1][c - 1];
     }
 }

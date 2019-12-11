@@ -15,7 +15,7 @@ public class SimplifyPath71 {
             else if (!skip.contains(dir)) stack.push(dir);
         }
         String res = "";
-        for (String dir : stack) res = "/" + dir + res; //TODO 利用遍历获取 倒序stack序列
+        while (!stack.isEmpty()) res = "/" + stack.pop() + res;
         return res.isEmpty() ? "/" : res;
     }
 

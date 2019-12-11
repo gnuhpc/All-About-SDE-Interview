@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.gnuhpc.bigdata.leetcode.utils.Utils.swap;
+
 /**
  * Copyright gnuhpc 19-8-8
  */
@@ -20,7 +22,7 @@ public class WiggleSort324 {
         }
 
         int n = nums.length;
-        //TODO 找中位数
+        //找中位数
         int[] res = findKthLargest(nums, (nums.length + 1) / 2);
         int pos = res[0];
         int median = res[1];
@@ -56,12 +58,13 @@ public class WiggleSort324 {
 
 
     public int[] findKthLargest(int[] nums, int k) {
-        int left = 0, right = nums.length - 1;
+        if(nums==null || nums.length == 0) return null;
+        int left = 0, right = nums.length-1;
 
-        while (true) {
-            int pos = partition(nums, left, right);
-            if (pos + 1 > k) {
-                right = pos - 1;
+        while (true){
+            int pos = partition(nums,left,right);
+            if (pos + 1 > k){
+                right = pos -1 ;
             } else if (pos + 1 < k) {
                 left = pos + 1;
             } else {
@@ -70,22 +73,24 @@ public class WiggleSort324 {
         }
     }
 
+    private int partition(int[] numbers, int low, int high){
+        int pivot = numbers[low];
 
-    public int partition(int[] nums, int left, int right) {
-        int pivotVal = nums[left];
+        int i = low+1, j = high;
 
-        //pos为分界线
-        int pos = left;
-        for (int i = left + 1; i <= right; i++) {
-            //i is valid, swap it with pos
-            if (nums[i] > pivotVal) {
-                swap(nums, ++pos, i);
+        while(i<=j){
+            while (i<=j && numbers[i] > pivot) i++;
+            while (i<=j && numbers[j] <= pivot) j--;
+
+            if (i<=j){
+                swap(numbers,i,j);
             }
         }
-        swap(nums, left, pos);
 
-        return pos;
+        swap(numbers,low,j);
+        return j;
     }
+
 
 
     private void swap(int[] nums, int i, int j) {

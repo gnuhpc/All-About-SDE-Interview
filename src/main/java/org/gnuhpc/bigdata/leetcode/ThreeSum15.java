@@ -63,7 +63,7 @@ public class ThreeSum15 {
 
                 left++;
                 right--;
-                // skip duplicate pairs with the same left TODO
+                // skip duplicate pairs with the same left
                 while (left < right && nums[left] == nums[left - 1]) {
                     left++;
                 }

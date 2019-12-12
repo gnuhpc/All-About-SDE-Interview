@@ -9,50 +9,53 @@ import java.util.Map;
 
 public class FindSubstring30 {
     /*
-
-    遍历长string
-
+    Method1: 暴力 遍历长string
      */
-    private Map<String, Integer> wordCountMap = new HashMap<>();
-    private List<Integer> res = new ArrayList<>();
-
     public List<Integer> findSubstring(String s, String[] words) {
-        if (words == null || words.length == 0) return res;
-        int length = words[0].length();
-        int count = words.length;
-
-        for (String word : words) {
-            wordCountMap.put(word,
-                    wordCountMap.containsKey(word) ? wordCountMap.get(word) + 1 : 1);
+        List<Integer> res = new ArrayList<>();
+        int wordNum = words.length;
+        if (wordNum == 0) {
+            return res;
         }
-
-        for (int i = 0; i <= s.length() - count * length; i++) {
-            Map<String, Integer> copyMap = new HashMap<>(wordCountMap);
-
-            for (int j = 0; j < words.length; j++) {
-                String subStr = s.substring(i + j * length, i + (j + 1) * length);
-
-                if (copyMap.containsKey(subStr)) {
-                    Integer counts = copyMap.get(subStr);
-                    if (counts == 1) copyMap.remove(subStr);
-                    else {
-                        copyMap.put(subStr, counts - 1);
-                    }
-                    if (copyMap.isEmpty()) {
-                        res.add(i);
+        int wordLen = words[0].length();
+        //HashMap1 存所有单词
+        Map<String, Integer> allWords = new HashMap<>();
+        for (String w : words) {
+            allWords.put(w, allWords.getOrDefault(w, 0) + 1);
+        }
+        //遍历所有子串
+        for (int start = 0; start < s.length() - wordNum * wordLen + 1; start++) {
+            //HashMap2 存当前扫描的字符串含有的单词
+            Map<String, Integer> hasWords = new HashMap<>();
+            int num = 0;
+            //判断该子串是否符合
+            while (num < wordNum) {
+                String word = s.substring(start + num * wordLen, start + (num + 1) * wordLen);
+                //判断该单词在 HashMap1 中
+                if (allWords.containsKey(word)) {
+                    int value = hasWords.getOrDefault(word, 0);
+                    hasWords.put(word, value + 1);
+                    //判断当前单词的 value 和 HashMap1 中该单词的 value
+                    if (hasWords.get(word) > allWords.get(word)) {
                         break;
                     }
                 } else {
                     break;
                 }
+                num++;
+            }
+            //判断是不是所有的单词都符合条件
+            if (num == wordNum) {
+                res.add(start);
             }
         }
-
         return res;
     }
 
+
+
     /*
-    遍历短的，跳着来, Faster
+     Method2: 从最后一个单词遍历，跳着来, Faster
      */
     public List<Integer> findSubstring2(String s, String[] words) {
         List<Integer> list = new ArrayList<>();
@@ -69,7 +72,7 @@ public class FindSubstring30 {
         for (int i = 0; i < wordLen; i++) {
             for (int j = i; j <= s.length() - wordLen * listLen; j += wordLen) {
                 Map<String, Integer> map2 = new HashMap<>();
-                for (int k = listLen - 1; k >= 0; k--) {
+                for (int k = listLen - 1; k >= 0; k--) { //倒着算，因为能快速跳过去
                     String temp = s.substring(j + k * wordLen, j + (k + 1) * wordLen);
                     int val = map2.getOrDefault(temp, 0) + 1;
                     if (val > map.getOrDefault(temp, 0)) {
@@ -89,50 +92,14 @@ public class FindSubstring30 {
 
     @Test
     public void test() {
-//        System.out.println(findSubstring("barfoothefoobarman",new String[]{"foo","bar"}));;
+        System.out.println(findSubstring2("barfoothefoobarman",new String[]{"foo","bar"}));;
 //        System.out.println(findSubstring("wordgoodgoodgoodbestword",new String[]{"word","good","best","word"}));;
 //        System.out.println(findSubstring("barfoofoobarthefoobarman",new String[]{"bar","foo","the"}));;
-        System.out.println(findSubstring2("wordgoodgoodgoodbestword", new String[]{"word", "good", "best", "good"}));
+//        System.out.println(findSubstring2("wordgoodgoodgoodbestword", new String[]{"word", "good", "best", "good"}));
 //        System.out.println(findSubstring("abaababbaba",new String[]{"ab","ba","ab","ba"}));;
 //        System.out.println(findSubstring("barfoothefoobarman", new String[]{"foo", "bar"}));
         ;
     }
 
-    //add by tina，思路同解法一，但是写法上更好一些
-    public List<Integer> findSubstring3(String s, String[] words) {
-        List<Integer> res = new ArrayList<>();
-        if(s == null || words == null || words.length == 0) return res;
-        Map<String,Integer> map = new HashMap<>();
-        for(String word:words){
-            Integer freq = map.get(word);
-            if(freq == null) map.put(word,1);
-            else map.put(word,freq+1);
-        }
 
-        int len = words[0].length();
-        int n = words.length;
-        int l = 0;
-
-        for(int i = 0;i<s.length()-len*n+1;i++){
-            int cnt = 0;
-            l = i;
-            Map<String,Integer> curMap = new HashMap<>();
-            while(l-i<=len*words.length-len){
-                String word = s.substring(l,l+len);
-                if(map.containsKey(word)){
-                    curMap.put(word,curMap.getOrDefault(word,0)+1);
-                    cnt++;
-                    if(curMap.get(word)>map.get(word)) break;
-                }else{
-                    break;
-                }
-                if(cnt == words.length){
-                    res.add(i);
-                }
-                l += len;
-            }
-
-        }
-        return res;
-    }
 }

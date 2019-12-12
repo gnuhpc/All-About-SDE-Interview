@@ -14,9 +14,48 @@ while (right < s.size()) {
 }
 
 类型1：都从一边开始，l和r都是0，然后r往外扩展，到达一定条件后l往里缩，不满足一定条件后r继续往外扩展
+
+如果求最长的子串，则在内循坏后边更新结果，如果求最短的子串，则在内循环里面更新结果
+套路模板：
+		int[] map = new int[128];
+
+		int counter; // check wether the subtring is valid
+		int begin = 0, end = 0; // two pointers, one point to head and one to tail
+		int len; //the length of the substring
+
+		char[] chS = s.toCharArray();
+		for {
+			/* initilize the hash map here */
+		}
+
+		while (end < s.length()) {
+
+			if (map[chS[end++]]-- ?) {
+				/* modify  counter here */
+			}
+
+			while (/* counter condition */) {
+				/* update here if find minimum */
+
+				//increase begin to make it invalid/valid again
+
+				if (map[chS[begin++]]++ ?) {
+					/* modify counter here */
+				}
+			}
+
+			/* update d here if find maximum */
+		}
+
+		return d // Also be cautious about return conditions. There may be some corner case
+
 LC相关题目
 76
 438
+159
+3
+
+
 
 1. 如果牵涉到计数，可以扣成负数，表述超额扣除的
 LC相关题目

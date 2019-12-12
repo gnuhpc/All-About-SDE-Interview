@@ -7,6 +7,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/*
+## Time complexity
+`O(n)` where `n` is the length of the input array.
+
+## Space complexity
+`O(n)`
+ */
+
+//DONE
 public class TwoSum1 {
     @Test
     public void test(){

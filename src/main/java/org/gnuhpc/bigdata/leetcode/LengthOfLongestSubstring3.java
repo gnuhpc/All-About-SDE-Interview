@@ -25,14 +25,14 @@ public class LengthOfLongestSubstring3 {
     public static int lengthOfLongestSubstring(String s) {
         // write your code here
         int[] map = new int[256];
-        char[] sc = s.toCharArray();
+        char[] chS = s.toCharArray();
 
         int ans = 0 , l = 0, r = 0;
-        while (r<sc.length){
-            char c = sc[r];
+        while (r<chS.length){
+            char c = chS[r];
             map[c]++;//无论有没有重复，先加上，在while循环中处理
             while (map[c] > 1) { //直到这个重复的字符不再出现在新的字符串上
-                map[sc[l]]--;
+                map[chS[l]]--;
                 l++;
             }
             ans = Math.max(ans, r - l + 1);

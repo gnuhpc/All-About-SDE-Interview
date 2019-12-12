@@ -1,5 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,74 +10,39 @@ import java.util.Map;
 public class LengthOfLongestSubstringTwoDistinct159 {
 
     public int lengthOfLongestSubstringTwoDistinct(String s) {
-        Map<Character, List<Integer>> cache = new HashMap<>();
-        char[] arr = s.toCharArray();
+        if (s == null || s.length() == 0) return 0;
 
-        int i = 0 , j = 0;
-        int res = 0;
-        for(;j < arr.length;j++) {
-            char c = arr[j];
-            if (cache.size()<2) {
-                List<Integer> list = cache.get(c);
-                if (list == null) list = new ArrayList<>();
-                list.add(j);
-                cache.put(c,list);
-            } else if (cache.size() == 2){
-                if (cache.containsKey(c)){
-                    cache.get(c).add(j);
-                } else{
-                    res = Math.max(res, j-i);
-                    List<Integer> list = new ArrayList<>();
-                    list.add(j);
-                    cache.put(c,list);
+        int[] map = new int[128];
+        int ret = Integer.MIN_VALUE;
+        int start = 0, end = 0;
+        int counter = 0;
 
-                    while (cache.size()>2){
-                        List<Integer> l = cache.get(arr[i]);
-                        l.remove(0);
-                        if (l.size() == 0) cache.remove(arr[i]);
-                        i++;
-                    }
-                }
+        while (end < s.length()) {
+            char c = s.charAt(end);
+            if (map[c]++ == 0) {
+                counter++;
             }
+
+            while (counter > 2) {
+                char cTemp = s.charAt(start);
+                if (map[cTemp]-- == 1) {
+                    counter--;
+                }
+                start++;
+            }
+
+            ret = Math.max(ret, end - start + 1);
+            end++;
         }
 
-        return Math.max(res,j-i);
+        return ret;
     }
 
-    //add by tina map中仅仅只需要累计次数即可
-    public int lengthOfLongestSubstringTwoDistinct2(String s) {
-        int max=0;
-        HashMap<Character,Integer> map = new HashMap<Character, Integer>();
-        int start=0;
 
-        for(int i=0; i<s.length(); i++){
-            char c = s.charAt(i);
-            if(map.containsKey(c)){
-                map.put(c, map.get(c)+1);
-            }else{
-                map.put(c,1);
-            }
 
-            if(map.size()>2){
-                max = Math.max(max, i-start);
-
-                while(map.size()>2){
-                    char t = s.charAt(start);
-                    int count = map.get(t);
-                    if(count>1){
-                        map.put(t, count-1);
-                    }else{
-                        map.remove(t);
-                    }
-                    start++;
-                }
-            }
-        }
-
-        //这个情况容易考虑漏，就是start后没有重复字符的情况
-        max = Math.max(max, s.length()-start);
-
-        return max;
+    @Test
+    public void test(){
+        System.out.println(lengthOfLongestSubstringTwoDistinct("eceba"));
     }
 
 }

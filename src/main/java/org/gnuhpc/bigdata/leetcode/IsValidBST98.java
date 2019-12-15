@@ -51,7 +51,9 @@ public class IsValidBST98 {
         return true;
     }
 
-    // add by Tina Inorder traverse and judge if in order
+    /*
+    Method3: add by Tina Inorder traverse and judge if in order
+     */
     TreeNode prev = null;
     public boolean isValidBST3(TreeNode root) {
         if (root == null) return true;

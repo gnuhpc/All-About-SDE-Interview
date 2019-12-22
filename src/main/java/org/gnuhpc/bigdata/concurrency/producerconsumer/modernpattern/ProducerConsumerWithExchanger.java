@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.concurrency.producerconsumer;
+package org.gnuhpc.bigdata.concurrency.producerconsumer.modernpattern;
 
 import java.util.concurrent.Exchanger;
 

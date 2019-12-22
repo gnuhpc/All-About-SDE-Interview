@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.concurrency.balking;
+package org.gnuhpc.bigdata.concurrency.balking.commonpattern;
 
 /**
  * WashingMachineState enum describes in which state machine is,

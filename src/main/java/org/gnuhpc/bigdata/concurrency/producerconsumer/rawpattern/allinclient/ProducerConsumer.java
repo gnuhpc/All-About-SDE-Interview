@@ -1,8 +1,6 @@
-package org.gnuhpc.bigdata.concurrency.producerconsumer;
+package org.gnuhpc.bigdata.concurrency.producerconsumer.rawpattern.allinclient;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -37,17 +35,18 @@ class Producer implements Runnable {
     }
 
     private void produce(int i) throws InterruptedException {
-        synchronized (taskQueue) {
+        synchronized (taskQueue) { //使用Synchronized进行同步，其关键就是必须要对对象的监视器monitor进行获取，当线程获取monitor后才能继续往下执行，否则就只能等待。
             while (taskQueue.size() == MAX_CAPACITY) {
                 System.out.println("Queue is full " + Thread.currentThread().getName() + " is waiting , size: " +
                                    taskQueue.size());
-                taskQueue.wait();
+                taskQueue.wait();//要执行某个实例的wait方法必须已经获取此事例的锁monitor
+                // wait后就释放了这个锁，把自己放入了等待队列
             }
 
             Thread.sleep(1000);
             taskQueue.offer(i);
             System.out.println("Produced: " + i);
-            taskQueue.notifyAll();
+            taskQueue.notifyAll();// 会让等待队列中的线程退出等待队列，但是在实际执行中还要去抢锁。
         }
     }
 }
@@ -71,7 +70,15 @@ class Consumer implements Runnable {
         }
     }
 
-    private void consume() throws InterruptedException {
+    /*
+    while (守护条件的逻辑非){
+        wait
+    }
+
+    执行目标处理
+    notifyAll
+     */
+    private synchronized void consume() throws InterruptedException {
         synchronized (taskQueue) {//不满足条件就while wait
             while (taskQueue.isEmpty()) {
                 System.out.println("Queue is empty " + Thread.currentThread().getName() + " is waiting , size: " +
@@ -81,7 +88,7 @@ class Consumer implements Runnable {
 //            Thread.sleep(1000);
             int i = taskQueue.poll();
             System.out.println("Consumed: " + i);
-            taskQueue.notifyAll(); //做完就notify
+            taskQueue.notifyAll(); //做完就notify,相当于放弃taskQueue monitor
         }
     }
 }

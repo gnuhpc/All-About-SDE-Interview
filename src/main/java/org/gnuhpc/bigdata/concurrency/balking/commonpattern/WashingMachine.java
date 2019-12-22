@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.gnuhpc.bigdata.concurrency.balking;
+package org.gnuhpc.bigdata.concurrency.balking.commonpattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +47,11 @@ public class WashingMachine {
    * if the object is in appropriate state
    */
   public void wash() {
-    synchronized (this) {
+    synchronized (this) {//守护条件的检查放入synchronized块中
       LOGGER.info("{}: Actual machine state: {}", Thread.currentThread().getName(), getWashingMachineState());
       if (washingMachineState == WashingMachineState.WASHING) {
         LOGGER.error("ERROR: Cannot wash if the machine has been already washing!");
-        return;
+        return;//守护条件不成立直接退出
       }
       washingMachineState = WashingMachineState.WASHING;
     }

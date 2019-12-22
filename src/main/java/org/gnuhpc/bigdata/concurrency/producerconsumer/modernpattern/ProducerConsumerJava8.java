@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.concurrency.producerconsumer;
+package org.gnuhpc.bigdata.concurrency.producerconsumer.modernpattern;
 
 /**
  * Created by gnuhpc on 2017/6/22.

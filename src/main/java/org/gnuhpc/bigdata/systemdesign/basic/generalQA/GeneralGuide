@@ -28,7 +28,7 @@ This is also a good point to identify the system’s entry-points, such as:
 ●External API calls
 ●Offline processes
 This will allow the conversation to drill down into potential performance bottlenecks, and decisions about the separation of responsibilities. Whichever approach you choose to start with, remember to always start simple, and iterate.
-Step 5 — Data Structures and Algorithms (DS&A)
+Step 5 — org.gnuhpc.bigdata.concurrency.future.impl.Data Structures and Algorithms (DS&A)
 Wait, this again? Yes! Turns out, this is actually important in designing software systems.
 URL shortener? Makes me think of a hashing function. Oh, you need it to scale? Sharding might help. Concurrency? Redundancy? Generating keys becomes even more complicated. Same goes for designing an analytics system, a news feed, or a Q&A forum, each with its own set of common DS&A.
 Don’t forget to account for your scaling requirements, where analyzing runtime and memory complexity really becomes handy.

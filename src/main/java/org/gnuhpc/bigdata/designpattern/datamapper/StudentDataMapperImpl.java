@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementation of Actions on Students Data
+ * Implementation of Actions on Students org.gnuhpc.bigdata.concurrency.future.impl.Data
  */
 public final class StudentDataMapperImpl implements StudentDataMapper {
 

@@ -33,13 +33,12 @@ import java.util.List;
  * conversion between corresponding types (e.g. DTO and domain representations of the logically
  * isomorphic types). Moreover, the pattern introduces a common way of converting a collection of
  * objects between types.
- 
- ## Applicability
-Use the Converter Pattern in the following situations:
 
-* When you have types that logically correspond which other and you need to convert entities between them
-* When you want to provide different ways of types conversions depending on a context
-* Whenever you introduce a DTO (Data transfer object), you will probably need to convert it into the domain equivalence
+ ## Applicability
+ Use the Converter Pattern in the following situations:
+ * When you have types that logically correspond which other and you need to convert entities between them
+ * When you want to provide different ways of types conversions depending on a context
+ * Whenever you introduce a DTO (org.gnuhpc.bigdata.concurrency.future.impl.Data transfer object), you will probably need to convert it into the domain equivalence
 
  */
 public class App {

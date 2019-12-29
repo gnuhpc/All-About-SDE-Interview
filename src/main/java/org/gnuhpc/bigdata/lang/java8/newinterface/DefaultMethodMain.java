@@ -17,6 +17,6 @@ public class DefaultMethodMain implements DefaultMethod1I, DefaultMethod2I {
 
     @Override
     public void print(String str) {
-        System.out.println("Main print:"+str);
+        System.out.println("org.gnuhpc.bigdata.concurrency.future.impl.Main print:" + str);
     }
 }

@@ -22,16 +22,16 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
-/**  解耦数据操作和低层数据库的一种设计模式，类似于DAO这种方式
- * The Data Mapper (DM) is a layer of software that separates the in-memory objects from the
+/**
+ * 解耦数据操作和低层数据库的一种设计模式，类似于DAO这种方式
+ * The org.gnuhpc.bigdata.concurrency.future.impl.Data Mapper (DM) is a layer of software that separates the in-memory objects from the
  * database. Its responsibility is to transfer data between the two and also to isolate them from
- * each other. With Data Mapper the in-memory objects needn't know even that there's a database
+ * each other. With org.gnuhpc.bigdata.concurrency.future.impl.Data Mapper the in-memory objects needn't know even that there's a database
  * present; they need no SQL interface code, and certainly no knowledge of the database schema. (The
  * database schema is always ignorant of the objects that use it.) Since it's a form of Mapper ,
- * Data Mapper itself is even unknown to the domain layer.
+ * org.gnuhpc.bigdata.concurrency.future.impl.Data Mapper itself is even unknown to the domain layer.
  * <p>
  * The below example demonstrates basic CRUD operations: Create, Read, Update, and Delete.
- * 
  */
 public final class App {
 
@@ -39,7 +39,7 @@ public final class App {
 
   /**
    * Program entry point.
-   * 
+   *
    * @param args command line args.
    */
   public static void main(final String... args) {

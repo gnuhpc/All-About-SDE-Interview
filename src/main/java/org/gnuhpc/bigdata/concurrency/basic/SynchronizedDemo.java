@@ -2,11 +2,15 @@ package org.gnuhpc.bigdata.concurrency.basic;
 
 import lombok.AllArgsConstructor;
 
+
+/*
+Synchronized 的作用避免重排序和变量可见性
+ */
 // synchronized 可以用在任何Java Object上
 // 用在static上则是在class，在一般对象上就是instance级别的，用在一般方法上就是method同步
 @AllArgsConstructor
 class Bank {
-    private int money;
+    private int    money;
     private String name;
 
     //Equals to
@@ -21,7 +25,7 @@ class Bank {
     }
 
     public synchronized boolean withdraw(int m){
-        if(money>=m){
+        if(money >= m){
             money-=m;
             return true;
         } else {

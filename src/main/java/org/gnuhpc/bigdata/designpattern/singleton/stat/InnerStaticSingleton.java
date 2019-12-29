@@ -8,6 +8,8 @@ package org.gnuhpc.bigdata.designpattern.singleton.stat;
 也不依赖 JDK 版本。
 
 lazy initialization
+
+最推荐的版本！！！！
  */
 
 public class InnerStaticSingleton {

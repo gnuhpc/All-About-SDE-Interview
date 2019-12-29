@@ -2,7 +2,7 @@ package org.gnuhpc.bigdata.datastructure.unionfind;
 
 /*
 lazy approach
-Data structure.
+org.gnuhpc.bigdata.concurrency.future.impl.Data structure.
 Integer array  id[] of size  N .
 Interpretation: id[i] is cor of  i .
 Root of  i is id[id[id[...id[i]...]]] .

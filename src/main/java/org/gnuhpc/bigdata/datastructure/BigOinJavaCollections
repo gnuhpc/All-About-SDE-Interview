@@ -1,7 +1,7 @@
 Below are the Big O performance of common functions of different Java Collections.
 
 
-List                 | Add  | Remove | Get  | Contains | Next | Data Structure
+List                 | Add  | Remove | Get  | Contains | Next | org.gnuhpc.bigdata.concurrency.future.impl.Data Structure
 ---------------------|------|--------|------|----------|------|---------------
 ArrayList            | O(1) |  O(n)  | O(1) |   O(n)   | O(1) | Array
 LinkedList           | O(1) |  O(1)  | O(n) |   O(n)   | O(1) | Linked List
@@ -9,7 +9,7 @@ CopyOnWriteArrayList | O(n) |  O(n)  | O(1) |   O(n)   | O(1) | Array
 
 
 
-Set                   |    Add   |  Remove  | Contains |   Next   | Size | Data Structure
+Set                   |    Add   |  Remove  | Contains |   Next   | Size | org.gnuhpc.bigdata.concurrency.future.impl.Data Structure
 ----------------------|----------|----------|----------|----------|------|-------------------------
 HashSet               | O(1)     | O(1)     | O(1)     | O(h/n)   | O(1) | Hash Table
 LinkedHashSet         | O(1)     | O(1)     | O(1)     | O(1)     | O(1) | Hash Table + Linked List
@@ -20,7 +20,7 @@ ConcurrentSkipListSet | O(log n) | O(log n) | O(log n) | O(1)     | O(n) | Skip 
 
 
 
-Queue                   |  Offer   | Peak |   Poll   | Remove | Size | Data Structure
+Queue                   |  Offer   | Peak |   Poll   | Remove | Size | org.gnuhpc.bigdata.concurrency.future.impl.Data Structure
 ------------------------|----------|------|----------|--------|------|---------------
 PriorityQueue           | O(log n) | O(1) | O(log n) |  O(n)  | O(1) | Priority Heap
 LinkedList              | O(1)     | O(1) | O(1)     |  O(1)  | O(1) | Array
@@ -34,7 +34,7 @@ LinkedBlockingQueue     | O(1)     | O(1) | O(1)     |  O(n)  | O(1) | Linked Li
 
 
 
-Map                   |   Get    | ContainsKey |   Next   | Data Structure
+Map                   |   Get    | ContainsKey |   Next   | org.gnuhpc.bigdata.concurrency.future.impl.Data Structure
 ----------------------|----------|-------------|----------|-------------------------
 HashMap               | O(1)     |   O(1)      | O(h / n) | Hash Table
 LinkedHashMap         | O(1)     |   O(1)      | O(1)     | Hash Table + Linked List

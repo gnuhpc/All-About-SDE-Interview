@@ -17,6 +17,7 @@ public class MainApp {
 
         EnemyShip theEnemy = null;
 
+
         Scanner userInput = new Scanner(System.in);
 
         System.out.print("What type of ship? (U / R / B)");

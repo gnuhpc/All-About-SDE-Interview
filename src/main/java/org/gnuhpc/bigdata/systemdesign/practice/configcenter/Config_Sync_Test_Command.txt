@@ -1,0 +1,41 @@
+//复制到zk client中执行，看Config_Sync_Clent中的监听结果。
+
+create /workspace/ww 1
+create /workspace/ww/config-sync 2
+create /workspace/ww/config-sync/rcs-config 3
+
+ls /workspace/ww/config-sync/rcs-config
+get /workspace/ww/config-sync/rcs-config
+
+set /workspace/ww/config-sync/rcs-config {"config_uuid":1,"change_type":"add","download_url":"ftp://192.168.1.1/config/rcs_config.xml","change_remark":"uuid=1_Added!"}
+执行结果：
+2018-09-15 23:11:54,194 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@76] - 监听到节点/ww/config-sync/rcs-config配置已被修改！
+2018-09-15 23:11:54,195 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@80] - 节点/ww/config-sync修改后的数据为: {"config_uuid":1,"change_type":"add","download_url":"ftp://192.168.1.1/config/rcs_config.xml","change_remark":"uuid=1_Added!"}
+2018-09-15 23:11:54,196 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@96] - 监听到新增的配置，ID:1，准备下载...
+2018-09-15 23:11:55,198 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@99] - 开始下载新增配置，下载路径为<ftp://192.168.1.1/config/rcs_config.xml>
+2018-09-15 23:11:56,198 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@102] - 下载成功，已经添加到项目中。
+2018-09-15 23:11:56,198 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@104] - 记录操作日志：uuid=1_Added!
+
+set /workspace/ww/config-sync/rcs-config {"config_uuid":1,"change_type":"update","download_url":"ftp://192.168.1.2/config/rcs_config.xml","change_remark":"uuid=1_Updated!"}
+执行结果：
+2018-09-15 23:12:39,369 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@76] - 监听到节点/ww/config-sync/rcs-config配置已被修改！
+2018-09-15 23:12:39,371 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@80] - 节点/ww/config-sync修改后的数据为: {"config_uuid":1,"change_type":"update","download_url":"ftp://192.168.1.2/config/rcs_config.xml","change_remark":"uuid=1_Updated!"}
+2018-09-15 23:12:39,372 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@107] - 监听到更新的配置，ID:1，准备下载...
+2018-09-15 23:12:40,374 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@110] - 开始下载修改配置，下载路径为<ftp://192.168.1.2/config/rcs_config.xml>
+2018-09-15 23:12:41,375 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@113] - 下载成功...
+2018-09-15 23:12:41,375 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@114] - 删除项目中原配置文件...
+2018-09-15 23:12:42,375 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@117] - 拷贝配置文件到项目目录...
+2018-09-15 23:12:42,375 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@119] - 记录操作日志：uuid=1_Updated!
+
+
+set /workspace/ww/config-sync/rcs-config {"config_uuid":1,"change_type":"delete","download_url":"","change_remark":"uuid=1_deleted!"}
+执行结果：
+2018-09-15 23:13:22,353 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@76] - 监听到节点/ww/config-sync/rcs-config配置已被修改！
+2018-09-15 23:13:22,354 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@80] - 节点/ww/config-sync修改后的数据为: {"config_uuid":1,"change_type":"delete","download_url":"","change_remark":"uuid=1_deleted!"}
+2018-09-15 23:13:22,354 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@122] - 监听到需要删除配置，ID:1
+2018-09-15 23:13:22,355 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@123] - 删除项目中原配置文件...
+2018-09-15 23:13:23,356 [myid:] - WARN  [Curator-PathChildrenCache-0:Config_Sync_Client$1@125] - 记录操作日志：uuid=1_deleted!
+
+
+
+

@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.concurrency.activeobject.impl.activeobject;
 
-class ActivationQueue {
+public class ActivationQueue {
     private static final int             MAX_METHOD_REQUEST = 100;
     private final        MethodRequest[] requestQueue;
     private              int             tail;  // 下次putRequest的位置

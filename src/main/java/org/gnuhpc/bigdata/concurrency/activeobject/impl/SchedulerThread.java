@@ -1,4 +1,7 @@
-package activeobject;
+package org.gnuhpc.bigdata.concurrency.activeobject.impl;
+
+import org.gnuhpc.bigdata.concurrency.activeobject.impl.activeobject.ActivationQueue;
+import org.gnuhpc.bigdata.concurrency.activeobject.impl.activeobject.MethodRequest;
 
 class SchedulerThread extends Thread {
     private final ActivationQueue queue;

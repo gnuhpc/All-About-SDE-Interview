@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.concurrency.activeobject.impl.activeobject;
 
-abstract class MethodRequest<T> {
+public abstract class MethodRequest<T> {
     protected final Servant         servant;
     protected final FutureResult<T> future;
 

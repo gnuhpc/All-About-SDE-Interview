@@ -11,35 +11,38 @@ public class LengthOfLongestSubstringKDistinct340 {
         Map<Character, List<Integer>> cache = new HashMap<>();
         char[] arr = s.toCharArray();
 
-        int i = 0 , j = 0;
+        int left = 0, right = 0;
         int res = 0;
-        for(;j < arr.length;j++) {
-            char c = arr[j];
-            if (cache.size()<k) {
+        while (right < arr.length) {
+            char c = arr[right];
+            if (cache.size() < k) {
                 List<Integer> list = cache.get(c);
                 if (list == null) list = new ArrayList<>();
-                list.add(j);
-                cache.put(c,list);
-            } else if (cache.size() == k){
-                if (cache.containsKey(c)){
-                    cache.get(c).add(j);
-                } else{
-                    res = Math.max(res, j-i);
+                list.add(right);
+                cache.put(c, list);
+            }
+            else if (cache.size() == k) {
+                if (cache.containsKey(c)) {
+                    cache.get(c).add(right);
+                }
+                else {
+                    res = Math.max(res, right - left);
                     List<Integer> list = new ArrayList<>();
-                    list.add(j);
-                    cache.put(c,list);
+                    list.add(right);
+                    cache.put(c, list);
 
-                    while (cache.size()>k){
-                        List<Integer> l = cache.get(arr[i]);
+                    while (cache.size() > k) {
+                        List<Integer> l = cache.get(arr[left]);
                         l.remove(0);
-                        if (l.size() == 0) cache.remove(arr[i]);
-                        i++;
+                        if (l.size() == 0) cache.remove(arr[left]);
+                        left++;
                     }
                 }
             }
+            right++;
         }
 
-        return Math.max(res,j-i);
+        return Math.max(res, right - left);
     }
 
     @Test

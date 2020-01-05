@@ -18,7 +18,7 @@ public class LengthOfLongestSubstringTwoDistinct159 {
         int counter = 0;
 
         while (end < s.length()) {
-            char c = s.charAt(end);
+            char c = s.charAt(end++);
             if (map[c]++ == 0) {
                 counter++;
             }
@@ -31,8 +31,7 @@ public class LengthOfLongestSubstringTwoDistinct159 {
                 start++;
             }
 
-            ret = Math.max(ret, end - start + 1);
-            end++;
+            ret = Math.max(ret, end - start);
         }
 
         return ret;

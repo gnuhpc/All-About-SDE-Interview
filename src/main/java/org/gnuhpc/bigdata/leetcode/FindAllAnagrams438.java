@@ -21,48 +21,41 @@ public class FindAllAnagrams438 {
 
 //        System.out.println(findAnagrams(str1,p1));
         System.out.println();
-        System.out.println(findAnagrams2(str2,p2));
+        System.out.println(findAnagrams(str1, p1));
     }
 
     /**
-     * 直观解法
+     * 双指针
      * O(m*n)
+     *
      * @param s
      * @param p
      * @return
      */
 
-    public List<Integer> findAnagrams2(String s, String p) {
-        if(s == null || s.length() == 0) return new ArrayList<>();
+    public List<Integer> findAnagrams(String s, String p) {
+        if (s == null || s.length() == 0) return new ArrayList<>();
         List<Integer> res = new ArrayList<>();
-        int[] needs = new int[26]; //由于都是小写字母，因此直接用26个长度的数组代替原来的HashMap
-        int[] window = new int[26];
+        int[] map = new int[128]; //由于都是小写字母，因此直接用26个长度的数组代替原来的HashMap
         int left = 0, right = 0, total = p.length(); //用total检测窗口中是否已经涵盖了p中的字符
-        for(char ch : p.toCharArray()){
-            needs[ch - 'a'] ++;
+        for (char ch : p.toCharArray()) {
+            map[ch]++;
         }
-        while(right < s.length()){
-            char chr = s.charAt(right);
-            if(needs[chr - 'a'] > 0){
-                window[chr - 'a']++;
-                if(window[chr - 'a'] <= needs[chr - 'a']){
-                    total--;
-                }
+
+        char[] chS = s.toCharArray();
+        while (right < s.length()) {
+            if (map[chS[right++]]-- > 0) {
+                total--;
             }
-            while(total == 0){
-                if(right-left+1 == p.length()){
+
+            while (total == 0) {
+                if (right - left == p.length()) {
                     res.add(left);
                 }
-                char chl = s.charAt(left);
-                if(needs[chl - 'a'] > 0){
-                    window[chl - 'a']--;
-                    if(window[chl - 'a'] < needs[chl - 'a']){
-                        total++;
-                    }
+                if (map[chS[left++]]++ == 0) {
+                    total++;
                 }
-                left++;
             }
-            right++;
         }
         return res;
     }

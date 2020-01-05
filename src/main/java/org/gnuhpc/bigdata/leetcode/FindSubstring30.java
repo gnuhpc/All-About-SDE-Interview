@@ -55,39 +55,67 @@ public class FindSubstring30 {
 
 
     /*
-     Method2: 从最后一个单词遍历，跳着来, Faster
+     Method2: 双指针
      */
     public List<Integer> findSubstring2(String s, String[] words) {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         if (words.length == 0 || s.length() < words.length * words[0].length()) {
-            return list;
+            return res;
         }
         Map<String, Integer> map = new HashMap<>();
-        for (int i = 0; i < words.length; i++) {
-            map.put(words[i], map.getOrDefault(words[i], 0) + 1);
-        }
-        int listLen = words.length;
-        int wordLen = words[0].length();
 
-        for (int i = 0; i < wordLen; i++) {
-            for (int j = i; j <= s.length() - wordLen * listLen; j += wordLen) {
-                Map<String, Integer> map2 = new HashMap<>();
-                for (int k = listLen - 1; k >= 0; k--) { //倒着算，因为能快速跳过去
-                    String temp = s.substring(j + k * wordLen, j + (k + 1) * wordLen);
-                    int val = map2.getOrDefault(temp, 0) + 1;
-                    if (val > map.getOrDefault(temp, 0)) {
-                        j += k * wordLen;
-                        break;
-                    }
-                    if (k == 0) {
-                        list.add(j);
-                    } else {
-                        map2.put(temp, val);
-                    }
+        int windowSize = 0;
+        int wordSize = words[0].length();
+
+        for (String word : words) {
+            windowSize += word.length();
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+
+        if (s.length() < windowSize) return res;
+
+        Map<String, Integer> origMap = new HashMap<>(map);
+
+        int left = 0, right = 0, counter = map.size();
+
+
+        //外层遍历只需要遍历wordSize大小即可，因为后边都是根据这个单元进行跳着走的
+        for (int i = 0; i < wordSize; i++) {
+            left = i;
+            right = i;
+            map.clear(); // reset to original frequency table after every iteration
+            map.putAll(origMap);
+            counter = map.size();
+
+            while (right + wordSize - 1 < s.length()) {
+                String lastword = s.substring(right, right + wordSize);
+
+                if (map.containsKey(lastword)) {
+                    map.put(lastword, map.get(lastword) - 1);
+                    if (map.get(lastword) == 0) counter--;
                 }
+                right += wordSize;
+
+                if (right - left == windowSize) {
+                    // counter == 0, valid answer !
+                    if (counter == 0) {
+                        res.add(left);
+                    }
+
+                    String firstword = s.substring(left, left + wordSize);
+
+                    if (map.containsKey(firstword)) {
+                        map.put(firstword, map.get(firstword) + 1);
+                        if (map.get(firstword) > 0) counter++;
+                    }
+
+                    left += wordSize;
+                }
+
             }
         }
-        return list;
+
+        return res;
     }
 
     @Test

@@ -7,9 +7,17 @@ import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
  */
 public class UpsideDownBinaryTree156 {
     /*
-    This is not a very intuitive problem for me, I have to spent quite a while drawing figures to understand it.  As shown in the figure, 1 shows the original tree, you can think about it as a comb, with 1, 2, 4 form the bone, and 3, 5 as the teeth.  All we need to do is flip the teeth direction as shown in figure 2.  We will remove the link 1--3, 2--5, and add link 2--3, and 4--5.  And node 4 will be the new root.
+    This is not a very intuitive problem for me, I have to spent quite a while drawing figures to understand it.
+     As shown in the figure, 1 shows the original tree, you can think about it as a comb,
+     with 1, 2, 4 form the bone, and 3, 5 as the teeth.
+      All we need to do is flip the teeth direction as shown in figure 2.
+      We will remove the link 1--3, 2--5, and add link 2--3, and 4--5.
+       And node 4 will be the new root.
 
-As the recursive solution, we will keep recurse on the left child and once we are are done, we found the newRoot, which is 4 for this case.  At this point, we will need to set the new children for node 2, basically the new left node is 3, and right node is 1.  Here is the recursive solution:
+As the recursive solution, we will keep recurse on the left child and once we are are done,
+we found the newRoot, which is 4 for this case.  At this point,
+ we will need to set the new children for node 2, basically the new left node is 3,
+ and right node is 1.  Here is the recursive solution:
      */
     public TreeNode upsideDownBinaryTree(TreeNode root) {
         if (root == null || root.left == null) {

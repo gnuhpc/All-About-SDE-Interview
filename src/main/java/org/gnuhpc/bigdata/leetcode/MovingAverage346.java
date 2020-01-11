@@ -3,55 +3,38 @@ package org.gnuhpc.bigdata.leetcode;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Copyright gnuhpc 2019/10/5
  */
 public class MovingAverage346 {
+    double              sum;
+    int                 size;
+    LinkedList<Integer> list;
+
     /**
      * Initialize your data structure here.
      */
-    private Integer[] buffer;
-    private int       cur;
-    private int       sum;
-    private boolean   isFull;
-
     public MovingAverage346(int size) {
-        buffer = new Integer[size];
-        Arrays.fill(buffer, null);
-        cur = 0;
-        sum = 0;
-        isFull = false;
+        this.list = new LinkedList<>();
+        this.size = size;
     }
 
     public double next(int val) {
+        sum += val;
+        list.offer(val);
 
-        //Save
-        int preVal = 0;
-        if (!isFull) {
-            preVal = 0;
-        }
-        else {
-            preVal = buffer[cur];
+        if (list.size() <= size) {
+            return sum / list.size();
         }
 
+        sum -= list.poll();//presum的想法
 
-        sum = sum - preVal + val;
-        buffer[cur] = val;
-
-        //Calculate Average
-        if (!isFull) {
-            if (cur == buffer.length - 1) isFull = true;
-        }
-        cur = (cur + 1) % buffer.length;
-
-        if (isFull) {
-            return (double) sum / (double) buffer.length;
-        }
-        else {
-            return (double) sum / (double) cur;
-        }
+        return sum / size;
     }
+
 
     public static void main(String[] args) {
 

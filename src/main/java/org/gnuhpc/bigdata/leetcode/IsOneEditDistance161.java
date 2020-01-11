@@ -22,34 +22,44 @@ public class IsOneEditDistance161 {
     public boolean isOneEditDistance(String s, String t) {
         int ns = s.length();
         int nt = t.length();
+        char[] sChs = s.toCharArray();
+        char[] tChs = t.toCharArray();
 
         // Ensure that s is shorter than t.
         if (ns > nt)
             return isOneEditDistance(t, s);
 
+        int diff = nt - ns;
+
         // The strings are NOT one edit away distance
         // if the length diff is more than 1.
-        if (nt - ns > 1)
+        if (diff > 1)
             return false;
 
-        for (int i = 0; i < ns; i++) {
-            if (s.charAt(i) != t.charAt(i)) {
-                // if strings have the same length
-                if (ns == nt)
-                    return s.substring(i + 1).equals(t.substring(i + 1));
-                    // if strings have different lengths
-                else
-                    return s.substring(i).equals(t.substring(i + 1));
+        else if (diff == 1) {
+            for (int i = 0; i < ns; i++) {
+                if (sChs[i] != tChs[i]) {
+                    return s.substring(i).equals(t.substring(i));
+                }
             }
+
+            return true;
         }
 
-        // If there is no diffs on ns distance
-        // the strings are one edit away only if
-        // t has one more character.
-        return (ns + 1 == nt);
+        else { //diff == 0
+            int cnt = 0;
+            for (int i = 0; i < ns; i++) {
+                if (sChs[i] != tChs[i]) {
+                    cnt++;
+                }
+            }
+
+            return (cnt == 1);
+        }
+
     }
 
-    // Str1_Str2 -- their distances
+    // Str1_Str2 -- their distances 通用方法
     Map<String, Integer> cache = new HashMap<>();
 
     public boolean isOneEditDistance2(String s, String t) {
@@ -95,7 +105,7 @@ public class IsOneEditDistance161 {
 
     @Test
     public void test() {
-        System.out.println(isOneEditDistance2("cb", "ab"));
+        System.out.println(isOneEditDistance("cbb", "ab"));
     }
 
 

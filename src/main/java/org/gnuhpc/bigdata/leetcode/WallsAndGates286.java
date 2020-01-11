@@ -56,10 +56,10 @@ public class WallsAndGates286 {
         c = rooms[0].length;
         for (int i = 0; i < rooms.length; i++)
             for (int j = 0; j < rooms[0].length; j++)
-                if (rooms[i][j] == 0) bfsNative(rooms, i, j);
+                if (rooms[i][j] == 0) bfs(rooms, i, j);
     }
 
-    private void bfsNative(int[][] rooms, int x, int y) {
+    private void bfs(int[][] rooms, int x, int y) {
         Deque<int[]> queue = new LinkedList<>();
         queue.offer(new int[]{x, y}); // Put gate in the queue
         while (!queue.isEmpty()) {
@@ -69,7 +69,7 @@ public class WallsAndGates286 {
             for (int[] d : dr) {
                 int newX = x + d[0];
                 int newY = y + d[1];
-                if (isValid(newX,newY)){
+                if (isValid(newX, newY)) {
                     if(rooms[newX][newY] > rooms[x][y] + 1) {
                         rooms[newX][newY] = rooms[x][y] + 1;
                         queue.offer(new int[]{newX, newY});

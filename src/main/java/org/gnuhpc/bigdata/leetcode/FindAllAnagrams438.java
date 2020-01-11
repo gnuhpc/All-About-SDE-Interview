@@ -1,5 +1,6 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import com.google.inject.internal.cglib.proxy.$ProxyRefDispatcher;
 import org.junit.Test;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public class FindAllAnagrams438 {
 
 //        System.out.println(findAnagrams(str1,p1));
         System.out.println();
-        System.out.println(findAnagrams(str1, p1));
+        System.out.println(findAnagrams2(str1, p1));
     }
 
     /**
@@ -57,6 +58,39 @@ public class FindAllAnagrams438 {
                 }
             }
         }
+        return res;
+    }
+
+    public List<Integer> findAnagrams2(String s, String p) {
+        int[] cntS = new int[256];
+        int[] cntP = new int[256];
+        char[] charS = s.toCharArray();
+        char[] charP = p.toCharArray();
+        int lenS = s.length();
+        int lenP = p.length();
+
+        List<Integer> res = new ArrayList<>();
+
+        if (lenS < lenP) return res;
+
+        for (int i = 0; i < lenP; i++) {
+            cntS[charS[i]]++;
+            cntP[charP[i]]++;
+        }
+
+        if (Arrays.equals(cntS, cntP)) {
+            res.add(0);
+        }
+
+        for (int i = lenP; i < lenS; i++) {
+            cntS[charS[i]]++;
+            cntS[charS[i - lenP]]--;
+
+            if (Arrays.equals(cntS, cntP)) {
+                res.add(i - lenP + 1);
+            }
+        }
+
         return res;
     }
 }

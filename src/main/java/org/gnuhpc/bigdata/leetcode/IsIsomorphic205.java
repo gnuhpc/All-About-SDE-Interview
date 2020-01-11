@@ -46,26 +46,4 @@ public class IsIsomorphic205 {
         }
         return true;
     }
-
-    // add by tina，比方法1快，可见map.containsValue()的判断是很耗时的
-    public boolean isIsomorphic3(String s, String t) {
-        if(s == null || t == null) return false;
-        if(s.length() == 0 && t.length() == 0) return true;
-        HashMap<Character,Character> hmap = new HashMap<>();
-        HashMap<Character,Character> hmapt = new HashMap<>();
-        for(int i = 0;i<s.length();i++){
-            char c = s.charAt(i);
-            if(hmap.containsKey(c)){
-                if(t.charAt(i) == hmap.get(c)) continue;
-                else return false;
-            }else{
-                if(hmapt.containsKey(t.charAt(i))) return false;
-                hmap.put(c,t.charAt(i));
-                hmapt.put(t.charAt(i),c);
-            }
-        }
-        return true;
-
-    }
-
 }

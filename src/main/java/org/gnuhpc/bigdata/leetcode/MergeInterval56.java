@@ -26,10 +26,11 @@ public class MergeInterval56 {
         intervalList.sort(Comparator.comparingInt(o -> o.start));
         LinkedList<Interval> merged = new LinkedList<>();
         for (Interval interval : intervalList)
-            if (merged.isEmpty() || merged.getLast().end < interval.start)
+            if (merged.isEmpty() || merged.getLast().end < interval.start)//第一次加入或者无法合并
                 merged.add(interval);
             else merged.getLast().end = Math.max(merged.getLast().end, interval.end);
 
+        //最后整理结果
         int[][] res = new int[merged.size()][2];
 
         for (int i = 0; i < res.length; i++) {
@@ -78,39 +79,6 @@ public class MergeInterval56 {
         return result;
     }
 
-    // add by tina
-    public int[][] merge3(int[][] intervals) {
-        if(intervals == null ) return null;
-        if(intervals.length == 0) return new int[0][0];
-        int len = intervals.length;
-        List<int[]> lst = new ArrayList<int[]>();
-        int i = 1;
-        //关键步骤，先排序。
-        Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
-
-        int[] mergeInterval = intervals[0];
-        while(i < len){
-            // 有重叠
-            if(!(mergeInterval[1] < intervals[i][0])){
-                mergeInterval[1] = Math.max(intervals[i][1],mergeInterval[1]);
-            }else{
-                lst.add(mergeInterval);
-                mergeInterval = intervals[i];
-            }
-            i++;
-        }
-        lst.add(mergeInterval); //最后一个别忘加
-
-        int[][] res = new int[lst.size()][2];
-        for(i = 0; i < lst.size(); i++){
-            res[i] = lst.get(i);
-        }
-
-        return res;
-
-    }
-
-
 
     @Test
     public void test(){
@@ -120,7 +88,7 @@ public class MergeInterval56 {
                 {4, 5}
         };
 
-        Utils.print2DArray(merge(a));
+        Utils.print2DArray(merge2(a));
     }
 
 }

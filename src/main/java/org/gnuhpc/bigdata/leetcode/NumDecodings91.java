@@ -1,54 +1,9 @@
 package org.gnuhpc.bigdata.leetcode;
 
-/*
- * 1) find all single or double chars which are valid encoding:
- * like "1", "10" etc.
- * "0", "33" or "40" are not valid.
- * record them in a graph data structure (like an array)
- * 2) use recursive (or non-recursive) way to traverse the graph by DFS, once
- * reach the last char, increment the counter by 1. if no any path exists,
- * return 0.
- * comments: graph and recursive DFS has more time and space complexity.
- * do not use int for passing by reference; use array or class with int field
- *
- */
+
+import java.util.Arrays;
+
 public class NumDecodings91 {
-    private int res = 0;
-    private boolean[] en1;
-    private boolean[] en2;
-    private int length;
-
-    public int numDecodings(String s) {
-        if (s == null || s.equals("")) return 0;
-        char[] cc = s.toCharArray(); //conver to char array
-        length = s.length(); //number of chars
-        en1 = new boolean[length];
-        en2 = new boolean[length];
-        for (int i = 0; i < length -1; i++) {
-            if (cc[i] >= '1' && cc[i] <= '9') en1[i] = true;
-            if (s.substring(i,i+2).compareTo("10") >= 0
-                    && s.substring(i,i+2).compareTo("26") <= 0)
-                en2[i] = true;
-        }
-
-        if (cc[length -1] >= '1' && cc[length -1] <= '9') {
-            en1[length -1] = true;
-        }
-
-        dfs(0);
-        return res;
-    }
-
-    public void dfs(int start) {
-        if (en1[start]) {
-            if (start == length -1) res++;
-            else dfs(start+1);
-        }
-        if (en2[start]) {
-            if (start == length -2) res++;
-            else dfs(start+2);
-        }
-    }
 
     /*
     DP
@@ -70,46 +25,48 @@ public class NumDecodings91 {
         for(int i = 2; i <= n; i++) {
             int first = Integer.parseInt(s.substring(i-1, i));
             int second = Integer.parseInt(s.substring(i-2, i));
-            if(first >= 1 && first <= 9) {
-                dp[i] += dp[i-1];
+            if (first >= 1 && first <= 9) {
+                dp[i] += dp[i - 1];
             }
-            if(second >= 10 && second <= 26) {
-                dp[i] += dp[i-2];
+            if (second >= 10 && second <= 26) {
+                dp[i] += dp[i - 2];
             }
         }
         return dp[n];
     }
 
-    //add by tina, memo search,类似于有条件的climb stairs
-    public int numDecodings3(String s) {
-        if(s.length()==0){
-            return 0;
-        }
-        Integer[] dp = new Integer[s.length()];
+    //memo search,类似于有条件的climb stairs
+    int[] memo;
 
-        return dpSearch(dp, s, s.length()-1); // 注意是最后一位的索引
+    public int numDecodings(String s) {
+        memo = new int[s.length() + 1];
+        Arrays.fill(memo, -1);
+        return dfs(s, 0);
     }
 
-    public int dpSearch(Integer[] dp, String s, int index){
-        if(index<0){
-            return 1; // 叶子节点
-        }
-        if(dp[index]!=null){ //Integer[]==null比int[]==0判断要快
-            return dp[index];
-        }
-        dp[index] = 0;
-        // 两种情况的加和，并且要求有条件
-        if(s.charAt(index)!='0'){
-            dp[index] += dpSearch(dp, s, index-1);
-        }
+    public int dfs(String s, int num) {
 
-        if(index>0 && s.charAt(index-1)!='0'){
-            int num = Integer.parseInt(s.substring(index-1, index+1));
-            if(num>=1 && num<=26){
-                dp[index] += dpSearch(dp, s, index-2);
+        if (num == s.length()) {
+            return 1;
+        }
+        if (s.charAt(num) == '0') {
+            return 0;
+        }
+        if (memo[num] > -1) {
+            return memo[num];
+        }
+        int ans1 = dfs(s, num + 1);
+
+
+        int ans2 = 0;
+        if (num < s.length() - 1) {
+            // 判断前两个数字是否  >26？
+            if ((s.charAt(num) - '0') * 10 + (s.charAt(num + 1) - '0') <= 26) {
+                ans2 = dfs(s, num + 2);
             }
         }
 
-        return dp[index];
+        memo[num] = ans1 + ans2;
+        return memo[num];
     }
 }

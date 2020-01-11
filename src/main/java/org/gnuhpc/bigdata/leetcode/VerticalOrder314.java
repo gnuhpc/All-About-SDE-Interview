@@ -18,7 +18,10 @@ public class VerticalOrder314 {
             return res;
         }
 
-        Map<Integer,List<Integer>> buckets = new HashMap<>();
+        //Hash
+        Map<Integer, List<Integer>> buckets = new HashMap<>();
+
+        //BFS
         Queue<TreeNode> q = new LinkedList<>();
         Queue<Integer> cols = new LinkedList<>();
 

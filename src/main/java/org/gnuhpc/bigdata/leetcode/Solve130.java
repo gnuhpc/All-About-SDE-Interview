@@ -17,6 +17,7 @@ public class Solve130 {
     int[][] dr = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     int     r, c;
 
+    //逆向思维，先填充不可改变的，然后最后遍历将其还原，剩下的就是再修改
     public void solve(char[][] board) {
         if (board == null || board.length == 0)
             return;

@@ -40,7 +40,7 @@ public class LongestConsecutive128 {
     }
 
     /*
-    Method 2: Union Find
+    Method 2: Union Find 不推荐
      */
 
     public int longestConsecutive2(int[] nums) {
@@ -64,6 +64,7 @@ public class LongestConsecutive128 {
     }
 
     // add by tina, 借用一个Hash Set
+    // 非常牛逼的解法!
     //使用一个集合HashSet存入所有的数字，然后遍历数组中的每个数字，
     // 如果其在集合中存在，那么将其移除，
     // 然后分别用两个变量pre和next算出其前一个数跟后一个数，
@@ -79,10 +80,10 @@ public class LongestConsecutive128 {
     // 十分的不高效，所以我们要从HashSet中移除数字
     public int longestConsecutive3(int[] nums) {
         int res = 0;
-        Set<Integer> s = new HashSet<Integer>();
+        Set<Integer> s = new HashSet<>();
         for (int num : nums) s.add(num);
         for (int num : nums) {
-            if (s.remove(num)) {
+            if (s.remove(num)) { //返回true代表删除成功，false代表没有
                 int pre = num - 1, next = num + 1;
                 while (s.remove(pre)) --pre;
                 while (s.remove(next)) ++next;

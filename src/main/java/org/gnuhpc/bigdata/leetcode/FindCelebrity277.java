@@ -35,7 +35,7 @@ public class FindCelebrity277 {
 
         if (count != 1) {
             return -1;
-        }
+        }// 检验
         else {
             for (int i = 0; i < celebrities.length; i++) {
                 if (celebrities[i]) {

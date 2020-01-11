@@ -4,34 +4,40 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Read158 {
-    int read4(char[] buf){return  0;};
+    int read4(char[] buf) {return 0;}
+
+    ;
     /**
      * @param buf Destination buffer
      * @param n   Number of characters to read
-     * @return    The number of actual characters read
+     * @return The number of actual characters read
      */
-    private int buffPtr = 0;
-    private int buffCnt = 0;
-    private char[] buff = new char[4];
+    private int    readBuffPtr = 0;
+    private int    readBuffCnt = 0;
+    private char[] readBuffer  = new char[4];
+
     public int read(char[] buf, int n) {
         int ptr = 0;
         while (ptr < n) {
             //已经没有上次读的了就再读下一次
-            if (buffPtr == 0) {
-                buffCnt = read4(buff);
+            if (readBuffPtr == 0) {
+                readBuffCnt = read4(readBuffer);
             }
-            if (buffCnt == 0) break;
-            while (ptr < n && buffPtr < buffCnt) {
-                buf[ptr++] = buff[buffPtr++];
+            //啥也读不到了就跳出去
+            if (readBuffCnt == 0) break;
+
+            //然后将读到的写入结果
+            while (ptr < n && readBuffPtr < readBuffCnt) {
+                buf[ptr++] = readBuffer[readBuffPtr++];
             }
-            //consumer all the result of last read
-            if (buffPtr == buffCnt) buffPtr = 0;
+            //如果发现用完这次读到的数据，则read buffer pointer reset.
+            if (readBuffPtr == readBuffCnt) readBuffPtr = 0;
         }
         return ptr;
     }
 
     //add by tina
-    Queue<Character> remain = new LinkedList<Character>();
+    Queue<Character> remain = new LinkedList<>();
 
     public int read2(char[] buf, int n) {
         int i = 0;

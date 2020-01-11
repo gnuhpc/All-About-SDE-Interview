@@ -22,19 +22,19 @@ public class FrequencySort451 {
 
         int[] records = new int[256];
 
-        for (int i : s.chars().toArray()){
+        for (int i : s.chars().toArray()) {
             records[i]++;
         }
 
         int[] countings = Arrays.stream(records).mapToObj(i -> (i)).sorted(Collections.reverseOrder())
-                .filter(i->i!=0).mapToInt(i -> i).toArray();
+                                .filter(i -> i != 0).mapToInt(i -> i).toArray();
 
         StringBuilder sb = new StringBuilder();
 
-        for (int count:countings){
+        for (int count : countings) {
             for (int i = 0; i < records.length; i++) {
-                if (count == records[i]){
-                    sb.append(new String(new char[count]).replace("\0", String.valueOf((char)i)));
+                if (count == records[i]) {
+                    sb.append(new String(new char[count]).replace("\0", String.valueOf((char) i)));
                     records[i] = 0;
                 }
             }
@@ -68,7 +68,8 @@ public class FrequencySort451 {
             char c = s.charAt(i);
             if (map.containsKey(c)) {
                 map.put(c, map.get(c) + 1);
-            } else {
+            }
+            else {
                 map.put(c, 1);
             }
         }
@@ -96,26 +97,22 @@ public class FrequencySort451 {
     }
 
 
-        public String frequencySort2 (String s){
-            //方法2；二维数组
-            int[][] count = new int[128][2];
-            char[] ch = s.toCharArray();
-            for (char c : ch) {
-                count[c][0] = c;
-                count[c][1]++;
-            }
-            Arrays.sort(count, new Comparator<int[]>() {
-                public int compare(int[] a, int[] b) {
-                    return b[1] - a[1];
-                }
-            });
-            StringBuilder ret = new StringBuilder();
-            for (int i = 0; i < 128; i++) {
-                for (int j = 0; j < count[i][1]; j++) {
-                    ret.append((char) count[i][0]);
-                }
-            }
-            return ret.toString();
+    public String frequencySort2(String s) {
+        //方法2；二维数组
+        int[][] count = new int[128][2];
+        char[] ch = s.toCharArray();
+        for (char c : ch) {
+            count[c][0] = c;
+            count[c][1]++;
         }
+        Arrays.sort(count, (a, b) -> b[1] - a[1]);
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0; i < 128; i++) {
+            for (int j = 0; j < count[i][1]; j++) {
+                ret.append((char) count[i][0]);
+            }
+        }
+        return ret.toString();
+    }
 
 }

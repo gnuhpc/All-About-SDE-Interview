@@ -4,24 +4,65 @@ import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Copyright gnuhpc 19-8-3
  */
 public class Insert57 {
+    //Method 0: 56题方法，加进去即可
+    class Interval {
+        int start;
+        int end;
+
+        Interval(int s, int e) {
+            start = s;
+            end = e;
+        }
+    }
+
+    public int[][] insert0(int[][] intervals, int[] newInterval) {
+        List<Interval> intervalList = new LinkedList<>();
+        for (int i = 0; i < intervals.length; i++) {
+            intervalList.add(new Interval(intervals[i][0], intervals[i][1]));
+        }
+
+        intervalList.add(new Interval(newInterval[0], newInterval[1]));
+
+        intervalList.sort(Comparator.comparingInt(o -> o.start));
+        LinkedList<Interval> merged = new LinkedList<>();
+        for (Interval interval : intervalList)
+            if (merged.isEmpty() || merged.getLast().end < interval.start)//第一次加入或者无法合并
+                merged.add(interval);
+            else merged.getLast().end = Math.max(merged.getLast().end, interval.end);
+
+        //最后整理结果
+        int[][] res = new int[merged.size()][2];
+
+        for (int i = 0; i < res.length; i++) {
+            res[i][0] = merged.get(i).start;
+            res[i][1] = merged.get(i).end;
+        }
+
+        return res;
+    }
+
     //Method 1: 暴力解法
     public int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> result = new ArrayList<>();
         for (int i = 0; i < intervals.length; i++) {
+            //newInterval在interval的右边
             //插入的头大于原来的尾部，则原来的整体放入
             if (newInterval[0] > intervals[i][1]) {
                 result.add(intervals[i]);
                 //插入的尾小于原来的头，则插入的整体放入
             }
+            //newInterval在interval的左边
             else if (newInterval[1] < intervals[i][0]) {
                 result.add(newInterval);
-                newInterval = intervals[i];
+                newInterval = intervals[i];//别忘了更新指针，使得newinterval一直指向要合并的空间
             }
             else { //有交集就合并,old->new
                 if (newInterval[0] >= intervals[i][0]) {

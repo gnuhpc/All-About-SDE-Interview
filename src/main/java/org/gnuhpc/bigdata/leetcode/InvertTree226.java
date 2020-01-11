@@ -9,11 +9,11 @@ import java.util.Stack;
 public class InvertTree226 {
     public TreeNode invertTree(TreeNode root) {
 
-        if (root==null || (root.left == null && root.right ==null)) return root;
-        TreeNode n1 = invertTree(root.left);
-        TreeNode n2 = invertTree(root.right);
-        root.left = n2;
-        root.right = n1;
+        if (root == null || (root.left == null && root.right == null)) return root;
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
 
         return root;
     }

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class IsValid20 {
     public boolean isValid(String s) {
         Deque<Character> stack = new LinkedList<>();
+        stack.push(' ');//put dummy to simplified the right condition
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -16,26 +17,25 @@ public class IsValid20 {
             }
 
             if (isRight(c)) {
-                if (stack.isEmpty() || !isMatch(stack.pop(),c)) return false;
+                if (!isMatch(stack.pop(), c)) return false;
             }
         }
 
-        if (stack.isEmpty()) {
+        if (stack.size() == 1) {//only dummy
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
 
     private boolean isMatch(char l, char r) {
-        if (
-                (l == '(' && r == ')') ||
-                        (l == '{' && r == '}') ||
-                        (l == '[' && r == ']')
-
-                ) {
+        if ((l == '(' && r == ')') ||
+            (l == '{' && r == '}') ||
+            (l == '[' && r == ']')) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -49,7 +49,7 @@ public class IsValid20 {
     }
 
     @Test
-    public void test(){
+    public void test() {
         isValid("()");
     }
 }

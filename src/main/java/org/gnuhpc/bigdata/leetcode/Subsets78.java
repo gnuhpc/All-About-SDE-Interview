@@ -86,18 +86,19 @@ public class Subsets78 {
     Method 4 : Robot ，重要方法
      */
 
-    public static boolean[] selected = new boolean[100];
-    public static List<List<Integer>> ans = new ArrayList<>();
+    public boolean[] selected;
+    public List<List<Integer>> ans;
 
     public void robot(int idx, int[] nums) {
+
         if (idx >= nums.length) {
-            List<Integer> r = new ArrayList<>();
+            List<Integer> tmp = new ArrayList<>();
             for (int i = 0; i < nums.length; ++i) {
                 if (selected[i]) {
-                    r.add(nums[i]);
+                    tmp.add(nums[i]);
                 }
             }
-            ans.add(r);
+            ans.add(tmp);
             return;
         }
         selected[idx] = true;
@@ -107,7 +108,8 @@ public class Subsets78 {
     }
 
     public List<List<Integer>> subsets4(int[] nums) {
-        ans.clear();
+        selected = new boolean[nums.length];
+        ans = new ArrayList<>();
         robot(0, nums);
         return ans;
     }

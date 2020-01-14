@@ -25,7 +25,10 @@ public class Combine77 {
     // i=n时，已经没有元素可以加进list了，不必再进行递归，可进行剪枝
 
     private void dfs(int start, int end, int size, List<List<Integer>> res, List<Integer> temp) {
-        if (temp.size() == size) res.add(new ArrayList<>(temp));
+        if (temp.size() == size) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
         for (int i = start; i <= end ; i++ ){
             temp.add(i);
             dfs(i + 1, end, size, res, temp);
@@ -41,10 +44,41 @@ public class Combine77 {
     /*
     Robot方法
      */
+    public List<List<Integer>> combine2(int n, int k) {
+        int[] sets = new int[n];
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 1; i <=n ; i++) {
+            sets[i-1] = i;
+        }
+        robot(k, 0, new ArrayList<>(), sets, res);
+        return res;
+    }
+
+    private void robot(int k, int start, List<Integer> tmp,
+                       int[] sets, List<List<Integer>> res) {
+        if(start == sets.length||k==0){
+            if (k==0){ //如果只是start到了终点，但是没有选出足够多的数值，这个结果我们也不要
+                res.add(new ArrayList<>(tmp));
+            }
+            //虽然不要，也不能再往下走，因为start已经越界
+            return;
+        }
+
+
+        tmp.add(sets[start]);
+        robot(k-1,start+1,tmp, sets, res);
+
+        tmp.remove(tmp.size()-1);
+        robot(k,start+1,tmp, sets, res);
+    }
+
+    /*
+  Robot方法 (标记计数)
+   */
     boolean[] selected;
     List<List<Integer>> res;
     int[] sets;
-    public List<List<Integer>> combine2(int n, int k) {
+    public List<List<Integer>> combine3(int n, int k) {
         selected = new boolean[n];
         sets = new int[n];
         res = new ArrayList<>();
@@ -78,7 +112,5 @@ public class Combine77 {
         selected[start] = false;
         robot(k,start+1);
     }
-
-
 
 }

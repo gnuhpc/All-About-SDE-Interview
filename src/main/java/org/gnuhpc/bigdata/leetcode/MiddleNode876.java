@@ -11,10 +11,8 @@ public class MiddleNode876 {
 
         ListNode fast = head , slow = head;
 
-        while(fast!=null){
-            fast = fast.next;
-            if(fast == null) break;
-            fast = fast.next;
+        while(fast!=null && fast.next !=null){
+            fast = fast.next.next;
             slow = slow.next;
         }
 
@@ -33,6 +31,6 @@ public class MiddleNode876 {
         n3.next = n4;
         n4.next = null;
 
-        middleNode(n1);
+        System.out.println(middleNode(n1));
     }
 }

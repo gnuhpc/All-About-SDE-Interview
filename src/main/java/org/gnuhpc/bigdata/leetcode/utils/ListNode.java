@@ -46,4 +46,12 @@ public class ListNode {
 
         return l.stream().mapToInt(i->i).toArray();
     }
+
+    @Override
+    public String toString() {
+        return "ListNode{" +
+                "val=" + val +
+                ", next=" + next +
+                '}';
+    }
 }

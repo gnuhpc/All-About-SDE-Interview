@@ -3,19 +3,21 @@
 一般用在计算区间和
 
 首先要声明前缀和
-int preSum[] = new int[nums.length+1];
+int n = nums.length
+int preSum[] = new int[n];
 preSum[0] = 0;
 
 然后计算前缀和
-for (int i = 1; i <= nums.length; i++) {
+for (int i = 1; i <= n; i++) {
     preSum[i] = preSum[i-1] + nums[i-1];
 }
 
-则区间和[i,k] = preSum[k+1] - preSum[i]; 注意开闭区间，有必要的时候举一些简单的例子说明和验证
+则区间和[i,j] = preSum[j+1] - preSum[i]; 注意开闭区间，有必要的时候举一些简单的例子说明和验证
 
 LC相关题目：
 303 模板
 53 解法2
+560 解法1
 
 
 1. 推至2维的区域和就是叠加减去重叠的，补充反复被减去的

@@ -40,8 +40,6 @@ public class Multiply43 {
     //Num1 is 100 ,20 ,3
     private String doMultiply(String num1, String num2) {
         if (num1.length() == 1) {
-            StringBuilder sb = new StringBuilder();
-            int left = 0;
             int multi = num1.charAt(0)-'0';
 
             String res = "0";
@@ -82,6 +80,49 @@ public class Multiply43 {
         }
 
         return sb.toString();
+    }
+
+    /*
+
+
+     */
+
+    public String multiply2(String num1, String num2) {
+        String front = "";
+        int len = num2.length() - 1;
+        for (int i = num2.length() - 1; i >= 0; i--)
+            front = addition(front, multiplication(num1, num2.charAt(i)), len - i);
+        return front.charAt(0) == '0' ? "0" : front;
+    }
+
+    // 字符串乘法
+    public static String multiplication(String front, char after) {
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+        for (int i = front.length() - 1; i >= 0; i--) {
+            int temp = (front.charAt(i) - '0') * (after - '0') + carry;
+            carry = temp / 10;
+            sb.append(temp % 10);
+        }
+        return sb.append(carry > 0 ? carry : "").reverse().toString();
+    }
+
+    // 字符串加法
+    public static String addition(String front, String after, int index) {
+        int len = front.length() - 1, i = len - index, j = after.length() - 1, carry = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int k = len; k > len - index; k--)
+            sb.append(k < 0 ? "0" : front.charAt(k));
+        while (i >= 0 || j >= 0) {
+            int n1 = i >= 0 ? front.charAt(i) - '0' : 0;
+            int n2 = j >= 0 ? after.charAt(j) - '0' : 0;
+            int temp = n1 + n2 + carry;
+            carry = temp / 10;
+            sb.append(temp % 10);
+            i--;
+            j--;
+        }
+        return sb.append(carry > 0 ? 1 : "").reverse().toString();
     }
 
     @Test

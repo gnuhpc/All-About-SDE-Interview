@@ -1,25 +1,19 @@
 package org.gnuhpc.bigdata.leetcode;
 
 public class ReverseString344 {
-    public static void main(String[] args) {
-        String str = ",a";
-        System.out.println(reverseString(str));
 
-    }
+    public void reverseString(char[] s) {
+        int left = 0, right = s.length-1;
 
-    public static String reverseString(String s) {
-        char[] charArray = s.toCharArray();
-
-        for (int i = 0; i < charArray.length && i< charArray.length-1-i; i++) {
-            swap(charArray,i,charArray.length-1-i);
+        while (left<right){
+            swap(s,left++,right--);
         }
-
-        return String.valueOf(charArray);
     }
 
-    private static void swap(char[] charArray, int i, int j) {
-        char temp = charArray[i];
-        charArray[i] = charArray[j];
-        charArray[j] = temp;
+    private void swap(char[] arr, int i, int j) {
+        if(i==j) return;
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }

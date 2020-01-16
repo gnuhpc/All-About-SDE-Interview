@@ -3,9 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
 问题模型：求出所有满足条件的“ 排列”。
@@ -59,15 +57,13 @@ we can only use those unused numbers to generate the remaining part of the permu
         }
 
         for (int i = 0; i < nums.length; i++) {
-            if (visited[i]) {
-                continue;
+            if (!visited[i]) {
+                temp.add(nums[i]);
+                visited[i] = true;
+                dfs(nums, visited, temp, results);
+                visited[i] = false;
+                temp.remove(temp.size() - 1);
             }
-
-            temp.add(nums[i]);
-            visited[i] = true;
-            dfs(nums, visited, temp, results);
-            visited[i] = false;
-            temp.remove(temp.size() - 1);
         }
     }
 

@@ -3,8 +3,6 @@ package org.gnuhpc.bigdata.leetcode;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CoinChange322 {
 
@@ -42,18 +40,18 @@ public class CoinChange322 {
     if we can store "amount->fewest_coin_count" into hashtble,
     then we don't need to recompute again.
      */
-    private int[] amountArray;
+    private int[] memo;
 
     public int coinChange2(int[] coins, int amount) {
-        amountArray = new int[amount + 1];
+        memo = new int[amount + 1];
         return solve(coins, amount);
     }
 
     public int solve(int[] coins, int amount) {
         if (amount == 0)
             return 0;
-        if (amountArray[amount] != 0)
-            return amountArray[amount];
+        if (memo[amount] != 0)
+            return memo[amount];
         int n = Integer.MAX_VALUE;
         for (int coin : coins) {
             int curr = 0;
@@ -66,7 +64,7 @@ public class CoinChange322 {
                 n = Math.min(n, curr);
         }
         int finalCount = (n == Integer.MAX_VALUE) ? -1 : n;
-        amountArray[amount] = finalCount;
+        memo[amount] = finalCount;
         return finalCount;
     }
 

@@ -2,14 +2,13 @@ package org.gnuhpc.bigdata.leetcode;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class MinPathSum64 {
     /*
     Method : dfs + Memorization //将void改为返回值的dfs + memo
      */
-    private int r,c;
+    private int n, m;
     private int[][] memory;
 
     private int[][] dirs = new int[][]{
@@ -21,16 +20,14 @@ public class MinPathSum64 {
             return 0;
         }
 
-        r = grid.length;
-        c = grid[0].length;
+        n = grid.length;
+        m = grid[0].length;
 
-        memory = new int[r][c];
+        memory = new int[n][m];
 
-        // Bug May happen: forget to initilize
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                memory[i][j] = -1;
-            }
+        // Bug May happen: forget to initialize
+        for (int[] row: memory){
+            Arrays.fill(row,-1);
         }
 
         return dfs(grid, 0, 0, memory);
@@ -43,9 +40,8 @@ public class MinPathSum64 {
         }
 
         // 开始dfs 可能的路径,目前我们只有2种可能
-        // Record the memory
         int min = Integer.MAX_VALUE;
-        if (!(x == r - 1 && y == c - 1)) {
+        if (!(x == n - 1 && y == m - 1)) {
             for (int[] d: dirs){
                 int newX = x + d[0];
                 int newY = y + d[1];
@@ -56,13 +52,14 @@ public class MinPathSum64 {
         } else {
             min = 0;
         }
+        // Record the memory
         memory[x][y] =grid[x][y] + min;
 
         return memory[x][y];
     }
 
     private boolean isValid(int x, int y) {
-        return x < r && x >= 0 && y < c && y >= 0;
+        return x < n && x >= 0 && y < m && y >= 0;
     }
 
     /*
@@ -72,31 +69,31 @@ public class MinPathSum64 {
      */
 
     public int minPathSum2(int[][] grid) {
-        r = grid.length;
-        if (r == 0) return 0;
-        c = grid[0].length;
-        if (c == 0) return 0;
+        n = grid.length;
+        if (n == 0) return 0;
+        m = grid[0].length;
+        if (m == 0) return 0;
 
-        int[][] dp = new int[r][c];
+        int[][] dp = new int[n][m];
 
         dp[0][0] = grid[0][0];
         //第一列的初始条件
-        for (int i = 1; i < r; i++) {
+        for (int i = 1; i < n; i++) {
             dp[i][0] = dp[i - 1][0] + grid[i][0];
         }
 
         //第一行的初始条件
-        for (int i = 1; i < c; i++) {
+        for (int i = 1; i < m; i++) {
             dp[0][i] = dp[0][i - 1] + grid[0][i];
         }
 
         //除了第一列和第一行以外的格子
-        for (int i = 1; i < r; i++) {
-            for (int j = 1; j < c; j++) {
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
                 dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
             }
         }
-        return dp[r - 1][c - 1];
+        return dp[n - 1][m - 1];
     }
 
 

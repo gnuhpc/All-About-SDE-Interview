@@ -6,7 +6,7 @@ public class Exist79 {
     // 二维平面的坐标偏移量
     // 二维DFS 判断
 
-    private int d[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    private int dr[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     boolean[][] visited;
     int m, n;
 
@@ -37,9 +37,9 @@ public class Exist79 {
         if (board[x][y] != word.charAt(idx)) return false;
 
         visited[x][y] = true;
-        for (int i = 0; i < 4; i++) {
-            int newX = x + d[i][0];
-            int newY = y + d[i][1];
+        for (int[] d:dr){
+            int newX = x + d[0];
+            int newY = y + d[1];
             if (isValid(newX,newY)){
                 if(dfs(board, newX, newY, word, idx + 1))
                     return true;
@@ -54,6 +54,7 @@ public class Exist79 {
     public boolean isValid(int x, int y) {
         return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
     }
+
 
     @Test
     public void test(){

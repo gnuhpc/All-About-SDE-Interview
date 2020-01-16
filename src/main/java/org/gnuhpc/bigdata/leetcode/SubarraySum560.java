@@ -6,7 +6,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SubarraySum560 {
+    /*
+    Method1 :presum O(n^2)
+     */
     public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        // 构造前缀和
+        int[] presum = new int[n + 1];
+        presum[0] = 0;
+        for (int i = 0; i < n; i++)
+            presum[i + 1] = presum[i] + nums[i];
+
+        int res = 0;
+        // 穷举所有子数组
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if(presum[j+1] - presum[i] == k){
+                    res++;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /*
+    TwoSum思路--hash + presum
+     */
+    public int subarraySum2(int[] nums, int k) {
         // Edge cases
         if(nums.length == 0)    return 0;
 

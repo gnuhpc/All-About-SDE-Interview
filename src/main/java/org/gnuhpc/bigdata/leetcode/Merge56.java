@@ -3,10 +3,11 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.Utils;
 import org.junit.Test;
 
-import javax.rmi.CORBA.Util;
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
-public class MergeInterval56 {
+public class Merge56 {
     class Interval {
         int start;
         int end;

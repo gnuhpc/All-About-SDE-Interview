@@ -89,16 +89,90 @@ Recursion or Non-Recursion
         return -1;
     }
 
+    public static int leftBound(int target, int[] nums){
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (target <= nums[0]) return -1;
+
+        int start = 0;
+        int end = nums.length - 1;
+        //相邻就退出
+        while (start + 1 < end) {
+            //不会越界
+            int mid = start + (end - start) / 2;
+            if (target == nums[mid]) {
+                end = mid; //往前找
+                //If you'd like to fetch the last idx of the target, use the following statement instead:
+//                start = mid; //往后找
+            } else if (target > nums[mid]) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+
+        //范围缩小，double check
+        // 最后范围内就剩下start和end两个
+        if (target == nums[start]) {
+            return start-1;
+        }
+        else if (target == nums[end]){
+            return end-1;
+        }
+
+        else { // target between nums[start], nums[end]
+            return start;
+        }
+    }
+
+    public static int rightBound(int target, int[] nums){
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (target>=nums[nums.length-1]) return nums.length;
+
+        int start = 0;
+        int end = nums.length - 1;
+        //相邻就退出
+        while (start + 1 < end) {
+            //不会越界
+            int mid = start + (end - start) / 2;
+            if (target == nums[mid]) {
+//                end = mid; //往前找
+                //If you'd like to fetch the last idx of the target, use the following statement instead:
+                start = mid; //往后找
+            } else if (target > nums[mid]) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+
+        //范围缩小，double check
+        // 最后范围内就剩下start和end两个
+        if (target == nums[end]) {
+            return end+1;
+        }
+        else if (target == nums[start]){
+            return start+1;
+        }
+        else { // target between nums[start], nums[end]
+            return end;
+        }
+    }
 
     public static void main(String[] args) {
-        int[] array = new int[]{1,3,3,4,4,5,7,9};
+        int[] array = new int[]{1,2,2,2,3,6,8,10};
+        System.out.println(leftBound(9,array));
+        System.out.println(rightBound(9,array));
 
-        System.out.println(binarySearch(3,array));
+//        System.out.println(binarySearch(3,array));
 //        System.out.println(binarySearch(9,array));
 //        System.out.println(binarySearch(4,array));
 //        System.out.println(binarySearch(6,array));
 //        System.out.println("Another method:");
-        System.out.println(binarySearchRecursively(3,array));
+//        System.out.println(binarySearchRecursively(3,array));
 //        System.out.println(binarySearchRecursively(6,array));
     }
 }

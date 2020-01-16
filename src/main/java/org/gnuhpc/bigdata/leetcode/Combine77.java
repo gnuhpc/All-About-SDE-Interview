@@ -99,11 +99,9 @@ public class Combine77 {
                     }
                 }
                 res.add(tmp);
-                return;
-            } else {
-                //虽然不要，也不能再往下走，因为start已经越界
-                return;
             }
+            //虽然不要，也不能再往下走，因为start已经越界
+            return;
         }
 
         selected[start] = true;

@@ -1,0 +1,178 @@
+DFS + Backtracking
+
+理解方式：
+
+什么时候只用DFS不用回溯：
+如果DFS进去visited的值需要保留的，则不进行回溯, 比如LC200
+
+当遇到一个可以用到回溯法的时候脑子中有决策树，需要按照如下步骤进行：
+1. 确定问题的一个解空间树， 这个解空间树至少包含一个你需要的那个解， 否则这个树就完全没有意义了
+2. 组织好这棵树， 弄明白这棵树的每一个节点代表什么， 每一个分支代表什么
+3. 从这棵树的根节点不断的向下深搜， 当遇到不合适的节点的时候直接跳过以这个节点为根的子树
+4. 当搜索到了叶子节点的时候就回溯
+5. 不断的重复这个3， 4步骤
+(memo不是必须的,可以作为后续优化使用)
+
+一、 递归模式
+解题框架：
+1. 设定开始点，一般从头部或者尾部进行，并设定memo作为记忆化搜索的存储，
+   最后确认返回值（int、boolean还是void）， 另外如果能绕回来则设置visited为全局数组
+
+2. 将开始点和memo或遍历所有节点进行DFS
+
+    void dfs(int 当前状态){
+        if(invalid条件) return // 这一步是可选的
+        if(visited) return
+        if(当前状态为边界状态)
+        {
+            记录或输出
+            return;
+        }
+
+        标记visited
+        for(i=0;i<n;i++)		//横向遍历所有相邻子节点
+        {
+       //进行下一步可能性的遍历，遍历中判断是不是一步可行的操作（isValid），如果可行则进入该步DFS,
+       //注意存在型的DFS， 遍历中有一个是true即为true。
+              if(子状态满足约束条件)
+              {
+                  做选择
+                  dfs(子状态)
+                  撤销选择
+              }
+        }
+        //遍历后将结果放入memo，并返回
+    }
+
+LC相关题目
+39 解法1
+78 解法1
+
+特例1: 二维数组的DFS+回溯
+
+//定义全局变量
+    private int[][] dr = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+    };
+    private int m, n;
+    private boolean[][] visited;
+
+//主程序判断边界，准备全局变量
+    m = board.length;
+    n = board[0].length;
+    visited = new boolean[m][n];
+
+//逐行逐列进行，什么都不判断
+   for (int i = 0; i < m; ++i) {
+       for (int j = 0; j < n; ++j)
+           dfs(board, i, j, xxx, resultSet);
+   }
+
+//在dfs中 (5步曲：结果集->剪枝->标注->判断valid->遍历)
+   // 判断是否可以剪枝：是否可以往结果集加入临时结果集或者是否符合往下再进行的条件
+   // 标注此节点visited: visited[x][y] = true;
+   // 对dr进行遍历，得到newX和newY，判断节点是不是越界并没有被访问过，如果满足则dfs进入newX和newY
+           for (int[] d : dr) {
+               int newX = x + d[0];
+               int newY = y + d[1];
+               if (isValid(newX, newY)) {
+                   dfs(board, newX, newY, node, result);
+               }
+           }
+
+    //其中在遍历的时候判断是不是越界,以及是不是访问过(重点！！！):
+    public boolean isValid(int x, int y) {
+        return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
+    }
+
+   // （尝试型的题目需要）回溯，去标注此节点visited: visited[x][y] = false; 或者直接将节点原地标记成
+   being visited （例如-1），在遍历完所有节点后再将其修改为visited状态 733
+
+LC相关题目：
+79
+212(加了Trie 快速剪枝)
+329
+733
+51
+
+特例2： 一维数组，解决留不留这个元素的问题：框架是robot方法，顾名思义是机器人方法
+这个机器人放出去就是为了用一个数字标记选择不选择某个元素的
+Step1: 设置一个selected数组，长度与大集合相同
+Step2：robot(0, sets)开始进入数组进行标记
+robot先判断是不是到了要收集结果集的条件，如果到了就遍历原集合并对照对应的selected，
+碰到true 的就放入临时结果集，最后将临时结果集放入最终结果集
+
+如果没到终止条件就往下标注
+先标注对应selected为true，进行下一个robot(idx + 1, nums)标注
+然后再标注对应selected为false，进行下一个robot(idx + 1, nums)标注
+
+与 原始的backtracking的模板相比，结束条件和边界条件都是一样，但是他没有for循环
+只考虑当前值选与不选两种情况
+
+LC相关题目
+77解法3
+39解法2
+78解法2
+90解法2
+
+这种题也可以不使用标记数组，直接使用tmp记录，例如77解法2
+
+相关技巧
+1. 在遍历中需要带着上一步的状态的，直接使用dfs返回数值或者布尔值即可
+在DFS函数中直接定义这个值就行，要么不断算最值，要么累加累乘，要不不处理
+LC相关题目：
+64
+63
+351
+980
+547
+323 解法3
+785 解法3
+
+比如在渲染一个区域的边际的时候就可以使用范围值为1 的方式来判断一个节点是不是已经边界节点
+ int surround =
+          fill(image, x - 1, y, origColor, newColor)
+        + fill(image, x + 1, y, origColor, newColor)
+        + fill(image, x, y - 1, origColor, newColor)
+        + fill(image, x, y + 1, origColor, newColor);
+
+ if (surround < 4)
+     image[x][y] = newColor;
+
+二、非递归模式
+1. 使用stack, 在某些使用维护visited
+2. 对每个节点进行遍历，如果没有visit就放入stack
+3. 然后进入while循环，条件为!stack.isEmpty() ，弹出一个后，标注visited，然后对相邻节点进行遍历
+   push(注意判断visited)回stack。
+LC相关题目：
+62
+63
+679
+323
+140
+139
+547
+286
+323 解法2
+
+
+
+
+2. 对称二维数组可以将visited作为一维数组进行
+LC相关题目
+547
+323
+
+3. 记忆化搜索的设置memo可以是二维数组，另外要根据idx来调整数组大小
+LC相关题目
+300 Method2
+
+4. 记忆化搜索根据不同的条件可以设置多个memo
+LC相关题目
+337 解法2
+
+5. 有些题目从结果倒着推也很快，可以对memo设置为包装类型
+LC相关题目
+63 解法2
+
+

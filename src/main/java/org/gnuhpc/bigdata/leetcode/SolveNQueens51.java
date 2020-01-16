@@ -3,6 +3,7 @@ package org.gnuhpc.bigdata.leetcode;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SolveNQueens51 {
@@ -11,9 +12,9 @@ public class SolveNQueens51 {
      */
     public List<List<String>> solveNQueens(int n) {
         char[][] board = new char[n][n];
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < n; j++)
-                board[i][j] = '.';
+        for(char[] row: board){
+            Arrays.fill(row,'.');
+        }
         List<List<String>> res = new ArrayList<>();
         dfs(board, 0, res);
         return res;
@@ -58,8 +59,7 @@ public class SolveNQueens51 {
     private List<String> construct(char[][] board) {
         List<String> res = new ArrayList<>();
         for (char[] row : board) {
-            String s = new String(row);
-            res.add(s);
+            res.add(String.valueOf(row));
         }
         return res;
     }

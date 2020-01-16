@@ -20,7 +20,6 @@ Note:
 You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
  */
 
-import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
 import org.gnuhpc.bigdata.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 
@@ -106,23 +105,22 @@ There are k loops and each loop processing the find array costs log(n). Therefor
         int count=0;
 
         for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
+            if(dfs(visited, adjList, i))
                 count++;
-                dfs(visited, adjList, i);
-            }
         }
         return count;
     }
 
-    private void dfs(boolean[] visited, List<List<Integer>> adjList, int i) {
+    private boolean dfs(boolean[] visited, List<List<Integer>> adjList, int i) {
+        if(visited[i]) return false;
         visited[i] = true;
-        List<Integer> adjs = adjList.get(i);
 
-        for (Integer adj: adjs){
+        for (Integer adj: adjList.get(i)){
             if (!visited[adj]){
                 dfs(visited,adjList,adj);
             }
         }
+        return true;
     }
 
     @Test
@@ -146,8 +144,8 @@ There are k loops and each loop processing the find array costs log(n). Therefor
         );
 
         System.out.println(
-                countComponents2(5,
-                        new int[][]{{0, 1}, {1, 2}, {3, 4}, {2, 3}}
+                countComponents3(5,
+                        new int[][]{{0, 1}, {1, 2}, {3, 4}}
                 )
         );
     }

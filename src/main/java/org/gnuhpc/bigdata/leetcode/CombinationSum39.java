@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CombinationSum39 {
+    /*
+    Method 1:  标准dfs，遍历start，注意下一个start还是i
+     */
+    //target 为本次迭代后剩余的，start是起始idx
     public List<List<Integer>> combinationSum(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
         dfs(res, new ArrayList<>(), nums, target, 0);
         return res;
     }
 
-    //思路： 标准dfs，遍历start，注意下一个start还是i
-    //target 为本次迭代后剩余的，start是起始idx
     private void dfs(List<List<Integer>> res, List<Integer> temp, int [] nums, int target, int start){
         if(target < 0 || start >= nums.length) return; //注意递归的结束条件
         if(target == 0) {
@@ -28,7 +30,7 @@ public class CombinationSum39 {
     }
 
     /*
-    思路2 robot方法
+    Method 2: robot方法
      */
     public List<List<Integer>> combinationSum2(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();

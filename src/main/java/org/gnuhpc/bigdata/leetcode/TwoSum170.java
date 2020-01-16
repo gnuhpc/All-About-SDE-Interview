@@ -1,6 +1,8 @@
 package org.gnuhpc.bigdata.leetcode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,39 +13,18 @@ import java.util.Set;
 应对读多写少的场景
  */
 public class TwoSum170 {
-    Set<Integer> resultSet;
-    Set<Integer> numberSet;
+    Set<Integer> sum = new HashSet<>();
+    List<Integer> nums = new ArrayList<>();
 
-    /**
-     * Initialize your data structure here.
-     */
-    public TwoSum170() {
-        resultSet = new HashSet<>();
-        numberSet = new HashSet<>();
-    }
-
-    /**
-     * Add the number to an internal data structure..
-     */
     public void add(int number) {
-        Set<Integer> otherSet = new HashSet<>();
-
-        for (int n : resultSet) {
-            otherSet.add(n + number);
-        }
-
-        for (int n : numberSet) {
-            otherSet.add(n + number);
-        }
-
-        numberSet.add(number);
-        resultSet.addAll(otherSet);
+        // 记录所有可能组成的和
+        for (int n : nums)
+            sum.add(n + number);
+        nums.add(number);
     }
 
-    /**
-     * Find if there exists any pair of numbers which sum is equal to the value.
-     */
     public boolean find(int value) {
-        return resultSet.contains(value);
+        return sum.contains(value);
     }
+
 }

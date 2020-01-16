@@ -23,22 +23,22 @@ public class FindCircleNum547 {
         boolean[] visited = new boolean[N];
         // Step2: 逐个节点进行，没有访问过的就dfs进去
         for(int i = 0; i < N; i++){
-            if(!visited[i]) {
-                dfs(M, visited, i);
+            if(dfs(M, visited, i))
                 circle++; //没有被前边的dfs访问过的就是新的一个circle 的出现
-            }
         }
         return circle;
     }
-    public void dfs(int[][] M, boolean[] visited, int id){
+    public boolean dfs(int[][] M, boolean[] visited, int id){
+        if(visited[id]) return false;
         visited[id] = true;
         for(int i = 0; i < M.length; i++){
             // Step3: 把这个节点相关朋友联系的，且没有被访问过的统统标注为visited
             if(!visited[i] && M[id][i] == 1){
-                visited[i] = true;
                 dfs(M, visited, i);
             }
         }
+
+        return true;
     }
 
 

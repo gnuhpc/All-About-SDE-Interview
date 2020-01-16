@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LetterCombinations17 {
-    //Method 1: DFS + Backtracking 这种可以直观理解为钻到底
+    //Method 1: DFS (+ Backtracking, if use StringBuilder instead of String) 这种可以直观理解为钻到底
 
     HashMap<Character, String> keyMap = new HashMap<Character, String>() {{
         put('2', "abc");
@@ -23,25 +23,23 @@ public class LetterCombinations17 {
     public List<String> letterCombinations(String digits) {
         List<String> res = new ArrayList<>();
         if (digits == null || digits.isEmpty()) return res;
-        helper(digits, res, new StringBuilder(), digits.length());
+        helper(0, digits.length(), digits, res, "");
 
         return res;
     }
 
-    private void helper(String digits, List<String> res, StringBuilder sb, int length) {
-        if (sb.length() == length) {
-            res.add(sb.toString());
+    private void helper(int curLength, int length, String digits, List<String> res, String temp) {
+        if (curLength == length) {
+            res.add(temp);
             return;
         }
 
-        for (int i = 0; i < digits.length(); i++) {
-            for (char c : keyMap.get(digits.charAt(i)).toCharArray()) {
-                sb.append(c);
-                helper(digits.substring(i+1), res, sb, length);
-                sb.deleteCharAt(sb.length()-1);
-            }
+        char num = digits.charAt(curLength);
+        for (int i = 0; i < keyMap.get(num).length(); i++) {
+            helper(curLength + 1, length, digits, res, temp + keyMap.get(num).charAt(i));
         }
     }
+
 
     //method 2: BFS，这种可以理解为一层层准备拿出来和下一层合并
     public List<String> letterCombinations2(String digits) {

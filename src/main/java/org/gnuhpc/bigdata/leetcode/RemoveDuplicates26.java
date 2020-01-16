@@ -8,6 +8,7 @@ public class RemoveDuplicates26 {
         if (nums == null) return 0;
         if (nums.length <= 1) return nums.length;
 
+        //l始终指向不重复数字的最后一个
         int l, r;
 
         for (l = 0, r = 1; r < nums.length; r++) {

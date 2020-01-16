@@ -17,15 +17,16 @@ public class AddOperators282 {
             return;
         }
         for(int i = pos; i < num.length(); i++){
-            if(i != pos && num.charAt(pos) == '0') break;
+            if (i != pos && num.charAt(pos) == '0') break;//先导0的数字不是有效数字
             long cur = Long.parseLong(num.substring(pos, i + 1));
-            if(pos == 0){
+            if (pos == 0) { //第一个数字不加符号
                 helper(rst, path + cur, num, target, i + 1, cur, cur);
             }
-            else{
-                helper(rst, path + "+" + cur, num, target, i + 1, eval + cur , cur);
-                helper(rst, path + "-" + cur, num, target, i + 1, eval -cur, -cur);
-                helper(rst, path + "*" + cur, num, target, i + 1, eval - multi + multi * cur, multi * cur );
+            else {
+                helper(rst, path + "+" + cur, num, target, i + 1, eval + cur, cur);
+                helper(rst, path + "-" + cur, num, target, i + 1, eval - cur, -cur);
+                helper(rst, path + "*" + cur, num, target, i + 1, eval - multi + multi * cur, multi * cur);
+                //第三种情况 1+2*3 = 3-2 + 2*3
             }
         }
     }

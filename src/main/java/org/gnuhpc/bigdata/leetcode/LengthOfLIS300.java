@@ -85,14 +85,14 @@ Thus, we find out only the length of the LIS possible by not including the curre
     /*
     动态规划DP，类似brute force的解法，维护一个一维dp数组，
     其中dp[i]表示以nums[i]为结尾的最长递增子串的长度。Time: O(n^2)
-设长度为N的数组为{a0，a1, a2, ...an-1)，
-则假定以aj结尾的数组序列的最长递增子序列长度为L(j)，
-则L(j)={ max(L(i))+1, i<j且a[i]<a[j] }。也就是说，需要遍历在j之前的所有位置i(从0到j-1)，
-找出满足条件a[i]<a[j]的L(i)，求出max(L(i))+1即为L(j)的值。
-最后，我们遍历所有的L(j)（从0到N-1），找出最大值即为最大递增子序列。时间复杂度为O(N^2)。
+    设长度为N的数组为{a0，a1, a2, ...an-1)，
+    则假定以aj结尾的数组序列的最长递增子序列长度为L(j)，
+    则L(j)={ max(L(i))+1, i<j且a[i]<a[j] }。也就是说，需要遍历在j之前的所有位置i(从0到j-1)，
+    找出满足条件a[i]<a[j]的L(i)，求出max(L(i))+1即为L(j)的值。
+    最后，我们遍历所有的L(j)（从0到N-1），找出最大值即为最大递增子序列。时间复杂度为O(N^2)。
 
-例如给定的数组为{5，6，7，1，2，8}，则L(0)=1, L(1)=2, L(2)=3, L(3)=1, L(4)=2, L(5)=4。
-所以该数组最长递增子序列长度为4，序列为{5，6，7，8}。
+    例如给定的数组为{5，6，7，1，2，8}，则L(0)=1, L(1)=2, L(2)=3, L(3)=1, L(4)=2, L(5)=4。
+    所以该数组最长递增子序列长度为4，序列为{5，6，7，8}。
      */
     //还有一种方法是先生成一个排序序列，然后求这个排序序列和原序列的最长公共子序列，方法为：
     //https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
@@ -101,43 +101,43 @@ Thus, we find out only the length of the LIS possible by not including the curre
         int n = nums.length;
         int[] dp = new int[nums.length];
         // dp 数组全都初始化为 1 ， 因为自己就是一个自增序列，至少为1
-
         Arrays.fill(dp, 1);
 
-        int[] pi = new int[n];
-        Arrays.fill(pi,-1);
+//        int[] pi = new int[n];
+//        Arrays.fill(pi,-1);
         int p = 0;
         int max = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < i; j++) {
                 if (nums[j] < nums[i]) {
                     dp[i] = Math.max(dp[i], dp[j] + 1);
-                    if (dp[i] == dp[j] + 1) {
-                        pi[i] = j;
-                    }
+//                    if (dp[i] == dp[j] + 1) {
+//                        pi[i] = j;
+//                    }
                 }
             }
 
             if (dp[i] > max) {
                 max = dp[i];
-                p = i;
+//                p = i;
             }
         }
-
-        int[] seq = new int[max];
-        System.out.println("Pi seq: ");
-        for (int i = max - 1; i >= 0; --i) {
-            System.out.print(p + " ");
-            seq[i] = nums[p];
-            System.out.print(seq[i] +" ");
-            p = pi[p]; //在这里可以对p进行探测，排列组合得出所有LIS
-        }
-        System.out.println();
-
-        System.out.println("Longest increasing seq: ");
-        for (int i = 0; i < max; ++i) {
-        }
-        System.out.println();
+//
+//        int[] seq = new int[max];
+//        System.out.println("Pi seq: ");
+//        for (int i = max - 1; i >= 0; --i) {
+//            System.out.print(p + " ");
+//            seq[i] = nums[p];
+//            System.out.print(seq[i] +" ");
+//            p = pi[p]; //在这里可以对p进行探测，排列组合得出所有LIS
+//        }
+//        System.out.println();
+//
+//        System.out.println("Longest increasing seq: ");
+//        for (int i = 0; i < max; ++i) {
+//            System.out.println(pi[i]);
+//        }
+//        System.out.println();
         return max;
     }
 

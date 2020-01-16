@@ -19,7 +19,7 @@ public class GetFactors254 {
 
     private void dfs(int n, int start, List<List<Integer>> res, List<Integer> temp) {
         if (n <= 1) {
-            if (temp.size() > 1) {
+            if (temp.size() > 1) {//get rid of itself
                 res.add(new ArrayList<>(temp));
             }
             return;

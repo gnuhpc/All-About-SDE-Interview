@@ -2,6 +2,7 @@ package org.gnuhpc.bigdata.leetcode;
 
 import java.util.*;
 
+//面试做到这一步是第二步
 public class LRUCache146_2 {
     private int                   capacity;
     //Head -> most recent

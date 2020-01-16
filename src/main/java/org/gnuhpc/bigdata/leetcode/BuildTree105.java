@@ -8,18 +8,32 @@ import java.util.Arrays;
 public class BuildTree105 {
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if (preorder == null || inorder == null || inorder.length == 0 || preorder.length == 0) return null;
-        TreeNode root = new TreeNode(preorder[0]);
-        if (preorder.length == 1) return root;
-        int breakindex = findElem(inorder,root.val);
-        int[] subleftpre = Arrays.copyOfRange(preorder, 1, breakindex + 1);
-        int[] subrightpre = Arrays.copyOfRange(preorder, breakindex + 1, preorder.length);
-        int[] subleftin = Arrays.copyOfRange(inorder, 0, breakindex);
-        int[] subrightin = Arrays.copyOfRange(inorder, breakindex + 1, inorder.length);
-        root.left = buildTree(subleftpre, subleftin);
-        root.right = buildTree(subrightpre, subrightin);
-        return root;
+        int preStart = 0;
+        int preEnd = preorder.length - 1;
+        int inStart = 0;
+        int inEnd = inorder.length - 1;
+
+        return construct(preorder, preStart, preEnd, inorder, inStart, inEnd);
     }
+
+    //实质是一个前序遍历
+    public TreeNode construct(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd) {
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
+        }
+
+        int val = preorder[preStart];
+        TreeNode p = new TreeNode(val);
+
+        //find parent element index from inorder
+        int k = findElem(inorder, val);
+
+        p.left = construct(preorder, preStart + 1, preStart + (k - inStart), inorder, inStart, k - 1);
+        p.right = construct(preorder, preStart + (k - inStart) + 1, preEnd, inorder, k + 1, inEnd);
+
+        return p;
+    }
+
 
     private int findElem(int arr[], int value) {
         int idx = -1;

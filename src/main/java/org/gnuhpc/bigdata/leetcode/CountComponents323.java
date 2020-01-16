@@ -45,7 +45,7 @@ There are k loops and each loop processing the find array costs log(n). Therefor
             }
         }
 
-        return uf.count;
+        return uf.count();
     }
 
 

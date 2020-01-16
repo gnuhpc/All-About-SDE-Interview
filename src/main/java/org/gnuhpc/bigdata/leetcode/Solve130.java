@@ -1,6 +1,7 @@
 package org.gnuhpc.bigdata.leetcode;
 
 import org.gnuhpc.bigdata.datastructure.unionfind.QuickUnion;
+import org.gnuhpc.bigdata.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -80,6 +81,11 @@ public class Solve130 {
     // 定义4个方向遍历的偏移量
     // 本体不需要使用used这样的数组，因为可以在原二维数组上标记
     // 对比第200题-岛屿个数
+    /*
+    先用 for 循环遍历棋盘的四边，用 DFS 算法把那些与边界相连的 O 换成一个特殊字符，比如 *；
+    然后再遍历整个棋盘，把剩下的 O 换成 X，把 # 恢复成 O。
+    这样就能完成题目的要求，时间复杂度 O(MN)。
+     */
 
     public void solve2(char[][] board) {
         if (board == null || board.length == 0)
@@ -146,7 +152,8 @@ public class Solve130 {
         int cols = board[0].length;
 
         // 用一个虚拟节点, 边界上的O 的父节点都是这个虚拟节点
-        QuickUnion qu = new QuickUnion(rows * cols + 1);
+        // 主要思路是适时增加虚拟节点，想办法让元素「分门别类」，建立动态连通关系。
+        UnionFind qu = new UnionFind(rows * cols + 1);
 
         //并差集虚拟节点
         int dummyNode = rows * cols;
@@ -174,13 +181,11 @@ public class Solve130 {
             }
         }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (qu.isConnected(qu.node(cols, i, j), dummyNode)) {
-                    // 和dummyNode 在一个连通区域的,那么就是O；
-                    board[i][j] = 'O';
-                }
-                else {
+        //只有和边界 O 相连的 O 才具有和 dummy 的连通性，他们不会被替换。
+        for (int i = 1; i < rows - 1; i++) {
+            for (int j = 1; j < cols - 1; j++) {
+                if (board[i][j] == 'O' && !qu.isConnected(qu.node(cols, i, j), dummyNode)) {
+                    // 和dummyNode 不在一个连通区域的,那么就是X；
                     board[i][j] = 'X';
                 }
             }

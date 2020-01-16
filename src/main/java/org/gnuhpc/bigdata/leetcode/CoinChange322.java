@@ -18,7 +18,7 @@ public class CoinChange322 {
     public int coinChange1(int[] coins, int amount) {
         if (amount == 0)
             return 0;
-        int n = Integer.MAX_VALUE;
+        int res = Integer.MAX_VALUE;
         for(int coin : coins) {
             int curr = 0;
             if (amount >= coin) {
@@ -27,9 +27,9 @@ public class CoinChange322 {
                     curr = 1 + next;
             }
             if (curr > 0)
-                n = Math.min(n, curr);
+                res = Math.min(res, curr);
         }
-        return (n == Integer.MAX_VALUE) ? -1 : n;
+        return (res == Integer.MAX_VALUE) ? -1 : res;
     }
 
     /*
@@ -52,7 +52,7 @@ public class CoinChange322 {
             return 0;
         if (memo[amount] != 0)
             return memo[amount];
-        int n = Integer.MAX_VALUE;
+        int res = Integer.MAX_VALUE;
         for (int coin : coins) {
             int curr = 0;
             if (amount >= coin) {
@@ -61,9 +61,9 @@ public class CoinChange322 {
                     curr = 1 + next;
             }
             if (curr > 0)
-                n = Math.min(n, curr);
+                res = Math.min(res, curr);
         }
-        int finalCount = (n == Integer.MAX_VALUE) ? -1 : n;
+        int finalCount = (res == Integer.MAX_VALUE) ? -1 : res;
         memo[amount] = finalCount;
         return finalCount;
     }

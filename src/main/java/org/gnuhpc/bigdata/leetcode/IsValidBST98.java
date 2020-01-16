@@ -12,14 +12,14 @@ public class IsValidBST98 {
     Method 1: 找最大值最小值都是递归了
      */
     public boolean isValidBST(TreeNode root) {
-        return isBstHelper(root, null, null);
+        return isBSTHelper(root, null, null);
     }
 
-    public static boolean isBstHelper(TreeNode root, Integer lowerLim, Integer upperLim) {
-        if (root==null) return true;
-        if (lowerLim != null && root.val <= lowerLim) return false;
-        if (upperLim != null && root.val >= upperLim) return false;
-        return isBstHelper(root.left, lowerLim, root.val) && isBstHelper(root.right, root.val, upperLim);
+    public static boolean isBSTHelper(TreeNode root, Integer lower, Integer upper) {
+        if (root == null) return true;
+        if (lower != null && root.val <= lower) return false;
+        if (upper != null && root.val >= upper) return false;
+        return isBSTHelper(root.left, lower, root.val) && isBSTHelper(root.right, root.val, upper);
     }
 
     /*

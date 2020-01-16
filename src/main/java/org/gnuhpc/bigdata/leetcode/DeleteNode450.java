@@ -3,47 +3,34 @@ package org.gnuhpc.bigdata.leetcode;
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 
 public class DeleteNode450 {
-    public TreeNode deleteNode(TreeNode root, int key) {
-
-         /* Base Case: If the tree is empty */
-        if (root == null)  return null;
-
-        /* Otherwise, recur down the tree */
-        if (key < root.val)
+    TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
+        if (root.val == key) {
+            //情况 1：A 恰好是末端节点，两个子节点都为空，那么它可以当场去世了。
+            if (root.left == null && root.right == null)
+                return null;
+            // 情况 2：A 只有一个非空子节点，那么它要让这个孩子接替自己的位置。
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+            // 处理情况 3 A 有两个子节点，麻烦了，为了不破坏 BST 的性质，
+            // A 必须找到左子树中最大的那个节点，或者右子树中最小的那个节点来接替自己。我们以第二种方式讲解。
+            TreeNode minNode = getMin(root.right);
+            root.val = minNode.val;
+            root.right = deleteNode(root.right, minNode.val);
+        }
+        else if (root.val > key) {
             root.left = deleteNode(root.left, key);
-        else if (key > root.val)
+        }
+        else if (root.val < key) {
             root.right = deleteNode(root.right, key);
-
-            // if key is same as find's key, then This is the node
-            // to be deleted
-        else
-        {
-            // node with only one child or no child
-            if (root.left == null)
-                return root.right;
-            else if (root.right == null)
-                return root.left;
-
-            //这是重点
-            // node with two children: Get the inorder successor (smallest
-            // in the right subtree)
-            root.val = minValue(root.right);
-
-            // Delete the inorder successor
-            root.right = deleteNode(root.right, root.val);
         }
-
         return root;
-
     }
 
-    private int minValue(TreeNode root) {
-        int minv = root.val;
-        while (root.left != null)
-        {
-            minv = root.left.val;
-            root = root.left;
-        }
-        return minv;
+    TreeNode getMin(TreeNode node) {
+        // BST 最左边的就是最小的
+        while (node.left != null) node = node.left;
+        return node;
     }
+
 }

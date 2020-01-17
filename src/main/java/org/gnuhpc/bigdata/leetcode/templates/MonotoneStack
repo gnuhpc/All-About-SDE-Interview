@@ -1,0 +1,32 @@
+单调栈
+
+本质问题：给你一个数组，返回一个等长的数组，对应索引存储着下一个更大元素，如果没有更大的元素，就存 -1
+
+模板：
+List<Integer> nextGreaterElement(List<Integer> nums) {
+    List<Integer> ans; // 存放答案的数组
+    stack<int> s; //存数字
+    for (int i = nums.size() - 1; i >= 0; i--) { // 倒着往栈里放
+
+        while (!s.empty() && s.top() <= nums[i]) { // 判定个子高矮
+            s.pop(); // 矮个起开，反正也被挡着了。。。
+        }
+        ans[i] = s.empty() ? -1 : s.top(); // 这个元素身后的第一个高个
+        s.push(nums[i]); // 进队，接受之后的身高判定吧！
+    }
+    return ans;
+}
+
+分析它的时间复杂度，要从整体来看：总共有 n 个元素，每个元素都被 push 入栈了一次，
+而最多会被 pop 一次，没有任何冗余操作。所以总的计算规模是和元素规模 n 成正比的，也就是 O(n) 的复杂度。
+
+有时取的结果不是下一个更大的元素是多少，而是索引或者距离，则stack中存入的是index
+
+LC相关题目：
+739
+
+From: https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/dan-tiao-zhan
+
+技巧1：循环单调栈
+将原始数组“翻倍”，就是在后面再接一个原始数组，
+这样的话，按照之前“比身高”的流程，每个元素不仅可以比较自己右边的元素，而且也可以和左边的元素比较了。

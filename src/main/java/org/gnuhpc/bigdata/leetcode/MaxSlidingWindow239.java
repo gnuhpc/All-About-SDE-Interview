@@ -165,7 +165,6 @@ sliding_max = 4, 6, 6, 8, 9, 10, 12, 56
             high++;
         }
         return res;
-
     }
 
 

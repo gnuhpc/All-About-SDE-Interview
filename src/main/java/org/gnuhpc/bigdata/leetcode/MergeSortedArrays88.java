@@ -2,6 +2,7 @@ package org.gnuhpc.bigdata.leetcode;
 
 import java.util.Arrays;
 
+//倒着合并
 public class MergeSortedArrays88 {
     public static void main(String[] args) {
         int[] nums1 = new int[]{1,2,3,0,0,0};

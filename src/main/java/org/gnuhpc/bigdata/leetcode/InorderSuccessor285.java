@@ -61,5 +61,36 @@ public class InorderSuccessor285 {
         return succ;
     }
 
+    /*
+    Follow up　如果这个树不是BST，而一般的树
+     */
+    public static TreeNode n = null;
+    public TreeNode inorderSuccessor3(TreeNode root, TreeNode x){
+        if(x.right!=null){//如果有右子树
+            return leftMostTreeNode(x.right);
+        }
+        //https://algorithms.tutorialhorizon.com/inorder-successor-in-binary-tree/
+        return findRecur(root, x);
+    }
+
+    public TreeNode findRecur(TreeNode root, TreeNode x){
+        if(root==null) return null;
+        if(root==x||(n = findRecur(root.left,x))!=null||(n=findRecur(root.right,x))!=null){
+
+            if(n!=null){
+                if(root.left==n){
+                    return root;
+                }
+            }
+            return root;
+        }
+        return null;
+    }
+    public TreeNode leftMostTreeNode(TreeNode x){
+        while(x.left!=null){
+            x = x.left;
+        }
+        return x;
+    }
 
 }

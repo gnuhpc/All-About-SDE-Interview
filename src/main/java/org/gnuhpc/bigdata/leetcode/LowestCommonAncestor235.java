@@ -24,11 +24,20 @@ public class LowestCommonAncestor235 {
         return null;
     }
 
-    //如果一开始在一边，则顺着往下找，如果不是则返回root
+    /*
+    Method2 : 非递归写法
+     */
+
     public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        while ((root.val - p.val) * (root.val - q.val) > 0)
-            root = p.val < root.val ? root.left : root.right;
-        return root;
+        while (true) {
+            if (root.val > p.val && root.val > q.val) {
+                root = root.left;
+            } else if (root.val < p.val && root.val < q.val) {
+                root = root.right;
+            } else {
+                return root;
+            }
+        }
     }
 
 

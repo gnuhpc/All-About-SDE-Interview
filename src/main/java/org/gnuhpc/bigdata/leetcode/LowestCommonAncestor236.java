@@ -66,4 +66,10 @@ public class LowestCommonAncestor236 {
         return left==null?right:right==null?left:root;
     }
 
+    /*
+    Follow up: Given nodes in a binary tree, find the distance between them.
+    TreeNode lca = lca(root, node1, node2);
+    return getDistance(lca, node1) + getDistance(lca, node2);
+     */
+
 }

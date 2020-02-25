@@ -10,7 +10,7 @@ import java.util.Random;
 public class RandomPickIndex398 {
     private int[] nums;
 
-    public Solution(int[] nums) {
+    public RandomPickIndex398(int[] nums) {
         this.nums = nums;
     }
 

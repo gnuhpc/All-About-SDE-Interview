@@ -1,6 +1,6 @@
 # ALL ABOUT INTERVIEW
 
-### All the content are *updating*, you could watch this repo to get updated.
+### All the contents are *updating*, you could watch this repo to get updated.
 ---
 ### If you find it helpful, please give it *star*!This repo is for the guys who are struggling with the software engineer interview.
 ---
@@ -16,6 +16,6 @@
 | Language (Java) | [README](src/main/java/org/gnuhpc/bigdata/lang/README.md)          | Some features often asked                                                                             |
 | Miscellaneous   | [README](src/main/java/org/gnuhpc/bigdata/misc/README.md)          | Uncatalogued interview problems                                                                       |
 
-I am a Big data software engineer from China, so the backend related technical skills are included and some Chinese may be mixed into the comments.
+I am a data infra/platform software engineer from China, so the backend related technical skills are included and some Chinese may be mixed into the comments.
 
 Any feedback will be welcomed. Please post them in the issue section.

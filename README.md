@@ -1,8 +1,7 @@
-### **ALL ABOUT INTERVIEW**
+# ALL ABOUT INTERVIEW
 
-# All the content are *updating*, you could watch this repo to get updated.
-# If you find it helpful, please give it *star*!
-This repo is for the guys who are struggling with the software engineer interview.
+### All the content are *updating*, you could watch this repo to get updated.
+### If you find it helpful, please give it *star*!This repo is for the guys who are struggling with the software engineer interview.
 
 I am a Big data software engineer from China, so the backend related technical skills are included and some Chinese may be mixed into the comments.
 

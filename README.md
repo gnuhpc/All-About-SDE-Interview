@@ -1,7 +1,7 @@
 # ALL ABOUT SOFTWARE ENGINEER INTERVIEW
-
-### All the contents are *updating*, you could watch this repo to get updated.
+![logo.png](imgs/logo.png)
 ---
+### All the contents are *updating*, you could watch this repo to get updated.
 ### If you find it helpful, please give it *star*!This repo is for the guys who are struggling with the software engineer interview.
 ---
 

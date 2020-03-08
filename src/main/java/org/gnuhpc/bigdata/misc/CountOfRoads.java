@@ -6,11 +6,12 @@ import org.junit.Test;
 import java.util.*;
 
 
+// Rakuten 面试题
 //https://app.codility.com/programmers/task/min_router_peripherality/
 public class CountOfRoads{
     public int[] solution(int[] T) {
-        if(T==null) return null;
-        int[] res = new int[T.length-1];
+        if(T == null) return null;
+        int[] res = new int[T.length - 1];
         int[] depth = new int[T.length];
         Map<Integer, List<Integer>> adjs = new HashMap<>();
         int capital = -1;

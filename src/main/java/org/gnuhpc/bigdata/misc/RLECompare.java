@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 /*
 
+ByteDance 面试
+
 Given a string which is RLE encoded, for example 'AAA' is encoded as '3A',
 Implement a comparison function which operate on RLE encoded string directly:
 e.g.

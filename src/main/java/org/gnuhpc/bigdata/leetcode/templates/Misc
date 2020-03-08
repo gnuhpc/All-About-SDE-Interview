@@ -31,3 +31,7 @@ map.computeIfAbsent(arr[i], k -> new ArrayList<>()).add(i);//如果是null就添
 7. frame的一个窗口处理的，可以使用deque或者list对一些数据进行暂存
 LC相关题目
 358
+
+8. 如果需要数组切片操作的，不要使用数组copy而是将数组、起始终点位置写成一个函数进行操作，更快
+LC相关题目
+0402

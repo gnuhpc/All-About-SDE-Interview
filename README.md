@@ -1,9 +1,15 @@
 # ALL ABOUT SOFTWARE ENGINEER INTERVIEW
 ![logo.png](imgs/logo.png)
----
-### All the contents *being updated*, you could watch this repo to get updated.
-### If you find it helpful, please *star* it! This repo is for the guys who are struggling with the software engineer interview.
----
+
+
+**This repo is for the guys who are struggling with the software engineer interview.**
+
+----------------------------------------------------------------------------------
+**All the contents *being updated*, you could watch this repo to get updated.**
+
+**If you find it helpful, please *star* it!**
+
+---------------------------------------------
 
 | Topic           | Link                                                               | Notes                                                                                                 |
 |:----------------|:-------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------|
@@ -19,3 +25,5 @@
 I am a data infra/platform software engineer from China, so the backend related technical skills are included and some Chinese may be mixed into the comments.
 
 Any feedback will be welcomed. Please post them in the issue section.
+
+

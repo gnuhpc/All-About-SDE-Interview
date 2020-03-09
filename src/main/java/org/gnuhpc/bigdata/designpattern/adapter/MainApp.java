@@ -5,7 +5,7 @@ import org.gnuhpc.bigdata.designpattern.adapter.adaptee.EmployeeLdap;
 import org.gnuhpc.bigdata.designpattern.adapter.adapter.EmployeeAdapterCSV;
 import org.gnuhpc.bigdata.designpattern.adapter.adapter.EmployeeAdapterLdap;
 import org.gnuhpc.bigdata.designpattern.adapter.newproduct.EmployeeDB;
-import org.gnuhpc.bigdata.designpattern.adapter.target.Employee;
+import org.gnuhpc.bigdata.designpattern.adapter.targetbean.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

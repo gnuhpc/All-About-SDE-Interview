@@ -1,4 +1,4 @@
-package org.gnuhpc.bigdata.leetcode;
+package org.gnuhpc.bigdata.leetcode.solutions;
 
 import org.gnuhpc.bigdata.leetcode.utils.TreeNode;
 

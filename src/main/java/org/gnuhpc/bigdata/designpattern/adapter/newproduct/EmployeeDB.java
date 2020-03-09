@@ -1,6 +1,6 @@
 package org.gnuhpc.bigdata.designpattern.adapter.newproduct;
 
-import org.gnuhpc.bigdata.designpattern.adapter.target.Employee;
+import org.gnuhpc.bigdata.designpattern.adapter.targetbean.Employee;
 
 public class EmployeeDB implements Employee {
 

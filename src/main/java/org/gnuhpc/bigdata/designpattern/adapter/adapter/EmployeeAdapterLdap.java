@@ -1,7 +1,7 @@
 package org.gnuhpc.bigdata.designpattern.adapter.adapter;
 
 import org.gnuhpc.bigdata.designpattern.adapter.adaptee.EmployeeLdap;
-import org.gnuhpc.bigdata.designpattern.adapter.target.Employee;
+import org.gnuhpc.bigdata.designpattern.adapter.targetbean.Employee;
 
 public class EmployeeAdapterLdap implements Employee {
 

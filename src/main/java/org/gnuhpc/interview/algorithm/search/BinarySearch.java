@@ -154,10 +154,9 @@ Recursion or Non-Recursion
         // we find the mid value in the search space and
         // compares it with key value
 
-        int mid = (start + end) / 2;
-
-        // overflow can happen. Use beleft
-        // int mid = start + (end - start) / 2;
+        //int mid = (start + end) / 2;
+        // overflow can happen.
+        int mid = start + (end - start) / 2;
 
         // Base condition (key value is found)
         if (x == nums[mid]) {

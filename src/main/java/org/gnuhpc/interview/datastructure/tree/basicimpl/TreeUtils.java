@@ -10,24 +10,24 @@ public class TreeUtils {
     /*
     返回从root到值为x的路径
      */
-    public static Stack<TreeNode> pathToX(TreeNode root, int x) {
+    public static Deque<TreeNode> pathToX(TreeNode root, int x) {
         if (root == null) {
             return null;
         }
 
         if (root.val == x) {
-            Stack<TreeNode> path = new Stack<>();
+            Deque<TreeNode> path = new LinkedList<>();
             path.push(root);
             return path;
         }
 
-        Stack<TreeNode> leftPath = pathToX(root.left, x);
+        Deque<TreeNode> leftPath = pathToX(root.left, x);
         if (leftPath != null) {
             leftPath.push(root);
             return leftPath;
         }
 
-        Stack<TreeNode> rightPath = pathToX(root.right, x);
+        Deque<TreeNode> rightPath = pathToX(root.right, x);
         if (rightPath != null) {
             rightPath.push(root);
             return rightPath;
@@ -417,7 +417,7 @@ public class TreeUtils {
         System.out.println(sizeOfHalfNodes(root));
 
         System.out.println("Get path to 8:");
-        Stack<TreeNode> res = pathToX(root, 8);
+        Deque<TreeNode> res = pathToX(root, 8);
 
         while (!res.isEmpty()) {
             System.out.print(res.pop().val + " ");

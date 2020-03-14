@@ -5,6 +5,7 @@ import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeCreator;
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils;
 import org.junit.Test;
 
+import java.util.Deque;
 import java.util.Stack;
 
 import static org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils.pathToX;
@@ -27,10 +28,10 @@ public class LowestCommonAncestor236 {
     /*
     Method1 : 算出从root到val的节点的路径
      */
-    // 使用这个可以求出两个叶子节点的距离，就是两个节点分别到最近公共祖先的和
+    // 使用这个可以求出两个叶子节点的距离，就是两个节点分别到最近公共祖先的距离
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        Stack<TreeNode> pathToP = pathToX(root, p.val);
-        Stack<TreeNode> pathToQ = pathToX(root, q.val);
+        Deque<TreeNode> pathToP = pathToX(root, p.val);
+        Deque<TreeNode> pathToQ = pathToX(root, q.val);
         //If there is no p or q:
         if (pathToP == null || pathToQ == null) {
             return null;
@@ -55,15 +56,25 @@ public class LowestCommonAncestor236 {
     Method2 : 递归方法
 
      */
-    public TreeNode lowestCommonAncestorRecusive(TreeNode root, TreeNode p, TreeNode q) {
-        //如果找到 p 或者 q 那么就没有必要接着递归，因为共同祖先只可能是该节点或该节点祖先
-        //如果 find 为空了，说明这条路径上不可能有 p 或 q 节点，返回空
-        if (root == null || root == p || root == q) {
+    public TreeNode lowestCommonAncestorRecursive(TreeNode root, TreeNode p, TreeNode q) {
+        /*
+        如果root是null，则说明我们已经找到最底了，返回null表示没找到
+        如果root与p相等或者与q相等，则返回root
+        如果左子树没找到，递归函数返回null，证明p和q同在root的右侧，那么最终的公共祖先就是右子树找到的结点
+        如果右子树没找到，递归函数返回null，证明p和q同在root的左侧，那么最终的公共祖先就是左子树找到的结点
+        */
+        if (root == null || root == p || root == q)
             return root;
-        }
-        TreeNode left = lowestCommonAncestor(root.left, p, q);//往左分支上寻找
-        TreeNode right = lowestCommonAncestor(root.right, p, q); //往右分支上寻找
-        return left == null ? right : right == null ? left : root;
+
+        TreeNode leftNode = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightNode = lowestCommonAncestor(root.right, p, q);
+
+        if (leftNode == null)
+            return rightNode;
+        if (rightNode == null)
+            return leftNode;
+
+        return root;
     }
 
     /*

@@ -44,15 +44,17 @@ public class MaxAreaOfIsland695 {
         for (int i = 0; i < dr.length; i++) {
             int newX = x + dr[i][0];
             int newY = y + dr[i][1];
-            if ((newX >= 0 && newX < grid.length) && (newY >= 0 && newY < grid[0].length) &&
-                    !visited[newX][newY]) {
-                if (grid[newX][newY] == 1) {
-                    res += dfs(grid, newX, newY, visited);
-                }
+            if (isValid(grid, visited, newX, newY)) {
+                res += dfs(grid, newX, newY, visited);
             }
         }
 
         return res;
+    }
+
+    private boolean isValid(int[][] grid, boolean[][] visited, int x, int y) {
+        return !(x == -1 || x == grid.length || y == -1 ||
+                y == grid[0].length || visited[x][y] || grid[x][y] == 0);
     }
 
     /*
@@ -94,6 +96,40 @@ public class MaxAreaOfIsland695 {
         }
 
         return qu.maxCount();
+    }
+
+    /*
+    Method3: 全局变量+DFS
+     */
+
+    private int res = 0;
+    private int cur = 0;
+
+    public int maxAreaOfIsland3(int[][] grid) {
+        if (grid == null || grid.length < 1 || grid[0].length < 1) {
+            return 0;
+        }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    cur = 0;
+                    dfs(grid, i, j);
+                    res = Math.max(res, cur);
+                }
+            }
+        }
+        return res;
+    }
+
+    void dfs(int[][] grid, int i, int j) {
+        if (i != -1 && i != grid.length && j != -1 && j != grid[0].length && grid[i][j] == 1) {
+            cur++;
+            grid[i][j] = 0;
+            dfs(grid, i - 1, j);
+            dfs(grid, i, j - 1);
+            dfs(grid, i + 1, j);
+            dfs(grid, i, j + 1);
+        }
     }
 
     @Test

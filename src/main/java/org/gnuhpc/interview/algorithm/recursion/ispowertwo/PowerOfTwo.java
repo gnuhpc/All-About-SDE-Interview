@@ -1,6 +1,5 @@
-package org.gnuhpc.interview.misc;
+package org.gnuhpc.interview.algorithm.recursion.ispowertwo;
 
-import java.io.*;
 import java.util.Scanner;
 
 public class PowerOfTwo {

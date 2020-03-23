@@ -27,7 +27,9 @@ public class Rob198 {
         // 下面是对状态转移方程的描述
         int max = 0;
         for (int i = start; i < end; i++) {
+            //当前的这个抢
             max = Math.max(max, nums[i] + tryRob(nums, i + 2, end));
+            //当前的这个不抢
             max = Math.max(max, tryRob(nums, i + 1, end));
         }
         memo[start] = max;

@@ -25,7 +25,7 @@ public class Rob213 {
         Arrays.fill(memo, -1);
 
         int nContainFirst = tryRob(nums, 1, nums.length);
-        //add by tina,注意重新赋值，因为2轮最大值搜索对同一个索引计算结果不同
+        //add by tina,注意重新赋值，因为第2轮最大值搜索对同一个索引计算结果不同
         Arrays.fill(memo, -1);
         int yContainFirst = tryRob(nums, 0, nums.length - 1);
 
@@ -51,7 +51,6 @@ public class Rob213 {
         return max;
     }
 
-    //rivate int[] memo;
     public int rob2(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         //因为数组是非负整数，递归遍历中可能取单个元素的组合，故需要初始化为-1，而不是0

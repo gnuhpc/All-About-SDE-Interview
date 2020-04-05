@@ -3,30 +3,24 @@ package org.gnuhpc.interview.leetcode.solutions;
 import java.util.*;
 
 /*
-PriorityQueue
+PriorityQueue方法，有几个问题，第一是时间复杂度为O(logn)，第二个是要维护globalAge自增，并发有问题。
  */
 public class LFUCache460 {
-    Queue<KVNode> queue = null;
-    Map<Integer, KVNode> cache = new HashMap<>();
-    int cap = 0;
+    Queue<KVNode> queue;
+    Map<Integer, KVNode> cache;
+    int capacity;
     int globalAge = 0;
 
     public LFUCache460(int capacity) {
         cache = new HashMap<>();
-        cap = capacity;
-        if (cap != 0) queue = new PriorityQueue<>(capacity, (o1, o2) -> {
-            if (o1.fre == o2.fre) {
-                return (o1.age - o2.age);
-            } else {
-                return (o1.fre - o2.fre);
-            }
-        });
-        else queue = null;
+        this.capacity = capacity;
+        queue = new PriorityQueue<>();
     }
 
     public int get(int key) {
-        if (queue == null) return -1;
+        if (capacity <= 0) return -1;
         if (!cache.containsKey(key)) return -1;
+
         KVNode node = cache.get(key);
         globalAge++;
         node.age = globalAge;
@@ -35,21 +29,20 @@ public class LFUCache460 {
         return node.value;
     }
 
-
     public void put(int key, int value) {
+        if (capacity <= 0) return;
         globalAge++;
-        if (queue == null) return;
         KVNode node;
         if (cache.containsKey(key)) {
             node = cache.get(key);
             node.value = value;
-            node.age = globalAge;
+            node.age = ++globalAge;
             node.fre++;
             reHeapify(node);
         } else {
-            if (queue.size() == cap) {
-                KVNode n = queue.poll();
-                cache.remove(n.key);
+            if (queue.size() == capacity) {
+                int oldKey = queue.poll().key;
+                cache.remove(oldKey);
             }
             node = new KVNode(key, value, 1, globalAge);
             cache.put(key, node);
@@ -62,7 +55,7 @@ public class LFUCache460 {
         queue.add(node);
     }
 
-    private class KVNode {
+    private class KVNode implements Comparable<KVNode> {
         public int key;
         public int value;
         public int fre;
@@ -73,6 +66,15 @@ public class LFUCache460 {
             this.value = value;
             this.fre = fre;
             this.age = age;
+        }
+
+        @Override
+        public int compareTo(KVNode o) {
+            if (this.fre == o.fre) {
+                return (this.age - o.age);
+            } else {
+                return (this.fre - o.fre);
+            }
         }
     }
 

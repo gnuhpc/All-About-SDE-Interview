@@ -4,76 +4,78 @@ import java.util.*;
 
 /*
 TreeMap + HashMap
+思路和时间复杂度一样，但是由于TreeMap是红黑树，remove 是O(logN)，因此eviction的时候速度更快
+One of the differences is that remove(Object) and contains(Object) are linear O(N) in a normal heap based PriorityQueue (like Oracle's),
+but O(log(N)) for a TreeSet/Map.
+So if you have a large number of elements and do a lot of remove(Object) or contains(Object),
+then a TreeSet/Map may be faster.
  */
 public class LFUCache4602 {
-
     HashMap<Integer, KVNode> cache;
-    TreeMap<KVNode, Integer> freqMap;
-    int stamp;
+    TreeMap<KVNode, Integer> nkMap;
+    int globalAge;
     int capacity;
-
-    class KVNode implements Comparable<KVNode> {
-        int frequency;
-        int value;
-        int stamp;
-
-        public KVNode(int frequency, int value, int stamp) {
-            this.frequency = frequency;
-            this.value = value;
-            this.stamp = stamp;
-        }
-
-        public int compareTo(KVNode that) {
-            if (this.frequency == that.frequency) {
-                return this.stamp - that.stamp;
-            }
-            return this.frequency - that.frequency;
-        }
-    }
 
     public LFUCache4602(int capacity) {
         this.capacity = capacity;
         this.cache = new HashMap<>();
-        this.freqMap = new TreeMap<>();
-        this.stamp = 0;
+        this.nkMap = new TreeMap<>();
+        this.globalAge = 0;
     }
 
     public int get(int key) {
-        if (capacity <= 0) {
-            return -1;
-        }
-        if (!cache.containsKey(key)) {
-            return -1;
-        }
+        if (capacity <= 0) return -1;
+        if (!cache.containsKey(key)) return -1;
+
         KVNode node = cache.get(key);
-        KVNode newNode = new KVNode(node.frequency + 1, node.value, ++stamp);
-        freqMap.remove(node);
-        cache.put(key, newNode);
-        freqMap.put(newNode, key);
+        reHeapify(key, node);
         return node.value;
     }
 
     public void put(int key, int value) {
-        if (capacity <= 0) {
-            return;
-        }
+        KVNode node;
+        if (capacity <= 0) return;
         if (cache.containsKey(key)) {
-            KVNode tuple = cache.get(key);
-            KVNode newTuple = new KVNode(tuple.frequency + 1, value, ++stamp);
-            freqMap.remove(tuple);
-            cache.put(key, newTuple);
-            freqMap.put(newTuple, key);
+            node = cache.get(key);
+            node.value = value;
+            reHeapify(key, node);
         } else {
-            if (freqMap.size() >= capacity) {
-                int oldKey = freqMap.pollFirstEntry().getValue();
+            if (nkMap.size() == capacity) { //eviction
+                int oldKey = nkMap.pollFirstEntry().getValue();
                 cache.remove(oldKey);
             }
-            KVNode newTuple = new KVNode(1, value, ++stamp);
-            cache.put(key, newTuple);
-            freqMap.put(newTuple, key);
+            node = new KVNode(1, value, ++globalAge);
+            nkMap.put(node, key);
+            cache.put(key, node);
         }
     }
 
+    private void reHeapify(int key, KVNode node) {
+        nkMap.remove(node);
+        node.freq++;
+        node.age = ++globalAge;
+        nkMap.put(node, key);
+        cache.put(key, node);
+    }
+
+    class KVNode implements Comparable<KVNode> {
+        int freq;
+        int value;
+        int age;
+
+        public KVNode(int freq, int value, int age) {
+            this.freq = freq;
+            this.value = value;
+            this.age = age;
+        }
+
+        public int compareTo(KVNode that) {
+            if (this.freq == that.freq) {
+                return this.age - that.age;
+            }
+            return this.freq - that.freq;
+        }
+    }
 
     public static void main(String[] args) {
         LFUCache4602 cache = new LFUCache4602(2 /* 缓存容量 */);

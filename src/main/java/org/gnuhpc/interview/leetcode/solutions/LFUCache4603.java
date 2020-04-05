@@ -46,32 +46,31 @@ public class LFUCache4603 {
     }
 
     public int get(int key) {
-        if (!cacheMap.containsKey(key))
-            return -1;
+        if (CAPACITY <= 0) return -1;
+        if (!cacheMap.containsKey(key)) return -1;
         KVNode node = cacheMap.get(key);
         update(node);
         return node.value;
     }
 
     public void put(int key, int value) {
-        if (CAPACITY <= 0)
-            return;
+        if (CAPACITY <= 0) return;
         if (cacheMap.containsKey(key)) {
             KVNode node = cacheMap.get(key);
             update(node);
             node.value = value;
         } else {
-            KVNode newNode = new KVNode(key, value, 1);
-            cacheMap.put(key, newNode);
-            if (!freqMap.containsKey(1))
-                freqMap.put(1, new LinkedHashSet<>());
-            freqMap.get(1).add(newNode);
-            if (cacheMap.size() > CAPACITY) {
+            if (cacheMap.size() == CAPACITY) {
                 LinkedHashSet<KVNode> toBeEvictedList = freqMap.get(minFreq);
                 KVNode toBeEvictedNode = toBeEvictedList.iterator().next();//LRU Eviction
                 toBeEvictedList.remove(toBeEvictedNode);
                 cacheMap.remove(toBeEvictedNode.key);
             }
+            KVNode newNode = new KVNode(key, value, 1);
+            cacheMap.put(key, newNode);
+            if (!freqMap.containsKey(1))
+                freqMap.put(1, new LinkedHashSet<>());
+            freqMap.get(1).add(newNode);
             minFreq = 1;
         }
     }

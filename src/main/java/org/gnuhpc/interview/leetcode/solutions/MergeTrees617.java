@@ -26,29 +26,51 @@ public class MergeTrees617 {
     Method 2: 非递归版本，层次遍历
      */
     public TreeNode mergeTrees2(TreeNode t1, TreeNode t2) {
-        if (t1 == null) return t2;
-        Queue<TreeNode> q1 = new LinkedList<>();
-        Queue<TreeNode> q2 = new LinkedList<>();
-        q1.offer(t1);
-        q2.offer(t2);
-        while (!q1.isEmpty() || !q2.isEmpty()) {
-            TreeNode node_1 = q1.poll();
-            TreeNode node_2 = q2.poll();
-            if (node_1 == null || node_2 == null) continue;
-            node_1.val += node_2.val;
-            if (node_1.left == null) node_1.left = node_2.left;
-            else {
-                q1.offer(node_1.left);
-                q2.offer(node_2.left);
-            }
-            if (node_1.right == null) node_1.right = node_2.right;
-            else {
-                q1.offer(node_1.right);
-                q2.offer(node_2.right);
-            }
-
-
+        if (t1 == null) {
+            return t2;
         }
+        if (t2 == null) {
+            return t1;
+        }
+
+        Queue<TreeNode> queue1 = new LinkedList<>();
+        Queue<TreeNode> queue2 = new LinkedList<>();
+        queue1.offer(t1);
+        queue2.offer(t2);
+
+        // 按层遍历t2，同步遍历t1，对比相同位置的节点差异。
+        // t2有而t1没有的节点，则给t1创建一个。
+        // t2有t1也有的节点，值相加更新t1的节点值。
+        while (!queue2.isEmpty()) {
+            TreeNode node1 = queue1.poll();
+            TreeNode node2 = queue2.poll();
+
+            // t2与t1对应节点的值，累计到t1的节点
+            node1.val += node2.val;
+
+            if (node2.left != null) {
+                // t1左孩子节点不存在，则t1左孩子直接指向t2对应的左孩子
+                if (node1.left == null) {
+                    node1.left = node2.left;
+                } else {//如果都有，则不作处理，放入队列后边处理
+                    //注意此处offer进去的都不会是null，因此取出相加的时候不用判断null
+                    queue1.offer(node1.left);
+                    queue2.offer(node2.left);
+                }
+            }
+
+            if (node2.right != null) {
+                // t1右孩子节点不存在，则t1右孩子直接指向t2对应的右孩子
+                if (node1.right == null) {
+                    node1.right = node2.right;
+                } else {//如果都有，则不作处理，放入队列后边处理
+                    //注意此处offer进去的都不会是null，因此取出相加的时候不用判断null
+                    queue1.offer(node1.right);
+                    queue2.offer(node2.right);
+                }
+            }
+        }
+
         return t1;
     }
 

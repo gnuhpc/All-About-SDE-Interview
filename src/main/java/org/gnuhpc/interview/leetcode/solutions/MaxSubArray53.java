@@ -1,27 +1,23 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Utils;
 import org.junit.Test;
 
 //http://www.puzzlr.org/understanding-kadanes-algorithm-maximum-subarray-problem/
 public class MaxSubArray53 {
     //Method1: 累加状态机
     public int maxSubArray(int[] nums) {
-        int localMax = nums[0];
-        int globalMax = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            //Each number “decides” if it wants to use the previous subarray sum
-            // or if it wants to start a new subarray from scratch.
-            // 所以，这个if还有另一个写法 localMax = Math.max(num[i], localMax + num[i])
-            if (localMax < 0) { //既然小于0了，那前边的都是欠债，扔了重新开始计数
-                localMax = nums[i];
-            } else {
-                localMax += nums[i]; //如果不是小于0，则进行累加
+        int ans = nums[0];
+        int sum = 0;
+        for (int num : nums) {
+            if (sum > 0) {
+                sum += num;
+            } else {//既然小于等于0了，那前边的都是欠债，扔了重新开始计数
+                sum = num;
             }
-            if (localMax > globalMax) globalMax = localMax;
+            ans = Math.max(ans, sum);
         }
-
-        return globalMax;
+        return ans;
     }
 
 

@@ -23,13 +23,13 @@ public class Twitter355 {
     class User {
         int userId;
         HashSet<Integer> followWho;
-        Twit head;
+        Twit tHead;
 
         User(int userId) {
             this.userId = userId;
             followWho = new HashSet<>();
             followWho.add(userId);//关注自己
-            head = new Twit(-1, -1);
+            tHead = new Twit(-1, -1);
         }
 
         public void follow(int user) {
@@ -43,19 +43,19 @@ public class Twitter355 {
 
         public void post(int twitId, int time) {
             Twit temp = new Twit(twitId, time);
-            temp.next = head.next;
-            head.next = temp;
+            temp.next = tHead.next;
+            tHead.next = temp;
         }
     }
 
     /**
      * Initialize your data structure here.
      */
-    HashMap<Integer, User> users;
+    HashMap<Integer, User> userMap; //UserId - User， 等价于User Database
     int time;
 
     public Twitter355() {
-        users = new HashMap<>();
+        userMap = new HashMap<>();
     }
 
     /**
@@ -64,39 +64,40 @@ public class Twitter355 {
     public void postTweet(int userId, int tweetId) {
         time++;
         User temp;
-        if (users.containsKey(userId)) {
-            temp = users.get(userId);
+        if (userMap.containsKey(userId)) {
+            temp = userMap.get(userId);
         } else {
             temp = new User(userId);
-            users.put(userId, temp);
+            userMap.put(userId, temp);
         }
         temp.post(tweetId, time);
     }
 
     /**
      * Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
+     * 转换为N（follower数量，包含自己）个有序List取前top 10个，自己画个图
      */
     public List<Integer> getNewsFeed(int userId) {
         LinkedList<Integer> res = new LinkedList<>();
-        if (!users.containsKey(userId))
+        if (!userMap.containsKey(userId))
             return res;
-        Set<Integer> set = users.get(userId).followWho;
-        PriorityQueue<Twit> pq = new PriorityQueue<>(set.size(), (t1, t2) -> t2.time - t1.time);
-        for (int id : set) {
-            User temp = users.get(id);
-            //只添加表头，避免重复排序
-            // System.out.print("a");
-            if (temp.head.next != null)
-                pq.add(temp.head.next);
+        Set<Integer> followWhoSet = userMap.get(userId).followWho;
+        PriorityQueue<Twit> pq = new PriorityQueue<>(followWhoSet.size(), (t1, t2) -> t2.time - t1.time);
+        //先从各个follower的头部Twit取一遍数据，避免重复
+        for (int id : followWhoSet) {
+            User follower = userMap.get(id);
+            if (follower.tHead.next != null)
+                pq.add(follower.tHead.next);
         }
-        int count = 0;
+
         while (!pq.isEmpty()) {
             Twit t = pq.poll();
             res.addLast(t.TwitId);
-            if (t.next != null)
-                pq.add(t.next);
-            if (++count >= 10)
-                return res;
+            if (res.size() == 10) return res;
+            else {
+                if (t.next != null)
+                    pq.add(t.next);
+            }
         }
         return res;
     }
@@ -105,15 +106,18 @@ public class Twitter355 {
      * Follower follows a followee. If the operation is invalid, it should be a no-op.
      */
     public void follow(int followerId, int followeeId) {
-        if (!users.containsKey(followerId)) {
+        //判断是不是存在这个user，不存在的话创建并放入database
+        //之所以有这一步是因为在这个模拟程序中是没有数据准备这一说的，在这边既然用户给出了就认为是存在的用户，做Database准备
+        if (!userMap.containsKey(followerId)) {
             User fer = new User(followerId);
-            users.put(followerId, fer);
+            userMap.put(followerId, fer);
         }
-        if (!users.containsKey(followeeId)) {
+        if (!userMap.containsKey(followeeId)) {
             User fee = new User(followeeId);
-            users.put(followeeId, fee);
+            userMap.put(followeeId, fee);
         }
-        User fer = users.get(followerId);
+
+        User fer = userMap.get(followerId);
         fer.follow(followeeId);
     }
 
@@ -121,8 +125,8 @@ public class Twitter355 {
      * Follower unfollows a followee. If the operation is invalid, it should be a no-op.
      */
     public void unfollow(int followerId, int followeeId) {
-        if (users.containsKey(followerId) && users.containsKey(followeeId)) {
-            User temp = users.get(followerId);
+        if (userMap.containsKey(followerId) && userMap.containsKey(followeeId)) {
+            User temp = userMap.get(followerId);
             temp.unfollow(followeeId);
         }
     }

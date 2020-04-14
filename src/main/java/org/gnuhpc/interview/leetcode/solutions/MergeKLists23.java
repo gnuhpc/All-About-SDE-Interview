@@ -68,6 +68,7 @@ public class MergeKLists23 {
     public ListNode mergeKLists2(ListNode[] lists) {
         Queue<ListNode> heap = new PriorityQueue<>(10, Comparator.comparingInt(l -> l.val));
 
+        //先将头部放入heap中
         for (int i = 0; i < lists.length; i++) {
             ListNode temp = lists[i];
             if (temp != null) {
@@ -77,7 +78,7 @@ public class MergeKLists23 {
         ListNode dummy = new ListNode(0);
         ListNode cur = dummy;
 
-        while (heap.size() != 0) {
+        while (!heap.isEmpty()) {
             ListNode n = heap.poll();
             cur.next = n;
             cur = cur.next;

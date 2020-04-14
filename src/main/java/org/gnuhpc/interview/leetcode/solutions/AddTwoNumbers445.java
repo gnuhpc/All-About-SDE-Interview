@@ -47,24 +47,23 @@ public class AddTwoNumbers445 {
         }
 
         int carry = 0, value = 0;
-        ListNode head = null, tail = null;
+        ListNode head = null;
         while (!sums.isEmpty()) {
             int pop = sums.pop();
             value = (pop + carry) % 10;
             ListNode newNode = new ListNode(value);
-            newNode.next = tail;
-            tail = newNode;
+            newNode.next = head;
+            head = newNode;
             carry = (pop + carry) / 10;
         }
 
         if (carry != 0) {
             ListNode newNode = new ListNode(carry);
-            newNode.next = tail;
-            tail = newNode;
+            newNode.next = head;
+            head = newNode;
         }
 
-        return tail;
-
+        return head;
     }
 
     private int getLinkedListSize(ListNode head) {
@@ -131,14 +130,14 @@ public class AddTwoNumbers445 {
 
     }
 
-    // 用3个栈，与上面比较，结果先用栈存起来，然后转换成链表203
+    // 用3个栈，与上面比较，结果先用栈存起来，然后转换成链表
     public ListNode addTwoNumbers3(ListNode l1, ListNode l2) {
         if (l1 == null || l2 == null) {
             return l1 == null ? l2 : l1;
         }
-        Stack<ListNode> s1 = new Stack<ListNode>();
-        Stack<ListNode> s2 = new Stack<ListNode>();
-        Stack<ListNode> result = new Stack<ListNode>();
+        Stack<ListNode> s1 = new Stack<>();
+        Stack<ListNode> s2 = new Stack<>();
+        Stack<ListNode> result = new Stack<>();
         while (l1 != null) {
             s1.push(l1);
             l1 = l1.next;

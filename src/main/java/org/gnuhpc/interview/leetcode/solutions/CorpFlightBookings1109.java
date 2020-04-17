@@ -1,5 +1,10 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Utils;
+import org.junit.Test;
+
+import java.util.TreeMap;
+
 /**
  * Copyright gnuhpc 2020/3/10
  */
@@ -19,7 +24,6 @@ public class CorpFlightBookings1109 {
         }
 
         return res;
-
     }
 
     /*
@@ -47,5 +51,31 @@ public class CorpFlightBookings1109 {
         }
 
         return res;
+    }
+
+    /*
+    Method3: TreeMap + Prefix sum通解
+     */
+    public int[] corpFlightBookings3(int[][] bookings, int n) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int[] booking : bookings) {
+            map.put(booking[0], map.getOrDefault(booking[0], 0) + booking[2]);
+            map.put(booking[1] + 1, map.getOrDefault(booking[1] + 1, 0) - booking[2]);//+1是根据题意闭区间，则下一个点就降下来了
+        }
+        int prev = 0;
+        int[] res = new int[n];
+        for (int i = 1; i <= n; i++) {
+            Integer value = map.getOrDefault(i, 0);
+            res[i - 1] = prev + value;
+            prev += value;
+        }
+        return res;
+    }
+
+    @Test
+    public void test() {
+        Utils.printArray(corpFlightBookings3(new int[][]{
+                {1, 2, 10}, {2, 3, 20}, {2, 5, 25}
+        }, 5));
     }
 }

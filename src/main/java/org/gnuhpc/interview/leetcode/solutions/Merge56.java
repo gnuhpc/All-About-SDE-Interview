@@ -1,30 +1,19 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Interval;
 import org.gnuhpc.interview.leetcode.utils.Utils;
 import org.junit.Test;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Merge56 {
-    class Interval {
-        int start;
-        int end;
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
-        }
-    }
-
     public int[][] merge(int[][] intervals) {
         List<Interval> intervalList = new LinkedList<>();
         for (int i = 0; i < intervals.length; i++) {
-            intervalList.add(new Interval(intervals[i][0], intervals[i][1]));
+            intervalList.add(new Interval(intervals[i][0], intervals[i][1], Interval.COMPARETYPE.START));
         }
 
-        intervalList.sort(Comparator.comparingInt(o -> o.start));
+        Collections.sort(intervalList);
         LinkedList<Interval> merged = new LinkedList<>();
         for (Interval interval : intervalList)
             if (merged.isEmpty() || merged.getLast().end < interval.start)//第一次加入或者无法合并
@@ -42,8 +31,7 @@ public class Merge56 {
         return res;
     }
 
-
-    //Method 2:  其实也是暴力解法，只是不用从array-> object List -> array ，时间和内存都可以节省出来
+    //Method 2:  暴力解法，只是不用从array-> object List -> array ，时间和内存都可以节省出来
     public int[][] merge2(int[][] intervals) {
         if (intervals.length < 2)
             return intervals;
@@ -64,7 +52,7 @@ public class Merge56 {
 
                     b[0] = Math.min(a[0], b[0]);
                     b[1] = Math.max(a[1], b[1]);
-                    break;
+                    break;//这个a区间已经被合并了，就不用再往下找了
                 }
             }
         }
@@ -80,16 +68,41 @@ public class Merge56 {
         return result;
     }
 
+    /*
+    Method 3: TreeMap
+     */
+
+    public int[][] merge3(int[][] intervals) {
+        if (intervals.length == 0) return new int[0][0];
+        List<int[]> list = new ArrayList<>();
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int[] itv : intervals) {//添加区间节点的过程
+            map.put(itv[0], map.getOrDefault(itv[0], 0) + 1);
+            map.put(itv[1], map.getOrDefault(itv[1], 0) - 1);
+        }
+        int count = 0, start = Integer.MAX_VALUE, end = Integer.MIN_VALUE;
+        for (int k : map.keySet()) {
+            count += map.get(k);
+            start = Math.min(start, k);
+            end = Math.max(end, k);
+            if (count == 0) {//关键：count==0代表区间闭合了，需要把刚刚闭合的区间添加到结果集中。可以类比字符串中左右括号的情况，遇到左括号+1，右括号-1。当count==0时，区间的括号是完全匹配的。
+                list.add(new int[]{start, end});
+                start = Integer.MAX_VALUE;
+                end = Integer.MIN_VALUE;
+            }
+        }
+        return list.toArray(new int[list.size()][2]);
+    }
 
     @Test
     public void test() {
 
         int[][] a = {
-                {1, 4},
-                {4, 5}
+                {1, 2},
+                {2, 3}
         };
 
-        Utils.print2DArray(merge2(a));
+        Utils.print2DArray(merge3(a));
     }
 
 }

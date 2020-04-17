@@ -6,83 +6,55 @@ import org.junit.Test;
  * 采用递归的做法，发现超时 80/92
  */
 public class JumpGame45 {
+    /*
+    Method1: DFS LTE了
+     */
     private int minJump = Integer.MAX_VALUE;
 
     public int jump(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return 0;
-        help(nums, nums.length, 0, 0, 0);
+        help(nums, 0, 0, 0);
         return minJump;
     }
 
-    public void help(int[] nums, int n, int index, int step, int jumps) {
+    public void help(int[] nums, int index, int step, int jumps) {
+        int n = nums.length;
         int newindex = index + step;
         if (newindex >= n - 1) {
             minJump = Math.min(jumps, minJump);
-            return;
         } else {
             //剪枝
             if (jumps >= minJump) return;
-            for (int i = 1; i <= nums[newindex]; i++) {
-                help(nums, n, newindex, i, jumps + 1);
+            for (int i = 1; i <= nums[newindex]; i++) { //挨个穷尽
+                help(nums, newindex, i, jumps + 1);
             }
         }
-        return;
     }
 
-
+    /*
+    Method2: 贪心
+     */
     public int jump2(int[] nums) {
-        int n = nums.length;
-        int ret = 0;
-        int last = 0;
-        int curr = 0;
-        for (int i = 0; i < n; ++i) {
-            if (i > last) {
-                last = curr;
-                ++ret;
+        int step=0;  //当前跳跃次数
+        int dst=nums.length-1; //需要跳跃的最大索引位置
+        int maxPos=0; //当前步骤能跳至的最远位置
+        int start=0; //当前步骤的起始跳跃位置
+        int end=0; //前一步骤能跳跃的最远位置
+        while(maxPos < dst){ // 如果没跳跃处最大索引，继续循环
+            for(; start<=end; start++){ //end为上次跳跃的最远索引位置
+                maxPos=Math.max(maxPos, nums[start]+start); //更新当前步骤的最远位置
+                if(maxPos>=dst) break; //如果当前最远位置已经大于需跳跃的最远位置，终止循环
             }
-            curr = Math.max(curr, i + nums[i]);
+            end=maxPos; //更新下一步跳跃的遍历最远范围
+            step++; //跳跃次数递增，进入下一次跳跃
         }
-
-        return ret;
+        return step;
     }
-
-    public int jump4(int[] nums) {
-        int end = 0;
-        int maxPosition = 0;
-        int steps = 0;
-        for (int i = 0; i < nums.length - 1; i++) {
-            //找能跳的最远的
-            maxPosition = Math.max(maxPosition, nums[i] + i);
-            if (i == end) { //遇到边界，就说明这个部分已经遍历完了，最大值也找到了，
-                // 就按照最大值更新边界，并且步数加一
-                end = maxPosition;
-                steps++;
-            }
-        }
-        return steps;
-    }
-
-    public int jump5(int[] nums) {
-        int position = nums.length - 1; //要找的位置
-        int steps = 0;
-        while (position != 0) { //是否到了第 0 个位置
-            for (int i = 0; i < position; i++) {
-                if (nums[i] + i >= position) {
-                    position = i; //更新要找的位置
-                    steps++;
-                    break;
-                }
-            }
-        }
-        return steps;
-    }
-
 
     @Test
     public void test() {
-        System.out.println(jump4(new int[]{2, 3, 1, 1, 4, 2, 1}));
+        System.out.println(jump2(new int[]{2, 3, 1, 1, 4, 2, 1}));
     }
-
 
 }

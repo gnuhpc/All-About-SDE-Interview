@@ -1,30 +1,14 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Interval;
+
 import java.util.TreeSet;
 
 public class MyCalendarTwo731 {
-    private static class Interval implements Comparable<Interval> {
-        int start, end;
-
-        Interval(int s, int e) {
-            start = s;
-            end = e;
-        }
-
-        public int compareTo(Interval other) {
-            if (end <= other.start) {
-                return -1;
-            } else if (start >= other.end) {
-                return 1;
-            }
-            return 0;
-        }
-    }
-
     private TreeSet<Interval> single = new TreeSet<>(), doub = new TreeSet<>();
 
     public boolean book(int start, int end) {
-        Interval cur = new Interval(start, end);
+        Interval cur = new Interval(start, end, Interval.COMPARETYPE.OVERLAPEQUAL);
         if (doub.contains(cur)) {
             return false;
         }
@@ -33,11 +17,12 @@ public class MyCalendarTwo731 {
             single.add(cur);
         } else {
             single.remove(dup);
+            //分段
             int a = Math.min(start, dup.start), b = Math.max(start, dup.start);
             int c = Math.min(end, dup.end), d = Math.max(end, dup.end);
-            book(a, b);
-            book(c, d);
-            doub.add(new Interval(b, c));
+            book(a, b);//重新book
+            book(c, d);//重新book
+            doub.add(new Interval(b, c, Interval.COMPARETYPE.OVERLAPEQUAL));
         }
         return true;
     }

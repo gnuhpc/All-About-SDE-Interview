@@ -8,36 +8,41 @@ import java.util.Queue;
 public class UpdateMatrix542 {
 
     /*
-    We add all 0 elements to the queue, and set the res of all of their coordinates to 0 while 1s are Integer.MAX_VALUE. We bfs from all of 0s, and update the unvisited elements to the shortest distance if they are Integer.MAX_VALUE. You can also just check if it's a greater number than your current distance but a lot of people were getting confused with the time complexity. (bfs visits the shortest path to each node first so at most every node will only be visited once again)
+    Method: BFS +
+    题目给出了多个1，要找出每个1到0的最近曼哈顿距离。由于1到0的距离和0到1的距离一样的，
+    所以其实我们可以换个思维：找出每个0到1的距离。
      */
+
     public int[][] updateMatrix(int[][] matrix) {
-        Queue<int[]> bfs = new LinkedList<>();
-        final int M = matrix[0].length;
-        final int N = matrix.length;
-        int[][] res = new int[N][M];
-        for (int i = 0; i < N; ++i) {
-            for (int j = 0; j < M; ++j) {
+        if (matrix == null || matrix.length == 0) return null;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] res = new int[m][n];//结果集
+        boolean[][] visited = new boolean[m][n];//记录已经计算过的位置
+        Queue<int[]> queue = new LinkedList<>();//广搜队列
+        //遍历，将等于0的位置计入结果集并入队
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == 0) {
-                    bfs.add(new int[]{i, j, 0});
                     res[i][j] = 0;
-                } else {
-                    res[i][j] = Integer.MAX_VALUE;
+                    visited[i][j] = true;
+                    queue.offer(new int[]{i, j});
                 }
             }
         }
-        int[][] direct = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-        while (!bfs.isEmpty()) {
-            int[] pos = bfs.remove();
-            int nextVal = pos[2] + 1;
-            for (int[] dir : direct) {
-                int nextRow = pos[0] + dir[0];
-                int nextCol = pos[1] + dir[1];
-                if (nextRow >= 0 && nextCol >= 0 && nextRow < N && nextCol < M &&
-                        res[nextRow][nextCol] == Integer.MAX_VALUE) {
-                    res[nextRow][nextCol] = nextVal;
-                    bfs.add(new int[]{nextRow, nextCol, nextVal});
+        //四个方向广搜
+        int[][] dr = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};//上下左右
+        while (!queue.isEmpty()) {
+            int[] poll = queue.poll();
+            int x = poll[0], y = poll[1];
+            //四个方向上找 1
+            for (int[] d : dr) {
+                int newX = x + d[0], newY = y + d[1];
+                //没有计算过的地方一定是 1
+                if (newX >= 0 && newX < m && newY >= 0 && newY < n && !visited[newX][newY]) {
+                    res[newX][newY] = res[x][y] + 1;
+                    visited[newX][newY] = true;
+                    queue.offer(new int[]{newX, newY});
                 }
-
             }
         }
         return res;
@@ -74,6 +79,6 @@ public class UpdateMatrix542 {
 
     @Test
     public void test() {
-        updateMatrix(new int[][]{{1, 1, 1}, {1, 0, 0}, {1, 0, 0}});
+        updateMatrix(new int[][]{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}});
     }
 }

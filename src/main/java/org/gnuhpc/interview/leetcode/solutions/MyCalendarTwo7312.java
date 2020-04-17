@@ -1,6 +1,5 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 public class MyCalendarTwo7312 {
@@ -8,24 +7,23 @@ public class MyCalendarTwo7312 {
     private TreeMap<Integer, Integer> map = new TreeMap<>();
 
     public boolean book(int start, int end) {
+        int count = 0;
         map.put(start, map.getOrDefault(start, 0) + 1);
         map.put(end, map.getOrDefault(end, 0) - 1);
-        int count = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            count += entry.getValue();
-            if (count > 2) {
-                map.put(start, map.get(start) - 1);
-                if (map.get(start) == 0) { //可以不要，但是这个可以节省内存也节省运行时间
-                    map.remove(start);
-                }
-                map.put(end, map.get(end) + 1);//同上的优化
-                if (map.get(end) == 0) {
-                    map.remove(end);
-                }
-                return false;
+        boolean canBook = true;
+        for (int v : map.values()) {
+            count += v;
+            if (count > 2) {//最多出现冲突日程不能大于2
+                canBook = false;
+                break;
             }
         }
-        return true;
+        if (!canBook) {
+            map.put(start, map.get(start) - 1);
+            map.put(end, map.get(end) + 1);
+        }
+
+        return canBook;
     }
 
 

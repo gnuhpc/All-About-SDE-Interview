@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Interval implements Comparable<Interval> {
     public enum COMPARETYPE {
-        OVERLAPEQUAL, START
+        OVERLAPEQUAL, END, START
     }
 
     //Overlap的时候是否视作相等
@@ -44,14 +44,19 @@ public class Interval implements Comparable<Interval> {
         return 0;
     }
 
-    public int compareToOverLap(Interval other) {
+    public int compareToOverLapStart(Interval other) {
         return this.start - other.start;
+    }
+
+    public int compareToOverLapEnd(Interval other) {
+        return this.end - other.end;
     }
 
     @Override
     public int compareTo(Interval other) {
         if (compareType == COMPARETYPE.OVERLAPEQUAL) return compareToOverLapEqual(other);
-        else if (compareType == COMPARETYPE.START) return compareToOverLap(other);
+        else if (compareType == COMPARETYPE.START) return compareToOverLapStart(other);
+        else if (compareType == COMPARETYPE.END) return compareToOverLapEnd(other);
         else return 0;
     }
 }

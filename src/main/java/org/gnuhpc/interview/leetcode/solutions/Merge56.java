@@ -31,7 +31,7 @@ public class Merge56 {
         return res;
     }
 
-    //Method 2:  暴力解法，只是不用从array-> object List -> array ，时间和内存都可以节省出来
+    //Method 2:  暴力解法，不用sort，不用从array-> object List -> array ，时间和内存都可以节省出来
     public int[][] merge2(int[][] intervals) {
         if (intervals.length < 2)
             return intervals;

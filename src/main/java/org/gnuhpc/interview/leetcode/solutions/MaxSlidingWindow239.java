@@ -99,35 +99,31 @@ sliding_max = 4, 6, 6, 8, 9, 10, 12, 56
         return sliding_max;
     }
 
-    // add by tina
-    // 借助双端队列
-
-    /**
-     * We scan the array from 0 to n-1, keep "promising" elements in the deque. The algorithm is amortized O(n) as each element is put and polled once.
-     * At each i, we keep "promising" elements, which are potentially max number in window [i-(k-1),i] or any subsequent window. This means
-     * 1、If an element in the deque and it is out of i-(k-1), we discard them. We just need to poll from the head, as we are using a deque and elements are ordered as the sequence in the array
-     * 2、Now only those elements within [i-(k-1),i] are in the deque. We then discard elements smaller than a[i] from the tail. This is because if a[x] <a[i] and x<i, then a[x] has no chance to be the "max" in [i-(k-1),i], or any other subsequent window: a[i] would always be a better candidate.
-     * 3、As a result elements in the deque are ordered in both sequence in array and their value. At each step the head of the deque is the max element in [i-(k-1),i]
-     */
+    //借助双端队列，关键问题:
+    //为什么队列中要存放数组下标的值而不是直接存储数值?
+    //因为要判断队首的值是否在窗口范围内，由数组下标取值很方便，而由值取数组下标不是很方便。
     public int[] maxSlidingWindow4(int[] nums, int k) {
-        if (nums == null || nums.length == 0)
-            return new int[0];
-
+        if (nums == null || nums.length < 2) return nums;
+        // 双向队列 保存当前窗口最大值的数组位置 保证队列中数组位置的数值按从大到小排序
+        LinkedList<Integer> queue = new LinkedList();
+        // 结果数组
         int[] result = new int[nums.length - k + 1];
-        // store index，Linkedlist实现了Deque接口
-        Deque<Integer> deque = new LinkedList<Integer>();
+        // 遍历nums数组
         for (int i = 0; i < nums.length; i++) {
-            // 维持deque最大包含k个数，remove numbers out of range k
-            if (!deque.isEmpty() && deque.peekFirst() == i - k)
-                deque.poll();
-            // 维持deque是降序的，remove smaller numbers in k range as they are useless
-            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
-                deque.removeLast();
+            // 保证从大到小 如果前面数小则需要依次弹出，直至满足要求
+            while (!queue.isEmpty() && nums[queue.peekLast()] <= nums[i]) {
+                queue.pollLast();
             }
-            deque.offer(i);
-            // 从形成第一个窗口开始可以往结果数组写数
-            if (i >= k - 1)
-                result[i + 1 - k] = nums[deque.peek()];
+            // 添加当前值对应的数组下标
+            queue.addLast(i);
+            // 判断当前队列中队首的下标是否还在窗口中
+            if (queue.peek() <= i - k) {
+                queue.poll();
+            }
+            // 当窗口长度为k时 保存当前窗口中最大值
+            if (i + 1 >= k) {
+                result[i + 1 - k] = nums[queue.peek()];
+            }
         }
         return result;
     }

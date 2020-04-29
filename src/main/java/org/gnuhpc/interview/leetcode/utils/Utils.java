@@ -216,6 +216,12 @@ public class Utils {
         int temp = arr[a];
         arr[a] = arr[b];
         arr[b] = temp;
+
+        /*
+        arr[a] ^= arr[b];
+        arr[b] ^= arr[a];
+        arr[a] ^= arr[b];
+         */
     }
 
     public static void swap(char[] arr, int a, int b) {
@@ -322,13 +328,21 @@ public class Utils {
         return Integer.parseInt(str, 2);
     }
 
+    //返回一个整数有多少1
     public static int count_one(int n) {
         int count = 0;
         while (n != 0) {
-            n = n & (n - 1);
+            n = n & (n - 1);// 理解方法： 分两种情况，最后一位是1的，n-1与n则最后一位变为0；
+            // 最后一位甚至是多位是0的， n-1与n则最后一位和多为还是0，且第一个不是0 的位因为n-1的缘故也变为0，与操作之后还是0
             count++;
         }
         return count;
+    }
+
+    //返回两个整数相差多少位
+    public int convertA2B(int A, int B) {
+        int n = A ^ B;
+        return count_one(n);
     }
 
     public static int min(int... numbers) {

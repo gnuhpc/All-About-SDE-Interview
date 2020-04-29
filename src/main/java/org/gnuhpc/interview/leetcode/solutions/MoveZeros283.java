@@ -6,31 +6,6 @@ import java.util.stream.Collectors;
 import static org.gnuhpc.interview.leetcode.utils.Utils.swap;
 
 public class MoveZeros283 {
-    //O(n) Time, O(n) Space
-    public static void moveZeros(int[] nums) {
-        if (nums.length == 0) {
-            return;
-        }
-
-        int[] nonZeronums = new int[nums.length];
-        int j = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0) {
-                nonZeronums[j++] = nums[i];
-            }
-        }
-
-        for (int i = 0; i < nonZeronums.length; i++) {
-            nums[i] = nonZeronums[i];
-        }
-
-        for (int i = nonZeronums.length; i < nums.length; i++) {
-            nums[i] = 0;
-        }
-
-    }
-
     //O(n) Time, O(1) Space
     public static void moveZerosInPlace(int[] nums) {
         int k = 0;
@@ -50,16 +25,9 @@ public class MoveZeros283 {
     public static void moveZeroSwap(int[] nums) {
         int k = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0) {
-                if (i != k) {
-                    swap(nums, i, k);
-                }
-
-                k++;
-            }
+            if (nums[i] != 0) swap(nums, i, k++);
         }
     }
-
 
     //add by tina,思路与上面类似，但下面这个写法更容易想到
     // 首先找到第一个0元素，然后将后面的非0元素与当前数组第一个0元素交换
@@ -86,7 +54,6 @@ public class MoveZeros283 {
         int[] nums2 = new int[]{0, 1, 3, 0, 5, 0, 0, 1};
         int[] nums3 = new int[]{0, 1, 3, 0, 5, 0, 0, 1};
 
-        moveZeros(nums);
         moveZerosInPlace(nums2);
         moveZeroSwap(nums3);
         Arrays.stream(nums3).forEach(System.out::println);

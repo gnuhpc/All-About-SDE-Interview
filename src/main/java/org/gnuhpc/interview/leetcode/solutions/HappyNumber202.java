@@ -1,15 +1,18 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.junit.Test;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class HappyNumber202 {
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         int i = 19;
-        System.out.println(isHappyNumber(i));
+        System.out.println(isHappy2(i));
     }
 
-    public static boolean isHappyNumber(int n) {
+    public static boolean isHappy1(int n) {
         Set<Integer> resultSet = new HashSet<>();
 
         while (true) {
@@ -39,30 +42,26 @@ public class HappyNumber202 {
     }
 
     /**
-     * 思路与上面类似，仅做备份
-     *
-     * @param n
-     * @return
+     * 快慢指针
      */
-    public boolean isHappy(int n) {
-        HashSet<Integer> s = new HashSet<Integer>();
-        if (n == 1) return true;
-        int num = calc(n);
-        while (!s.contains(num) && num != 1) {
-            s.add(num);
-            num = calc(num);
+    public int getNext(int n) {
+        int totalSum = 0;
+        while (n > 0) {
+            int d = n % 10;
+            n = n / 10;
+            totalSum += d * d;
         }
-        if (num == 1) return true;
-        else return false;
+        return totalSum;
     }
 
-    public int calc(int n) {
-        int sum = 0;
-        while (n != 0) {
-            int d = n % 10;
-            sum += d * d;
-            n = n / 10;
+    public boolean isHappy2(int n) {
+        int slowRunner = n;
+        int fastRunner = getNext(n);
+        while (fastRunner != 1 && slowRunner != fastRunner) {
+            slowRunner = getNext(slowRunner);
+            fastRunner = getNext(getNext(fastRunner));
         }
-        return sum;
+        return fastRunner == 1;
     }
+
 }

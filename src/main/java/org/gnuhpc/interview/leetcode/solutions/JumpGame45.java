@@ -35,22 +35,22 @@ public class JumpGame45 {
     /*
     Method2: 贪心
      */
+    //链接：https://leetcode-cn.com/problems/jump-game-ii/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-10/
     public int jump2(int[] nums) {
-        int step=0;  //当前跳跃次数
-        int dst=nums.length-1; //需要跳跃的最大索引位置
-        int maxPos=0; //当前步骤能跳至的最远位置
-        int start=0; //当前步骤的起始跳跃位置
-        int end=0; //前一步骤能跳跃的最远位置
-        while(maxPos < dst){ // 如果没跳跃处最大索引，继续循环
-            for(; start<=end; start++){ //end为上次跳跃的最远索引位置
-                maxPos=Math.max(maxPos, nums[start]+start); //更新当前步骤的最远位置
-                if(maxPos>=dst) break; //如果当前最远位置已经大于需跳跃的最远位置，终止循环
+        int end = 0;
+        int maxPosition = 0;
+        int steps = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            //找能跳的最远的
+            maxPosition = Math.max(maxPosition, nums[i] + i);
+            if (i == end) { //遇到边界，就更新边界，并且步数加一
+                end = maxPosition;
+                steps++;
             }
-            end=maxPos; //更新下一步跳跃的遍历最远范围
-            step++; //跳跃次数递增，进入下一次跳跃
         }
-        return step;
+        return steps;
     }
+
 
     @Test
     public void test() {

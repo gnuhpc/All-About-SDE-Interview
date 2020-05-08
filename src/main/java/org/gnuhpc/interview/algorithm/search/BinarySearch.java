@@ -25,8 +25,6 @@ Sample[start] Sample[end] ? target
 
  */
 
-import com.google.inject.internal.cglib.core.$DefaultGeneratorStrategy;
-
 public class BinarySearch {
     public static int binarySearch(int target, int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -101,7 +99,7 @@ public class BinarySearch {
         if (nums == null || nums.length == 0) {
             return -1;
         }
-        if (target >= nums[nums.length - 1]) return nums.length;
+        if (target >= nums[nums.length - 1]) return -1;
 
         int start = 0;
         int end = nums.length - 1;

@@ -3,31 +3,33 @@ package org.gnuhpc.interview.leetcode.solutions;
 import org.gnuhpc.interview.leetcode.utils.Utils;
 import org.junit.Test;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
-public class DailyTemperatures739 {
-    //求更大的数值，使用递减栈
-    public int[] dailyTemperatures(int[] T) {
+/**
+ * Copyright gnuhpc 2020/5/9
+ */
+public class NextGreaterElements503 {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] res = new int[n];
+        Arrays.fill(res, -1);
         Deque<Integer> s = new LinkedList<>();
-        int[] ans = new int[T.length];
         int i = 0;
-        while (i < T.length) {
-            if (s.isEmpty() || T[i] <= T[s.peek()])//可能会更小，因此往后走
+        while (i < 2 * nums.length) {
+            if (s.isEmpty() || nums[i % n] <= nums[s.peek() % n]) {//可能会更小，因此往后走
                 s.push(i++);//如果只关注数值可以直接存入数值，如果关注idx之间的距离，也就是和最值的距离，则存入idx
-            else {
+            } else {
                 //另外注意在处理最值的时候是不动i的
                 int tp = s.pop();  // store the top index
-                ans[tp] = i - tp;
+                res[tp % n] = nums[i % n];
             }
         }
 
-        return ans;
+        return res;
     }
-
 
     @Test
     public void test() {
-        Utils.printArray(dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73}));
+        Utils.printArray(nextGreaterElements(new int[]{1, 2, 1}));
     }
 }

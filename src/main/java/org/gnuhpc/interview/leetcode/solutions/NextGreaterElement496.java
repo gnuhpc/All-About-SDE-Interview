@@ -21,6 +21,7 @@ public class NextGreaterElement496 {
         Map<Integer, Integer> map = new HashMap<>();
         int[] res = new int[nums1.length];
 
+        //先构建某个数字的下一个大小是多少
         int i = 0;
         while (i < nums2.length) {
             if (s.isEmpty() || s.peek() > nums2[i]) {
@@ -40,6 +41,7 @@ public class NextGreaterElement496 {
         }
         return res;
     }
+
 
     @Test
     public void test() {

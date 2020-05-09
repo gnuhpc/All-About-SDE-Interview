@@ -60,30 +60,25 @@ public class Trap42 {
     }
 
     //Method 3: 双指针
+    //缓存两端最大值，从最大值较小的一边进行储水结算、移动，并更新最大值。
     public int trap3(int[] height) {
-        if (height.length == 0) return 0;
-        int n = height.length;
-        int left = 0, right = n - 1;
-        int ans = 0;
+        if (height.length < 3) return 0;
 
-        int l_max = height[0];
-        int r_max = height[n - 1];
+        int left = 0, right = height.length - 1;
+        int leftmax = height[left], rightmax = height[right];
+        int res = 0;
 
-        while (left <= right) {
-            l_max = Math.max(l_max, height[left]);
-            r_max = Math.max(r_max, height[right]);
-
-            // ans += min(l_max, r_max) - height[i]
-            if (l_max < r_max) {
-                ans += l_max - height[left];
-                left++;
+        while (left < right) {
+            if (leftmax < rightmax) {
+                res += leftmax - height[left++];
+                leftmax = Math.max(height[left], leftmax);
             } else {
-                ans += r_max - height[right];
-                right--;
+                res += rightmax - height[right--];
+                rightmax = Math.max(height[right], rightmax);
             }
         }
-        return ans;
 
+        return res;
     }
 
     @Test

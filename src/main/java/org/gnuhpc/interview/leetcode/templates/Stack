@@ -25,10 +25,11 @@ https://pic.leetcode-cn.com/7e876ae756613053b3432cebc9274e9dbdaafd2e6b8492d37fc3
 单调递增栈： 找最小的时候用
         Deque<Integer> s = new LinkedList<>();
         int i = 0;
-        while (i < heights.length) {
+        while (i < nums.length) {
             if (s.isEmpty() || nums[s.peek()] <= nums[i])//可能会更大，因此往后走
                 s.push(i++);//如果只关注数值可以直接存入数值，如果关注idx之间的距离，也就是和最值的距离，则存入idx
             else {
+                //另外注意在处理最值的时候是不动i的
                 tp = s.pop();  // store the top index
                 做处理
             }
@@ -38,13 +39,14 @@ https://pic.leetcode-cn.com/7e876ae756613053b3432cebc9274e9dbdaafd2e6b8492d37fc3
             tp = s.pop();
         }
 
-单调递递减：找最大的时候用
+单调递减栈：找最大的时候用
         Deque<Integer> s = new LinkedList<>();
         int i = 0;
-        while (i < heights.length) {
-            if (s.isEmpty() || nums[i] > nums[s.peek()])//可能会更大，因此往后走
+        while (i < nums.length) {
+            if (s.isEmpty() || nums[i] < nums[s.peek()])//可能会更小，因此往后走
                 s.push(i++);//如果只关注数值可以直接存入数值，如果关注idx之间的距离，也就是和最值的距离，则存入idx
             else {
+                //另外注意在处理最值的时候是不动i的
                 tp = s.pop();  // store the top index
                 做处理
             }
@@ -58,3 +60,6 @@ https://pic.leetcode-cn.com/7e876ae756613053b3432cebc9274e9dbdaafd2e6b8492d37fc3
 LC相关题目：
 496 (递减栈)
 84 （递增栈）
+739
+503  (循环数组直接扩两倍，然后在取下标的时候记得)
+901 ()

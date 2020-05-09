@@ -17,7 +17,6 @@ public class MySqrt69 {
     /*
     Method2 : 二分
      */
-
     public int mySqrt2(int x) {
         if (x <= 1) return x;
         int start = 1;// search range
@@ -26,8 +25,7 @@ public class MySqrt69 {
         int mid;
         while (start + 1 < end) { // can equal
             mid = start + (end - start) / 2; // left + right can overflow
-            if (mid == x / mid) start = mid; // mid * mid can overflow, 找最后一个满足条件的，因此start = mid， 往后找
-            else if (x / mid > mid) start = mid;
+            if (x / mid >= mid) start = mid;// mid * mid can overflow
             else end = mid; // break equal
         }
 
@@ -38,6 +36,6 @@ public class MySqrt69 {
 
     @Test
     public void test() {
-        System.out.println(mySqrt2(2147395600));
+        System.out.println(mySqrt2(4));
     }
 }

@@ -1,25 +1,31 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
+//这道题的关键是要解决如果最小值被pop掉了，那么上一个最小值是什么?
+//该解法就是在新的最小值产生时再次先记录上一个最小值，在pop的时候如果发现顶端是最小值，那么需要pop两次
+//（第二次是因为之前冗余放置了prev min），在第二次pop的时候记得更新min，从prev变为现在的min
 public class MinStack1552 {
     int min = Integer.MAX_VALUE;
-    Stack<Integer> stack = new Stack<>();
+    Deque<Integer> stack = new LinkedList<>();
 
+    // push -2,0,-3,3 -> -2  0  -2  -3  3
     public void push(int x) {
-        // only push the old minimum value when the current
-        // minimum value changes after pushing the new value x
         if (x <= min) {
-            stack.push(min);
+            stack.push(min);//先放入上一个的min
             min = x;
         }
         stack.push(x);
     }
 
     public void pop() {
-        // if pop operation could result in the changing of the current minimum value,
-        // pop twice and change the current minimum value to the last minimum value.
-        if (stack.pop() == min) min = stack.pop();
+        if (stack.peek() == min) {//如果等于最小值说明该值是记录的上次最小值
+            stack.pop(); //丢掉它，这句话可以放在外边，这么写是为了好理解
+            min = stack.pop();// 后边跟着的一定是上一个min
+        } else { //如果不等，则表示跟最小值变动无关
+            stack.pop();
+        }
     }
 
     public int top() {

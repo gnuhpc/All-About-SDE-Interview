@@ -1,16 +1,29 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MyPow50 {
     public double myPow(double x, int n) {
-        int sign = 1;
-        if (n < 0) {
-            sign = -1;
-            n = -n;
+        if (n == 0) {
+            return 1;
         }
-        return sign < 0 ? 1 / pow(x, n) : pow(x, n);
+        if (n == 1) {
+            return x;
+        }
+        if (n == -1) {
+            return 1 / x;
+        }
+        double half = myPow(x, n / 2);
+        double rest = myPow(x, n % 2);
+        return rest * half * half;
+    }
+
+    public double myPow2(double x, int n) {
+        if (n == 0) return 1;
+        if (n < 0) {
+            n = -n;
+            return 1 / pow(x, n);
+        } else {
+            return pow(x, n);
+        }
     }
 
     private double pow(double x, int n) {

@@ -124,8 +124,6 @@ public class Config_Sync_Client {
                                 Thread.sleep(1000);
                                 log.warn("记录操作日志：" + change_remark);
                             }
-
-                            // TODO 视情况统一重启服务
                         }
                     }
                 }

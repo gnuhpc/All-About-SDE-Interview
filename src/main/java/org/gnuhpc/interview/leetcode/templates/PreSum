@@ -4,7 +4,7 @@
 
 首先要声明前缀和
 int n = nums.length
-int preSum[] = new int[n];
+int preSum[] = new int[n+1];
 preSum[0] = 0;
 
 然后计算前缀和

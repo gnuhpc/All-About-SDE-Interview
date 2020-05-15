@@ -2,6 +2,9 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 //From https://labuladong.gitbook.io/algo/gao-pin-mian-shi-xi-lie/jie-yu-shuihttps://labuladong.gitbook.io/algo/gao-pin-mian-shi-xi-lie/jie-yu-shui
 /*
 对于位置 i，能够装的水为：
@@ -13,6 +16,7 @@ water[i] = min(
             ) - height[i]
  */
 public class Trap42 {
+
     //Method1 : 按列算
     //时间复杂度 O(N^2)，空间复杂度 O(1)。
     public int trap(int[] height) {
@@ -81,8 +85,39 @@ public class Trap42 {
         return res;
     }
 
+    /*
+    Method4: 单调栈
+     */
+
+    public int trap4(int[] height) {
+        if (height == null || height.length < 3) {
+            return 0;
+        }
+
+        Deque<Integer> s = new LinkedList<>();
+        int res = 0;
+
+        int i = 0;
+
+        while (i < height.length) {
+            if (s.isEmpty() || height[s.peek()] >= height[i]) {
+                s.push(i++);
+            } else {
+                int lastmin = s.pop();
+                if (!s.isEmpty()) {
+                    res += (i - s.peek() - 1) * (Math.min(height[i], height[s.peek()]) - height[lastmin]);
+                }
+
+                if (height[s.peek()] >= height[i]) s.push(i++);
+            }
+        }
+
+        return res;
+    }
+
+
     @Test
     public void test() {
-        trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
+        trap4(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
     }
 }

@@ -32,7 +32,7 @@ public class SubarraySum560 {
     }
 
     /*
-    TwoSum思路--hash + presum
+    TwoSum思路--hash + presum  实际上是twosum的延伸版
      */
     public int subarraySum2(int[] nums, int k) {
         // Edge cases
@@ -72,7 +72,7 @@ public class SubarraySum560 {
 
 }
 /* From https://www.jiuzhang.com/solution/subarray-sum/ 是具体求一个位置而不是计数，此时HashMap的定义有变化
-// 这个案例中相当于上一题中k=0的情况
+// 这个案例中相当于该链接中k=0的情况
   public ArrayList<Integer> subarraySum(int[] nums) {
         // write your code here
         int len = nums.length;
@@ -87,8 +87,8 @@ public class SubarraySum560 {
         for (int i = 0; i < len; i++) {
             sum += nums[i];
 
-            if (memo.containsKey(sum)) {
-                ans.add(memo.get(sum) + 1);//起始位置
+            if (memo.containsKey(sum-0)) {
+                ans.add(memo.get(sum-0) + 1);//起始位置
                 ans.add(i);//结束位置
                 return ans;
             }

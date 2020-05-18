@@ -7,10 +7,16 @@ import java.util.Queue;
  * Copyright gnuhpc 2019/10/1
  */
 public class FindOrder210 {
+    /*
+    拓扑排序，很简单，首先判断计算入度，让后将为0的放入队列中，一个个弹出来，对其关联点进行入度减1，
+    到0的时候加入最终结果集，然后入队
+     */
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         if (numCourses == 0) return null;
         // Convert graph presentation from edges to indegree of adjacent list.
-        int indegree[] = new int[numCourses], order[] = new int[numCourses], index = 0;
+        int[] indegree = new int[numCourses];
+        int[] order = new int[numCourses];
+        int index = 0;
         for (int i = 0; i < prerequisites.length; i++) // Indegree - how many prerequisites are needed.
             indegree[prerequisites[i][0]]++;
 

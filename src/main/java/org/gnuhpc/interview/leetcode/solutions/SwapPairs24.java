@@ -24,6 +24,7 @@ public class SwapPairs24 {
         return dummy.next;
     }
 
+    //递归方案
     public ListNode swapPairsRecursive(ListNode head) {
         if (head == null || head.next == null)
             return head;

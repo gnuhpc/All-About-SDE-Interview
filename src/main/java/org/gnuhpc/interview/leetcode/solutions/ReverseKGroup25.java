@@ -4,6 +4,9 @@ import org.gnuhpc.interview.leetcode.utils.ListNode;
 import org.gnuhpc.interview.leetcode.utils.Utils;
 import org.junit.Test;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class ReverseKGroup25 {
     @Test
     public void test() {
@@ -29,9 +32,9 @@ public class ReverseKGroup25 {
         if (head == null || k == 1)
             return head;
 
-        ListNode fake = new ListNode(0);
-        fake.next = head;
-        ListNode pre = fake;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
         int i = 0;
 
         ListNode p = head;
@@ -45,7 +48,7 @@ public class ReverseKGroup25 {
             }
         }
 
-        return fake.next;
+        return dummy.next;
     }
 
     /*
@@ -73,4 +76,51 @@ public class ReverseKGroup25 {
         return last;
     }
 
+    //链接：https://leetcode-cn.com/problems/reverse-nodes-in-k-group/solution/kge-yi-zu-fan-zhuan-lian-biao-by-powcai/
+    public ListNode reverseKGroup2(ListNode head, int k) {
+        Deque<ListNode> stack = new LinkedList<>();
+        ListNode dummy = new ListNode(0);
+        ListNode p = dummy;
+        while (true) {
+            int count = 0;
+            ListNode tmp = head;
+            while (tmp != null && count < k) {
+                stack.push(tmp);
+                tmp = tmp.next;
+                count++;
+            }
+            if (count != k) {
+                p.next = head;
+                break;
+            }
+            while (!stack.isEmpty()) {
+                p.next = stack.pop();
+                p = p.next;
+            }
+            p.next = tmp;
+            head = tmp;
+        }
+        return dummy.next;
+    }
+
+    public ListNode reverseKGroup3(ListNode head, int k) {
+        ListNode cur = head;
+        int count = 0;
+        while (cur != null && count != k) {
+            cur = cur.next;
+            count++;
+        }
+        if (count == k) {
+            cur = reverseKGroup3(cur, k);
+            while (count != 0) {
+                count--;
+                ListNode tmp = head.next;
+                head.next = cur;
+                cur = head;
+                head = tmp;
+            }
+            head = cur;
+        }
+        return head;
+    }
 }

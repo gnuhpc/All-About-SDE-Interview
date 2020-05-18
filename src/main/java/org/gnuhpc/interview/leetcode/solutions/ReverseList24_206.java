@@ -4,7 +4,7 @@ package org.gnuhpc.interview.leetcode.solutions;
 import org.gnuhpc.interview.leetcode.utils.ListNode;
 import org.junit.Test;
 
-public class ReverseList24 {
+public class ReverseList24_206 {
     //Method1: 非递归
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null)
@@ -23,13 +23,15 @@ public class ReverseList24 {
         return pre;
     }
 
-    //Method 2: 递归
+    //Method 2: 递归 （记忆方法：猛回头！）
     public ListNode reverseList2(ListNode head) {
         if (head == null || head.next == null)
             return head;
 
         ListNode newHead = reverseList2(head.next);
+        //假设是12345， 那么newHead是5，而head是1，head.next 是2, 2的next回过头指向1 （head）
         head.next.next = head;
+        //head的next回过头指向null
         head.next = null;
         return newHead;
     }

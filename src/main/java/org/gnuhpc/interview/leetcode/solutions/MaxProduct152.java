@@ -1,5 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Utils;
 import org.junit.Test;
 
 public class MaxProduct152 {
@@ -81,17 +82,42 @@ public class MaxProduct152 {
         System.out.println(maxProduct(new int[]{0, 2}));
     }
 
-    // add by tina, DP
+    //DP 链接：https://leetcode-cn.com/problems/maximum-product-subarray/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--36/
     public int maxProduct2(int[] nums) {
-        assert nums.length > 0;
-        int max = nums[0], min = nums[0], maxAns = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            int mx = max, mn = min;
-            max = Math.max(Math.max(nums[i], mx * nums[i]), mn * nums[i]);
-            min = Math.min(Math.min(nums[i], mx * nums[i]), mn * nums[i]);
-            maxAns = Math.max(max, maxAns);
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
         }
-        return maxAns;
+
+        int[] dpMax = new int[n];
+        dpMax[0] = nums[0];
+        int[] dpMin = new int[n];
+        dpMin[0] = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < n; i++) {
+            dpMax[i] = Math.max(dpMin[i - 1] * nums[i], Math.max(dpMax[i - 1] * nums[i], nums[i]));
+            dpMin[i] = Math.min(dpMin[i - 1] * nums[i], Math.min(dpMax[i - 1] * nums[i], nums[i]));
+            max = Math.max(max, dpMax[i]);
+        }
+        return max;
+    }
+
+    public int maxProduct22(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int dpMax = nums[0];
+        int dpMin = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < n; i++) {
+            //更新 dpMin 的时候需要 dpMax 之前的信息，所以先保存起来
+            int preMax = dpMax;
+            dpMax = Math.max(dpMin * nums[i], Math.max(dpMax * nums[i], nums[i]));
+            dpMin = Math.min(dpMin * nums[i], Math.min(preMax * nums[i], nums[i]));
+            max = Math.max(max, dpMax);
+        }
+        return max;
     }
 
     // add by tina, 暴力解法
@@ -101,15 +127,12 @@ public class MaxProduct152 {
         for (int i = 0; i < N; ++i) {
             int cur = 1;
             for (int j = i; j < N; ++j) {
-                if (j == i)
-                    cur = nums[i];
-                else
-                    cur = cur * nums[j];
+
+                cur = cur * nums[j];
                 res = Math.max(res, cur);
             }
         }
         return res;
     }
-
 
 }

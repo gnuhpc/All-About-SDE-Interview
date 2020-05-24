@@ -1,7 +1,9 @@
 package org.gnuhpc.interview.leetcode.utils;
 
+import org.apache.log4j.AsyncAppender;
 import org.junit.Test;
 
+import javax.print.DocFlavor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -15,6 +17,31 @@ import java.util.stream.IntStream;
 
 public class Utils {
     private static Random random = new Random();
+
+    public static Set<String> getAllSubStrings(String input) {
+        Set<String> res = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+
+        int length = input.length();
+        //start point
+        for (int start = 0; start < length; start++) {
+            //end point (左闭右开)
+            for (int end = start + 1; end <= length; end++) {
+                //if start point = 1 then
+                //grp size = 1 , print 1
+                //grp size = 2, print 1 2
+                //grp size = 3, print 1 2 3 ans so on
+                for (int j = start; j < end; j++) {
+                    sb.append(input.charAt(j));
+                }
+                System.out.println(sb);//或者直接用String test = s.substring(start, end);
+                res.add(sb.toString());
+                sb.delete(0, sb.length());
+            }
+        }
+
+        return res;
+    }
 
     public static <T> List<List<T>> copy(List<List<T>> list) {
         List<List<T>> copy = new ArrayList<>(list.size());
@@ -476,5 +503,6 @@ public class Utils {
     @Test
     public void test() {
         System.out.println(reverseList(Arrays.asList("abcd", "efg", "lmn", "xyz")));
+        System.out.println(getAllSubStrings("abcd"));
     }
 }

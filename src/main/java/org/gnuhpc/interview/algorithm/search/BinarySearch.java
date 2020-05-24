@@ -174,6 +174,31 @@ Recursion or Non-Recursion
         }
     }
 
+    //一个有序数组arr中小于等于number的数字个数
+    public static int countSmallerOrEqual(int[] arr, int number) {
+        //这是对idx进行二分
+        int start = 0, end = arr.length - 1;
+
+        // find first index that arr[index] > number;
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] <= number) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+
+        if (arr[start] > number) {
+            return start;
+        }
+
+        if (arr[end] > number) {
+            return end;
+        }
+
+        return arr.length;
+    }
 
     public static void main(String[] args) {
         int[] array = new int[]{1, 2, 2, 2, 3, 6, 8, 10};
@@ -182,6 +207,7 @@ Recursion or Non-Recursion
 
         System.out.println(binarySearch(1, array));
         System.out.println(binarySearch2(1, array, 0, array.length - 1));
+        System.out.println(countSmallerOrEqual(array, 9));
 //        System.out.println(binarySearch(9,array));
 //        System.out.println(binarySearch(4,array));
 //        System.out.println(binarySearch(6,array));

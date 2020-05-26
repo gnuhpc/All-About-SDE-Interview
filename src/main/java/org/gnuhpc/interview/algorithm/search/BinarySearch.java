@@ -23,7 +23,16 @@ Sample[start] Sample[end] ? target
     • Half half
 • 二分答案Binary search on result
 
+在实战中注意学会使用Arrays.binarySearch(array, num);
+
+如果查找的值包含在数组中，返回搜索的第一个值的下标；
+如果查找的值不在数组中，返回（-插入点-1）；插入点即为第一个大于此查找值的元素下标
+插入点 为将该值插入数组的那一点：即第一个大于此键的元素下标，如果数组中的所有元素都小于指定的值，则为 arr.length
+
+记住一点，如果是负数+1取反即得到插入点的idx
  */
+
+import java.util.Arrays;
 
 public class BinarySearch {
     public static int binarySearch(int target, int[] nums) {
@@ -214,5 +223,6 @@ Recursion or Non-Recursion
 //        System.out.println("Another method:");
 //        System.out.println(binarySearchRecursively(3,array));
 //        System.out.println(binarySearchRecursively(6,array));
+        System.out.println(Arrays.binarySearch(array, 0));
     }
 }

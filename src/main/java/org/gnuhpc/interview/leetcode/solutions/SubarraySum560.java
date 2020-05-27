@@ -51,7 +51,7 @@ public class SubarraySum560 {
                   if all numbers are positive, this is fine
                   if there exists negative number, there could be preSum frequency > 1
         */
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         int sum = 0;
         int result = 0;
         //preSum是0出现了1次
@@ -67,6 +67,7 @@ public class SubarraySum560 {
 
     @Test
     public void test() {
+        System.out.println(-2 % 5);
         subarraySum(new int[]{1, 1, 1}, 2);
     }
 

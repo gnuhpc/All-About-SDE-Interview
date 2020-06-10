@@ -2,6 +2,8 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class SearchMatrix240 {
     /*
     Method1 : 二分法，找出最后一个可能存在target的行，然后向上对每行进行二分查找
@@ -12,7 +14,11 @@ public class SearchMatrix240 {
 
         int row = findRow(matrix, target);
 
-        if (row == -1) return false;
+        if (row >= 0) return true;
+        else {
+            row = -(row + 1);
+            row--;
+        }
 
         for (int i = row; i >= 0; i--) {
             if (findTargetWithInRow(matrix[i], target)) {
@@ -24,38 +30,16 @@ public class SearchMatrix240 {
     }
 
     private boolean findTargetWithInRow(int[] nums, int target) {
-        int start = 0;
-        int end = nums.length - 1;
-
-        while (start + 1 < end) {
-            int mid = (end - start) / 2 + start;
-            int midVal = nums[mid];
-            if (midVal == target) end = mid;
-            else if (midVal > target) end = mid;
-            else start = mid;
-        }
-
-        if (nums[start] == target) return true;
-        if (nums[end] == target) return true;
-        else return false;
+        return Arrays.binarySearch(nums, target) >= 0;
     }
 
     private int findRow(int[][] matrix, int target) {
-        int start = 0;
-        int end = matrix.length - 1;
-
-        while (start + 1 < end) {
-            int mid = (end - start) / 2 + start;
-            int midVal = matrix[mid][0];
-
-            if (midVal == target) start = mid;
-            else if (midVal > target) end = mid;
-            else start = mid;
+        int[] row = new int[matrix.length];
+        for (int i = 0; i < row.length; i++) {
+            row[i] = matrix[i][0];
         }
 
-        if (matrix[start][0] <= target && matrix[end][0] > target) return start;
-        if (matrix[end][0] <= target && target <= matrix[end][matrix[0].length - 1]) return end;
-        else return -1;
+        return Arrays.binarySearch(row, target);
     }
 
     /*

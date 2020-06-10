@@ -76,7 +76,6 @@ public class DecodeString394 {
     /*
     Method2 : Without construct match  map
      */
-
     public String decodeString2(String s) {
         String ans = "", times = "";
         int idx = 0, n = s.length();
@@ -85,8 +84,10 @@ public class DecodeString394 {
         while (idx < n) {
             char c = s.charAt(idx);
 
-            if (c >= '0' && c <= '9') times += c;
-            else if (c == '[') {
+            if (c >= '0' && c <= '9') {
+                times += c;
+                idx++;
+            } else if (c == '[') {
 
                 int toMatch = 1, end = idx + 1;
                 //找到最后一个匹配的括号
@@ -98,18 +99,19 @@ public class DecodeString394 {
                 }
                 String sub = s.substring(idx + 1, end - 1);
                 // System.out.println(sub);
-                String res = decodeString(sub);
+                String res = decodeString2(sub);
                 int timeInt = Integer.parseInt(times);
                 ans += makeDup(timeInt, res);
-                idx = end - 1;
+                idx = end;
                 times = "";
             } else {
                 ans += c;
+                idx++;
             }
-            idx++;
         }
         return ans;
     }
+
 
     @Test
     public void test() {

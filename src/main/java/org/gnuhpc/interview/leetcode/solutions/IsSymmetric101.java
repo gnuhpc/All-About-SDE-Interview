@@ -5,27 +5,26 @@ import org.gnuhpc.interview.leetcode.utils.TreeNode;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
 
 public class IsSymmetric101 {
     /*
     Method 1: Recursion
      */
     public boolean isSymmetric(TreeNode root) {
-        return root == null || isSymmetricHelp(root.left, root.right);
+        return root == null || isSymmetricChecker(root.left, root.right);
     }
 
-    private boolean isSymmetricHelp(TreeNode left, TreeNode right) {
+    private boolean isSymmetricChecker(TreeNode left, TreeNode right) {
         if (left == null || right == null)
             return left == right;
         if (left.val != right.val)
             return false;
-        return isSymmetricHelp(left.left, right.right) && isSymmetricHelp(left.right, right.left);
+        return isSymmetricChecker(left.left, right.right) && isSymmetricChecker(left.right, right.left);
     }
 
 
     /*
-    Method 2: iteration
+    Method 2: iteration inorder
      */
 
     public boolean isSymmetric2(TreeNode root) {
@@ -60,42 +59,17 @@ public class IsSymmetric101 {
 
         if (s1.isEmpty() && s2.isEmpty()) {
             if (p == null && q == null) return true;
-            if (p == null || q == null) return false;
+            return p != null && q != null;
         }
 
         return true;
     }
 
     /*
-    Method3 : using queue  (Fastest) 本质也是BFS
+    Method 3:BFS
      */
+
     public boolean isSymmetric3(TreeNode root) {
-        if (root == null) return true;
-        Queue<TreeNode> q = new LinkedList<>();
-
-        if (!insertNodes(root.left, root.right, q)) return false;
-        while (!q.isEmpty()) {
-            TreeNode n1 = q.poll();
-            TreeNode n2 = q.poll();
-            if (!insertNodes(n1.left, n2.right, q) || !insertNodes(n1.right, n2.left, q)) return false;
-        }
-
-        return true;
-    }
-
-    public boolean insertNodes(TreeNode n1, TreeNode n2, Queue<TreeNode> q) {
-        if (n1 == null && n2 == null) return true;
-        if (n1 == null || n2 == null || n1.val != n2.val) return false;
-        q.add(n1);
-        q.add(n2);
-        return true;
-    }
-
-    /*
-    Method 4:BFS
-     */
-
-    public boolean isSymmetric4(TreeNode root) {
         Queue<TreeNode> q = new LinkedList<>();
         if (root == null) return true;
         q.add(root.left);

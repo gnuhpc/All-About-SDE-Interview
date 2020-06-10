@@ -10,7 +10,7 @@ public class isPalindrome9 {
     Method1 :先计算位数
      */
 
-    public static boolean isPalindrome(int num) {
+    public boolean isPalindrome(int num) {
         if (num < 0) return false;
         /*find the most significant digit*/
         int div = 1;
@@ -26,9 +26,26 @@ public class isPalindrome9 {
         return true;
     }
 
-
-    // 逆序，有可能会越界
     public boolean isPalindrome2(int x) {
+        if (x < 0) return false;
+        if (x < 10) return true;
+
+        int[] arr = new int[32];
+        int n = 0;
+        while (x != 0) {
+            arr[n++] = x % 10;
+            x = x / 10;
+        }
+        for (int i = 0; i < n; i++) {
+            if (arr[i] != arr[n - i - 1])
+                return false;
+        }
+        return true;
+    }
+
+
+    // 逆序
+    public boolean isPalindrome3(int x) {
         if (x < 0) {
             return false;
         }

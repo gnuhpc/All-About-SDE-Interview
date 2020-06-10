@@ -1,8 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Copyright gnuhpc 19-7-15
@@ -51,45 +49,16 @@ public class Rob213 {
         return max;
     }
 
-    public int rob2(int[] nums) {
-        if (nums == null || nums.length == 0) return 0;
-        //因为数组是非负整数，递归遍历中可能取单个元素的组合，故需要初始化为-1，而不是0
-        //也可以定义为Integer[] memo，做判空处理
-        int n = nums.length;
-        if (n == 1) return nums[0];
-        memo = new int[n];
-        Arrays.fill(memo, -1);
-        int mx1 = tryRob2(nums, 0, n - 2);
-        Arrays.fill(memo, -1);
-        int mx2 = tryRob(nums, 1, n - 1);
-        return Math.max(mx1, mx2);
-
-    }
-
-    //考虑偷取[x,...,end]范围里的房子
-    public int tryRob2(int[] nums, int index, int end) {
-        //System.out.println("index="+index+",end="+end);
-        if (index > end) return 0;
-        if (memo[index] != -1) return memo[index];
-        int mx = 0;
-        for (int i = index; i <= end; i++) {//注意i从index开始
-            mx = Math.max(mx, nums[i] + tryRob(nums, i + 2, end));
-        }
-        memo[index] = mx;
-        return mx;
-
-    }
-
     // add by tina,DP
-    public int rob3(int[] nums) {
+    public int rob2(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
         if (nums.length == 2) return Math.max(nums[0], nums[1]);
 
-        return Math.max(rob31(nums, 0, nums.length - 2), rob31(nums, 1, nums.length - 1));
+        return Math.max(dp(nums, 0, nums.length - 2), dp(nums, 1, nums.length - 1));
     }
 
-    public int rob31(int[] nums, int index, int end) {
+    public int dp(int[] nums, int index, int end) {
         int n = end - index + 1;
         int[] dp = new int[n];
         dp[0] = nums[index];

@@ -58,8 +58,7 @@ public class SubarraySum560 {
         map.put(0, 1);
         for (int cur : nums) {
             sum += cur;
-            if (map.containsKey(sum - k))  // there exist a key, that [hashmap-key  =  sum - k]
-                result += map.get(sum - k);
+            result += map.getOrDefault(sum - k, 0);
             map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return result;
@@ -67,7 +66,6 @@ public class SubarraySum560 {
 
     @Test
     public void test() {
-        System.out.println(-2 % 5);
         subarraySum(new int[]{1, 1, 1}, 2);
     }
 

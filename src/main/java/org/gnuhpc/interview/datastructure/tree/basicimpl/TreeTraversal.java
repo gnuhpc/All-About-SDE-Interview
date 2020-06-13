@@ -34,45 +34,32 @@ public class TreeTraversal {
     }
 
     /*
-    Merhod 2： Non recursive , 和下边方法的区别是这个方法一直在左边进行，不得以才进行右边的节点
+    Merhod 2： Non recursive
      */
     /*
     DFS模板方法
     */
     public static List<Integer> preorderNonRecursive(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode p = root;
-
-        while (p != null || !stack.isEmpty()) {
-            while (p != null) {
-                res.add(p.val);
-                stack.push(p);
-                p = p.left;
+        if (root == null) return Collections.emptyList();
+        List<Integer> res = new ArrayList<>();  //保存结果
+        Deque<TreeNode> call = new LinkedList<>();   //调用栈
+        call.push(root);    //先将根结点入栈
+        while (!call.isEmpty()) {
+            TreeNode t = call.pop();   //弹出结点并判断是否访问过
+            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+            if (t != null) {
+                if (t.right != null) call.push(t.right);
+                if (t.left != null) call.push(t.left);
+                call.push(t);
+                call.push(null);
+            //表明当前结点以访问过
+            } else {
+                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
             }
-            p = stack.pop();
-            p = p.right;
         }
         return res;
     }
 
-    public static List<Integer> preorderNonRecursiveDFS(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode n = stack.pop();
-            result.add(n.val);
-            if (n.right != null) {
-                stack.push(n.right);
-            }
-            if (n.left != null) {
-                stack.push(n.left);
-            }
-        }
-        return result;
-    }
 
     /*
     Method3 : 分治法
@@ -111,24 +98,27 @@ public class TreeTraversal {
     }
 
     /*
-        Non-recursive ，注意res.add的位置
+        Non-recursive
     */
     public static List<Integer> inorderNonRecursive(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode p = root;
-
-        while (p != null || !stack.isEmpty()) {
-            while (p != null) {
-                stack.push(p);
-                p = p.left;
+        if (root == null) return Collections.emptyList();
+        List<Integer> res = new ArrayList<>();  //保存结果
+        Deque<TreeNode> call = new LinkedList<>();   //调用栈
+        call.push(root);    //先将根结点入栈
+        while (!call.isEmpty()) {
+            TreeNode t = call.pop();   //弹出结点并判断是否访问过
+            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+            if (t != null) {
+                if (t.right != null) call.push(t.right);
+                call.push(t);
+                call.push(null);
+                if (t.left != null) call.push(t.left);
+                //表明当前结点以访问过
+            } else {
+                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
             }
-            p = stack.pop();
-            res.add(p.val);
-            p = p.right;
         }
         return res;
-
     }
 
     public static List<Integer> postorder(TreeNode root) {
@@ -145,85 +135,24 @@ public class TreeTraversal {
         res.add(root.val);
     }
 
-
-    //后续遍历的真实写法， 并不推荐
-    public static List<Integer> postorderNonRecursive1(TreeNode root) {
-        Stack<TreeNode> stack = new Stack<>();
-        List<Integer> res = new ArrayList<>();
-        if (root == null) return res;
-        stack.push(root);
-        TreeNode pre = root;
-        TreeNode cur = root;
-        while (!stack.isEmpty()) {
-            pre = cur;
-            cur = stack.peek();
-            //不是叶子结点或者不是在向上回溯
-            if ((cur.left != null || cur.right != null) && (pre != cur.left && pre != cur.right)) {
-                if (cur.right != null) stack.push(cur.right);
-                if (cur.left != null) stack.push(cur.left);
-            } else {
-                res.add(stack.pop().val);
-            }
-        }
-        return res;
-    }
-
-    //后续遍历非递归，真实的另一种写法, 推荐
-    static class StackNode {
-        TreeNode node;
-        boolean isFirst; //记录是不是第一次被遍历到
-
-        public StackNode(TreeNode node, boolean isFirst) {
-            this.node = node;
-            this.isFirst = isFirst;
-        }
-    }
-
-    public static List<Integer> postorderNonRecursive2(TreeNode root) {
-        List<Integer> res = new ArrayList<>();
-        Deque<StackNode> stack = new LinkedList<>();
-        if (root == null) return res;
-
-        TreeNode p = root;
-
-        while (p != null || !stack.isEmpty()) {
-            // 要点，一直向左找下去
-            while (p != null) {
-                stack.push(new StackNode(p, true));
-                p = p.left;
-            }
-
-            StackNode sn = stack.pop();
-
-            if (sn.isFirst) {
-                sn.isFirst = false;
-                stack.push(sn);
-                p = sn.node.right;
-            } else {
-                res.add(sn.node.val);
-            }
-        }
-
-        return res;
-    }
-
-    //后续遍历非递归，但是这个并不是真实的，只是从结果集上是对的，访问的顺序不是
-    //推荐写法
-    //和preorder就是左右的前后顺序变了下，再reverse一下，非常好记!
+    //后续遍历非递归
     public static List<Integer> postorderNonRecursive(TreeNode root) {
-        LinkedList<Integer> res = new LinkedList<>();
-        Deque<TreeNode> stack = new LinkedList<>();
-
-        TreeNode p = root;
-
-        while (p != null || !stack.isEmpty()) {
-            while (p != null) {
-                res.addFirst(p.val);
-                stack.push(p);
-                p = p.right;
+        if (root == null) return Collections.emptyList();
+        List<Integer> res = new ArrayList<>();  //保存结果
+        Deque<TreeNode> call = new LinkedList<>();   //调用栈
+        call.push(root);    //先将根结点入栈
+        while (!call.isEmpty()) {
+            TreeNode t = call.pop();   //弹出结点并判断是否访问过
+            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+            if (t != null) {
+                call.push(t);
+                call.push(null);
+                if (t.right != null) call.push(t.right);
+                if (t.left != null) call.push(t.left);
+                //表明当前结点以访问过
+            } else {
+                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
             }
-            p = stack.pop();
-            p = p.left;
         }
         return res;
     }
@@ -295,24 +224,22 @@ public class TreeTraversal {
     @Test
     public void testTraverse() {
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 2, 3, 4, 5, 6, 7});
-//        System.out.println("Preorder");
-//        TreeTraversal.preorder(find).forEach(i-> System.out.printf("%s,",i));
-//        System.out.println();
-//        TreeTraversal.preorderNonRecursive(find).forEach(i-> System.out.printf("%s,",i));
-//        System.out.println();
-//
-//        System.out.println("Inorder");
-//        TreeTraversal.inorder(find).forEach(i-> System.out.printf("%s,",i));
-//        System.out.println();
-//        TreeTraversal.inorderNonRecursive(find).forEach(i-> System.out.printf("%s,",i));
-//        System.out.println();
+        System.out.println("Preorder");
+        TreeTraversal.preorder(root).forEach(i-> System.out.printf("%s,",i));
+        System.out.println();
+        TreeTraversal.preorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+        System.out.println();
+
+        System.out.println("Inorder");
+        TreeTraversal.inorder(root).forEach(i-> System.out.printf("%s,",i));
+        System.out.println();
+        TreeTraversal.inorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+        System.out.println();
 
         System.out.println("Postorder");
         TreeTraversal.postorder(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
         TreeTraversal.postorderNonRecursive(root).forEach(i -> System.out.printf("%s,", i));
-        System.out.println();
-        TreeTraversal.postorderNonRecursive2(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
 
 //        List<List<Integer>> levelNodes = TreeTraversal.level(find);

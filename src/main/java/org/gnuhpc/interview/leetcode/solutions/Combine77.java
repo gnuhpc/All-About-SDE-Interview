@@ -92,7 +92,7 @@ public class Combine77 {
 
     private void robot(int k, int start) {
         if (start == selected.length || k == 0) {
-            if (k == 0) { //如果只是start到了重点，但是没有选出足够多的数值，这个结果我们也不要
+            if (k == 0) { //如果只是start到了终点，但是没有选出足够多的数值，这个结果我们也不要
                 List<Integer> tmp = new ArrayList<>();
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {

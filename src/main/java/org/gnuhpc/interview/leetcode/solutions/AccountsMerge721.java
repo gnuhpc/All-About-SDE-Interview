@@ -1,6 +1,5 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.datastructure.unionfind.QuickUnion;
 import org.gnuhpc.interview.datastructure.unionfind.UnionFind;
 import org.junit.Test;
 

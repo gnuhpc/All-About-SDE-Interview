@@ -76,40 +76,40 @@ public class Codec297 {
     Method2: DFS
      */
     // Encodes a tree to a single string.
-    // Encodes a tree to a single string.
     public String serialize2(TreeNode root) {
         StringBuilder sb = new StringBuilder();
-        buildString(root, sb);
+        serDFS(root, sb);
         return sb.toString();
     }
 
-    private void buildString(TreeNode node, StringBuilder sb) {
+    private void serDFS(TreeNode node, StringBuilder sb) {
         if (node == null) {
             sb.append(NULL).append(SPLITER);
         } else {
             sb.append(node.val).append(SPLITER);
-            buildString(node.left, sb);
-            buildString(node.right, sb);
+            serDFS(node.left, sb);
+            serDFS(node.right, sb);
         }
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize2(String data) {
-        Deque<String> nodes = new LinkedList<>();
-        nodes.addAll(Arrays.asList(data.split(SPLITER)));
-        return buildTree(nodes);
+        return deserDFS(data.split(SPLITER));
     }
 
-    private TreeNode buildTree(Deque<String> nodes) {
-        String val = nodes.remove();
+    int pt = 0;
+
+    private TreeNode deserDFS(String[] nodes) {
+        String val = nodes[pt++];
         if (val.equals(NULL)) return null;
         else {
             TreeNode node = new TreeNode(Integer.valueOf(val));
-            node.left = buildTree(nodes);
-            node.right = buildTree(nodes);
+            node.left = deserDFS(nodes);
+            node.right = deserDFS(nodes);
             return node;
         }
     }
+
 
     @Test
     public void test() {

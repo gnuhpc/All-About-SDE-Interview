@@ -1,16 +1,19 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 
 public class ThreeSumClosest16 {
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         int[] nums = new int[]{-1, 2, 1, -4};
         int target = 1;
 
         System.out.println(threeSumClosest(nums, target));
     }
 
-    public static int threeSumClosest(int[] nums, int target) {
+    public int threeSumClosest(int[] nums, int target) {
         int min = Integer.MAX_VALUE;
         int result = 0;
         assert (nums != null && nums.length >= 3);

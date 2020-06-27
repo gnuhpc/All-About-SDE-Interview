@@ -7,53 +7,48 @@ import org.junit.Test;
  */
 public class AddBinary67 {
     public String addBinary(String a, String b) {
-        String l = a.length() > b.length() ? a : b;
-        String s = a.length() > b.length() ? b : a;
-        StringBuilder sb = new StringBuilder();
+        int aLen = a.length();
+        int bLen = b.length();
+        int maxLen = Math.max(aLen, bLen);
 
-        int diff = l.length() - s.length();
+        // 从个位开始加，个位在字符串的右边
+        // 代码访问从左到右，因此先反转一下
+        StringBuilder sbA = new StringBuilder(a).reverse();
+        StringBuilder sbB = new StringBuilder(b).reverse();
 
-        int left = 0, i = s.length() - 1;
-        for (; i >= 0; i--) {
-            int num1 = s.charAt(i) - '0';
-            int num2 = l.charAt(i + diff) - '0';
-
-            int num = num1 + num2 + left;
-
-            if (num < 2) {
-                left = 0;
-            } else if (num == 2) {
-                left = 1;
-                num = 0;
-            } else { //num == 3
-                left = 1;
-                num = 1;
-            }
-
-            sb.append(num);
+        // 让两个字符补齐成一样的长度
+        while (sbA.length() < maxLen) {
+            sbA.append("0");
+        }
+        while (sbB.length() < maxLen) {
+            sbB.append("0");
         }
 
-        for (i = diff - 1; i >= 0; i--) {
-            int num = l.charAt(i) - '0' + left;
-
-
-            if (num < 2) {
-                left = 0;
-            } else if (num == 2) {
-                left = 1;
-                num = 0;
-            } else { //num == 3
-                left = 1;
-                num = 1;
+        StringBuilder res = new StringBuilder();
+        // 进位，初始时进位为 0
+        int carry = 0;
+        // 当前字符的 ASCII 值减去 '0' 的 ASCII 值，相当于将这个字符转换成数值
+        int num1;
+        int num2;
+        for (int i = 0; i < maxLen; i++) {
+            num1 = sbA.charAt(i) - '0';
+            num2 = sbB.charAt(i) - '0';
+            if (carry + num1 + num2 > 1) {
+                // 因为是二进制，所以多余 2 的部分要减去
+                res.append(carry + num1 + num2 - 2);
+                // 表示要进位
+                carry = 1;
+            } else {
+                res.append(carry + num1 + num2);
+                carry = 0;
             }
-
-
-            sb.append(num);
         }
-
-        if (left == 1) sb.append(left);
-
-        return sb.reverse().toString();
+        // 对于最高位还要进位的情况，需要单独判断
+        if (carry == 1) {
+            res.append("1");
+        }
+        // 最后不要忘记再反转一次
+        return res.reverse().toString();
     }
 
     @Test

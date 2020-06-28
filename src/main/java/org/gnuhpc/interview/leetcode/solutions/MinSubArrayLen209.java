@@ -5,14 +5,14 @@ import org.junit.Test;
 public class MinSubArrayLen209 {
 
     /**
-     * 暴力解法，O(n^2) by 汪婷， why k?? 根本没有需要算k，最后一个for循环更没必要算
+     * 暴力解法，O(n^2) by 汪婷
      *
      * @param s
      * @param nums
      * @return
      */
     public int minSubArrayLen(int s, int[] nums) {
-        int min = Integer.MAX_VALUE, k = 0; // min最小窗口大小，k当前最小窗口起始元素下标
+        int min = Integer.MAX_VALUE;//, k = 0; // min最小窗口大小，k当前最小窗口起始元素下标
         for (int i = 0; i < nums.length; i++) {
             int sum = 0;
             for (int j = i; j < nums.length; j++) {
@@ -20,7 +20,7 @@ public class MinSubArrayLen209 {
                 if (sum >= s) {
                     int cur = j - i + 1;
                     if (cur < min) {
-                        k = i;
+                        //k = i;
                         min = cur;
                     }
                     continue;
@@ -29,9 +29,6 @@ public class MinSubArrayLen209 {
         }
 
         if (min == Integer.MAX_VALUE) return 0;
-        for (int i = 0; i < min; i++) {
-            nums[i] = nums[k + i];
-        }
 
         return min;
     }
@@ -106,11 +103,7 @@ public class MinSubArrayLen209 {
         }
 
         //不存在一个子数组的和大于等于s，按照题意置为0
-        if (res == Integer.MAX_VALUE) {
-            res = 0;
-        }
-
-        return res;
+        return res == Integer.MAX_VALUE ? 0 : res;
     }
 
     // add by tina,类似于方法2，连续长度子数组都可以用这个套路。
@@ -118,11 +111,10 @@ public class MinSubArrayLen209 {
     public int minSubArrayLen4(int s, int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         int[] sum = new int[nums.length];
-        int j = 0;
         sum[0] = nums[0];
         if (nums[0] >= s) return 1;
         int minlen = Integer.MAX_VALUE;
-        for (int i = 1; i < nums.length; i++) {
+        for (int i = 1, j = 0; i < nums.length; i++) {
             sum[i] = sum[i - 1] + nums[i];
             if (sum[i] >= s) {
                 while (sum[i] - sum[j] >= s) {
@@ -137,6 +129,6 @@ public class MinSubArrayLen209 {
 
     @Test
     public void test() {
-        System.out.println(minSubArrayLen3(7, new int[]{2, 3, 1, 2, 4, 3}));
+        System.out.println(minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3}));
     }
 }

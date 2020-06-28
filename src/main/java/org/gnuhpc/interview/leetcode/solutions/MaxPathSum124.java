@@ -27,11 +27,6 @@ public class MaxPathSum124 {
     private int ret = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        /**
-         对于任意一个节点, 如果最大和路径包含该节点, 那么只可能是两种情况:
-         1. 其左右子树中所构成的和路径值较大的那个加上该节点的值后向父节点回溯构成最大路径
-         2. 左右子树都在最大路径中, 加上该节点的值构成了最终的最大路径
-         **/
         getMax(root);
         return ret;
     }
@@ -43,7 +38,7 @@ public class MaxPathSum124 {
         //不断更新max为val+left+right. 但每次返回的时候只返回 root.val + max(left,right). 这个实在是太巧妙了。
         ret = Math.max(ret, r.val + left + right); // 判断在该节点包含左右子树的路径和是否大于当前最大路径和
         //去求左子树能返回的最大值，右子树能返回的最大值，选一个较大的
-        return Math.max(left, right) + r.val;
+        return Math.max(left, right) + r.val; //对上一层的贡献只能是选择左右两边最大的一边
     }
 
     @Test

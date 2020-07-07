@@ -316,7 +316,7 @@ public class BinarySearchTree {
         b.insert(15);
         b.insert(16);
         //then
-        int[] results = TreeTraversal.inorder(b.root).stream().mapToInt(i -> i).toArray();
+        int[] results = TreeTraverse.inorder(b.root).stream().mapToInt(i -> i).toArray();
         int[] array = new int[]{
                 1, 2, 3, 4, 6, 8, 9, 10, 15, 16, 20, 25};
         assertArrayEquals(results, array);
@@ -326,7 +326,7 @@ public class BinarySearchTree {
 
         b.delete(20);
 
-        TreeTraversal.inorder(b.root).forEach(System.out::println);
+        TreeTraverse.inorder(b.root).forEach(System.out::println);
     }
 
     @Test
@@ -340,7 +340,7 @@ public class BinarySearchTree {
 
         b.delete(8);
 
-        int[] ids = TreeTraversal.inorder(b.root).stream().mapToInt(i -> i).toArray();
+        int[] ids = TreeTraverse.inorder(b.root).stream().mapToInt(i -> i).toArray();
         int[] array = new int[]{1, 3, 6};
 
         assertArrayEquals(ids, array);
@@ -357,10 +357,10 @@ public class BinarySearchTree {
         b.insertRecursive(3);
         b.insertRecursive(7);
 
-        TreeTraversal.level(b.root).forEach(System.out::println);
+        TreeTraverse.level(b.root).forEach(System.out::println);
         b.deleteRecursive(5);
         System.out.println();
-        TreeTraversal.level(b.root).forEach(System.out::println);
+        TreeTraverse.level(b.root).forEach(System.out::println);
 //        System.out.println(b.findRecursive(5));
 //        System.out.println(b.findRecursive(4));
 //
@@ -376,7 +376,7 @@ public class BinarySearchTree {
     @Test
     public void testBuildBST3() {
         TreeNode root = new BinarySearchTree().create(new int[]{1, 2, 3, 3, 4});
-        System.out.println(TreeTraversal.preorder(root));
+        System.out.println(TreeTraverse.preorder(root));
     }
 
 }

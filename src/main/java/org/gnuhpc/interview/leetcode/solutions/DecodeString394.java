@@ -64,14 +64,6 @@ public class DecodeString394 {
         }
     }
 
-    private String makeDup(int times, String s) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < times; i++) {
-            sb.append(s);
-        }
-
-        return sb.toString();
-    }
 
     /*
     Method2 : Without construct match  map
@@ -112,6 +104,14 @@ public class DecodeString394 {
         return ans;
     }
 
+    private String makeDup(int times, String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < times; i++) {
+            sb.append(s);
+        }
+
+        return sb.toString();
+    }
 
     @Test
     public void test() {

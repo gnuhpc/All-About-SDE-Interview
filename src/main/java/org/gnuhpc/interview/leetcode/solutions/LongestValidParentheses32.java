@@ -6,6 +6,10 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class LongestValidParentheses32 {
+    /*
+    Method1: 双向扫描
+    链接：https://leetcode-cn.com/problems/longest-valid-parentheses/solution/zui-chang-you-xiao-gua-hao-by-leetcode-solution/
+     */
     public int longestValidParentheses(String s) {
         int left = 0, right = 0, maxlength = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -38,12 +42,14 @@ public class LongestValidParentheses32 {
 
     /*
     Method2: Stack , 比较巧妙的是记录了不匹配的index
+
      */
     public int longestValidParentheses2(String s) {
         int n = s.length();
 
         // Create a stack and push -1 as initial index to it.
         Deque<Integer> stack = new LinkedList<>();
+        //栈顶是最左边的一个(的index
         stack.push(-1);
 
         // Initialize res
@@ -66,15 +72,18 @@ public class LongestValidParentheses32 {
                 if (!stack.isEmpty())
                     res = Math.max(res, i - stack.peek());
 
-                    // If stack is empty. push current index as
-                    // base for next valid substring (if any)
+                    // If stack is empty 说明起点不对
+
                 else
-                    return Math.max(res, longestValidParentheses2(s.substring(i + 1)));
+                    return Math.max(res, longestValidParentheses(s.substring(i + 1)));
+
+
             }
         }
 
         return res;
     }
+
 
     @Test
     public void test() {

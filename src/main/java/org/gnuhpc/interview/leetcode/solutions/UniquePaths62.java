@@ -9,8 +9,8 @@ public class UniquePaths62 {
     /*
     Method: Raw dfs (LTE)
      */
-    private int[] stepX = new int[]{0, 1};
-    private int[] stepY = new int[]{1, 0};
+    private final int[] stepX = new int[]{0, 1};
+    private final int[] stepY = new int[]{1, 0};
     private int ROW;
     private int COL;
 
@@ -91,24 +91,5 @@ public class UniquePaths62 {
     public void test() {
         System.out.println(uniquePaths(3, 2));
         System.out.println(uniquePaths2(3, 2));
-    }
-
-    // add by tina,memo search，相对于方法二模板，写法更简洁。从后往前追溯到(0,0).
-    private int[][] path;
-
-    public int uniquePaths4(int m, int n) {
-        path = new int[m][n];
-        return search(m - 1, n - 1);
-    }
-
-    public int search(int i, int j) {
-        if (i == 0 && j == 0) return 1;
-        if (i < 0 || j < 0) return 0;//边界
-        if (path[i][j] != 0) return path[i][j];
-
-        if (i >= 0 && j >= 0) {
-            path[i][j] = search(i - 1, j) + search(i, j - 1);
-        }
-        return path[i][j];
     }
 }

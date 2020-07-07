@@ -10,26 +10,8 @@
 需要说明的是，递归是一种拆分思维的具体问题类别的思维方法，其核心的思维动态规划非常类似，
 都是假设子节点搞定了我现在应该干什么这个问题
 
-前序和中序非递归模板
-List<Integer> res = new ArrayList<>();
-Deque<TreeNode> stack = new LinkedList<>();
-TreeNode p = root;
+前中后序非递归模板 见TreeTraverse.java
 
-while (p != null || !stack.isEmpty()) {
-    while (p != null) {
-        //在这儿访问是前序, 在这儿addFirst倒着保存访问结果是后续
-        stack.push(p);
-        p = p.left;
-    }
-    p = stack.pop();
-    //在这儿访问是中序
-    p = p.right;
-}
-return res;
-
-后序和上边的不同在于
-1. 将TreeNode包裹在一个包装类里，里面记录了是否是第一次被访问
-2. 弹出来的时候先看是不是true，如果是，则改为false，塞回去,切换p指向right。如果不是则直接处理
 
 LC相关题目
 100
@@ -125,9 +107,10 @@ LC相关题目
 298
 124
 
-13. BFS在逐层遍历的时候可以再记录一个queue进行计数等操作
+13. BFS在逐层遍历的时候可以再记录一个queue进行计数或者是记录路径和等操作
 LC相关题目
 298 解法3
+112 解法2
 
 14. 树的DFS遍历需要计算极值的时候可以使用全局变量记录
 LC相关题目
@@ -157,3 +140,5 @@ LC相关题目
 LC相关题目
 297 解法2
 1028 解法2
+
+20. BFS还可以配置一个求和的队列一起往下BFS

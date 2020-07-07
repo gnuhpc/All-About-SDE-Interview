@@ -9,38 +9,40 @@ public class IsMatch44 {
      */
 
     public boolean isMatch(String str, String pattern) {
-        int s = 0; // cursor for traversal in str.
-        int p = 0; // cursor for traversal in pattern.
-        int starIdx = -1; // once we found a star, we want to record the place of the star.
-        int match =
-                0; // once we found a star, we want to start to match the rest of pattern with str, starting from match; this is for remembering the place where we need to start.
-
-        // we check and match every char for str.
+        int s = 0, p = 0, match = 0, starIdx = -1;
+        //遍历整个字符串
         while (s < str.length()) {
-            // 1. case 1: we are not currently at any *,
-            if (p < pattern.length() && (pattern.charAt(p) == str.charAt(s) || pattern.charAt(p) == '?')) {
-                p++;
+            // 一对一匹配，两指针同时后移。
+            if (p < pattern.length() && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))) {
                 s++;
-            }// 2. case 2: we are currently at a '*'
+                p++;
+            }
+            // 碰到 *，假设它匹配空串，并且用 startIdx 记录 * 的位置，记录当前字符串的位置，p 后移
             else if (p < pattern.length() && pattern.charAt(p) == '*') {
                 starIdx = p;
-                p++;
                 match = s;
-            } // 3. case 3: they do not match, we do not currently at a *, but the last matched is a *
+                p++;
+            }
+            // 当前字符不匹配，并且也没有 *，回退
+            // p 回到 * 的下一个位置
+            // match 更新到下一个位置
+            // s 回到更新后的 match
+            // 这步代表用 * 匹配了一个字符
             else if (starIdx != -1) {
+                p = starIdx + 1;
                 match++;
                 s = match;
-                p = starIdx + 1;
-            } // 4. case 4: they do not match, do not currently at a *, and last matched is not a *, then the answer is false;
-            else {
-                return false;
             }
+            //字符不匹配，也没有 *，返回 false
+            else return false;
         }
-        // when we finish matching all characters in str, is pattern also finished? we could only allow '*' at the rest of pattern
+
+        //将末尾多余的 * 直接匹配空串 例如 text = ab, pattern = a*******
         while (p < pattern.length() && pattern.charAt(p) == '*')
             p++;
 
         return p == pattern.length();
+
     }
 
     @Test

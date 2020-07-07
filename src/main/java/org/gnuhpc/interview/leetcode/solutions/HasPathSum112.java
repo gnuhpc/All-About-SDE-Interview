@@ -2,6 +2,8 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.gnuhpc.interview.leetcode.utils.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class HasPathSum112 {
@@ -20,22 +22,35 @@ public class HasPathSum112 {
     }
 
     /*
-    Method2 : preorder traversal
+    Method2 : BFS
      */
     public boolean hasPathSum2(TreeNode root, int sum) {
-        if (root == null) return false;
-        //前序遍历
-        return helper(root, sum, 0);
-    }
-
-    private boolean helper(TreeNode root, int target, int curSum) {
-        if (root == null) return false;
-        curSum += root.val;
-        if (root.left == null && root.right == null) {
-            return curSum == target;
-        } else {
-            return helper(root.left, target, curSum) || helper(root.right, target, curSum);
+        if (root == null) {
+            return false;
         }
+        Queue<TreeNode> queNode = new LinkedList<TreeNode>();
+        Queue<Integer> queVal = new LinkedList<Integer>();
+        queNode.offer(root);
+        queVal.offer(root.val);
+        while (!queNode.isEmpty()) {
+            TreeNode now = queNode.poll();
+            int temp = queVal.poll();
+            if (now.left == null && now.right == null) {
+                if (temp == sum) {
+                    return true;
+                }
+                continue;
+            }
+            if (now.left != null) {
+                queNode.offer(now.left);
+                queVal.offer(now.left.val + temp);
+            }
+            if (now.right != null) {
+                queNode.offer(now.right);
+                queVal.offer(now.right.val + temp);
+            }
+        }
+        return false;
     }
 
     public boolean hasPathSum3(TreeNode root, int sum) {

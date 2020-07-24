@@ -2,6 +2,7 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -15,7 +16,7 @@ public class MaxStack716 {
      */
     public MaxStack716() {
         stack = new LinkedList<>();
-        maxCache = new TreeMap<>();
+        maxCache = new TreeMap<>((o1, o2) -> o2-o1);
     }
 
     public void push(int x) {
@@ -49,7 +50,7 @@ public class MaxStack716 {
     }
 
     public int peekMax() {
-        return maxCache.lastKey();
+        return maxCache.firstKey();
     }
 
     public int popMax() {
@@ -73,6 +74,7 @@ public class MaxStack716 {
         System.out.println(stack.popMax());
         System.out.println(stack.top());
         System.out.println(stack.popMax());
+        System.out.println(stack.peekMax());
         System.out.println(stack.pop());
         System.out.println(stack.top());
     }

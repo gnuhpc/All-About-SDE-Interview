@@ -10,6 +10,10 @@ import java.util.Stack;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/*
+push 是addFirst
+pop 是removeFirst
+ */
 public class StackTest {
     @Test
     public void whenPushToStackThenShouldRetrieveIt() {

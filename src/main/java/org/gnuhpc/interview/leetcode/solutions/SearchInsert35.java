@@ -2,6 +2,8 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class SearchInsert35 {
     public int searchInsert(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
@@ -44,6 +46,19 @@ public class SearchInsert35 {
         }
 
         return start + 1;
+    }
+
+    public int searchInsert2(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int idx = Arrays.binarySearch(nums, target);
+        if(idx < 0){
+            return -1*idx-1;
+        } else {
+
+            return idx;
+        }
     }
 
     @Test

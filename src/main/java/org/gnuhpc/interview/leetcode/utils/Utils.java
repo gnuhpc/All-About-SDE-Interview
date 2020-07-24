@@ -459,7 +459,9 @@ public class Utils {
         int i = low + 1, j = high;
 
         while (i <= j) {
+            //大的放前边,注意i是严格大于
             while (i <= j && numbers[i] > pivot) i++;
+            //小的放后边，注意j是小于等于
             while (i <= j && numbers[j] <= pivot) j--;
 
             if (i <= j) {
@@ -467,6 +469,7 @@ public class Utils {
             }
         }
 
+        //j 和 i交错而过，j成为分界的左边，i成为分界的右边
         swap(numbers, low, j);
         return j;
     }

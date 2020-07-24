@@ -6,23 +6,6 @@ import org.junit.Test;
 import java.util.*;
 
 public class WordBreak139 {
-    /*
-    Method 1: DFS Brute force , LTE
-     */
-    private int min = 0, max = 0;
-
-    public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> wordSet = new HashSet<>(wordDict);
-        min = Integer.MAX_VALUE;
-        max = Integer.MIN_VALUE;
-        for (String word : wordDict) {
-            int l = word.length();
-            max = Math.max(l, max);
-            min = Math.min(l, min);
-        }
-
-        return canBreak(0, s, wordSet);
-    }
 
     boolean canBreak(int start, String s, Set<String> wordSet) {
         if (start == s.length()) return true;
@@ -46,11 +29,9 @@ public class WordBreak139 {
     /*
     Method 2: dfs + Memorization 7ms
      */
+    private int min = 0, max = 0;
 
     public boolean wordBreak2(String s, List<String> wordDict) {
-        int[] cache = new int[s.length() + 1];
-        Arrays.fill(cache, -1);
-        Set<String> wordSet = new HashSet<>(wordDict);
         min = Integer.MAX_VALUE;
         max = Integer.MIN_VALUE;
         for (String word : wordDict) {
@@ -58,32 +39,29 @@ public class WordBreak139 {
             max = Math.max(l, max);
             min = Math.min(l, min);
         }
-
-        return dfs(0, s, wordSet, cache);
+        return wordBreakHelper(s, wordDict, new HashSet<>(), 0);
     }
 
-    // -1 -- init 0 -- true 1-- false
-    private boolean dfs(int start, String s, Set<String> wordDict, int[] cache) {
-        if (start == s.length()) {
-            cache[start] = 1;
+    //start表示的是从字符串s的哪个位置开始
+    public boolean wordBreakHelper(String s, List<String> wordDict, Set<Integer> invalidPosSet, int start) {
+        if (start == s.length())
             return true;
-        }
-
-        if (cache[start] != -1) return cache[start] == 1;
-
-        for (int end = start + min; end <= s.length(); end++) {
-            String subStr = s.substring(start, end);
-            if (isValid(subStr, wordDict)) {
-                if (dfs(end, s, wordDict, cache)) {
-                    cache[start] = 1;
+        for (int end = start + 1; end <= s.length(); end++) {
+            if (invalidPosSet.contains(end))
+                continue;
+            int len = end - start; //左开右闭是字符串处理的通用模式
+            if (len >= min && len <= max && wordDict.contains(s.substring(start, end))) {
+                if (wordBreakHelper(s, wordDict, invalidPosSet, end))
                     return true;
-                }
+                else
+                    invalidPosSet.add(end);
             }
         }
-
-        cache[start] = 0;
         return false;
     }
+
+
+
 
     /*
     Method 3: DP //DP做分割题目
@@ -138,66 +116,34 @@ public class WordBreak139 {
         return dp[len];
     }
 
-    /*
-    Method 4: Trie
-     */
-
-    public boolean wordBreak4(String s, List<String> wordDict) {
-        Trie trie = new Trie();
-        for (String word : wordDict) {
-            trie.insert(word);
-        }
-        HashMap<String, Boolean> memo = new HashMap<>();
-        return canBreak(s, trie, memo);
-    }
-
-    private boolean canBreak(String s, Trie trie, HashMap<String, Boolean> memo) {
-        if (memo.containsKey(s)) return memo.get(s);
-        for (int i = 1; i <= s.length(); i++) {
-            if (trie.startsWith(s.substring(0, i))) {
-                if (trie.search(s.substring(0, i))) {
-                    if (canBreak(s.substring(i), trie, memo)) {
-                        memo.put(s, true);
-                        return true;
-                    }
-                }
-                if (i == s.length()) {
-                    if (!trie.search(s)) {
-                        memo.put(s, false);
-                        return false;
-                    }
-                }
-            } else {
-                memo.put(s, false);
-                return false;
-            }
-        }
-        memo.put(s, true);
-        return true;
-    }
 
     /*
     Method 5: bfs
-    We can use a graph to represent the possible solutions. The vertices of the graph are simply the positions of the first characters of the words and each edge actually represents a word. For example, the input string is "nightmare", there are two ways to break it, "night mare" and "nightmare". The graph would be
+    We can use a graph to represent the possible solutions.
+    The vertices of the graph are simply the positions of the first characters of the words and each edge actually represents a word.
+    For example, the input string is "nightmare",
+    there are two ways to break it,
+    "night mare" and "nightmare".
+     The graph would be
 0-->5-->9
 |__ __ _^
-The question is simply to check if there is a path from 0 to 9. The most efficient way is traversing the graph using BFS with the help of a queue and a hash set. The hash set is used to keep track of the visited nodes to avoid repeating the same work.
-For this problem, the time complexity is O(n^2) and space complexity is O(n), the same with DP. This idea can be used to solve the problem word break II. We can simple construct the graph using BFS, save it into a map and then find all the paths using DFS
+The question is simply to check if there is a path from 0 to 9.
+The most efficient way is traversing the graph using BFS
+with the help of a queue and a hash set.
+The hash set is used to keep track of the visited nodes to avoid repeating the same work.
+For this problem, the time complexity is O(n^2) and space complexity is O(n),
+the same with DP.
+This idea can be used to solve the problem word break II.
+We can simple construct the graph using BFS,
+save it into a map and then find all the paths using DFS
      */
 
-    public boolean wordBreak5(String s, List<String> dict) {
-        Set<String> wordDict = new HashSet<>(dict);
+    public boolean wordBreak5(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
 
-        min = Integer.MAX_VALUE;
-        max = Integer.MIN_VALUE;
-        for (String word : wordDict) {
-            int l = word.length();
-            max = Math.max(l, max);
-            min = Math.min(l, min);
-        }
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int j = 0; j < size; j++) {
@@ -222,6 +168,6 @@ For this problem, the time complexity is O(n^2) and space complexity is O(n), th
 
     @Test
     public void test() {
-        System.out.println(wordBreak5("leetcodea", Arrays.asList("leet", "code")));
+        System.out.println(wordBreak2("applepenapple", Arrays.asList("apple", "pen")));
     }
 }

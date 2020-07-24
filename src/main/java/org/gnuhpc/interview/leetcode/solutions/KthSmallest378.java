@@ -58,7 +58,7 @@ public class KthSmallest378 {
         else return high;
     }
 
-    private static int helper(int[][] matrix, int mid) {
+    private int helper(int[][] matrix, int mid) {
         //从左下角的原因起是因为如果mid小于这个则一行都可以忽略并往上找
         int i = matrix.length - 1, j = 0;
         int res = 0;

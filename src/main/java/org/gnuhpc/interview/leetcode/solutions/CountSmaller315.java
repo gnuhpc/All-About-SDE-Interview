@@ -107,7 +107,7 @@ public class CountSmaller315 {
     // https://medium.com/@ssbothwell/counting-inversions-with-merge-sort-4d9910dc95f0
     public List<Integer> countSmaller3(int[] nums) {
 
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
 
         if (nums == null || nums.length == 0) {
             return list;
@@ -171,7 +171,7 @@ public class CountSmaller315 {
 
     @Test
     public void test() {
-        System.out.println(countSmaller3(new int[]{5, 2, 6, 1}));
+        System.out.println(countSmaller(new int[]{5, 2, 6, 1}));
     }
 
 }

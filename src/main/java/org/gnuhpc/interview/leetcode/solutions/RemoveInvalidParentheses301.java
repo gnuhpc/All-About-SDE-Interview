@@ -8,7 +8,7 @@ public class RemoveInvalidParentheses301 {
     /*
     Method1: DFS
 
-    We all know how to check a string of parentheses is valid using a stack.
+    We all know how to check a string of Parentheses is valid using a stack.
     Or even simpler use a counter.The counter will increase when it is ( and decrease when it is ).
     Whenever the counter is negative, we have more ) than ( in the prefix.
     To make the prefix valid, we need to remove a ).
@@ -60,7 +60,7 @@ public class RemoveInvalidParentheses301 {
     otherwise, add them to a queue and carry on to the next level.
 
     The good thing of using BFS is that
-    we can guarantee the number of parentheses that need to be removed is minimal,
+    we can guarantee the number of Parentheses that need to be removed is minimal,
     also no recursion call is needed in BFS.
     */
 

@@ -1,6 +1,5 @@
 package org.gnuhpc.interview.datastructure.tree.basicimpl;
 
-import lombok.AllArgsConstructor;
 import org.gnuhpc.interview.leetcode.utils.TreeNode;
 import org.junit.Test;
 
@@ -15,7 +14,7 @@ queue for bfs, horizontal flow
 和左右儿子在该问题上的结果之间的联系是什么
 
  */
-public class TreeTraversal {
+public class TreeTraverse {
 
     public static List<Integer> preorder(TreeNode root) {
         List<Integer> res = new ArrayList<>();
@@ -42,19 +41,19 @@ public class TreeTraversal {
     public static List<Integer> preorderNonRecursive(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<Integer> res = new ArrayList<>();  //保存结果
-        Deque<TreeNode> call = new LinkedList<>();   //调用栈
-        call.push(root);    //先将根结点入栈
-        while (!call.isEmpty()) {
-            TreeNode t = call.pop();   //弹出结点并判断是否访问过
-            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+        Deque<TreeNode> stack = new LinkedList<>();   //调用栈
+        stack.push(root);    //先将根节点入栈
+        while (!stack.isEmpty()) {
+            TreeNode t = stack.pop();   //弹出节点并判断是否访问过
+            //非空说明没访问过，然后右节点入栈，左节点入栈，最后根节点入栈，并入栈一个空节点
             if (t != null) {
-                if (t.right != null) call.push(t.right);
-                if (t.left != null) call.push(t.left);
-                call.push(t);
-                call.push(null);
-            //表明当前结点以访问过
+                if (t.right != null) stack.push(t.right);
+                if (t.left != null) stack.push(t.left);
+                stack.push(t);
+                stack.push(null);
+                //如果弹出节点为空节点，表明当前栈顶节点已访问过
             } else {
-                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
+                res.add(stack.pop().val);
             }
         }
         return res;
@@ -103,19 +102,19 @@ public class TreeTraversal {
     public static List<Integer> inorderNonRecursive(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<Integer> res = new ArrayList<>();  //保存结果
-        Deque<TreeNode> call = new LinkedList<>();   //调用栈
-        call.push(root);    //先将根结点入栈
-        while (!call.isEmpty()) {
-            TreeNode t = call.pop();   //弹出结点并判断是否访问过
-            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+        Deque<TreeNode> stack = new LinkedList<>();   //调用栈
+        stack.push(root);    //先将根节点入栈
+        while (!stack.isEmpty()) {
+            TreeNode t = stack.pop();   //弹出节点并判断是否访问过
+            //非空说明没访问过，然后右节点入栈，左节点入栈，最后根节点入栈，并入栈一个空节点
             if (t != null) {
-                if (t.right != null) call.push(t.right);
-                call.push(t);
-                call.push(null);
-                if (t.left != null) call.push(t.left);
-                //表明当前结点以访问过
+                if (t.right != null) stack.push(t.right);
+                stack.push(t);
+                stack.push(null);
+                if (t.left != null) stack.push(t.left);
+                //表明当前节点以访问过
             } else {
-                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
+                res.add(stack.pop().val);    //如果弹出节点为空节点，表明当前栈顶节点已访问过
             }
         }
         return res;
@@ -139,19 +138,19 @@ public class TreeTraversal {
     public static List<Integer> postorderNonRecursive(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<Integer> res = new ArrayList<>();  //保存结果
-        Deque<TreeNode> call = new LinkedList<>();   //调用栈
-        call.push(root);    //先将根结点入栈
-        while (!call.isEmpty()) {
-            TreeNode t = call.pop();   //弹出结点并判断是否访问过
-            //非空说明没访问过，然后右结点入栈，左结点入栈，最后根节点入栈，并入栈一个空结点
+        Deque<TreeNode> stack = new LinkedList<>();   //调用栈
+        stack.push(root);    //先将根节点入栈
+        while (!stack.isEmpty()) {
+            TreeNode t = stack.pop();   //弹出节点并判断是否访问过
+            //非空说明没访问过，然后右节点入栈，左节点入栈，最后根节点入栈，并入栈一个空节点
             if (t != null) {
-                call.push(t);
-                call.push(null);
-                if (t.right != null) call.push(t.right);
-                if (t.left != null) call.push(t.left);
-                //表明当前结点以访问过
+                stack.push(t);
+                stack.push(null);
+                if (t.right != null) stack.push(t.right);
+                if (t.left != null) stack.push(t.left);
+                //表明当前节点以访问过
             } else {
-                res.add(call.pop().val);    //如果弹出结点为空结点，表明当前栈顶结点已访问过
+                res.add(stack.pop().val);    //如果弹出节点为空节点，表明当前栈顶节点已访问过
             }
         }
         return res;
@@ -225,21 +224,21 @@ public class TreeTraversal {
     public void testTraverse() {
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 2, 3, 4, 5, 6, 7});
         System.out.println("Preorder");
-        TreeTraversal.preorder(root).forEach(i-> System.out.printf("%s,",i));
+        TreeTraverse.preorder(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
-        TreeTraversal.preorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+        TreeTraverse.preorderNonRecursive(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
 
         System.out.println("Inorder");
-        TreeTraversal.inorder(root).forEach(i-> System.out.printf("%s,",i));
+        TreeTraverse.inorder(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
-        TreeTraversal.inorderNonRecursive(root).forEach(i-> System.out.printf("%s,",i));
+        TreeTraverse.inorderNonRecursive(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
 
         System.out.println("Postorder");
-        TreeTraversal.postorder(root).forEach(i -> System.out.printf("%s,", i));
+        TreeTraverse.postorder(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
-        TreeTraversal.postorderNonRecursive(root).forEach(i -> System.out.printf("%s,", i));
+        TreeTraverse.postorderNonRecursive(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();
 
 //        List<List<Integer>> levelNodes = TreeTraversal.level(find);

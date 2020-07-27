@@ -9,23 +9,12 @@ public class IsBalanced110 {
      */
     public boolean isBalanced(TreeNode root) {
         if (root == null) return true;
-
-        int left = heightOfTree(root.left);
-        if (left == -1) return false;
-
-        int right = heightOfTree(root.right);
-        if (right == -1) return false;
-
-        return Math.abs(left - right) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+        return Math.abs(depth(root.left) - depth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
 
-    private int heightOfTree(TreeNode root) {
-        if (root == null) return 0;
-
-        int left = heightOfTree(root.left);
-        int right = heightOfTree(root.right);
-
-        if (Math.abs(left - right) > 1) return -1;
-        return Math.max(left, right) + 1;
+    public int depth(TreeNode node) {
+        if (node == null) return 0;
+        return 1 + Math.max(depth(node.left), depth(node.right));
     }
+
 }

@@ -6,54 +6,44 @@ import scala.collection.parallel.AdaptiveWorkStealingForkJoinTasks;
 import java.util.*;
 
 public class IsBipartite785 {
+
     /*
-    Method1: DFS
-   先找到一个没被染色的节点u，把它染上一种颜色，之后遍历所有与它相连的节点v，
-   如果节点v已被染色并且颜色和节点u一样，那么就不是二分图。如果这个节点v没有被染色，先把它染成与节点u不同颜色的颜色，
-   然后遍历所有与节点v相连的节点...如此递归下去。
+        Method1: DFS
+       先找到一个没被染色的节点u，把它染上一种颜色，之后遍历所有与它相连的节点v，
+       如果节点v已被染色并且颜色和节点u一样，那么就不是二分图。如果这个节点v没有被染色，先把它染成与节点u不同颜色的颜色，
+       然后遍历所有与节点v相连的节点...如此递归下去。
 
-     */
-
-    private boolean[] visited;
-
+         */
     public boolean isBipartite(int[][] graph) {
-        HashSet[] sets = new HashSet[2];
-        visited = new boolean[graph.length];
-        for (int i = 0; i < sets.length; ++i) {
-            sets[i] = new HashSet<>();
+        if (graph == null || graph.length == 0) return false;
+        int v = graph.length;
+        int[] colors = new int[v];  // 0未被染色， 1黑  2白
+        // 要考虑非连通图, 所以要遍历每一个结点
+        for (int i = 0; i < v; i++) {
+            // lastColor为0
+            if (!dfs(graph, i, colors, 0)) return false;
         }
-
-        // This graph might be a disconnected graph. So check each unvisited node.
-        for (int i = 0; i < graph.length; ++i) {
-            //访问过的就直接过
-            if (visited[i]) continue;
-            if (!dfs(graph, i, sets, 0)) {
-                return false;
-            }
+        return true;
+    }
+    private boolean dfs(int[][] graph, int node, int[] colors, int lastColor) {
+        // 注意，被染色的就不要继续染色了（因为这是自底向上的，被染色的点，其相连的节点肯定被染色了）
+        // 如果继续对被染色的节点染色，就会导致死循环
+        if (colors[node] != 0) return colors[node] != lastColor;
+        // 未被染色，染成与相邻结点不同的颜色（lastColor为0时，就染成1）
+        colors[node] = lastColor == 1 ? 2 : 1;
+        for (int nei: graph[node]) {
+            if (!dfs(graph, nei, colors, colors[node])) return false;
         }
-
         return true;
     }
 
-    private boolean dfs(int[][] graph, int node, HashSet[] sets, int setIdx) {
-        visited[node] = true;
-        if (sets[setIdx].contains(node)) return true;
-        if (sets[1 - setIdx].contains(node)) return false;
 
-        sets[setIdx].add(node);
-        for (int n : graph[node]) {
-            if (!dfs(graph, n, sets, 1 - setIdx)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /*
     Nethod2 : BFS
      */
 
+    private boolean[] visited;
     public boolean isBipartite2(int[][] graph) {
         HashSet[] sets = new HashSet[2];
         visited = new boolean[graph.length];
@@ -98,49 +88,14 @@ public class IsBipartite785 {
         return true;
     }
 
-    /*
-    Method3: 染色法 DFS
-     */
-
-    int[] color; //0 是未着色
-
-    public boolean isBipartite3(int[][] graph) {
-        color = new int[graph.length];
-        for (int i = 0; i < graph.length; i++) {
-            if (color[i] == 0) {
-                if (!dfs(i, 1, graph)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-
-    }
-
-    boolean dfs(int v, int color, int[][] graph) {
-        this.color[v] = color;
-        for (int x : graph[v]) {
-            //如果当前点的相邻的点同色就返回false;
-            if (this.color[x] == color) {
-                return false;
-            }
-
-            //如果当前点未染色,就染成-c
-            if (this.color[x] == 0) {
-                if (!dfs(x, -color, graph))
-                    return false;
-            }
-        }
-
-        return true;
-    }
 
     /*
-    Method4: BFS 染色法
+    Method3: BFS 染色法
      */
     Queue<Integer> queue = new LinkedList<>();
+    int[] color;
 
-    public boolean isBipartite4(int[][] graph) {
+    public boolean isBipartite3(int[][] graph) {
         color = new int[graph.length];
         for (int i = 0; i < graph.length; i++) {
             if (color[i] == 0)

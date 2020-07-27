@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+//https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/solution/jin-jie-san-wen-by-user5707f/
 public class InterSectionTwoArrays350 {
     public static void main(String[] args) {
         int[] nums1 = {1, 2, 2, 1};

@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /*
-Java TreeMap class is a red-black tree based implementation. It provides an efficient means of storing key-value pairs in sorted order.
+Java TreeMap class is a red-black tree based implementation.
+It provides an efficient means of storing key-value pairs in sorted order.
 
 The important points about Java TreeMap class are:
 
@@ -13,6 +14,9 @@ Java TreeMap contains only unique elements.
 Java TreeMap cannot have a null key but can have multiple null values.
 Java TreeMap is non synchronized.
 Java TreeMap maintains ascending order.
+1.无序，不允许重复（无序指元素顺序与添加顺序不一致）
+2.TreeMap集合默认会对键进行排序，所以键必须实现自然排序和定制排序中的一种
+3.底层使用的数据结构是红黑树
  */
 
 /*

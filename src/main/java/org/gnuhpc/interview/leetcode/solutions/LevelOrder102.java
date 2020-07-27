@@ -31,26 +31,30 @@ public class LevelOrder102 {
         return res;
     }
 
-    public List<List<Integer>> levelOrderRecursive(TreeNode root) {
+
+    /*
+    Method2 : DFS
+     */
+    public List<List<Integer>> levelOrder2(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
-        levelOrder(root, res, 0);
+        helper(root, res, 0);
         return res;
     }
 
-    public void levelOrder(TreeNode root, List<List<Integer>> res, int level) {
-        if (root != null) {
-            if (res.size() > level) {
-                List<Integer> list = res.get(level);
-                list.add(root.val);
-            } else {
-                List<Integer> list = new ArrayList<>();
-                list.add(root.val);
-                res.add(list);
-            }
-            level++;
-            levelOrder(root.left, res, level);
-            levelOrder(root.right, res, level);
+    public void helper(TreeNode root, List<List<Integer>> res, int level) {
+        if (root == null) return;
+        if (level<res.size()) {
+            List<Integer> list = res.get(level);
+            list.add(root.val);
+        } else {
+            List<Integer> list = new ArrayList<>();
+            list.add(root.val);
+            res.add(list);
         }
+        level++;
+        helper(root.left, res, level);
+        helper(root.right, res, level);
     }
+
 
 }

@@ -9,7 +9,7 @@ public class MinPathSum64 {
     Method : dfs + Memorization //将void改为返回值的dfs + memo
      */
     private int n, m;
-    private int[][] memory;
+    private int[][] mem;
 
     private int[][] dirs = new int[][]{
             {1, 0}, {0, 1}
@@ -23,14 +23,14 @@ public class MinPathSum64 {
         n = grid.length;
         m = grid[0].length;
 
-        memory = new int[n][m];
+        mem = new int[n][m];
 
         // Bug May happen: forget to initialize
-        for (int[] row : memory) {
+        for (int[] row : mem) {
             Arrays.fill(row, -1);
         }
 
-        return dfs(grid, 0, 0, memory);
+        return dfs(grid, 0, 0, mem);
     }
 
     public int dfs(int[][] grid, int x, int y, int[][] memory) {
@@ -39,18 +39,18 @@ public class MinPathSum64 {
             return memory[x][y];
         }
 
+        if (x == n - 1 && y == m - 1) {
+            return grid[x][y];
+        }
+
         // 开始dfs 可能的路径,目前我们只有2种可能
         int min = Integer.MAX_VALUE;
-        if (!(x == n - 1 && y == m - 1)) {
-            for (int[] d : dirs) {
-                int newX = x + d[0];
-                int newY = y + d[1];
-                if (isValid(newX, newY)) {
-                    min = Math.min(min, dfs(grid, newX, newY, memory));
-                }
+        for (int[] d : dirs) {
+            int newX = x + d[0];
+            int newY = y + d[1];
+            if (isValid(newX, newY)) {
+                min = Math.min(min, dfs(grid, newX, newY, memory));
             }
-        } else {
-            min = 0;
         }
         // Record the memory
         memory[x][y] = grid[x][y] + min;

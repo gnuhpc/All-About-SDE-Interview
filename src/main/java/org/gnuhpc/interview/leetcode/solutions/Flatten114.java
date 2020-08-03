@@ -20,7 +20,8 @@ public class Flatten114 {
 指针修改：
 用一个全局变量pre保存上一个节点：将pre右子树指针指向当前节点root；将pre左子树指针清空。
 进入下轮递归前，将当前节点root赋给pre；
-由于在flatten(root.left)方法执行后执行flatten(root.right)，但root.right指向节点可能已经改变，造成错误的递归顺序，因此需要在执行此方法前存储root.right至right变量，用此变量做每个节点的右子树递归。
+由于在flatten(root.left)方法执行后执行flatten(root.right)，但root.right指向节点可能已经改变，
+造成错误的递归顺序，因此需要在执行此方法前存储root.right至right变量，用此变量做每个节点的右子树递归。
 本题无需返回值，时空间复杂度均为O(N)。
 
 作者：jyd

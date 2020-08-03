@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.systemdesign.practice.taskscheduler;
+package org.gnuhpc.interview.systemdesign.practice.delayqueue;
 
 import java.util.concurrent.DelayQueue;
 

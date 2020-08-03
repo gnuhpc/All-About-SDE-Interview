@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.systemdesign.practice.taskscheduler;
+package org.gnuhpc.interview.systemdesign.practice.delayqueue;
 
 /**
  * Copyright gnuhpc 19-8-24
@@ -8,8 +8,8 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 public class Task implements Delayed {
-    private String name;
-    private long startTime;  // milliseconds
+    private final String name;
+    private final long startTime;  // milliseconds
 
     public Task(String name, long delay) {
         this.name = name;

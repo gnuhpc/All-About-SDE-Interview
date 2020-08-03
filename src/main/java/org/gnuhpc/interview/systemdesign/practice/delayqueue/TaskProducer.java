@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.systemdesign.practice.taskscheduler;
+package org.gnuhpc.interview.systemdesign.practice.delayqueue;
 
 /**
  * Copyright gnuhpc 19-8-24
@@ -10,7 +10,7 @@ import java.util.concurrent.DelayQueue;
 
 public class TaskProducer implements Runnable {
     private final Random random = new Random();
-    private DelayQueue<Task> q;
+    private final DelayQueue<Task> q;
 
     public TaskProducer(DelayQueue<Task> q) {
         this.q = q;
@@ -22,7 +22,7 @@ public class TaskProducer implements Runnable {
             try {
                 int delay = random.nextInt(10000);
                 Task task = new Task(UUID.randomUUID().toString(), delay);
-                System.out.println("Put " + task);
+                System.out.println("Put " + task + ", delay " + delay / 1000);
                 q.put(task);
                 Thread.sleep(3000);
             } catch (InterruptedException e) {

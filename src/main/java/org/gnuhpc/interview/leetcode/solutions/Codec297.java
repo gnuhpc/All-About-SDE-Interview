@@ -24,53 +24,68 @@ public class Codec297 {
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         if (root == null) return "";
+
+        Queue<TreeNode> q = new LinkedList<>();
         StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode cur = queue.poll();
-            if (cur == null) {
-                sb.append(NULL).append(SPLITER);
+        sb.append(root.val).append(SPLITER).append("#").append(SPLITER);
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (node.left != null) {
+                sb.append(node.left.val).append(SPLITER);
+                q.add(node.left);
             } else {
-                sb.append(cur.val).append(SPLITER);
-                queue.offer(cur.left);
-                queue.offer(cur.right);
+                sb.append(NULL).append(SPLITER);
             }
+            if (node.right != null) {
+                sb.append(node.right.val).append(SPLITER);
+                q.add(node.right);
+            } else {
+                sb.append(NULL).append(SPLITER);
+            }
+
+            sb.append("#").append(SPLITER);
         }
         return sb.toString();
     }
 
+
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if (data == "") return null;
-        String[] str = data.split(SPLITER);
-        TreeNode root = new TreeNode(Integer.parseInt(str[0]));
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
+        if (data.length() == 0) return null;
+        String[] s = data.split(SPLITER);
+
+        Queue<TreeNode> q = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(s[0]));
+        q.add(root);
         int i = 1;
-        while (i < str.length) {
-            TreeNode cur = queue.poll();
-            if (!str[i].equals(NULL)) {
-                cur.left = new TreeNode(Integer.parseInt(str[i]));
-                queue.offer(cur.left);
+
+        while (!q.isEmpty() && i < data.length()) {
+            TreeNode node = q.poll();
+            i++;//跳过#
+            if (!s[i].equals(NULL)) {
+                TreeNode left = new TreeNode(Integer.parseInt(s[i]));
+                node.left = left;
+                q.add(left);
             } else {
-                cur.left = null;
+                node.left = null;
             }
+            i++;//跳过
 
-            i++;
-            if (i == str.length) return root;
-
-            if (!str[i].equals(NULL)) {
-                cur.right = new TreeNode(Integer.parseInt(str[i]));
-                queue.offer(cur.right);
+            if (!s[i].equals(NULL)) {
+                TreeNode right = new TreeNode(Integer.parseInt(s[i]));
+                node.right = right;
+                q.add(right);
             } else {
-                cur.right = null;
+                node.right = null;
             }
-
-            i++;
+            i++;//跳过
         }
+
         return root;
     }
+
 
     /*
     Method2: DFS
@@ -113,7 +128,7 @@ public class Codec297 {
 
     @Test
     public void test() {
-        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 2, 3, 4, 5});
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{5, 2, 3, null, null, 2, 4, 3, 1});
 
         System.out.println(serialize2(root));
         System.out.println(deserialize2(serialize2(root)));

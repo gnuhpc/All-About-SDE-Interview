@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.systemdesign.practice.taskscheduler;
+package org.gnuhpc.interview.systemdesign.practice.delayqueue;
 
 import java.util.concurrent.DelayQueue;
 
@@ -7,7 +7,7 @@ import java.util.concurrent.DelayQueue;
  */
 
 public class TaskConsumer implements Runnable {
-    private DelayQueue<Task> q;
+    private final DelayQueue<Task> q;
 
     public TaskConsumer(DelayQueue<Task> q) {
         this.q = q;
@@ -18,7 +18,7 @@ public class TaskConsumer implements Runnable {
         while (true) {
             try {
                 Task task = q.take();
-                System.out.println("Take " + task);
+                System.out.println("Take " + task + ",now is " + System.currentTimeMillis());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

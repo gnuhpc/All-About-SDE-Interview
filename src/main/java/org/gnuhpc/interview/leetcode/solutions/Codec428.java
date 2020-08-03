@@ -105,8 +105,6 @@ public class Codec428 {
     }
 
     // Decodes your encoded data to tree.
-    int pt = 0;
-
     public Node deserialize2(String data) {
         if (data == null || data.length() == 0) {
             return null;
@@ -115,6 +113,7 @@ public class Codec428 {
         return deserializePreOrder(strs);
     }
 
+    int pt = 0;
     private Node deserializePreOrder(String[] strs) {
         String val = strs[pt++];
         if (val.equals(NN)) {

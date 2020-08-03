@@ -11,15 +11,15 @@ public class IsSymmetric101 {
     Method 1: Recursion
      */
     public boolean isSymmetric(TreeNode root) {
-        return root == null || isSymmetricChecker(root.left, root.right);
+        return root == null || helper(root.left, root.right);
     }
 
-    private boolean isSymmetricChecker(TreeNode left, TreeNode right) {
+    private boolean helper(TreeNode left, TreeNode right) {
         if (left == null || right == null)
             return left == right;
         if (left.val != right.val)
             return false;
-        return isSymmetricChecker(left.left, right.right) && isSymmetricChecker(left.right, right.left);
+        return helper(left.left, right.right) && helper(left.right, right.left);
     }
 
 

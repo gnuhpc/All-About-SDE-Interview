@@ -83,6 +83,12 @@ LC相关题目
 
 当然如果需要记录遍历到第几个，也可以设置一个全局的count在遍历到节点处理时进行计数。
 
+注意：万无一失的写法是,以应对可能的树的结构的动态改变
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        func(left);
+        func(right);
+
 总之，脑子中要有一个游标在节点中游走，在处理节点的时候该调整游标就调整游标(879)，该计数计数
 
 LC相关题目

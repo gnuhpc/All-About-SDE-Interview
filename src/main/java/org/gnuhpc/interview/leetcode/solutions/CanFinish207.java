@@ -10,6 +10,9 @@ public class CanFinish207 {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites.length == 0) return true;
 
+        //[A,B] means A depends on B -> B-->A
+        //That is prerequisites[i][0] represents A, so the indegree of A is 1
+
         // Convert graph presentation from edges to indegree of adjacent list.
         // Step1
         int[] indegree = new int[numCourses];

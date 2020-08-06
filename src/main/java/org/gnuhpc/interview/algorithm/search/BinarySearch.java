@@ -151,7 +151,8 @@ Recursion or Non-Recursion
     // Recursive method, fetch the first idx of the target
     // Find out if a key x exists in the sorted array
     // nums[left..right] or not using binary search algorithm
-    public static int binarySearch2(int x, int[] nums, int start, int end) {
+    // start = 0, end = nums.length-1; []
+    public static int binarySearch2(int target, int[] nums, int start, int end) {
 
         // Base condition (search space is exhausted)
         if (start > end) {
@@ -166,20 +167,20 @@ Recursion or Non-Recursion
         int mid = start + (end - start) / 2;
 
         // Base condition (key value is found)
-        if (x == nums[mid]) {
+        if (target == nums[mid]) {
             return mid;
         }
 
         // discard all elements in the end search space
         // including the mid element
-        else if (x < nums[mid]) {
-            return binarySearch2(x, nums, start, mid - 1);
+        else if (target < nums[mid]) {
+            return binarySearch2(target, nums, start, mid - 1);
         }
 
         // discard all elements in the start search space
         // including the mid element
         else {
-            return binarySearch2(x, nums, mid + 1, end);
+            return binarySearch2(target, nums, mid + 1, end);
         }
     }
 

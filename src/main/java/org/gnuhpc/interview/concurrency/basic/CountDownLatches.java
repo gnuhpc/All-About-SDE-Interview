@@ -43,7 +43,10 @@ class CountWorker implements Runnable {
     public void doWork() {
         try {
             System.out.println("Thread with ID " + this.id + " starts working...");
-            Thread.sleep(this.random.nextInt(1000));
+            if (this.id == 0)
+                Thread.sleep(10000);
+            else
+                Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,7 +57,7 @@ public class CountDownLatches {
 
     public static void main(String[] args) {
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         CountDownLatch latch = new CountDownLatch(5);
 
         for (int i = 0; i < 5; i++)

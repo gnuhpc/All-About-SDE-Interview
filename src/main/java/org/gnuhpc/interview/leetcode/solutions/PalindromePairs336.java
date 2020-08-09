@@ -137,7 +137,7 @@ public class PalindromePairs336 {
             }
         }
 
-        //find the pair s1, s2 that ， 这个非常考验分析能力
+        //find the pair s1, s2 like below， 这个非常考验分析能力
         //case1 : s1[0:cut] is palindrome and s1[cut+1:] = reverse(s2) => (s2, s1), e.g. cab,ba => (ba,cab)
         //case2 : s1[cut+1:] is palindrome and s1[0:cut] = reverse(s2) => (s1, s2), e.g. cab,ac => (cab,ac)
         for (int i = 0; i < words.length; i++) {

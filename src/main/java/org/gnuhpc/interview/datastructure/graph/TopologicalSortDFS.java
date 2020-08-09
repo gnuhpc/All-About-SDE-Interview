@@ -31,7 +31,6 @@ https://www.geeksforgeeks.org/topological-sorting/
   (and their adjacent vertices and so on) are already in stack.
  */
 
-
 public class TopologicalSortDFS {
     // A recursive function used by topologicalSort
     private void topologicalSortUtil(int v, boolean[] visited,

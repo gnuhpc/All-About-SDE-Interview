@@ -6,26 +6,21 @@ import org.junit.Test;
  * Copyright gnuhpc 19-9-5
  */
 public class CountBinarySubstrings696 {
-    private int num = 0;
-
     public int countBinarySubstrings(String s) {
-        for (int i = 0; i < s.length() - 1; i++) {
-            if (s.charAt(i) != s.charAt(i + 1))
-                count(s, i, i + 1);
-        }
-        return num;
-    }
-
-    private void count(String s, int i, int j) {
-        while (i >= 0 && j < s.length()) {
-            num++;
-            i--;
-            j++;
-            if (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(i + 1) && s.charAt(j) == s.charAt(j - 1))
+        int result = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 1; i < s.length(); i++) {
+            int left = i - 1, right = i;
+            char leftChar = chars[left], rightChar = chars[right];
+            if (leftChar == rightChar)
                 continue;
-            else
-                break;
+            while (left >= 0 && right < s.length() && chars[left] == leftChar && chars[right] == rightChar) {
+                left--;
+                right++;
+                result++;
+            }
         }
+        return result;
     }
 
 

@@ -17,7 +17,7 @@ enum Downloader {
 
     INSTANCE;
 
-    private Semaphore semaphore = new Semaphore(5, true);
+    private final Semaphore semaphore = new Semaphore(5, true);
 
     public void downloadData() {
 
@@ -49,11 +49,7 @@ public class SemaphoreDemo {
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         for (int i = 0; i < 12; i++) {
-            executorService.execute(new Runnable() {
-                public void run() {
-                    Downloader.INSTANCE.downloadData();
-                }
-            });
+            executorService.execute(() -> Downloader.INSTANCE.downloadData());
         }
 
     }

@@ -30,27 +30,7 @@ import java.util.List;
  * 最终和求出所有合法组合，代码如下
  */
 public class RestoreIpAddresses93 {
-    public List<String> restoreIpAddresses(String s) {
-        List<String> res = new ArrayList<>();
-        helper(s, 0, "", res);
-        return res;
-    }
-
-    public void helper(String s, int n, String out, List<String> res) {
-        if (n == 4) {
-            if (s.isEmpty()) res.add(out);
-            return;
-        }
-        for (int k = 1; k < 4; ++k) {
-            if (s.length() < k) break;
-            int val = Integer.parseInt(s.substring(0, k));
-            if (val > 255 || k != String.valueOf(val).length()) continue;
-            helper(s.substring(k), n + 1, out + s.substring(0, k) + (n == 3 ? "" : "."), res);
-        }
-    }
-
-    //Method22 DFS + Backtracking
-    public ArrayList<String> restoreIpAddresses3(String s) {
+    public ArrayList<String> restoreIpAddresses(String s) {
         ArrayList<String> result = new ArrayList<>();
 
         if (s.length() < 4 || s.length() > 12)
@@ -69,7 +49,6 @@ public class RestoreIpAddresses93 {
             return;
         }
 
-        //可以添加一个优化条件：i < start + 3，因为一个ip column不能超过3
         for (int i = start; i < s.length(); i++) {
             String tmp = s.substring(start, i + 1);
             if (isValid(tmp)) {
@@ -90,7 +69,7 @@ public class RestoreIpAddresses93 {
 
     @Test
     public void test() {
-        System.out.println(restoreIpAddresses3("25525511135"));
+        System.out.println(restoreIpAddresses("25525511135"));
     }
 
 

@@ -34,7 +34,7 @@ LRU 缓存算法的核心数据结构就是哈希链表，双向链表和哈希�
 public class LRUCache146_3 {
     private HashMap<Integer, Node> map;
     private DoubleList cache;
-    private int cap;
+    private final int cap;
 
     public LRUCache146_3(int capacity) {
         this.cap = capacity;

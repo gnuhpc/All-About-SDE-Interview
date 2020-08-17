@@ -7,8 +7,8 @@ PriorityQueue 是LRU、LFU的通解 ,但都不是最优解
  */
 //O(logn)
 public class LRUCache146_1 {
-    Queue<KVNode> queue = null;
-    Map<Integer, KVNode> cache = new HashMap<>();
+    Queue<KVNode> queue;
+    Map<Integer, KVNode> cache;
     int cap = 0;
     int globalAge = 0;
 

@@ -34,7 +34,7 @@
 3. 当元素出栈后，说明新栈顶元素是出栈元素向前找第一个比其小的元素
 
 代码模板
-单调递减栈： 找最小的时候用
+单调递减栈： 能表示入栈元素左边第一个比它小的元素
         Deque<Integer> s = new LinkedList<>();
         int i = 0;
         while (i < nums.length) {
@@ -51,7 +51,7 @@
             tp = s.pop();
         }
 
-单调递增栈：找最大的时候用
+单调递增栈：能表示入栈元素左边第一个比它大的元素
         Deque<Integer> s = new LinkedList<>();
         int i = 0;
         while (i < nums.length) {

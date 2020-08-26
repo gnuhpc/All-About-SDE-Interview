@@ -4,6 +4,7 @@ import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeCreator;
 import org.gnuhpc.interview.leetcode.utils.TreeNode;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -22,27 +23,29 @@ public class PathSum113 {
     }
 
     private void helper(TreeNode node, int sum, List<List<Integer>> ans, List<Integer> path) {
-        if (node == null) {
+        if (node == null) return;
+
+        sum -= node.val;
+        // 遍历到叶节点
+        if (node.left == null && node.right == null) {
+            // 如果这是一条可行的路径，才复制path的结果到ans
+            if (sum == 0) {
+                path.add(node.val);
+                ans.add(new ArrayList<>(path));
+                path.remove(path.size() - 1);
+            }
+
             return;
         }
 
         // 将沿途到节点加入到path中
-        sum -= node.val;
         path.add(node.val);
 
-        // 遍历到叶节点
-        if (node.left == null && node.right == null) {
-            // 如果这是一条可行的路径，才复制path的结果到ans
-            if (sum == 0)
-                ans.add(new ArrayList<>(path));
-        } else {
-            if (node.left != null) helper(node.left, sum, ans, path);
-            if (node.right != null) helper(node.right, sum, ans, path);
-        }
-
-        // 注意，此时左右子节点都做完了，就要开始向上回溯了，这个节点也可以退出遍历过程了！ 回溯！！
+        helper(node.left, sum, ans, path);
+        helper(node.right, sum, ans, path);
         path.remove(path.size() - 1);
     }
+
 
     //不实用，太容易写错了
     public List<List<Integer>> pathSum2(TreeNode root, int sum) {
@@ -81,7 +84,7 @@ public class PathSum113 {
 
     @Test
     public void test() {
-        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{5, 4, 8, 11, null, 13, 4, 7, 2, null, null, 5, 1});
-        System.out.println(pathSum(root, 22));
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{-2, null, 3});
+        System.out.println(pathSum(root, -5));
     }
 }

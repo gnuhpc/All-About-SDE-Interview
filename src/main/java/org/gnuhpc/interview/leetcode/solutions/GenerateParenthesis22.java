@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenerateParenthesis22 {
-    // 左括号、右括号一共得用几个
-    private int len = 0;
+
+    // 左括号、右括号各有几个
+    int num;
 
     public List<String> generateParenthesis(int n) {
-        List<String> res = new ArrayList<>();
-        // 特判
-        if (n == 0) {
-            return res;
-        }
-
-        len = 2 * n;
-
+        List<String> res = new ArrayList<>();//用于存放解空间
+        this.num = n;
         dfs("", 0, 0, res);
         return res;
     }
@@ -26,8 +21,9 @@ public class GenerateParenthesis22 {
      * @param right  右括号已经用了几个
      * @param res    结果集
      */
+
     private void dfs(String curStr, int left, int right, List<String> res) {
-        if (curStr.length() == len) {
+        if (left == num && right == num) {
             res.add(curStr);
             return;
         }
@@ -37,11 +33,12 @@ public class GenerateParenthesis22 {
             return;
         }
 
-        if (left < len / 2) {
+        if (left < num) {
             dfs(curStr + "(", left + 1, right, res);
         }
-        if (right < len / 2) {
+        if (right < num) {
             dfs(curStr + ")", left, right + 1, res);
         }
     }
+
 }

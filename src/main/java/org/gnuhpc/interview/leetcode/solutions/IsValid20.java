@@ -8,42 +8,31 @@ import java.util.LinkedList;
 public class IsValid20 {
     public boolean isValid(String s) {
         Deque<Character> stack = new LinkedList<>();
-        stack.push(' ');//put dummy to simplified the right condition
-
+        //如果为奇数，不用运行，直接为false
+        if (s.length() % 2 != 0) {
+            return false;
+        }
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (isLeft(c)) {
+            if (c == '(' || c == '{' || c == '[') {
                 stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char topStack = stack.pop();
+                if (topStack != '(' && c == ')') {
+                    return false;
+                }
+                if (topStack != '[' && c == ']') {
+                    return false;
+                }
+                if (topStack != '{' && c == '}') {
+                    return false;
+                }
             }
-
-            if (isRight(c)) {
-                if (!isMatch(stack.pop(), c)) return false;
-            }
         }
-
-        if (stack.size() == 1) {//only dummy
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isMatch(char l, char r) {
-        if ((l == '(' && r == ')') ||
-                (l == '{' && r == '}') ||
-                (l == '[' && r == ']')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isRight(char c) {
-        return c == '}' || c == ')' || c == ']';
-    }
-
-    private boolean isLeft(char c) {
-        return c == '{' || c == '(' || c == '[';
+        return stack.isEmpty();
     }
 
     @Test

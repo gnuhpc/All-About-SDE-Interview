@@ -7,7 +7,7 @@ import java.util.List;
  * Copyright gnuhpc 2019/11/4
  */
 public class JudgePoint24679 {
-    private double EPS = 1e-2;
+    private final double EPS = 1e-2;
 
     public boolean judgePoint24(int[] nums) {
         if (nums == null || nums.length != 4) {
@@ -16,7 +16,7 @@ public class JudgePoint24679 {
 
         double[] copy = new double[4];
         for (int i = 0; i < 4; i++) {
-            copy[i] = (double) nums[i];
+            copy[i] = nums[i];
         }
 
         return judgePoint24Helper(copy);

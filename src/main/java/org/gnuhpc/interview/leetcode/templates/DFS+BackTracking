@@ -86,8 +86,7 @@ LC相关题目
         return (x >= 0 && x < m && y >= 0 && y < n) && !visited[x][y];
     }
 
-   // （尝试型的题目需要）回溯，去标注此节点visited: visited[x][y] = false; 或者直接将节点原地标记成
-   being visited （例如-1），在遍历完所有节点后再将其修改为visited状态 733
+   // （尝试型的题目需要）回溯，去标注此节点visited: visited[x][y] = false;
 
 LC相关题目：
 79

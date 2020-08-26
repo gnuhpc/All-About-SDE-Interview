@@ -1,6 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.ListNode;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 
 public class GetIntersectionNode160 {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {

@@ -1,6 +1,5 @@
 package org.gnuhpc.interview.datastructure.tree.basicimpl;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
 import org.junit.Test;
 
 import java.util.HashMap;

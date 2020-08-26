@@ -1,6 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 //下图为一个没有经过root的案例
 //https://images2015.cnblogs.com/blog/695469/201706/695469-20170618214343478-1007869465.png

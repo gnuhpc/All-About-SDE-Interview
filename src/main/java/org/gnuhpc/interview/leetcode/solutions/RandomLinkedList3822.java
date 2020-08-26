@@ -1,9 +1,7 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.ListNode;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**

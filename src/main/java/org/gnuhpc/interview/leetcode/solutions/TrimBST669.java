@@ -1,6 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 /*
 * 如果当前 find 正好在范围之内，那么把问题递归到它的左结点和右结点。

@@ -1,7 +1,6 @@
 package org.gnuhpc.interview.datastructure.tree.basicimpl;
 
 import lombok.Data;
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
 import org.junit.Test;
 
 import static java.lang.Math.max;

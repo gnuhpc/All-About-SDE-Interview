@@ -1,10 +1,9 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class LowestCommonAncestor235 {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {

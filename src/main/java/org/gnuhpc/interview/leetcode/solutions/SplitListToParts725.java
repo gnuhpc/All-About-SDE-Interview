@@ -1,6 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.ListNode;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 
 public class SplitListToParts725 {
     public ListNode[] splitListToParts(ListNode root, int k) {

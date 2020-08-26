@@ -1,9 +1,8 @@
 package org.gnuhpc.interview.leetcode.utils;
 
-import org.apache.log4j.AsyncAppender;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 import org.junit.Test;
 
-import javax.print.DocFlavor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;

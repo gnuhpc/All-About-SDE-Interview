@@ -1,9 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
-
-import java.util.Deque;
-import java.util.LinkedList;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 // 二分生成的BST是高度平衡的BST
 public class SortedArrayToBST108 {

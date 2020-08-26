@@ -1,10 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeCreator;
-import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils;
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
-import org.junit.Test;
-import sun.reflect.generics.tree.Tree;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 public class PruneTree814 {
     public TreeNode pruneTree(TreeNode root) {

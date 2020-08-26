@@ -2,12 +2,10 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LetterCombinations17 {
-    //Method 1: DFS (+ Backtracking, if use StringBuilder instead of String) 这种可以直观理解为钻到底
+    //Method 1: DFS (+ Backtracking, if use StringBuilder/ArrayList instead of String) 这种可以直观理解为钻到底
 
     HashMap<Character, String> keyMap = new HashMap<Character, String>() {{
         put('2', "abc");
@@ -40,36 +38,70 @@ public class LetterCombinations17 {
         }
     }
 
-
-    //method 2: BFS，这种可以理解为一层层准备拿出来和下一层合并
+    Map<Integer, char[]> map = new HashMap<>();
+    List<String> res = new ArrayList<>();
     public List<String> letterCombinations2(String digits) {
+        if(digits==null || digits.length()==0) return res;
 
-        List<String> l = new ArrayList<>();
-        if (digits == null || digits.length() == 0) {
-            return l;
+        map.put(2, new char[]{'a','b','c'});
+        map.put(3, new char[]{'d','e','f'});
+        map.put(4, new char[]{'g','h','i'});
+        map.put(5, new char[]{'j','k','l'});
+        map.put(6, new char[]{'m','n','o'});
+        map.put(7, new char[]{'p','q','r','s'});
+        map.put(8, new char[]{'t','u','v'});
+        map.put(9, new char[]{'w','x','y','z'});
+
+        dfs(new ArrayList<>(), digits, 0);
+
+        return res;
+    }
+
+    private void dfs(List<Character> temp, String digits, int start){
+        if(temp.size() == digits.length()){
+            StringBuilder sb = new StringBuilder();
+            for(char c: temp) sb.append(c);
+            res.add(sb.toString());
+            return;
         }
 
-        l.add("");
+        char[] charList = map.get(digits.charAt(start)-'0');
+        for(char c: charList){
+            temp.add(c);
+            dfs(temp,digits,start+1);
+            temp.remove(temp.size()-1);
+        }
 
-        //先固定目前要遍历的数字
-        for (int i = 0; i < digits.length(); i++) {
-            ArrayList<String> temp = new ArrayList<>();
-            String option = keyMap.get(digits.charAt(i));
+        return;
+    }
 
-            //然后根据结果集大小,进行遍历，
-            // 因为要对这个初步的结果集每个元素进行一遍可能的option的添加
-            for (int j = 0; j < l.size(); j++) {
-                for (int p = 0; p < option.length(); p++) {
-                    temp.add(l.get(j) + option.charAt(p));
+
+    //method 2: BFS，这种可以理解为一层层准备拿出来和下一层合并
+    public List<String> letterCombinations3(String digits) {
+        List<String> ans = new ArrayList<>();
+        if (digits.isEmpty()) {
+            return ans;
+        }
+        Queue<String> q = new LinkedList<>();
+        q.add("");
+        int idx = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                String cur = q.poll();
+                if (cur.length() == digits.length()) {
+                    ans.add(cur);
+                    continue;
+                }
+                char[] charList = map.get(digits.charAt(idx)-'0');
+                for (char c : charList) {
+                    q.offer(cur + c);
                 }
             }
 
-            //System.out.println(temp);
-            l.clear();
-            l.addAll(temp);
+            idx++;
         }
-
-        return l;
+        return ans;
     }
 
     @Test

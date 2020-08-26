@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.leetcode.utils;
+package org.gnuhpc.interview.datastructure.tree.basicimpl;
 
 import java.util.HashMap;
 import java.util.Map;

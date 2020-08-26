@@ -1,4 +1,4 @@
-package org.gnuhpc.interview.leetcode.utils;
+package org.gnuhpc.interview.datastructure.linkedlist.basicimpl;
 
 import java.util.ArrayList;
 import java.util.List;

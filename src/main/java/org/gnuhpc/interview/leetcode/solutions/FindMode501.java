@@ -1,10 +1,9 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FindMode501 {
     int curval = 0;

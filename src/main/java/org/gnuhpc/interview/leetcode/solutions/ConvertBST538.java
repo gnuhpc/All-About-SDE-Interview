@@ -1,9 +1,8 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
 
-import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.LinkedList;
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeCreator;
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 import org.junit.Test;
 
 import java.util.ArrayDeque;

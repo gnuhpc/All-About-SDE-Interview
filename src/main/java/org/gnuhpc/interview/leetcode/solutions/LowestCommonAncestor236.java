@@ -1,12 +1,11 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeCreator;
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils;
 import org.junit.Test;
 
 import java.util.Deque;
-import java.util.Stack;
 
 import static org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils.pathToX;
 

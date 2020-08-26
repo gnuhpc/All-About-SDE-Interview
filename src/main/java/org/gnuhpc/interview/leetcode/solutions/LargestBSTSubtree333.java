@@ -1,7 +1,7 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeUtils;
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 public class LargestBSTSubtree333 {
 

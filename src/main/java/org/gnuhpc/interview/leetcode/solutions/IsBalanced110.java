@@ -1,6 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 public class IsBalanced110 {
     //O(nlogn) 最坏是O(n^2)

@@ -1,9 +1,7 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.ListNode;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 public class RotateRight61 {
     public ListNode rotateRight(ListNode head, int k) {

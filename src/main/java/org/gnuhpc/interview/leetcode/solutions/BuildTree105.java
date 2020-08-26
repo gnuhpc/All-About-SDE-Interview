@@ -1,8 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
-
-import java.util.Arrays;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 //注意，必须有一个是中序遍历才能完成唯一树的构造
 public class BuildTree105 {

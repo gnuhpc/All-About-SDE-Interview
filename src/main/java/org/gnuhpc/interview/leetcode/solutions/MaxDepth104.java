@@ -1,7 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
-import sun.reflect.generics.tree.Tree;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 import java.util.LinkedList;
 import java.util.Queue;

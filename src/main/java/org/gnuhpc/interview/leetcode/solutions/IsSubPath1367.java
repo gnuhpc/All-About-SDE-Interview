@@ -1,7 +1,7 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.leetcode.utils.ListNode;
-import org.gnuhpc.interview.leetcode.utils.TreeNode;
+import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
+import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 /**
  * Copyright gnuhpc 2020/5/7

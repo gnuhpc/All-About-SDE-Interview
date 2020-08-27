@@ -36,21 +36,16 @@ public class FindItinerary332 {
     public List<String> findItinerary2(List<List<String>> tickets) {
         Map<String, List<String>> itineraryMap = new HashMap<>();
         for (List<String> ticket : tickets) {
-            List<String> dests = itineraryMap.get(ticket.get(0));
-            if (dests == null) {
-                dests = new ArrayList<>();
-                dests.add(ticket.get(1));
-                itineraryMap.put(ticket.get(0), dests);
-            } else {
-                dests.add(ticket.get(1));
-            }
+            itineraryMap.putIfAbsent(ticket.get(0), new LinkedList<>());
+            itineraryMap.get(ticket.get(0)).add(ticket.get(1));
         }
         for (List<String> dests : itineraryMap.values()) {
             Collections.sort(dests);
         }
         List<String> res = new ArrayList<>();
         res.add("JFK");
-        dfs(res, new ArrayList<String>(), itineraryMap, "JFK", tickets.size());
+        dfs(res, new ArrayList<>(), itineraryMap, "JFK", tickets.size());
+
         return res;
     }
 
@@ -63,14 +58,14 @@ public class FindItinerary332 {
             return;
         }
         List<String> dests = itineraryMap.get(src);
-        if (dests != null && dests.size() > 0) {
+        if (dests != null) {
             for (int i = 0; i < dests.size(); i++) {
                 String des = dests.get(i);
                 dests.remove(i);
                 cur.add(des);
                 dfs(res, cur, itineraryMap, des, len);
-                dests.add(i, des);
                 cur.remove(cur.size() - 1);
+                dests.add(i, des);
             }
         }
     }

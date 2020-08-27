@@ -33,56 +33,71 @@ public class FindItinerary332 {
     /*
     Method2 : DFS通用模板
      */
-    public List<String> findItinerary2(List<List<String>> tickets) {
-        Map<String, List<String>> itineraryMap = new HashMap<>();
-        for (List<String> ticket : tickets) {
-            List<String> dests = itineraryMap.get(ticket.get(0));
-            if (dests == null) {
-                dests = new ArrayList<>();
-                dests.add(ticket.get(1));
-                itineraryMap.put(ticket.get(0), dests);
-            } else {
-                dests.add(ticket.get(1));
-            }
+
+    private class Edge implements Comparable<Edge> {
+        String src;
+        String dst;
+        Edge(final String src, final String dst) {
+            this.src = src;
+            this.dst = dst;
         }
-        for (List<String> dests : itineraryMap.values()) {
-            Collections.sort(dests);
+        @Override
+        public int compareTo(final Edge e) {
+            return this.dst.compareTo(e.dst);
         }
-        List<String> res = new ArrayList<>();
-        res.add("JFK");
-        dfs(res, new ArrayList<String>(), itineraryMap, "JFK", tickets.size());
-        return res;
     }
 
-    private void dfs(List<String> res, List<String> cur, Map<String, List<String>> itineraryMap, String src, int len) {
-        if (res.size() > 1) { //res 已经更新了
+    public List<String> findItinerary2(List<List<String>> tickets) {
+        final List<String> res = new ArrayList<>();
+        if (tickets == null || tickets.size() == 0) return res;
+        final Map<String, List<Edge>> graph = new HashMap<>();
+        for (final List<String> t : tickets) {
+            String ori = t.get(0);
+            String dst = t.get(1);
+            graph.putIfAbsent(ori, new ArrayList<>());
+            graph.putIfAbsent(dst, new ArrayList<>());
+            graph.get(ori).add(new Edge(ori, dst));
+        }
+        for (final String v : graph.keySet()) {
+            Collections.sort(graph.get(v));
+        }
+
+        final Set<Edge> visited = new HashSet<>();
+        //一个ticket就是一个edge，说有edge走完就完事儿了
+        dfs("JFK", tickets.size(), graph, visited, res, new ArrayList<>());
+        return res;
+    }
+    private void dfs(final String v, final int numEdges, final Map<String, List<Edge>> graph,
+                     final Set<Edge> visited, final List<String> res, final List<Edge> tmp) {
+        if(res.size()>0) return;
+
+        if (tmp.size() == numEdges) {
+            res.add("JFK");
+            for (final Edge e : tmp) {
+                res.add(e.dst);
+            }
             return;
         }
-        if (cur.size() == len) { // 所有的tickets都用光了
-            res.addAll(cur);
-            return;
-        }
-        List<String> dests = itineraryMap.get(src);
-        if (dests != null && dests.size() > 0) {
-            for (int i = 0; i < dests.size(); i++) {
-                String des = dests.get(i);
-                dests.remove(i);
-                cur.add(des);
-                dfs(res, cur, itineraryMap, des, len);
-                dests.add(i, des);
-                cur.remove(cur.size() - 1);
+        for (final Edge e : graph.get(v)) {
+            if (!visited.contains(e)) {
+                tmp.add(e);
+                visited.add(e);
+                dfs(e.dst, numEdges, graph, visited, res, tmp);
+                visited.remove(e);
+                tmp.remove(tmp.size() - 1);
             }
         }
     }
+
+
 
     @Test
     public void test() {
         List<List<String>> tickets = new ArrayList<>();
-        tickets.add(Arrays.asList("JFK", "SFO"));
-        tickets.add(Arrays.asList("JFK", "ATL"));
-        tickets.add(Arrays.asList("SFO", "ATL"));
-        tickets.add(Arrays.asList("ATL", "JFK"));
-        tickets.add(Arrays.asList("ATL", "SFO"));
+        tickets.add(Arrays.asList("MUC", "LHR"));
+        tickets.add(Arrays.asList("JFK", "MUC"));
+        tickets.add(Arrays.asList("SFO", "SJC"));
+        tickets.add(Arrays.asList("LHR", "SFO"));
         System.out.println(findItinerary2(tickets));
     }
 }

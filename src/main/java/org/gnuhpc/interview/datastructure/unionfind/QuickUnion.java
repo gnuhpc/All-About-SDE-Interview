@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //视频讲解:https://www.youtube.com/watch?v=YB3_c11GPEo
+//面试的时候想不起来带权重的就用这个
 public class QuickUnion extends QuickUnionAbstract {
     int count = 0;
 

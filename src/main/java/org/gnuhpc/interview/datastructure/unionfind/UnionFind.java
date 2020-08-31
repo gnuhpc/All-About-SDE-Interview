@@ -69,6 +69,7 @@ public class UnionFind {
         }
     }
 
+    //返回哪个集合
     public int maxCount() {
         reBalance();
 

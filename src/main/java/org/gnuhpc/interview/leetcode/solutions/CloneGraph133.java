@@ -30,11 +30,35 @@ public class CloneGraph133 {
 
         map.put(cloned.label, cloned);
         for (UndirectedGraphNode neighbor : node.neighbors) {
-            cloned.neighbors.add(cloneGraph2(neighbor));
+            cloned.neighbors.add(cloneGraph(neighbor));
         }
         return cloned;
     }
 
+  /*  public Node cloneGraph(Node node) {
+        if(node == null) return null ;
+        HashMap<Node,Node> hm = new HashMap<>();
+        Node head = new Node(node.val);
+        hm.put(node,head);
+        dfs(hm,node);
+        return head ;
+    }
+    public void dfs(HashMap<Node,Node> hm , Node node)
+    {
+        if(node == null)
+            return ;
+        for(Node aneighbor : node.neighbors)
+        {
+            if(!hm.containsKey(aneighbor))
+            {
+                Node nd = new Node(aneighbor.val);
+                hm.put(aneighbor,nd);
+                dfs(hm,aneighbor);
+            }
+            hm.get(node).neighbors.add(hm.get(aneighbor));
+        }
+    }
+*/
     /*
     Method2 : BFS
      */

@@ -7,25 +7,24 @@ public class PivotIndex724 {
     //暴力解
     public int pivotIndex(int[] nums) {
         if (nums == null) return -1;
-        if (nums.length == 1) return 0;
+        int n = nums.length;
+        if (n == 1) return 0;
 
-        for (int i = 0; i < nums.length; i++) {
-            int sum1 = 0, sum2 = 0;
-            for (int j = 0; j < i; j++) {
-                sum1 += nums[j];
-            }
+        int[] presum = new int[n + 1];
 
-            for (int k = i + 1; k < nums.length; k++) {
-                sum2 += nums[k];
-            }
 
-            if (sum1 == sum2) {
-                return i;
-            }
+        for (int i = 1; i <= n; i++) {
+            presum[i] = presum[i - 1] + nums[i - 1];
         }
+
+        for (int i = 1; i <= n; i++) {
+            if (presum[i - 1] == presum[n] - presum[i]) return i - 1;
+        }
+
 
         return -1;
     }
+
 
     //减少重复计算
     /*

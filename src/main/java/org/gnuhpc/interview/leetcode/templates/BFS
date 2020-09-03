@@ -12,9 +12,31 @@ BFS的过程
 2. 将要遍历的结构中的起始遍历元素放入队列中, 如果可能绕回来,则注意他同时维护visited数组对其进行已访问标识
 3. 进入遍历循环, 条件为!queue.isEmpty()
     3.0 这个时候的queue size是这一层的元素的个数,如果需要计数可以在这一步进行,
-    同时也可以维护一个depth在这一步++进行层数的记录
+    同时也可以维护一个depth在这一步++进行层数(步数)的记录
     3.1 取出该元素
     3.2 遍历该元素的邻居, 进行运算后或者判断有必要后续再处理的则放入队列中,同时设置visited
+
+int BFS(Node root, Node target) {
+    Queue<Node> queue;  // 建立队列
+    int step = 0;       // 建立行动步数
+    // initialize
+    add root to queue;
+    // BFS
+    while (queue is not empty) {
+        step = step + 1;
+        // 记录此时的队列大小
+        int size = queue.size();
+        for (int i = 0; i < size; ++i) { //遍历队列中的元素，并将新元素加入到队列中
+            Node cur = the first node in queue;
+            return step if cur is target;
+            for (Node next : the neighbors of cur) {
+                add next to queue;       //加入查找的方向
+            }
+            remove the first node from queue;
+        }
+    }
+    return -1;          // 没有找到目标返回-1
+}
 
 
 LC相关题目

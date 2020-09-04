@@ -2,84 +2,84 @@ package org.gnuhpc.interview.misc;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Copyright gnuhpc 2020/4/29
  */
 public class TestCase {
     @Test
     public void test() {
-        System.out.println(search(new int[]{4, 5, 6, 7, 0, 1, 2}, 3));
+        System.out.println(solution(2, 3, new int[]{0, 0, 1, 1, 2}));
     }
 
-    public int search(int[] nums, int target) {
-        if (nums == null || nums.length == 0) return -1;
-        if (nums.length <= 2) {
-            for (int i = 0; i < nums.length; i++) {
-                if (target == nums[i]) return i;
+    public String solution(int U, int L, int[] C) {
+        int cols = C.length;
+        int[][] res = new int[2][cols];
+        Arrays.fill(res[0], -1);
+        Arrays.fill(res[1], -1);
 
-            }
-            return -1;
-        }
-
-        int idx = findIdx(nums);
-
-        System.out.println(idx);
-        int res = bsearch(nums, target, 0, idx);
-        if (res == -1) return bsearch(nums, target, idx, nums.length - 1);
-        else return res;
-    }
-
-    private int findIdx(int[] nums) {
-        int low = 0, high = nums.length - 1;
-        while (low + 1 < high) {
-            int mid = low + (high - low) / 2;
-            int mid_val = nums[mid], left_val = nums[mid - 1], right_val = nums[mid + 1];
-            if (mid_val > left_val && mid_val > right_val) return mid;
-            if (mid_val > left_val && mid_val < right_val) {
-                if (mid_val > nums[0]) {
-                    low = mid;
-                } else {
-                    high = mid;
-                }
-            } else high = mid;
-        }
-
-        if (nums[low] > nums[high]) return low;
-
-        int mid_val = nums[low],
-                left_val = nums[low - 1],
-                right_val = nums[low + 1];
-        if (mid_val > left_val && mid_val > right_val) return low;
-        else return high;
-    }
-
-    public int bsearch(int[] nums, int target, int start, int end) {
-        if (start < 0 || end > nums.length) {
-            return -1;
-        }
-        //相邻就退出
-        while (start + 1 < end) {
-            //不会越界
-            int mid = start + (end - start) / 2;
-            if (target == nums[mid]) {
-                end = mid; //往前找
-                //If you'd like to fetch the last idx of the target, use the following statement instead:
-//                start = mid; //往后找
-            } else if (target > nums[mid]) {
-                start = mid;
-            } else {
-                end = mid;
+        int len = 0;
+        for (int i = 0; i < cols; i++) {
+            if (C[i] == 2) {
+                res[0][i] = 1;
+                res[1][i] = 1;
+                U--;
+                L--;
+                len++;
+            } else if (C[i] == 0) {
+                res[0][i] = 0;
+                res[1][i] = 0;
+                len++;
             }
         }
 
-        //范围缩小，double check
-        // 最后范围内就剩下start和end两个
-        if (target == nums[start]) {
-            return start;
+        if (len != cols) {
+            int[] idxes = new int[cols - len];
+            int j = 0;
+            for (int i = 0; i < cols; i++) {
+                if (C[i] == 1) idxes[j++] = i;
+            }
+
+            boolean result = dfs(U, L, res, idxes, 0);
+
+            if (!result) return "IMPOSSIBLE";
         }
-        if (target == nums[end]) {
-            return end;
+
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : res) {
+            for (int n : row) sb.append(n).append(",");
         }
-        return -1;
+
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    private boolean dfs(int U, int L, int[][] res, int[] idxes, int start) {
+
+        if (start == idxes.length) {
+            return U == 0 && L == 0;
+        }
+        if (U < 0 || L < 0) {
+            return false;
+        }
+        boolean res1 = false;
+        boolean res2 = false;
+        for (int i = start; i < idxes.length; i++) {
+            res[0][idxes[start]] = 1;
+            res[1][idxes[start]] = 0;
+            res1 = dfs(U - 1, L, res, idxes, start + 1);
+            if (res1) break;
+            res[0][idxes[start]] = -1;
+            res[1][idxes[start]] = -1;
+
+            res[0][idxes[start]] = 0;
+            res[1][idxes[start]] = 1;
+            res2 = dfs(U, L - 1, res, idxes, start + 1);
+            if (res2) break;
+            res[0][idxes[start]] = -1;
+            res[1][idxes[start]] = -1;
+        }
+
+        return res1 || res2;
     }
 }

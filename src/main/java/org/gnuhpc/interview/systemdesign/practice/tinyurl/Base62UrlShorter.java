@@ -9,6 +9,8 @@ import java.util.Map;
  * Copyright gnuhpc 19-8-23
  */
 
+//也可以参考Codec535 那道题，比下边这个实现好
+
 class Base62 {
     public static final String BASE_62_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     public static final int BASE = BASE_62_CHAR.length();
@@ -33,7 +35,7 @@ class Base62 {
     }
 
     public static String fromBase10(long i) {
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         if (i == 0) {
             return "a";
         }
@@ -74,7 +76,7 @@ public class Base62UrlShorter {
     @Test
     public void testLongUrl2Short() {
         Base62UrlShorter shorter = new Base62UrlShorter();
-        String longUrl = "www.baiduadasd.com";
+        String longUrl = "www.baiduad.com";
         String shortUrl = shorter.shorten(longUrl);
         System.out.println("short url:" + shortUrl);
         System.out.println(shorter.lookup(shortUrl));

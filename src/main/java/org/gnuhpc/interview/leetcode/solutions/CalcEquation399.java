@@ -7,30 +7,66 @@ import java.util.*;
 
 public class CalcEquation399 {
     //Method 1: DFS  有权有向图DFS
-    // g[A][B] = k -> A / B = k
-    Map<String, Map<String, Double>> g = new HashMap<>();
+    //https://www.cnblogs.com/handsomelixinan/p/10346065.html
 
-    public double[] calcEquation(List<List<String>> equations,
-                                 double[] values,
-                                 List<List<String>> queries) {
-        buildGraph(equations, values);
+    Map<String, List<Adam>> map = new HashMap<>();
 
-        double[] ans = new double[queries.size()];
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
 
-        for (int i = 0; i < queries.size(); ++i) {
-            String x = queries.get(i).get(0);
-            String y = queries.get(i).get(1);
-            if (!g.containsKey(x) || !g.containsKey(y)) {
-                ans[i] = -1.0;
-            } else {
-                ans[i] = divide(x, y, new HashSet<>());
-            }
+
+        double[] num = new double[queries.size()];
+
+        int i = 0;
+        for (List<String> equ : equations) {
+            String start = equ.get(0);
+            String end = equ.get(1);
+            if (!map.containsKey(start))
+                map.put(start, new ArrayList<>());
+            map.get(start).add(new Adam(end, values[i]));
+            if (!map.containsKey(end))
+                map.put(end, new ArrayList<>());
+            map.get(end).add(new Adam(start, 1 / values[i]));
+            i++;
         }
 
-        return ans;
+        i = 0;
+        for (List<String> q : queries) {
+            String start = q.get(0);
+            String end = q.get(1);
+            num[i] = findPath(start, end, 1.0, new HashSet()); //注意，每次寻找新的路径时需要新建一个hashset
+        }
+        return num;
     }
 
-    //有权有向图构建
+    public double findPath(String start, String end, double val, Set<String> visited) {
+        if (visited.contains(start)) return -1.0;
+        if (!map.containsKey(start)) return -1.0;
+
+        if (start.equals(end)) return val;
+        visited.add(start);
+        for (Adam next : map.get(start)) {
+            double sub = findPath(next.s, end, val * next.dis, visited);
+            if (sub != -1.0) return sub;
+        }
+
+        return -1.0;
+
+    }
+
+    class Adam {
+        String s;
+        double dis;
+
+        Adam(String s, double dis) {
+            this.s = s;
+            this.dis = dis;
+        }
+    }
+
+
+    // Method 2: BFS  有权有向图BFS
+    Map<String, Map<String, Double>> g = new HashMap<>();
+
     private void buildGraph(List<List<String>> equations, double[] values) {
         for (int i = 0; i < equations.size(); ++i) {
             String x = equations.get(i).get(0);
@@ -41,25 +77,6 @@ public class CalcEquation399 {
         }
     }
 
-    // get result of x / y
-    private double divide(String strX, String strY, Set<String> visited) {
-        if (strX.equals(strY)) return 1.0;
-        visited.add(strX);
-        if (!g.containsKey(strX)) return -1.0;
-        for (String z : g.get(strX).keySet()) {
-            if (visited.contains(z)) continue;
-            visited.add(z);
-            // d = z / y
-            double d = divide(z, strY, visited);
-
-            // x / y = z / y * x / z
-            if (d > 0) return d * g.get(strX).get(z);
-        }
-        return -1.0;
-    }
-
-
-    // Method 2: BFS  有权有向图BFS
     public double[] calcEquation2(List<List<String>> equations,
                                   double[] values,
                                   List<List<String>> queries) {
@@ -145,7 +162,7 @@ public class CalcEquation399 {
         queries.add(Arrays.asList("a", "a"));
         queries.add(Arrays.asList("x", "x"));
 
-        for (double r : calcEquation3(equations, values, queries)) {
+        for (double r : calcEquation(equations, values, queries)) {
             System.out.print(r + ", ");
         }
 

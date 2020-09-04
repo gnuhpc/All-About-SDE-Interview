@@ -14,16 +14,17 @@ public class MaxProduct152 {
 
     private int findMax(int[] nums, int start, int end) {
         //递归退出条件
-        if (start > nums.length - 1) return Integer.MIN_VALUE;
-        if (start + 1 >= end) {
-            return nums[start];
+        if (start == end) return 0;//一个元素都没有
+        if (start + 1 == end) {//有一个元素就返回这个元素，后者是0.
+            return nums[start]>0?nums[start]:0;
         }
 
+        //有0存在的进行递归
         for (int i = start; i < end; i++) {
             if (nums[i] == 0) {
-                return Math.max(Math.max(
+                return Math.max(
                         findMax(nums, start, i),
-                        findMax(nums, i + 1, end)), 0); //跳过0，左闭右开
+                        findMax(nums, i + 1, end)); //跳过0，左闭右开
             }
         }
 
@@ -33,12 +34,12 @@ public class MaxProduct152 {
                 numOfNeg++;
             }
         }
-/*
-当一个数组中没有0存在，则分为两种情况：
-1.负数为偶数个，则整个数组的各个值相乘为最大值；
-2.负数为奇数个，则从左边开始，乘到最后一个负数停止有一个“最大值”，从右边也有一个“最大值”，
-比较，得出最大值。
- */
+        /*
+        当一个数组中没有0存在，则分为两种情况：
+        1.负数为偶数个，则整个数组的各个值相乘为最大值；
+        2.负数为奇数个，则从左边开始，乘到最后一个负数停止有一个“最大值”，从右边也有一个“最大值”，
+        比较，得出最大值。
+        */
         if (numOfNeg % 2 == 0) {
             int res = 1;
             for (int i = start; i < end; i++) {
@@ -79,7 +80,7 @@ public class MaxProduct152 {
         //System.out.println(maxProduct(new int[]{2,3,-2,4}));
         //System.out.println(maxProduct(new int[]{0,1,0}));
         //System.out.println(maxProduct(new int[]{-1,-2,-3,0}));
-        System.out.println(maxProduct(new int[]{0, 2}));
+        System.out.println(maxProduct(new int[]{-2,0}));
     }
 
     //DP 链接：https://leetcode-cn.com/problems/maximum-product-subarray/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--36/
@@ -98,24 +99,6 @@ public class MaxProduct152 {
             dpMax[i] = Math.max(dpMin[i - 1] * nums[i], Math.max(dpMax[i - 1] * nums[i], nums[i]));
             dpMin[i] = Math.min(dpMin[i - 1] * nums[i], Math.min(dpMax[i - 1] * nums[i], nums[i]));
             max = Math.max(max, dpMax[i]);
-        }
-        return max;
-    }
-
-    public int maxProduct22(int[] nums) {
-        int n = nums.length;
-        if (n == 0) {
-            return 0;
-        }
-        int dpMax = nums[0];
-        int dpMin = nums[0];
-        int max = nums[0];
-        for (int i = 1; i < n; i++) {
-            //更新 dpMin 的时候需要 dpMax 之前的信息，所以先保存起来
-            int preMax = dpMax;
-            dpMax = Math.max(dpMin * nums[i], Math.max(dpMax * nums[i], nums[i]));
-            dpMin = Math.min(dpMin * nums[i], Math.min(preMax * nums[i], nums[i]));
-            max = Math.max(max, dpMax);
         }
         return max;
     }

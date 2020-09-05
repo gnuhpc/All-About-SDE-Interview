@@ -26,31 +26,42 @@ public class BinaryTreePaths257 {
     }
 
     /*
-    Method2: DFS 非递归 inorder
+    Method2: DFS + backtrace
      */
     public List<String> binaryTreePaths2(TreeNode root) {
         List<String> res = new ArrayList<>();
-        Stack<TreeNode> sNode = new Stack<>();
-        Stack<String> sStr = new Stack<>();
-
         if (root == null) return res;
-        sNode.push(root);
-        sStr.push("");
-        while (!sNode.isEmpty()) {
-            TreeNode curNode = sNode.pop();
-            String curStr = sStr.pop();
-
-            if (curNode.left == null && curNode.right == null) res.add(curStr + curNode.val);
-            if (curNode.left != null) {
-                sNode.push(curNode.left);
-                sStr.push(curStr + curNode.val + "->");
-            }
-            if (curNode.right != null) {
-                sNode.push(curNode.right);
-                sStr.push(curStr + curNode.val + "->");
-            }
+        if (root.left == null && root.right == null) {
+            res.add(root.val + "");
+            return res;
         }
+
+        dfs(root, new LinkedList<>(), res);
         return res;
+    }
+
+    private void dfs(TreeNode root, List<String> tmp, List<String> res) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) {
+            tmp.add(root.val + "");
+            StringBuilder sb = new StringBuilder();
+            for (String val : tmp) {
+                sb.append(val).append("->");
+            }
+            res.add(sb.substring(0, sb.length() - 2));
+
+            return;
+        }
+
+        tmp.add(root.val + "");
+        if (root.left != null) {
+            dfs(root.left, tmp, res);
+            tmp.remove(tmp.size() - 1);
+        }
+        if (root.right != null) {
+            dfs(root.right, tmp, res);
+            tmp.remove(tmp.size() - 1);
+        }
     }
 
 
@@ -62,29 +73,29 @@ public class BinaryTreePaths257 {
      */
     public List<String> binaryTreePaths3(TreeNode root) {
         //递归三要素 1. 返回
-        List<String> paths = new ArrayList<>();
+        List<String> res = new ArrayList<>();
         if (root == null) {
-            return paths;
+            return res;
         }
 
         if (root.left == null && root.right == null) {
-            paths.add(root.val + "");
-            return paths;
+            res.add(root.val + "");
+            return res;
         }
 
         //2. 分解子问题
-        List<String> leftPaths = binaryTreePaths2(root.left);
-        List<String> rightPaths = binaryTreePaths2(root.right);
+        List<String> leftPaths = binaryTreePaths3(root.left);
+        List<String> rightPaths = binaryTreePaths3(root.right);
 
         //3.合并
         for (String path : leftPaths) {
-            paths.add(root.val + "->" + path);
+            res.add(root.val + "->" + path);
         }
         for (String path : rightPaths) {
-            paths.add(root.val + "->" + path);
+            res.add(root.val + "->" + path);
         }
 
-        return paths;
+        return res;
     }
 
     /*

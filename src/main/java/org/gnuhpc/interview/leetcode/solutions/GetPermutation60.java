@@ -20,7 +20,6 @@ public class GetPermutation60 {
     }
 
     private void dfs(int[] nums, boolean[] visited, StringBuilder sb, int k) {
-        if (res != "") return;
         if (sb.length() == nums.length) {
             counter++;
             if (counter == k) {
@@ -31,6 +30,7 @@ public class GetPermutation60 {
 
 
         for (int i = 0; i < nums.length; i++) {
+            if (k <= counter) break; //剪枝
             if (visited[i]) continue;
             visited[i] = true;
             sb.append(nums[i]);

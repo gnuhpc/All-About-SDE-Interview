@@ -5,7 +5,7 @@
 可以看看这部分讲解，再重复就没啥意思了
 https://www.hackerearth.com/zh/practice/algorithms/graphs/topological-sort/tutorial/
 
-BFS步骤：
+重点看BFS步骤：
 1. 计算各个点的入度
 2. 遍历入度集合，发现入度为0的入队，并加入最终结果集（谁都不依赖嘛）
 3. 开始BFS，弹出元素，假设要抹去这个点，计算其他点的入度影响-1，当该点入度为0的时候将其加入结果集（也变成谁都不依赖嘛）
@@ -13,3 +13,4 @@ BFS步骤：
 LC相关题目：
 210
 207
+269

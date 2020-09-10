@@ -20,7 +20,7 @@ import java.util.List;
 public class CombinationSum240 {
     public List<List<Integer>> combinationSum2(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
-        Arrays.sort(nums);
+        Arrays.sort(nums);//不包含重复组合都要排序
         backtrack(list, new ArrayList<>(), nums, target, 0);
         return list;
 
@@ -32,27 +32,14 @@ public class CombinationSum240 {
         else {
             for (int i = start; i < nums.length; i++) {
 
-                if (i > start && nums[i] == nums[i - 1]) continue; // skip duplicates
+                //if前边这个条件表明 nums[i-1]是有意义的
+                //***同层消除策略****
+                if (i - 1 >= start && nums[i] == nums[i - 1]) continue; // skip duplicates
                 tempList.add(nums[i]);
                 backtrack(list, tempList, nums, remain - nums[i], i + 1);
                 tempList.remove(tempList.size() - 1);
             }
         }
-
-        /**
-         * 参考47题的写法，没有上面的for快
-         *
-         for(int i = start; i < candidates.length  ; i++){
-         if( i > 0  && candidates[i] == candidates[i-1] && !used[i-1]){
-         continue;
-         }
-         used[i] = true;
-         temp.add(candidates[i]);
-         dfs(candidates,target-candidates[i], i+1,used,temp,res);
-         temp.remove(temp.get(temp.size()-1));
-         used[i] = false;
-         }
-         **/
     }
 
 

@@ -11,12 +11,11 @@ public class SnakesAndLadders909 {
         int n = board.length, k = 1;
         int[] nums = new int[n * n + 1];
         boolean[] visit = new boolean[n * n + 1];
+        //将最后一行向上放入nums
         while (k <= n * n) {  // 用一维数组记录每个方格对应的值，也可以用map记录，但数组效率更高
             int row = n - 1 - (k - 1) / n;
             int col = ((k - 1) / n % 2 == 0) ? (k - 1) % n : (n - 1) - (k - 1) % n;
             nums[k++] = board[row][col];
-
-
         }
 
         Queue<Integer> pq = new LinkedList<>();

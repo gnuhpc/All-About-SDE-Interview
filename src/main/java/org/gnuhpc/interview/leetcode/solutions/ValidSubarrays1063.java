@@ -9,6 +9,9 @@ import java.util.LinkedList;
 /**
  * Copyright gnuhpc 2020/8/18
  */
+/*
+举个例子：1 2 3. 以3为开头的符合题意的子数组有1个（len-2（3的idx）），以2为开头的符合题意的子数组为2个（len - 1(2的idx)）
+ */
 public class ValidSubarrays1063 {
     public int validSubarrays(int[] nums) {
         Deque<Integer> s = new LinkedList<>();

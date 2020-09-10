@@ -50,3 +50,6 @@ LC相关题目
     if(i>0 && nums[i]==nums[i-1] && !visited[i-1])   {
         continue;
     }
+
+    这实际上是一种同层消除策略，用了前边用了，后边才能用
+

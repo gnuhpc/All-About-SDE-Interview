@@ -6,23 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CombinationSum3216 {
+    int k = 0;
     public List<List<Integer>> combinationSum3(int k, int n) {
+        this.k = k;
         List<List<Integer>> res = new ArrayList<>();
-        helper(1, k, n, new ArrayList<>(), res);
+        helper(1, n, new ArrayList<>(), res);
 
         return res;
     }
 
-    private void helper(int start, int size, int sum, List<Integer> tempList, List<List<Integer>> res) {
-        if (size < 0 || sum < 0) return;
-        if (size == 0 && sum == 0) {
+    private void helper(int start, int sum, List<Integer> tempList, List<List<Integer>> res) {
+        if (tempList.size()>k || sum < 0) return;
+        if (tempList.size()== k && sum == 0) {
             res.add(new ArrayList<>(tempList));
         }
 
-        for (int i = start; i <= 9; i++) {
+        //&&是根据还差几个数和还有几个数的比较来进行剪枝
+        for (int i = start; i <= 9 && k - tempList.size() <= 9 - i +1; i++) {
             tempList.add(i);
-            //注意size-1可以更加快速的通过给定数字个数已经用完而剪枝
-            helper(i + 1, size - 1, sum - i, tempList, res);
+            helper(i + 1,sum - i, tempList, res);
             tempList.remove(tempList.size() - 1);
         }
     }

@@ -1,9 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +20,7 @@ public class KSmallestPairs373 {
             return res;
         }
 
-        PriorityQueue<Tuple> pq = new PriorityQueue<>();
+        Queue<Tuple> pq = new PriorityQueue<>();
         int m = nums1.length, n = nums2.length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {

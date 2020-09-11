@@ -20,9 +20,9 @@ public class CanCross403 {
         while (!queue.isEmpty()) {
             Pair<Integer> cur = queue.poll();
             for (int d : directions) {
-                int step = cur.y + d;
+                int step = cur.y+ d;
                 int dest = stones[cur.x] + step;
-                int ind = Arrays.binarySearch(stones, cur.x + 1, len, dest);
+                int ind = Arrays.binarySearch(stones, cur.x+ 1, len, dest);
 
                 if (ind >= 0 && ind > cur.x) {
                     if (!visited[cur.x][ind]) {

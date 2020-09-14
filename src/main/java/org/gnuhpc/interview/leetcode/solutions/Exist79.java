@@ -6,17 +6,11 @@ public class Exist79 {
     // 二维平面的坐标偏移量
     // 二维DFS 判断
 
-    private int dr[][] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    private final int[][] dr = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     boolean[][] visited;
     int m, n;
 
     public boolean exist(char[][] board, String word) {
-        if (board == null) return false;
-        m = board.length;
-        if (m == 0) return false;
-        n = board[0].length;
-        if (n == 0 || word == null) return false;
-        if (word.length() == 0) return true;
         // 也可以不用，直接将原来的数组标记为一个#，表示访问过 ,这样更节省内存
         // 而且不用判断是不是绕回去了， 因为绕回去也不会因为元素重复而判错 //二维DFS的优化
         visited = new boolean[m][n];

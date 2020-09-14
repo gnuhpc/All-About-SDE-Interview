@@ -16,19 +16,21 @@ public class AverageOfLevels637 {
 
         q.offer(root);
         while (!q.isEmpty()) {
-            List<Integer> subRes = new ArrayList<>();
+
             int size = q.size();
+            int count = 0;
+            double sum = 0;
             for (int i = 0; i < size; i++) {
                 TreeNode n = q.poll();
-                subRes.add(n.val);
+                count++;
+                sum += n.val;
                 if (n.left != null) q.offer(n.left);
                 if (n.right != null) q.offer(n.right);
             }
-
-            double avg = subRes.parallelStream().mapToDouble(a -> a).average().getAsDouble();
-            res.add(avg);
+            res.add(sum / count);
         }
 
         return res;
     }
+
 }

@@ -38,8 +38,7 @@ public class MinWinSubString76 {
             while (total == 0) {
                 if (right - left < minLength) { //更新最短长度
                     minLength = right - left;
-                    head = left; //更新开始的index
-                    res = s.substring(head, head + minLength);
+                    res = s.substring(left, right);
                 }
 
                 //如果left对应的那个计数器是0，说明过去是命中的，则由于要向右移，需要total减小

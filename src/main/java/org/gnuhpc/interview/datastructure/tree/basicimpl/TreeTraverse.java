@@ -12,6 +12,8 @@ queue for bfs, horizontal flow
 碰到二叉树的问题，就想想整棵树在该问题上的结果
 和左右儿子在该问题上的结果之间的联系是什么
 
+非递归模板的核心是在访问前放入一个null作为是否已经访问过的标识
+
  */
 public class TreeTraverse {
 
@@ -105,10 +107,9 @@ public class TreeTraverse {
         stack.push(root);    //先将根节点入栈
         while (!stack.isEmpty()) {
             TreeNode t = stack.pop();   //弹出节点并判断是否访问过
-            //非空说明没访问过，然后右节点入栈，左节点入栈，最后根节点入栈，并入栈一个空节点
             if (t != null) {
                 if (t.right != null) stack.push(t.right);
-                stack.push(t);
+                stack.push(t); //把t塞回去
                 stack.push(null);
                 if (t.left != null) stack.push(t.left);
                 //表明当前节点以访问过
@@ -141,7 +142,6 @@ public class TreeTraverse {
         stack.push(root);    //先将根节点入栈
         while (!stack.isEmpty()) {
             TreeNode t = stack.pop();   //弹出节点并判断是否访问过
-            //非空说明没访问过，然后右节点入栈，左节点入栈，最后根节点入栈，并入栈一个空节点
             if (t != null) {
                 stack.push(t);
                 stack.push(null);

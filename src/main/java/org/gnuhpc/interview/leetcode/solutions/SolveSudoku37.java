@@ -18,8 +18,7 @@ public class SolveSudoku37 {
 
                             if (solve(board))
                                 return true; //If it's the solution return true
-                            else
-                                board[i][j] = '.'; //Otherwise go back
+                            board[i][j] = '.'; //Otherwise go back
                         }
                     }
 

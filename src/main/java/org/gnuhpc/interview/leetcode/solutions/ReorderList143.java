@@ -1,8 +1,13 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import com.google.inject.internal.asm.$ClassReader;
+import com.google.inject.internal.cglib.reflect.$FastClass;
 import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * 1->2->3->4->null
@@ -53,6 +58,49 @@ public class ReorderList143 {
         return slow;
     }
 
+    Map<ListNode, ListNode> map = new HashMap<>();
+    ListNode last = null;
+    int count = 0;
+
+    public void reorderList2(ListNode head) {
+        if (head == null || head.next == null) return;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        getParents(head, null);
+        ListNode oldHead = head;
+        ListNode p = dummy;
+        boolean isHead = true;
+
+        while (count > 0) {
+            if (isHead) {
+                p.next = head;
+                p = p.next;
+                if (count == 0) break;
+                head = head.next;
+            } else {
+                p.next = last;
+                p = p.next;
+                if (count == 0) break;
+                last = map.get(last);
+            }
+
+            count--;
+            isHead = !isHead;
+
+        }
+
+        p.next = null;
+        head = oldHead;
+    }
+
+    private void getParents(ListNode head, ListNode parent) {
+        if (head == null) return;
+        count++;
+        if (head.next == null) last = head;
+        map.put(head, parent);
+        getParents(head.next, head);
+    }
+
 
     @Test
     public void testMid() {
@@ -71,8 +119,8 @@ public class ReorderList143 {
 
     @Test
     public void test() {
-        ListNode head = ListNode.createList(new int[]{1, 2, 3, 4});
-        reorderList(head);
-        Assert.assertArrayEquals(ListNode.toArray(head), new int[]{1, 4, 2, 3});
+        ListNode head = ListNode.createList(new int[]{1, 2, 3, 4, 5});
+        reorderList2(head);
+        Assert.assertArrayEquals(ListNode.toArray(head), new int[]{1, 5, 2, 4, 3});
     }
 }

@@ -25,11 +25,11 @@ public class PathSum113 {
     private void helper(TreeNode node, int sum, List<List<Integer>> ans, List<Integer> path) {
         if (node == null) return;
 
-        sum -= node.val;
+
         // 遍历到叶节点
         if (node.left == null && node.right == null) {
             // 如果这是一条可行的路径，才复制path的结果到ans
-            if (sum == 0) {
+            if (sum == node.val) {
                 path.add(node.val);
                 ans.add(new ArrayList<>(path));
                 path.remove(path.size() - 1);
@@ -37,13 +37,14 @@ public class PathSum113 {
 
             return;
         }
-
         // 将沿途到节点加入到path中
-        path.add(node.val);
 
+        sum -= node.val;
+        path.add(node.val);
         helper(node.left, sum, ans, path);
         helper(node.right, sum, ans, path);
         path.remove(path.size() - 1);
+
     }
 
 

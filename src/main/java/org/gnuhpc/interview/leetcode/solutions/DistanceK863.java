@@ -5,7 +5,7 @@ import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 import java.util.*;
 
 public class DistanceK863 {
-    private List<Integer> list = new ArrayList<>();
+    private final List<Integer> list = new ArrayList<>();
     private int k;
 
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
@@ -66,5 +66,71 @@ public class DistanceK863 {
         addNodes(root.left, distance - 1);
         addNodes(root.right, distance - 1);
     }
+
+    /*
+    Method2: BFS
+     */
+
+    Map<TreeNode, TreeNode> parent;
+
+    public List<Integer> distanceK2(TreeNode root, TreeNode target, int K) {
+        parent = new HashMap();
+        // 1. DFS to get `node => parent` map
+        preorder(root, null);
+
+        Queue<TreeNode> queue = new LinkedList();
+        queue.add(null);    // level 分界线
+        queue.add(target);
+
+        Set<TreeNode> seen = new HashSet();
+        seen.add(target);
+        seen.add(null); // 不访问 null node
+
+        int dist = 0;
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            // null 为层序分界线
+            if (node == null) {
+                if (dist == K) {
+                    List<Integer> ans = new ArrayList();
+                    for (TreeNode n : queue) {
+                        ans.add(n.val);
+                    }
+                    return ans;
+                }
+                queue.offer(null); // 作为层的分界线
+                dist++;
+            } else {
+                // left
+                if (!seen.contains(node.left)) {
+                    seen.add(node.left);
+                    queue.offer(node.left);
+                }
+                // right
+                if (!seen.contains(node.right)) {
+                    seen.add(node.right);
+                    queue.offer(node.right);
+                }
+                // up
+                TreeNode par = parent.get(node);
+                if (!seen.contains(par)) {
+                    seen.add(par);
+                    queue.offer(par);
+                }
+            }
+        }
+
+        return new ArrayList<Integer>();
+    }
+
+    //获取每个节点的父节点
+    public void preorder(TreeNode node, TreeNode par) {
+        if (node != null) {
+            parent.put(node, par);
+            preorder(node.left, node);
+            preorder(node.right, node);
+        }
+    }
+
 
 }

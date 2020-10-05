@@ -54,48 +54,6 @@ public class WiggleSort280 {
         }
     }
 
-    /*
-     Method3:
-     */
-    public void wiggleSort3(int[] nums) {
-        int len = nums.length;
-        if (len <= 1) {
-            return;
-        }
-        int k = len / 2;
-        partionK(nums, 0, len - 1, len - k);
-        for (int i = 1, j = len - k; i < len && j < len; i += 2, j++) {
-            swap(nums, i, j);
-        }
-    }
-
-    public void partionK(int[] nums, int begin, int end, int k) {
-        if (begin >= end) {
-            return;
-        }
-        int left = begin;
-        int right = end;
-        int pivot = nums[(left + right) / 2];
-        while (left <= right) {
-            while (left <= right && nums[left] < pivot) {
-                left++;
-            }
-            while (left <= right && nums[right] > pivot) {
-                right--;
-            }
-            if (left <= right) {
-                swap(nums, left, right);
-                left++;
-                right--;
-            }
-        }
-        if (k <= right) {
-            partionK(nums, begin, right, k);
-        }
-        if (k >= left) {
-            partionK(nums, left, end, k);
-        }
-    }
 
     public void swap(int[] nums, int i, int j) {
         int tmp = nums[i];
@@ -105,7 +63,7 @@ public class WiggleSort280 {
 
     @Test
     public void test() {
-        wiggleSort3(new int[]{1, 3, 4, 5, 7, 2, 8, 9, 19, 11});
+        wiggleSort2(new int[]{1, 3, 4, 5, 7, 2, 8, 9, 19, 11});
     }
 
 }

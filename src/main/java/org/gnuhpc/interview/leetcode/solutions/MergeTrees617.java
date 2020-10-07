@@ -10,17 +10,18 @@ public class MergeTrees617 {
     Method 1: 递归版本
      */
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-        if (t1 != null && t2 != null) {
-            //两个均不为空的情况
-            TreeNode node = new TreeNode(t1.val + t2.val);
-            node.left = mergeTrees(t1.left, t2.left);
-            node.right = mergeTrees(t1.right, t2.right);
-            return node;
-        } else {
-            //有为空的就返回另一个
-            return t1 == null ? t2 : t1;
-        }
+        if(t1 == null) return t2;
+        if(t2 == null) return t1;
+
+        TreeNode node = new TreeNode(t1.val + t2.val);
+
+        node.left = mergeTrees(t1.left, t2.left);
+        node.right = mergeTrees(t1.right,t2.right);
+
+
+        return node;
     }
+
 
     /*
     Method 2: 非递归版本，层次遍历

@@ -19,24 +19,23 @@ public class InsertIntoBST701 {
     /*
     Method 2: Non-recursive
      */
-
     public TreeNode insertIntoBST2(TreeNode root, int val) {
-        if (root == null) {
+        if(root==null){
             return new TreeNode(val);
         }
-        TreeNode p = root;
-        while (p != null) {
+        TreeNode p=root;
+        while(true) {
             if (val > p.val) {  //在右边
                 if (p.right == null) {
                     p.right = new TreeNode(val);  //直接插入
-                    return root;
+                    break;
                 } else {
                     p = p.right;  //接着在右边查找
                 }
             } else if (val < p.val) {
                 if (p.left == null) {
                     p.left = new TreeNode(val);
-                    return root;
+                    break;
                 } else {
                     p = p.left;
                 }
@@ -44,5 +43,4 @@ public class InsertIntoBST701 {
         }
         return root;
     }
-
 }

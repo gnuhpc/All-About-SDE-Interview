@@ -32,8 +32,9 @@ public class LongestConsecutive298 {
             rightLength = 0;
         }
 
-        res = Math.max(res, Math.max(leftLength, rightLength) + 1);
-        return Math.max(leftLength, rightLength) + 1;
+        int maxLen = Math.max(leftLength, rightLength) + 1;
+        res = Math.max(res, maxLen);
+        return maxLen;
     }
 
     /*
@@ -54,6 +55,20 @@ public class LongestConsecutive298 {
         return Math.max(Math.max(left, right), len);//max
         //len means length from root, need when single element or longest path start from root.
     }
+
+    public int longestConsecutive22(TreeNode root) {
+        return dfs(root, null, 0);
+    }
+
+    private int dfs(TreeNode p, TreeNode parent, int length) {
+        if (p == null) return length;
+        length = (parent != null && p.val == parent.val + 1) ? length + 1 : 1;
+        int maxLeft = dfs(p.left, p, length);
+        int maxRight = dfs(p.right, p, length);
+
+        return Math.max(length, Math.max(maxLeft, maxRight));
+    }
+
 
     /*
     Method3: BFS

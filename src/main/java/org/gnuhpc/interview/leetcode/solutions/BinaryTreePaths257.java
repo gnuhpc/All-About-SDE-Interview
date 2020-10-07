@@ -8,7 +8,7 @@ import java.util.*;
 
 public class BinaryTreePaths257 {
     /**
-     * Method1: DFS inorder
+     * Method1: DFS preorder
      *
      * @param root the find of the binary tree
      * @return all find-to-isLeaf paths

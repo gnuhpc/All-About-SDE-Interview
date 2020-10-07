@@ -1,28 +1,31 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
-import org.gnuhpc.interview.leetcode.utils.Utils;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BuildTree106 {
+    Map<Integer, Integer> memo = new HashMap<>();
+    int[] post;
+
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        if (inorder == null || postorder == null || inorder.length == 0 || postorder.length == 0) return null;
-        TreeNode root = new TreeNode(postorder[postorder.length - 1]);
-
-        int inorderIdx = Utils.find(inorder, root.val);
-        assert (inorderIdx != -1);
-
-        int[] inorderLeft = Arrays.copyOfRange(inorder, 0, inorderIdx);
-        int[] inorderRight = Arrays.copyOfRange(inorder, inorderIdx + 1, inorder.length);
-
-        int[] postorderLeft = Arrays.copyOfRange(postorder, 0, inorderIdx);
-        int[] postorderRight = Arrays.copyOfRange(postorder, inorderIdx, postorder.length - 1);
-
-        root.left = buildTree(inorderLeft, postorderLeft);
-        root.right = buildTree(inorderRight, postorderRight);
-
+        for (int i = 0; i < inorder.length; i++) memo.put(inorder[i], i);
+        post = postorder;
+        TreeNode root = buildTree(0, inorder.length - 1, 0, post.length - 1);
         return root;
-
     }
+
+    public TreeNode buildTree(int is, int ie, int ps, int pe) {
+        if (ie < is || pe < ps) return null;
+
+        int root = post[pe];
+        int ri = memo.get(root);
+
+        TreeNode node = new TreeNode(root);
+        node.left = buildTree(is, ri - 1, ps, ps + ri - is - 1);
+        node.right = buildTree(ri + 1, ie, ps + ri - is, pe - 1);
+        return node;
+    }
+
 }

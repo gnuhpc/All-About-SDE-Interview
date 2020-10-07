@@ -36,7 +36,7 @@ public class TreeUtils {
 
             printWhitespaces(betweenSpaces);
         }
-        System.out.println("");
+        System.out.println();
 
         for (int i = 1; i <= endgeLines; i++) {
             for (int j = 0; j < nodes.size(); j++) {
@@ -61,7 +61,7 @@ public class TreeUtils {
                 printWhitespaces(endgeLines + endgeLines - i);
             }
 
-            System.out.println("");
+            System.out.println();
         }
 
         printNodeInternal(newNodes, level + 1, maxLevel);
@@ -133,11 +133,7 @@ public class TreeUtils {
         }
 
         right = findNode(root.right, value);
-        if (right != null) {
-            return right;
-        }
-
-        return null;
+        return right;
     }
 
     public TreeNode findNodeNonRecusive(TreeNode root, int value) {
@@ -472,9 +468,16 @@ public class TreeUtils {
         return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
     }
 
+    public static void constructParentTreeNodeMap(TreeNode node, TreeNode par, Map<TreeNode, TreeNode> parent) {
+        if (node == null) return;
+        parent.put(node, par);
+        constructParentTreeNodeMap(node.left, node, parent);
+        constructParentTreeNodeMap(node.right, node, parent);
+    }
+
     @Test
     public void test() {
-        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 5, 3, null, 5, 4, null, null, 7, null,8});
+        TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 5, 3, null, 5, 4, null, null, 7, null, 8});
 
         print(root);
 

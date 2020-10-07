@@ -3,8 +3,6 @@ package org.gnuhpc.interview.leetcode.solutions;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Copyright gnuhpc 2020/9/2

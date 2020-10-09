@@ -1,7 +1,7 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import junit.framework.Assert;
 import org.junit.Test;
+import org.testng.Assert;
 
 public class SplitArray410 {
     private int ans;

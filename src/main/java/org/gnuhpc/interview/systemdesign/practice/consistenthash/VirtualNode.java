@@ -14,13 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gnuhpc.interview.systemdesign.basic.consistenthash;
+package org.gnuhpc.interview.systemdesign.practice.consistenthash;
 
 /**
+ * @param <T>
  * @author linjunjie1103@gmail.com
- * <p>
- * Hash String to long value
  */
-public interface HashFunction {
-    long hash(String key);
+public class VirtualNode<T extends Node> implements Node {
+    final T physicalNode;
+    final int replicaIndex;
+
+    public VirtualNode(T physicalNode, int replicaIndex) {
+        this.replicaIndex = replicaIndex;
+        this.physicalNode = physicalNode;
+    }
+
+    @Override
+    public String getKey() {
+        return physicalNode.getKey() + "-" + replicaIndex;
+    }
+
+    public boolean isVirtualNodeOf(T pNode) {
+        return physicalNode.getKey().equals(pNode.getKey());
+    }
+
+    public T getPhysicalNode() {
+        return physicalNode;
+    }
 }

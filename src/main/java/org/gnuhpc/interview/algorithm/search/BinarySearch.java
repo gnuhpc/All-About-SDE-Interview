@@ -212,7 +212,7 @@ Recursion or Non-Recursion
 
     public static void main(String[] args) {
         int[] array = new int[]{1, 2, 2, 2, 3, 6, 8, 10};
-//        System.out.println(leftBound(9,array));
+        System.out.println(leftBound(9, array));
 //        System.out.println(rightBound(9,array));
 
         System.out.println(binarySearch(1, array));

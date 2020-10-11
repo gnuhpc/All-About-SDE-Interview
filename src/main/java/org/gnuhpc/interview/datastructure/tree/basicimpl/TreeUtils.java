@@ -98,19 +98,19 @@ public class TreeUtils {
 
         if (root.val == x) {
             Deque<TreeNode> path = new LinkedList<>();
-            path.push(root);
+            path.addFirst(root);
             return path;
         }
 
         Deque<TreeNode> leftPath = pathToX(root.left, x);
         if (leftPath != null) {
-            leftPath.push(root);
+            leftPath.addFirst(root);
             return leftPath;
         }
 
         Deque<TreeNode> rightPath = pathToX(root.right, x);
         if (rightPath != null) {
-            rightPath.push(root);
+            rightPath.addFirst(root);
             return rightPath;
         }
 

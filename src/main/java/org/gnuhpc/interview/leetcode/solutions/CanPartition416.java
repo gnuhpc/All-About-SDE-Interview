@@ -1,39 +1,80 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import org.gnuhpc.interview.leetcode.utils.Utils;
+import org.junit.Test;
+
+import java.util.*;
 
 /**
  * Copyright gnuhpc 19-7-17
  */
 public class CanPartition416 {
-    private boolean res = false;
 
     //DFS
+       /*
+    执行用时：4 ms, 在所有 Java 提交中击败了93.11%的用户
+    内存消耗：38.5 MB, 在所有 Java 提交中击败了58.28%的用户
+
+    invalidSet为无法凑出的目标集合
+    */
     public boolean canPartition(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
         int sum = 0;
         for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
             sum += num;
         }
-        if (sum % 2 != 0) return false;
-        return dfs(map, sum / 2);
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        Set<Integer> invalidSet = new HashSet<>();
+        //boolean res =  helper(nums, 0, sum/2,  invalidSet);
+        //System.out.println(invalidSet);
+        //return res;
+        return helper(nums, 0, sum / 2, invalidSet);
     }
 
-    private boolean dfs(Map<Integer, Integer> map, int target) {
-        //包含target而且不止一个
-        if (map.containsKey(target) && map.get(target) > 0) return true;
-        for (int num : map.keySet()) {
-            if (num < target && map.get(num) > 0) {
-                map.put(num, map.get(num) - 1);
-                if (dfs(map, target - num)) return true;
-                map.put(num, map.get(num) + 1);
+    public boolean helper(int[] nums, int idx, int target, Set<Integer> invalidSet) {
+        if (target < 0 || invalidSet.contains(target)) {
+            return false;
+        }
+
+        if (target == 0) {
+            return true;
+        }
+
+
+        //TODO 给定一个数组求任何一个子序列：
+        /*
+         helper(int[] nums, int idx){
+            for(int i = idx;i<nums.length;i++){
+                (helper(nums, i+1);
             }
         }
+         }
+         */
+        for (int i = idx; i < nums.length; i++) {
+            if (helper(nums, i + 1, target - nums[i], invalidSet)) return true;
+        }
+        invalidSet.add(target);
         return false;
     }
+
+    public void getAllSubSeq(int[] nums, List<Integer> temp, int idx) {
+        System.out.println(temp);
+
+        for (int i = idx; i < nums.length; i++) {
+            temp.add(nums[i]);
+            getAllSubSeq(nums, temp, i + 1);
+            temp.remove(temp.size() - 1);
+        }
+    }
+
+    @Test
+    public void test() {
+        int[] nums = new int[]{1, 2, 3};
+        getAllSubSeq(nums, new LinkedList<>(), 0);
+    }
+
 
     //Method 2: DP
     /*
@@ -178,8 +219,7 @@ public class CanPartition416 {
         // 因为从状态方程可以看出，i的状态只和i-1相关
         //初始化，考虑把编号为0的物品(数据)，装满容量为j的背包
         for (int j = 0; j <= c; j++) {
-            if (j == nums[0]) dp[j] = true;
-            else dp[j] = false;
+            dp[j] = j == nums[0];
         }
 
         for (int i = 1; i < n; i++) {

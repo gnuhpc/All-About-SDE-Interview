@@ -6,7 +6,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TreeToDoublyList426 {
+public class TreeToDoublyList36 {
     /*
     画图就可以得到
      */

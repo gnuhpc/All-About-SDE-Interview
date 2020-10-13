@@ -14,7 +14,7 @@ public class HasPathSum112 {
         if (root == null) return false;
 
         if (root.left == null && root.right == null && sum - root.val == 0) {
-            System.out.println(root.val);
+            //System.out.println(root.val);
             return true;
         }
 

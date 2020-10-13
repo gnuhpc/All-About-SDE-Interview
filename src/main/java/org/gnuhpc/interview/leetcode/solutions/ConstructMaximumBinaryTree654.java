@@ -7,27 +7,27 @@ import java.util.Arrays;
 
 public class ConstructMaximumBinaryTree654 {
     public TreeNode constructMaximumBinaryTree(int[] nums) {
-        if (nums == null || nums.length == 0) return null;
-        int maxIdx = findMaxIdx(nums);
-        TreeNode root = new TreeNode(nums[maxIdx]);
-        root.left = constructMaximumBinaryTree(Arrays.copyOfRange(nums, 0, maxIdx));
-        root.right = constructMaximumBinaryTree(Arrays.copyOfRange(nums, maxIdx + 1, nums.length));
+        if (nums == null) return null;
+        if (nums.length == 1) return new TreeNode(nums[0]);
 
-        return root;
-
+        return helper(nums, 0, nums.length - 1);
     }
 
-    private int findMaxIdx(int[] nums) {
-
-        int maxIdx = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] > nums[maxIdx]) {
-                maxIdx = i;
-            }
+    private TreeNode helper(int[] nums, int start, int end) {
+        if (start > end) return null;
+        if (end - start == 0) return new TreeNode(nums[start]);
+        int maxIdx = start;
+        for (int i = start + 1; i <= end; i++) {
+            if (nums[i] > nums[maxIdx]) maxIdx = i;
         }
 
-        return maxIdx;
+        TreeNode root = new TreeNode(nums[maxIdx]);
+        root.left = helper(nums, start, maxIdx - 1);
+        root.right = helper(nums, maxIdx + 1, end);
+
+        return root;
     }
+
 
     @Test
     public void test() {

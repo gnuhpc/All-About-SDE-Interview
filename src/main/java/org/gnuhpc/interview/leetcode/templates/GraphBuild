@@ -18,3 +18,17 @@ Map<String, List<String>> g = new HashMap<>();
 LC相关题目
 399
 
+5. 树的无向无权图构建
+    public void dfs(Map<TreeNode, List<TreeNode>> graph, TreeNode node, TreeNode parent) {
+        if (node != null) {
+            if (!graph.containsKey(node)) graph.put(node, new LinkedList<TreeNode>());
+            if (!graph.containsKey(parent)) graph.put(parent, new LinkedList<TreeNode>());
+            graph.get(node).add(parent);
+            graph.get(parent).add(node);
+            dfs(graph, node.left, node);
+            dfs(graph, node.right, node);
+        }
+    }
+LC 相关题目
+742
+

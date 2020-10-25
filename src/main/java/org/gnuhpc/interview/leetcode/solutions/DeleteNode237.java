@@ -4,17 +4,17 @@ import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 
 public class DeleteNode237 {
     public void deleteNode(ListNode node) {
-        if (node == null) return;
+        ListNode cur = node;
         ListNode next = node.next;
+        ListNode prev = null;
+
         while (next != null) {
-            node.val = next.val;
+            cur.val = next.val;
+            prev = cur;
+            cur = cur.next;
             next = next.next;
-            if (next == null) {
-                node.next = null;
-                break;
-            } else {
-                node = node.next;
-            }
         }
+
+        prev.next = null;
     }
 }

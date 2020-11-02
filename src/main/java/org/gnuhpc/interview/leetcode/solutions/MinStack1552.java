@@ -21,11 +21,12 @@ public class MinStack1552 {
 
     public void pop() {
         if (stack.peek() == min) {//如果等于最小值说明该值是记录的上次最小值
-            stack.pop(); //丢掉它，这句话可以放在外边，这么写是为了好理解
+            stack.pop(); //注意顺序
             min = stack.pop();// 后边跟着的一定是上一个min
-        } else { //如果不等，则表示跟最小值变动无关
+        } else {
             stack.pop();
         }
+
     }
 
     public int top() {

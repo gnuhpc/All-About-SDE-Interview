@@ -13,21 +13,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class SumNumbers129 {
 
-
-    //Method 1: Recursive
+    //Method 1: 纯DFS
     public int sumNumbers(TreeNode root) {
-        return sum(root, 0);
-    }
-
-    public int sum(TreeNode n, int s) {
-        if (n == null) return 0;
-        if (n.right == null && n.left == null) return s * 10 + n.val;
-        return sum(n.left, s * 10 + n.val) + sum(n.right, s * 10 + n.val);
-    }
-
-
-    //Method 2: 纯DFS
-    public int sumNumbers2(TreeNode root) {
         return helper(root, 0);
     }
 
@@ -40,35 +27,36 @@ public class SumNumbers129 {
     }
 
 
-    //Method 3: BFS
-    public int sumNumbers3(TreeNode root) {
-        if (root == null) return 0;
-
-        int sum = 0;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-
-        while (!q.isEmpty()) {
-            TreeNode temp = q.poll();
-
-            if (temp.left == null && temp.right == null)
-                sum += temp.val;
-
-            int num = (temp.val * 10);
-
-            if (temp.left != null) {
-                temp.left.val = temp.left.val + num;
-                q.offer(temp.left);
-            }
-
-            if (temp.right != null) {
-                temp.right.val = temp.right.val + num;
-                q.offer(temp.right);
-            }
-
+    //Method 2: BFS
+    public int sumNumbers2(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
-
-        return sum;
+        int res = 0;
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<Integer> numQueue = new LinkedList<>();
+        nodeQueue.add(root);
+        numQueue.add(root.val);
+        while (!nodeQueue.isEmpty()) {
+            // 同时维护两个队列
+            TreeNode node = nodeQueue.poll();
+            int num = numQueue.poll();
+            // 如果该节点是叶子节点，加到res中
+            if (node.left == null && node.right == null) {
+                res += num;
+            } else {
+                // 左节点不为空时，左节点进入队列，左节点对应的值是当前节点num*10+node.left.val
+                if (node.left != null) {
+                    nodeQueue.add(node.left);
+                    numQueue.add(num * 10 + node.left.val);
+                }
+                if (node.right != null) {
+                    nodeQueue.add(node.right);
+                    numQueue.add(num * 10 + node.right.val);
+                }
+            }
+        }
+        return res;
     }
 
     @Test

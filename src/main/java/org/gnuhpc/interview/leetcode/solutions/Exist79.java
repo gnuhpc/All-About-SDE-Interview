@@ -13,6 +13,9 @@ public class Exist79 {
     public boolean exist(char[][] board, String word) {
         // 也可以不用，直接将原来的数组标记为一个#，表示访问过 ,这样更节省内存
         // 而且不用判断是不是绕回去了， 因为绕回去也不会因为元素重复而判错 //二维DFS的优化
+        if(board == null || board.length == 0 || board[0].length == 0) return false;
+        m = board.length;
+        n = board[0].length;
         visited = new boolean[m][n];
 
         for (int i = 0; i < m; i++) {

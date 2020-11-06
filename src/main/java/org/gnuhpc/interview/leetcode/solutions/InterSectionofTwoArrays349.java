@@ -13,13 +13,21 @@ public class InterSectionofTwoArrays349 {
     }
 
     public static int[] intersection(int[] nums1, int[] nums2) {
-        if (nums1.length == 0 || nums2.length == 0) {
-            return new int[0];
+        Set<Integer> set1 = new HashSet<>();
+        for(int n : nums1){
+            set1.add(n);
         }
-        Set<Integer> set1 = Arrays.stream(nums1).boxed().collect(Collectors.toSet());
-        Set<Integer> set2 = Arrays.stream(nums2).boxed().collect(Collectors.toSet());
-        set1.retainAll(set2);
-        return set1.stream().mapToInt(Integer::new).toArray();
+
+        Set<Integer> rSet = new HashSet<>();
+        for(int n: nums2){
+            if(set1.contains(n)) rSet.add(n);
+        }
+
+        int[] res = new int[rSet.size()];
+        int i = 0;
+        for(Integer n: rSet) res[i++] = n;
+
+        return res;
     }
 
     // version1：sort & merge

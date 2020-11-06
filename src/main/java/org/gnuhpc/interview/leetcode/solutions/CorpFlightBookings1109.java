@@ -72,6 +72,30 @@ public class CorpFlightBookings1109 {
         return res;
     }
 
+    /*
+    Method4: 方法3的化简版
+     */
+    public int[] corpFlightBookings4(int[][] bookings, int n) {
+        int[] res = new int[n];
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int[] booking : bookings){
+            map.put(booking[0], map.getOrDefault(booking[0], 0)+booking[2]);
+            map.put(booking[1]+1, map.getOrDefault(booking[1]+1, 0)-booking[2]);
+        }
+        int prev = 0;
+        for (int k : map.keySet()){
+            map.put(k, map.get(k)+prev);
+            prev = map.get(k);
+        }
+        for (int i=1;i<=n;i++){
+            Integer booking = map.floorKey(i);
+            if (booking!=null){
+                res[i-1] = map.get(booking);
+            }
+        }
+        return res;
+    }
+
     @Test
     public void test() {
         Utils.printArray(corpFlightBookings3(new int[][]{

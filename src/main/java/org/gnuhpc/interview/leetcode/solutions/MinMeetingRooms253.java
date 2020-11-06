@@ -1,9 +1,6 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Copyright gnuhpc 2019/10/9
@@ -51,6 +48,22 @@ public class MinMeetingRooms253 {
         }
 
         return heap.size();
-
     }
+
+    public int minMeetingRooms2(int[][] intervals) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for(int[] interval: intervals){
+            map.put(interval[0], map.getOrDefault(interval[0], 0)+1);
+            map.put(interval[1], map.getOrDefault(interval[1], 0)-1);
+        }
+        int res = 0;
+        int tmp = 0;
+        for(int value: map.values()){
+            tmp += value;
+            res = Math.max(tmp, res);
+        }
+
+        return res;
+    }
+
 }

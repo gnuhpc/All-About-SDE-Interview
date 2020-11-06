@@ -94,4 +94,50 @@ public class TotalNQueens52 {
         }
         return true;
     }
+
+    // 列不重复
+    private boolean[] col;
+    // 对角线不重复
+    private boolean[] dia1;
+    private boolean[] dia2;
+
+    public int totalNQueens3(int n) {
+        if (n == 0) {
+            return res;
+        }
+        col = new boolean[n];
+        dia1 = new boolean[2 * n - 1];
+        dia2 = new boolean[2 * n - 1];
+        // 记录搜索过程
+        int[] ans = new int[n];
+        dfs(n, 0, ans);
+        return res;
+
+    }
+
+    // 寻找n皇后第index行的位置
+    private void dfs(int n, int index, int[] ans) {
+        // 寻找到了
+        if (index == n) {
+            res++;
+            return;
+        }
+        // 寻找该行所有的列
+        for (int i = 0; i < n; i++) {
+            // 寻找符合要求的位置
+            if (!col[i] && !dia1[index + i] && !dia2[index - i + n - 1]) {
+                // 该位置作为该行皇后的放置位置
+                ans[index] = i;
+                col[i] = true;
+                dia1[index + i] = true;
+                dia2[index - i + n - 1] = true;
+                // 寻找下一行
+                dfs(n, index + 1, ans);
+                // 回溯
+                col[i] = false;
+                dia1[index + i] = false;
+                dia2[index - i + n - 1] = false;
+            }
+        }
+    }
 }

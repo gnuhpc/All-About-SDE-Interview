@@ -106,4 +106,37 @@ public class Rob337 {
         return res;
     }
 
+    public int rob5(TreeNode root) {
+        int[] res = robRecursion(root);
+        return Math.max(res[0],res[1]);
+    }
+
+    /**
+     * 当前节点node存在两种情况，
+     * 1.选当前，则左右子树不能选
+     * 2.不选当前，则选左右子树最优（左右孩子不是必选，左最优+右最优）
+     * 取两者中的较大值即可
+     *
+     * @param node node
+     * @return 结果数组
+     */
+    private int[] robRecursion(TreeNode node) {
+        if (node == null){
+            // res 0-表示选择当前，1-表示不选当前
+            return new int[]{0,0};
+        }
+        // 后序遍历，先考虑左右子树的情况
+        int[] leftRes = robRecursion(node.left);
+        int[] rightRes = robRecursion(node.right);
+        // 选中根节点的情况，左右孩子是不选的
+        int choose = node.val + leftRes[1] + rightRes[1];
+        // 不选根节点的情况，左右孩子任意节点可选，所以要取左右孩子选或不选两者情况的较大值累加
+        // 即左子树的最优解+右子树的最优解
+        int noChoose = Math.max(leftRes[0],leftRes[1]) + Math.max(rightRes[0],rightRes[1]);
+        // 0-选择当前节点的最大情况，1-不选当前节点的最大情况
+        return new int[]{choose,noChoose};
+    }
+
+    //链接：https://leetcode-cn.com/problems/house-robber-iii/solution/hou-xu-shen-du-you-xian-bian-li-zi-di-xiang-shang-/
+
 }

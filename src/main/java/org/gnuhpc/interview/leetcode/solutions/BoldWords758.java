@@ -1,5 +1,12 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import org.gnuhpc.interview.leetcode.utils.Interval;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Copyright gnuhpc 2020/8/7
  */
@@ -99,6 +106,100 @@ public class BoldWords758 {
         if (isOpen) sb.append(close);
 
         return sb.toString();
+    }
+
+    public String boldWords3(String[] words, String S) {
+        if (words == null || words.length == 0) {
+            return S;
+        }
+
+        // step 1: find start and end pos of the substring
+        //
+        List<Interval> intervals = new ArrayList<>();
+        for (String t : words) {
+            strStr(S, t, intervals);
+        }
+
+        if (intervals.isEmpty()) {
+            return S;
+        }
+
+        // step 2: sort the intervals based on the start index
+        //
+        Collections.sort(intervals, Comparator.comparingInt(a -> a.start));
+
+        // step 3: merge intervals
+        //
+        List<Interval> mergedIntervals = mergeIntervals(intervals);
+
+        // step 4: compose the result based on the merged intervals
+        //
+        StringBuilder sb = new StringBuilder();
+        int prev = 0;
+
+        for (int i = 0; i < mergedIntervals.size(); i++) {
+            Interval curr = mergedIntervals.get(i);
+            // prev seg
+            //
+            sb.append(S.substring(prev, curr.start));
+            sb.append("<b>");
+
+            // curr seg
+            //
+            sb.append(S.substring(curr.start, curr.end + 1));
+            sb.append("</b>");
+
+            prev = curr.end + 1;
+        }
+
+        // trailing substring
+        //
+        if (prev < S.length()) {
+            sb.append(S.substring(prev));
+        }
+
+        return sb.toString();
+    }
+
+    private void strStr(String s, String t, List<Interval> list) {
+        for (int i = 0; i < s.length() - t.length() + 1; i++) {
+            int j = 0;
+            while (j < t.length()) {
+                if (s.charAt(i + j) == t.charAt(j)) {
+                    j++;
+                } else {
+                    break;
+                }
+            }
+
+            if (j == t.length()) {
+                Interval interval = new Interval(i, i + j - 1);
+                list.add(interval);
+            }
+        }
+    }
+
+    private List<Interval> mergeIntervals(List<Interval> intervals) {
+        List<Interval> ans = new ArrayList<>();
+
+        if (intervals == null || intervals.isEmpty()) {
+            return ans;
+        }
+
+        Interval prev = intervals.get(0);
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval curr = intervals.get(i);
+            if (prev.end >= curr.start || prev.end + 1 == curr.start) {
+                prev.end = Math.max(prev.end, curr.end);
+            } else {
+                ans.add(new Interval(prev.start, prev.end));
+                prev = curr;
+            }
+        }
+
+        ans.add(prev);
+
+        return ans;
     }
 }
 

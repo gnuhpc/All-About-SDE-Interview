@@ -76,6 +76,31 @@ public class LowestCommonAncestor236 {
         return root;
     }
 
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == p) return p;
+        if(root == q) return q;
+
+        int pPos = getBranch(root, p);
+        int qPos = getBranch(root, q);
+        if(pPos == qPos) {
+            if(qPos == 1) return lowestCommonAncestor2(root.right, p, q);
+            else return lowestCommonAncestor2(root.left, p, q);
+        } else {
+            return root;
+        }
+    }
+
+    private int getBranch(TreeNode root, TreeNode n){
+        if(isFound(root.left,n)) return 0;
+        else return 1;
+    }
+
+    private boolean isFound(TreeNode root, TreeNode n){
+        if(root == null) return false;
+        if(root == n) return true;
+        return isFound(root.left, n) || isFound(root.right, n);
+    }
+
     /*
     Follow up: Given nodes in a binary tree, find the distance between them.
     TreeNode lca = lca(root, node1, node2);

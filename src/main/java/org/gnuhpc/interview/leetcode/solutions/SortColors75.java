@@ -42,7 +42,7 @@ public class SortColors75 {
         int pivot = 1;
         while (i <= gt) {
             if (nums[i] < pivot)
-                swap(i++, lt++, nums);//i++的原因是：换过来的数一定小于1。
+                swap(i++, lt++, nums);//i++的原因是：换过来的数一定小于1。lt和i是同方向的
             else if (nums[i] > pivot){
                 swap(i, gt--, nums); //不i++的原因是：换过来的数有可能比1大。
             }

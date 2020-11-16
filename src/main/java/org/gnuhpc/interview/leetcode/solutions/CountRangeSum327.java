@@ -2,10 +2,12 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
+import java.util.TreeMap;
+
 //和315这两道题要一起看，一起回顾
 public class CountRangeSum327 {
     //Method1 : Naive 方法 , LTE for sure
-    public int countRangeSum(int[] nums, int lower, int upper) {
+    public int countRangeSum0(int[] nums, int lower, int upper) {
         int n = nums.length;
         //构造前缀和数组,the prefix sum array has size n + 1, where prefix[i] = prefix[i – 1] + nums[i – 1].
         //preSum(i)代表有前i个数字的和
@@ -217,10 +219,38 @@ public class CountRangeSum327 {
         return total - smaller - larger;
     }
 
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        //键值为区间和和这个区间和出现的次数
+        TreeMap<Long, Integer> tree = new TreeMap<>();
+        tree.put(0L, 1);
+
+        int count = 0;
+        long sum = 0L;
+        for (int num : nums) {
+            sum += num;
+            //subMap()返回一个值在sum - upper 和sum - lower 之间的子集合，values()方法获得这个映射的值得视图
+            for (int cnt : tree.subMap(sum - upper, true, sum - lower, true).values()) {
+                count += cnt; //统计满足条件的区间和个数
+            }
+            tree.put(sum, tree.getOrDefault(sum, 0) + 1);
+        }
+        return count;
+    }
+
+    /*
+    作者：wdw87
+    链接：https://leetcode-cn.com/problems/count-of-range-sum/solution/treemap-onlognfang-fa-by-wdw87/
+    来源：力扣（LeetCode）
+    著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     */
+
 
     @Test
     public void test() {
-        int arr[] = {-2, 5, -1};
+        int[] arr = {-2, 5, -1};
         int L = -2;
         int R = 2;
 

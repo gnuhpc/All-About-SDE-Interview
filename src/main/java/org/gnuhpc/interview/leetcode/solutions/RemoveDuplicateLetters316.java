@@ -2,9 +2,7 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright gnuhpc 19-8-12
@@ -23,57 +21,53 @@ public class RemoveDuplicateLetters316 {
         int minPos = 0;
 
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) < s.charAt(minPos)) minPos = i; //找到字典序更小的就更新
-            //如果都用完了某个字母，则这个就是当前最小的开头
-            if (--map[s.charAt(i) - 'a'] == 0) break;
+            if (strArr[i] < strArr[minPos]) minPos = i; //找到字典序更小的就更新
+            //如果都用完了某个字母，则这个就是当前最小的开头, 因为再往后有些字母就没有了
+            if (--map[strArr[i] - 'a'] == 0) break;
         }
 
         //递归进行，需要把这个已经列入结果的字母去掉
-        return s.charAt(minPos) + removeDuplicateLetters(
+        return strArr[minPos] + removeDuplicateLetters(
                 s.substring(minPos + 1).replace(
-                        "" + s.charAt(minPos),
+                        "" + strArr[minPos],
                         ""
                 ));
     }
 
+
     /*
-    Method2 : 非递归， 发现不对再删除
-    https://www.youtube.com/watch?v=SrlvMmfG8sA
+    Method2: 单调栈
      */
     public String removeDuplicateLetters2(String s) {
-        if (s == null || s.length() == 0) {
-            return "";
+        Map<Character, Integer> count = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            count.put(c, count.getOrDefault(c, 0) + 1);
         }
-        int[] res = new int[26];
-        boolean[] visited = new boolean[26];
-        char[] ch = s.toCharArray();
-        for (char c : ch) {
-            res[c - 'a']++;
-        }
-        StringBuilder sb = new StringBuilder();
-        int idx;
-        for (char c : ch) {
-            idx = c - 'a';
-            res[idx]--;
-            if (visited[idx]) {
-                continue;
+        Deque<Character> stack = new LinkedList<>();
+        Set<Character> seen = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!seen.contains(c)) {
+                while (!stack.isEmpty() && stack.getLast() > c && count.get(stack.getLast()) > 0) {
+                    seen.remove(stack.removeLast());
+                }
+                stack.addLast(c);
+                seen.add(c);
             }
-
-            while (sb.length() > 0 && c < sb.charAt(sb.length() - 1) && res[sb.charAt(sb.length() - 1) - 'a'] > 0) {
-                visited[sb.charAt(sb.length() - 1) - 'a'] = false;
-                sb.deleteCharAt(sb.length() - 1);
-            }
-            sb.append(c);
-            visited[idx] = true;
+            count.put(c, count.get(c) - 1);
         }
-        return sb.toString();
+        StringBuilder res = new StringBuilder();
+        while (!stack.isEmpty()) {
+            res.append(stack.removeFirst());
+        }
+        return res.toString();
     }
-
 
     @Test
     public void test() {
-//        System.out.println(removeDuplicateLetters("cbacdcbc"));
+        System.out.println(removeDuplicateLetters("cbacdcbc"));
 //        System.out.println(removeDuplicateLetters("baab"));
-        System.out.println(removeDuplicateLetters("bbcaac"));
+//      System.out.println(removeDuplicateLetters("bbcaac"));
     }
 }

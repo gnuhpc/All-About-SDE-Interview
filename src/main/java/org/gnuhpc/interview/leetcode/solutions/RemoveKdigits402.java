@@ -17,9 +17,10 @@ public class RemoveKdigits402 {
          **/
         int n = num.length();
         if (k == num.length()) return "0";
+        char[] arr = num.toCharArray();
         Deque<Character> st = new LinkedList<>();
         for (int i = 0; i < n; ++i) {
-            char ch = num.charAt(i);
+            char ch = arr[i];
             while (!st.isEmpty() && st.peek() > ch && k > 0) {
                 st.pop();
                 k--;

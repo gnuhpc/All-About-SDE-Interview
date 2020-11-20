@@ -6,36 +6,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SubtreeWithAllDeepest865 {
-    Map<TreeNode, Integer> depth;
-    int max_depth;
-
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
-        depth = new HashMap();
-        depth.put(null, -1);
-        dfs(root, null);
-        max_depth = -1;
-        for (Integer d : depth.values())
-            max_depth = Math.max(max_depth, d);
-
-        return answer(root);
-    }
-
-    public void dfs(TreeNode node, TreeNode parent) {
-        if (node != null) {
-            depth.put(node, depth.get(parent) + 1);
-            dfs(node.left, node);
-            dfs(node.right, node);
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        if(root==null)
+            return null;
+        int ld=depth(root.left);
+        int rd=depth(root.right);
+        if(ld==rd){
+            return root;
+        }
+        else if(ld>rd){
+            return lcaDeepestLeaves(root.left);
+        }
+        else {
+            return lcaDeepestLeaves(root.right);
         }
     }
-
-    public TreeNode answer(TreeNode node) {
-        if (node == null || depth.get(node) == max_depth)
-            return node;
-        TreeNode L = answer(node.left),
-                R = answer(node.right);
-        if (L != null && R != null) return node;
-        if (L != null) return L;
-        if (R != null) return R;
-        return null;
+    public int depth(TreeNode node){
+        if(node==null)
+            return 0;
+        int left=depth(node.right);
+        int right=depth(node.left);
+        return Math.max(left,right)+1;
     }
+
+    /*
+        链接：https://leetcode-cn.com/problems/lowest-common-ancestor-of-deepest-leaves/solution/dfsjian-dan-jie-ti-si-lu-yi-kan-jiu-dong-by-xiaora/
+     */
+
+
 }

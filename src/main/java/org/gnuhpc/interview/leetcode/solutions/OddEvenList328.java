@@ -4,43 +4,33 @@ import org.gnuhpc.interview.datastructure.linkedlist.basicimpl.ListNode;
 import org.junit.Test;
 
 public class OddEvenList328 {
+
     public ListNode oddEvenList(ListNode head) {
-        if (head == null || head.next == null) {
+        if (head==null || head.next ==null){
             return head;
         }
-
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-
-        ListNode dummy1 = new ListNode(0);
-        ListNode dummy2 = new ListNode(0);
-
-        ListNode cur1 = dummy1;
-        ListNode cur2 = dummy2;
-        ListNode cur = dummy;
-
+        // 分别定义奇偶链表的 虚拟头结点 和 尾结点
+        ListNode oddHead = new ListNode();
+        ListNode oddTail = oddHead;
+        ListNode evenHead = new ListNode();
+        ListNode evenTail = evenHead;
+        // 遍历原链表，根据 isOdd 标识位决定将当前结点插入到奇链表还是偶链表（尾插法）
         boolean isOdd = true;
-        while (cur != null) {
+        while (head != null) {
             if (isOdd) {
-                cur1.next = cur.next;
-                if (cur1.next != null) {
-                    cur1 = cur1.next;
-                }
+                oddTail.next = head;
+                oddTail = oddTail.next;
             } else {
-                cur2.next = cur.next;
-                if (cur2.next != null) {
-                    cur2 = cur2.next;
-                }
+                evenTail.next = head;
+                evenTail = evenTail.next;
             }
-
-            cur = cur.next;
+            head = head.next;
             isOdd = !isOdd;
         }
-
-        cur1.next = dummy2.next;
-        cur2.next = null;
-
-        return dummy1.next;
+        // 将奇链表后面拼接上偶链表，并将偶链表的next设置为null
+        oddTail.next = evenHead.next;
+        evenTail.next = null;
+        return oddHead.next;
     }
 
     @Test

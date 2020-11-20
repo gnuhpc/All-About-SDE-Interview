@@ -4,38 +4,24 @@ import org.junit.Test;
 
 public class CanCompleteCircuit134 {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int sumGas = 0;
-        int sumCost = 0;
-        int n = gas.length;
-
-        //情况1： 如果gas的总和就小于cost，那就洗洗睡
-        for (int i = 0; i < n; i++) {
-            sumGas += gas[i];
-            sumCost += cost[i];
-        }
-
-        if (sumCost > sumGas) return -1;
-
-        //情况2： 如果gas的总和大于cost，那就遍历数组
-        int start = -1;
-        for (int i = 0; i < n; i++) {
-            if (gas[i] >= cost[i]) {
-                start = i;
-                int j = 0;
-                int left = 0;
-                for (; j < n; j++) {
-                    left += gas[(j + start) % n] - cost[(j + start) % n];
-                    if (left < 0) {
-                        break;
-                    }
-                }
-
-                if (j == n) return start;
+        int ans = 0;
+        int cost1 = 0;//当前花费
+        int canComplete = 0;//记录能否完成一周
+        for(int i = 0; i < gas.length; i++){
+            int costInner = gas[i] - cost[i];
+            canComplete += costInner;
+            cost1 += costInner;
+            if(cost1 < 0){
+                cost1 = 0;
+                ans = i + 1;//如果当前加油站花费比实际汽油多则需要从下一个加油站出发
             }
         }
-
-        return -1;
+        if(canComplete >= 0){//如果总花费不超过总汽油资源则能完成一圈，ans也满足条件
+            return ans;
+        }
+        return -1;//否则不能完成一圈
     }
+
 
     @Test
     public void test() {

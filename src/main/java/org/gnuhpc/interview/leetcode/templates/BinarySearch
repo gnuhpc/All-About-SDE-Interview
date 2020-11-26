@@ -1,16 +1,33 @@
 二分搜索
 
-熟练掌握四大要点，明白三大判断条件
+首先要确定二分的范围
 
-            if (target == nums[mid]) {
-                end = mid; //往前找
-                //If you'd like to fetch the last idx of the target, use the following statement instead:
-//                start = mid; //往后找
-            } else if (target > nums[mid]) {
-                start = mid;
-            } else {
-                end = mid;
-            }
+// 二分法四要素
+
+start + 1 < end
+start + (end - start) / 2
+Sample[mid] ==, <, >
+Sample[start] Sample[end] ? target
+
+比O(n)更优的时间复杂度
+几乎只能是O(logn)的二分法
+经验之谈：根据时间复杂度倒推算法是面试中的常用策略
+
+
+两类二分，三个境界
+• 二分位置Binary search on index
+    • OOXX
+    • Half half
+• 二分答案Binary search on result
+
+在实战中注意学会使用Arrays.binarySearch(array, num);
+
+如果查找的值包含在数组中，返回搜索的第一个值的下标；
+如果查找的值不在数组中，返回（-插入点-1）；插入点即为第一个大于此查找值的元素下标
+插入点 为将该值插入数组的那一点：即第一个大于此键的元素下标，如果数组中的所有元素都小于指定的值，则为 arr.length
+
+记住一点，如果是负数，+1取反即得到插入点的idx
+
 
 面试中也可以写递归方法,向左找向右找可以参看LC 1011这道题
 

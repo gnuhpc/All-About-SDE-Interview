@@ -49,4 +49,81 @@ public class SortList148 {
         }
         return head;
     }
+
+    /*
+    Method2: Quicksort (change value)
+     */
+
+    public ListNode sortList2(ListNode head) {
+        quickSort(head, null);
+        return head;
+    }
+
+    void quickSort(ListNode head, ListNode tail) {
+        if (head == tail || head.next == tail) return;
+        int pivot = head.val;
+        ListNode left = head, cur = head.next;
+
+        while (cur != tail) {
+            if (cur.val < pivot) {
+                left = left.next;
+                swap(left, cur);
+            }
+            cur = cur.next;
+        }
+        swap(head, left);
+        quickSort(head, left);
+        quickSort(left.next, tail);
+    }
+
+    private void swap(ListNode n1, ListNode n2) {
+        int tmp = n1.val;
+        n1.val = n2.val;
+        n2.val = tmp;
+    }
+
+    /*
+    Method3: Quicksort without exchange value LTE
+     */
+
+    public ListNode sortList3(ListNode head) {
+        return quickSort(head);
+    }
+
+    ListNode quickSort(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        int pivot = head.val;
+        // 链表划分
+        ListNode ls = new ListNode(-1), rs = new ListNode(-1);
+        ListNode l = ls, r = rs, cur = head;
+
+        while (cur != null) {
+            if (cur.val < pivot) {
+                l.next = cur;
+                l = l.next;
+            } else {
+                r.next = cur;
+                r = r.next;
+            }
+            cur = cur.next;
+        }
+        l.next = rs.next;
+        r.next = null;
+
+        // 递归调用,先重排右边的,再把指针置空,再重排左边的
+        // 和归并排序很像的
+        ListNode right = quickSort(head.next);
+        head.next = null;
+        ListNode left = quickSort(ls.next);
+
+        // 拼接左半部分和右半部分
+        cur = left;
+        while (cur.next != null) {
+            cur = cur.next;
+        }
+        cur.next = right;
+        return left;
+
+    }
 }

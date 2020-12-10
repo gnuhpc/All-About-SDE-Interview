@@ -57,7 +57,7 @@ public class SplitIntoFibonacci842 {
 
 
     //Back tracking
-    public List<Integer> splitIntoFibonacci3(String S) {
+    public List<Integer> splitIntoFibonacci2(String S) {
         List<Integer> ans = new ArrayList<>();
         helper(S, ans, 0);
         return ans;
@@ -92,56 +92,8 @@ public class SplitIntoFibonacci842 {
         return false;
     }
 
-    //Brutal force , find all
-    private List<Integer> find2(int a, int b, String s) {
-        List<Integer> res = new ArrayList<>();
-        res.add(a);
-        res.add(b);
-        long c = a + b;
-        if (c > Integer.MAX_VALUE) return res;
-        int cnt;
-        while (s.length() > 0) {
-            if (c > Integer.MAX_VALUE) continue;
-            cnt = Integer.toString((int) c).length();
-
-            if (s.startsWith(Integer.toString((int) c))) {
-                res.add((int) c);
-                s = s.substring(cnt);
-            } else {
-                return new ArrayList<>();
-            }
-            a = b;
-            b = (int) c;
-            c = a + b;
-        }
-        return res;
-    }
-
-    public List<Integer> splitIntoFibonacci2(String S) {
-        List<List<Integer>> resultList = new ArrayList<>();
-        for (int i = 1; i < (S.length() + 1) / 2 + 1; i++) {
-            String sa = S.substring(0, i);
-            if (sa.length() > 1 && sa.charAt(0) == '0') break;
-            Long a = Long.valueOf(sa);
-            if (a > Integer.MAX_VALUE) break;
-            for (int j = 1; j + i < S.length(); j++) {
-                String sb = S.substring(i, i + j);
-                if (sb.length() > 1 && sb.charAt(0) == '0') break;
-                Long b = Long.valueOf(sb);
-                if (b > Integer.MAX_VALUE) break;
-                if ((a == 0 && sa.length() > 1) || (b == 0 && sb.length() > 1)) continue;
-                List<Integer> temp = find2(a.intValue(), b.intValue(), S.substring(i + j));
-                if (!temp.isEmpty()) resultList.add(temp);
-            }
-        }
-        if (resultList.size() > 0)
-            return resultList.get(0);
-        else
-            return new ArrayList<>();
-    }
-
     @Test
     public void test() {
-        System.out.println(splitIntoFibonacci2("0123"));
+        System.out.println(splitIntoFibonacci("0123"));
     }
 }

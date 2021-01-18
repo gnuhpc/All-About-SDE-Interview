@@ -57,6 +57,6 @@ if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) { continue; }
 
     @Test
     public void test() {
-        permuteUnique(new int[]{1, 1, 2, 3});
+        permuteUnique(new int[]{1, 1, 2});
     }
 }

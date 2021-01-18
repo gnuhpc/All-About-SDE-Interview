@@ -10,21 +10,33 @@ n为根节点，当1为根节点时，其左子树节点个数为0，右子树�
 所以可得G(n) = G(0)*G(n-1)+G(1)*(n-2)+...+G(n-1)*G(0)
  */
 public class NumTrees96 {
+    int[][] memo;
+
     public int numTrees(int n) {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
-        map.put(1, 1);
-        return numTrees(n, map);
+
+        if(n <= 0)
+            return 0;
+
+        memo  = new int[n+2][n+2];//为什么加2是因为按照从0开始的原则首先要加1，然后index+1还可能越界就再加1
+        return numTrees(1, n);
     }
 
-    private int numTrees(int n, Map<Integer, Integer> map) {
-        // check memory
-        if (map.containsKey(n)) return map.get(n);
-        // recursion
-        int sum = 0;
-        for (int i = 1; i <= n; i++)
-            sum += numTrees(i - 1, map) * numTrees(n - i, map);
-        map.put(n, sum);
-        return sum;
+    private int numTrees(int start, int end){
+        if(memo[start][end]!=0) return memo[start][end];
+        if(start >= end){
+            memo[start][end] = 1;
+            return 1;
+        }
+
+        int result = 0;
+        for(int index = start; index <= end; index++){
+            int numLeftTrees = numTrees(start, index - 1);
+            int numRightTrees = numTrees(index + 1, end);
+            result += numLeftTrees * numRightTrees;
+        }
+
+        memo[start][end] = result;
+        return result;
     }
+
 }

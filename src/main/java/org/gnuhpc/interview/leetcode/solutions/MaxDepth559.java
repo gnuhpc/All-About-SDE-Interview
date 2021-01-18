@@ -6,6 +6,24 @@ import java.util.*;
  * Copyright gnuhpc 2020/3/4
  */
 public class MaxDepth559 {
+    class Node {
+        public int val;
+        public List<Node> children;
+
+        public Node() {
+        }
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, List<Node> _children) {
+            val = _val;
+            children = _children;
+        }
+    }
+
+    ;
 
     /*
     Method1: 全局变量递归
@@ -27,21 +45,20 @@ public class MaxDepth559 {
     }
 
     /*
-    Method2:
+    Method2: 通过返回值迭代
      */
 
     public int maxDepth2(Node root) {
-        if (root == null) {
-            return 0;
-        } else if (root.children.isEmpty()) {
-            return 1;
-        } else {
-            List<Integer> heights = new LinkedList<>();
-            for (Node item : root.children) {
-                heights.add(maxDepth2(item));
-            }
-            return Collections.max(heights) + 1;
+        if (root == null) return 0;
+        List<Node> children = root.children;
+        int max = 0;
+
+        for (Node child : children) {
+            int d = maxDepth2(child);
+            if (d > max) max = d;
         }
+
+        return 1 + max;
     }
 
 }

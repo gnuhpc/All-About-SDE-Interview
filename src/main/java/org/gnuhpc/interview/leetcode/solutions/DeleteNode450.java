@@ -31,4 +31,27 @@ public class DeleteNode450 {
         return node;
     }
 
+    public TreeNode deleteNode2(TreeNode root, int key) {
+        if (root == null) return null;
+
+        if (root.val == key) {
+            //System.out.println("root.val"+root.val);
+            // 处理删除逻辑
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            TreeNode cur = getMin(root.right);
+            cur.right = deleteNode(root.right, cur.val);
+            cur.left = root.left;
+//            root.left = root.right = null;
+            return cur;
+        }
+
+        root.left = deleteNode(root.left, key);
+        root.right = deleteNode(root.right, key);
+
+        return root;
+
+    }
+
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 
 public class Preorder589 {
-
     class Node {
         public int val;
         public List<Node> children;
@@ -23,6 +22,7 @@ public class Preorder589 {
             children = _children;
         }
     }
+
     public List<Integer> preorder(Node root) {
         List<Integer> res = new LinkedList<>();
         dfs(root, res);

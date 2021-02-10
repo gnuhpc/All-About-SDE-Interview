@@ -2,63 +2,54 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * Copyright gnuhpc 19-8-5
  */
 public class MedianFinder295 {
-    Queue<Integer> low;
-    Queue<Integer> high;
+    private PriorityQueue<Integer> small;
+    private PriorityQueue<Integer> large;
+    private boolean even;
 
     public MedianFinder295() {
-        low = new PriorityQueue<>(Comparator.reverseOrder());
-        high = new PriorityQueue<>();
+        small = new PriorityQueue<>(Collections.reverseOrder());
+        large = new PriorityQueue<>();
+        even = true;
     }
-
-    public void addNum(int num) {
-        if ((low.size() == 0) && (high.size() == 0)) low.add(num);
-        else if (low.size() > high.size()) {
-            if (num < low.peek()) {
-                high.add(low.poll());
-                low.add(num);
-            } else high.add(num);
-        } else if (low.size() < high.size()) {
-            if (num > high.peek()) {
-                low.add(high.poll());
-                high.add(num);
-            } else low.add(num);
-        } else {
-            if (num > high.peek()) {
-                high.offer(num);
-            } else {
-                low.offer(num);
-            }
-        }
-    }
-
 
     public double findMedian() {
-        if (low.size() == 0 && high.size() == 0) return 0.0;
+        if (even)
+            return (small.peek() + large.peek()) / 2.0;
+        else
+            return small.peek();
+    }
 
-        if (low.size() == high.size()) {
-            return ((double) high.peek() + (double) low.peek()) / 2.0;
+    public void addNum(int num) {//可以想象成两个heap队列将头部数据顶给对方
+        if (even) {
+            large.offer(num);
+            small.offer(large.poll());
+        } else {
+            small.offer(num);
+            large.offer(small.poll());
         }
-
-        return (low.size() > high.size() ? low.peek() : high.peek());
+        even = !even;
     }
 
     @Test
     public void test() {
-        addNum(-1);
+        addNum(1);
+        System.out.println(findMedian());
+        addNum(3);
         System.out.println(findMedian());
         addNum(-2);
         System.out.println(findMedian());
-        addNum(-3);
+        addNum(1);
         System.out.println(findMedian());
-        addNum(-4);
-        System.out.println(findMedian());
-        addNum(-5);
+        addNum(5);
         System.out.println(findMedian());
     }
 }

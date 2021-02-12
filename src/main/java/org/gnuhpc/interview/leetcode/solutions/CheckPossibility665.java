@@ -4,16 +4,21 @@ import org.junit.Test;
 
 public class CheckPossibility665 {
     public boolean checkPossibility(int[] nums) {
-        int count = 0;
-        for (int i = 0; i < nums.length - 1; i++)
-            if (nums[i] > nums[i + 1]) {
-                if (count > 0)  //分别出现多次直接返回false
+        int n = nums.length;
+        if (n <= 1) return true;
+        int down = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < nums[i - 1]) {
+                down++;
+                if (down > 1) {
                     return false;
-                if (i - 1 >= 0 && i + 2 < nums.length && // 出现在不是开头，且出现w型
-                        (nums[i] > nums[i + 2] && nums[i - 1] > nums[i + 1]))
+                }
+                //V型
+                if (i > 1 && i < n - 1 && nums[i - 1] > nums[i + 1] && nums[i - 2] > nums[i]) {
                     return false;
-                count++;
+                }
             }
+        }
         return true;
 
     }

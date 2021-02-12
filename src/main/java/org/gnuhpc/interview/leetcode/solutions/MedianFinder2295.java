@@ -1,55 +1,35 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.junit.Test;
-
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
-/**
- * Copyright gnuhpc 19-8-5
- */
 public class MedianFinder2295 {
-    private PriorityQueue<Integer> small;
-    private PriorityQueue<Integer> large;
-    private boolean even;
+    PriorityQueue<Integer> minHeap = null;
+    PriorityQueue<Integer> maxHeap = null;
 
+    /**
+     * initialize your data structure here.
+     */
     public MedianFinder2295() {
-        small = new PriorityQueue<>(Collections.reverseOrder());
-        large = new PriorityQueue<>();
-        even = true;
+        minHeap = new PriorityQueue<>();
+        maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+    }
+
+    public void addNum(int num) {
+        minHeap.offer(num);
+        maxHeap.offer(minHeap.poll());
+
+        if (minHeap.size() < maxHeap.size()) {
+            minHeap.offer(maxHeap.poll());
+        }
     }
 
     public double findMedian() {
-        if (even)
-            return (small.peek() + large.peek()) / 2.0;
-        else
-            return small.peek();
-    }
-
-    public void addNum(int num) {//可以想象成两个heap队列将头部数据顶给对方
-        if (even) {
-            large.offer(num);
-            small.offer(large.poll());
+        if (minHeap.size() > maxHeap.size()) {
+            return minHeap.peek();
         } else {
-            small.offer(num);
-            large.offer(small.poll());
+            return (minHeap.peek() + maxHeap.peek()) / 2.0;
         }
-        even = !even;
     }
 
-    @Test
-    public void test() {
-        addNum(1);
-        System.out.println(findMedian());
-        addNum(3);
-        System.out.println(findMedian());
-        addNum(-2);
-        System.out.println(findMedian());
-        addNum(1);
-        System.out.println(findMedian());
-        addNum(5);
-        System.out.println(findMedian());
-    }
 }

@@ -1,35 +1,72 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
+//TODO 总结这种计数二叉树 295/10.10/480
 public class MedianFinder4295 {
-    PriorityQueue<Integer> minHeap = null;
-    PriorityQueue<Integer> maxHeap = null;
+    private class TreeNode {
+        int val;
+        int size;
+        TreeNode left;
+        TreeNode right;
 
-    /**
-     * initialize your data structure here.
-     */
+        TreeNode(int val) {
+            this.val = val;
+            this.size = 1;
+        }
+    }
+
+    private TreeNode root;
+
+    /** initialize your data structure here. */
     public MedianFinder4295() {
-        minHeap = new PriorityQueue<>();
-        maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+
     }
 
     public void addNum(int num) {
-        minHeap.offer(num);
-        maxHeap.offer(minHeap.poll());
-
-        if (minHeap.size() < maxHeap.size()) {
-            minHeap.offer(maxHeap.poll());
+        if (this.root == null) {
+            root = new TreeNode(num);
+        } else {
+            this.addNum(num, this.root);
         }
+    }
+
+    private void addNum(int num, TreeNode node) {
+        if (node.val >= num) {
+            if (node.left == null) {
+                node.left = new TreeNode(num);
+            } else {
+                addNum(num, node.left);
+            }
+        } else {
+            if (node.right == null) {
+                node.right = new TreeNode(num);
+            } else {
+                addNum(num, node.right);
+            }
+        }
+        node.size++;
     }
 
     public double findMedian() {
-        if (minHeap.size() > maxHeap.size()) {
-            return minHeap.peek();
+        if (this.root.size % 2 == 1) {
+            return search(this.root.size / 2 + 1, this.root);
         } else {
-            return (minHeap.peek() + maxHeap.peek()) / 2.0;
+            int left = search(this.root.size / 2, this.root);
+            int right = search(this.root.size / 2 + 1, this.root);
+            return (left + right) / 2.0;
         }
     }
 
+    public int search(int index, TreeNode node) {
+        if (node.size == 1) {
+            return node.val;
+        }
+        int leftSize = node.left != null ? node.left.size : 0;
+        if (leftSize >= index) {
+            return search(index, node.left);
+        } else if (leftSize + 1 == index) {
+            return node.val;
+        } else {
+            return search(index - leftSize - 1, node.right);
+        }
+    }
 }

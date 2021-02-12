@@ -9,24 +9,25 @@ public class KthSmallest230 {
     /*
     Method 1: 递归 公共变量计数
      */
-    int count = 1;
-    int result = Integer.MAX_VALUE;
+
+    private int res;
+    private int count;
 
     public int kthSmallest(TreeNode root, int k) {
-        traverse(root, k);
-        return result;
+        if (root == null) return -1;
+        if (count == k) return res;
+
+        kthSmallest(root.left, k);
+        count++;
+        if (count == k) {
+            res = root.val;
+            return res;
+        }
+        kthSmallest(root.right, k);
+
+        return res;
     }
 
-    /*
-    进入一次就记录一次的数据，也就是在遍历中计数
-     */
-    public void traverse(TreeNode root, int k) {
-        if (root == null) return;
-        traverse(root.left, k);
-        if (count == k) result = root.val;
-        count++;
-        traverse(root.right, k);
-    }
 
     /*
     Method2: 非递归计数 InOrder Traversal

@@ -35,4 +35,37 @@ public class FindMaxAverage643 {
         }
         return currMaxSum * 1.0 / k;
     }
+
+    public double findMaxAverage3(int[] nums, int k) {
+        double max = 0;
+        double sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (i == k - 1) {
+                max = sum / k;
+            } else if (i >= k) {
+                sum -= nums[i - k];
+                max = Math.max(max, sum / k);
+            }
+        }
+        return max;
+    }
+
+    /*
+    Method3: 前缀和
+     */
+    public double findMaxAverage4(int[] nums, int k) {
+        int[] presum = new int[nums.length + 1];
+        for (int i = 0; i < nums.length; i++) {
+            presum[i + 1] = presum[i] + nums[i];
+        }
+        if (k >= nums.length) return 1.0 * presum[nums.length] / k;
+
+        int max = Integer.MIN_VALUE;
+        for (int j = 0; j + k <= nums.length; j++) {
+            max = Math.max(max, presum[j + k] - presum[j]);
+        }
+
+        return max * 1.0 / k;
+    }
 }

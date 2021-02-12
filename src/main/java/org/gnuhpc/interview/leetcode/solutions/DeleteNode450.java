@@ -3,6 +3,9 @@ package org.gnuhpc.interview.leetcode.solutions;
 import org.gnuhpc.interview.datastructure.tree.basicimpl.TreeNode;
 
 public class DeleteNode450 {
+    /*
+    一旦涉及「改」，函数就要返回TreeNode类型，并且对递归调用的返回值进行接收。 TODO
+     */
     TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) return null;
         if (root.val == key) {

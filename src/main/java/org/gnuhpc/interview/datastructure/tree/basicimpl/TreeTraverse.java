@@ -222,6 +222,7 @@ public class TreeTraverse {
     @Test
     public void testTraverse() {
         TreeNode root = TreeCreator.createTreeByLevel(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        root.print();
         System.out.println("Preorder");
         TreeTraverse.preorder(root).forEach(i -> System.out.printf("%s,", i));
         System.out.println();

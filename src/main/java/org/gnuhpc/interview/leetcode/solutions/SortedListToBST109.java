@@ -29,6 +29,9 @@ public class SortedListToBST109 {
         return treeNode;
     }
 
+    /*
+    Method2: 中序遍历，注意对这个返回值的理解，想象一下从左中右构造的过程。
+     */
     public TreeNode sortedListToBST2(ListNode head) {
         return buildAVLHelper(head, 0, lengthOfList(head) - 1);
     }

@@ -7,6 +7,16 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class InvertTree226 {
+    public TreeNode invertTree0(TreeNode root) {
+        if (root == null) return null;
+        TreeNode tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+
     public TreeNode invertTree(TreeNode root) {
 
         if (root == null || (root.left == null && root.right == null)) return root;

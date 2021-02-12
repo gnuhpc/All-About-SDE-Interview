@@ -1,5 +1,6 @@
 package org.gnuhpc.interview.datastructure.tree.basicimpl;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,5 +48,17 @@ public class TreeNode {
         if (element < node.val) node.left = insert(node.left, element);
         else node.right = insert(node.right, element);
         return node;
+    }
+
+    public void print() {
+        print("|", this, false);
+    }
+
+    private void print(String prefix, TreeNode node, boolean isLeft) {
+        if (node != null) {
+            System.out.println(prefix + (isLeft ? "|-- " : "\\-- ") + node.val);
+            print(prefix + (isLeft ? "|   " : "    "), node.right, true);
+            print(prefix + (isLeft ? "|   " : "    "), node.left, false);
+        }
     }
 }

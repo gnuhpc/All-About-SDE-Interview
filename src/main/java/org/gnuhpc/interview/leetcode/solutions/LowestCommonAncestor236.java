@@ -55,7 +55,7 @@ public class LowestCommonAncestor236 {
     Method2 : 递归方法
 
      */
-    public TreeNode lowestCommonAncestorRecursive(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
         /*
         如果root是null，则说明我们已经找到最底了，返回null表示没找到
         如果root与p相等或者与q相等，则返回root
@@ -65,8 +65,8 @@ public class LowestCommonAncestor236 {
         if (root == null || root == p || root == q)
             return root;
 
-        TreeNode leftNode = lowestCommonAncestor(root.left, p, q);
-        TreeNode rightNode = lowestCommonAncestor(root.right, p, q);
+        TreeNode leftNode = lowestCommonAncestor2(root.left, p, q);
+        TreeNode rightNode = lowestCommonAncestor2(root.right, p, q);
 
         if (leftNode == null)
             return rightNode;
@@ -74,31 +74,6 @@ public class LowestCommonAncestor236 {
             return leftNode;
 
         return root;
-    }
-
-    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == p) return p;
-        if(root == q) return q;
-
-        int pPos = getBranch(root, p);
-        int qPos = getBranch(root, q);
-        if(pPos == qPos) {
-            if(qPos == 1) return lowestCommonAncestor2(root.right, p, q);
-            else return lowestCommonAncestor2(root.left, p, q);
-        } else {
-            return root;
-        }
-    }
-
-    private int getBranch(TreeNode root, TreeNode n){
-        if(isFound(root.left,n)) return 0;
-        else return 1;
-    }
-
-    private boolean isFound(TreeNode root, TreeNode n){
-        if(root == null) return false;
-        if(root == n) return true;
-        return isFound(root.left, n) || isFound(root.right, n);
     }
 
     /*

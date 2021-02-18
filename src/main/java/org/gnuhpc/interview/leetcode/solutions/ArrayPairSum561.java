@@ -11,6 +11,5 @@ public class ArrayPairSum561 {
 
         }
         return sum;
-
     }
 }

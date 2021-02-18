@@ -3,25 +3,25 @@ package org.gnuhpc.interview.leetcode.solutions;
 import java.util.HashMap;
 import java.util.Map;
 
-class RandomListNode {
-    int label;
-    RandomListNode next, random;
+class Node {
+    int val;
+    Node next, random;
 
-    RandomListNode(int x) {
-        this.label = x;
+    Node(int x) {
+        this.val = x;
     }
-};
+}
 
 public class CopyRandomList138 {
-    public RandomListNode copyRandomList(RandomListNode head) {
+    public Node copyRandomList(Node head) {
         if (head == null) return null;
 
-        Map<RandomListNode, RandomListNode> map = new HashMap();
+        Map<Node, Node> map = new HashMap();
 
         // loop 1. copy all the nodes
-        RandomListNode node = head;
+        Node node = head;
         while (node != null) {
-            map.put(node, new RandomListNode(node.label));
+            map.put(node, new Node(node.val));
             node = node.next;
         }
 
@@ -36,4 +36,5 @@ public class CopyRandomList138 {
         return map.get(head);
 
     }
+
 }

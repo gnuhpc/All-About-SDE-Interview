@@ -12,6 +12,7 @@ public class MaxChunksToSorted768 {
     // Testcase: 2,4,5,3,1
     //一个块的最大值不会超过块后边紧跟着的数, 用单调栈记录每个块的最大值即可，有几个区块最大值就有几个
     //单调递减栈，769通解
+    //https://leetcode-cn.com/problems/max-chunks-to-make-sorted-ii/solution/leetcode-768-wo-gan-jio-jiang-de-ying-gai-xiang-xi/
     public int maxChunksToSorted(int[] arr) {
         Deque<Integer> s = new LinkedList<>();
 

@@ -1,5 +1,8 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Copyright gnuhpc 2020/8/21
  */
@@ -48,4 +51,56 @@ public class UpdateBoard529 {
             dfs(board, x, y);
         }
     }
+
+    /*
+    Method2: BFS
+     */
+    private final int[][] direction = new int[][]{{0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}, {1, 0}, {-1, 0}};
+    private int m, n;
+
+    public char[][] updateBoard2(char[][] board, int[] click) {
+        m = board.length;
+        n = board[0].length;
+        char c = board[click[0]][click[1]];
+        if (c == 'M') {
+            board[click[0]][click[1]] = 'X';
+            return board;
+        }
+        bfs(click[0], click[1], board);
+        return board;
+    }
+
+    public void check(int x, int y, char[][] board) {
+        int count = 0;
+        for (int[] dir : direction) {
+            int newx = x + dir[0];
+            int newy = y + dir[1];
+            if (newx < 0 || newx >= m || newy < 0 || newy >= n) continue;
+            if (board[newx][newy] == 'M') ++count;
+        }
+        if (count == 0) board[x][y] = 'B';
+        else board[x][y] = (char) (count + '0');
+    }
+
+    public void bfs(int x, int y, char[][] board) {
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[m][n];
+        visited[x][y] = true;
+        queue.offer(new int[]{x, y});
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            check(pos[0], pos[1], board);
+            if (board[pos[0]][pos[1]] == 'B') {
+                for (int[] dir : direction) {
+                    int newx = pos[0] + dir[0];
+                    int newy = pos[1] + dir[1];
+                    if (newx < 0 || newx >= m || newy < 0 || newy >= n || board[newx][newy] != 'E' || visited[newx][newy])
+                        continue;
+                    queue.offer(new int[]{newx, newy});
+                    visited[newx][newy] = true;
+                }
+            }
+        }
+    }
+
 }

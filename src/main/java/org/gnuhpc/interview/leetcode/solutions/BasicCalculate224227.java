@@ -162,6 +162,62 @@ public class BasicCalculate224227 {
         return pre + sign * curr;
     }
 
+    public int calculate2272(String s) {
+        //字符串转数组。
+        char[] a = s.toCharArray();
+        //创建栈
+        Stack<Integer> stack = new Stack<>();
+        // n 为数组长度， num 为每次要进栈的元素， b 为判断要进栈元素的+-*/。
+        int n = a.length;
+        int num = 0;
+        int b = 1;
+        //常规循环，遍历数组
+        for (int i = 0, j = 0; i < n; i++) {
+            if (a[i] == '+') {
+                // b 赋值为正。
+                b = 1;
+            } else if (a[i] == '-') {
+                //b 赋值为负。
+                b = -1;
+            } else if (a[i] == ' ') {
+                //啥也不执行
+            } else if (a[i] == '*') {
+                // b 赋值 2 ，标识*法。
+                b = 2;
+            } else if (a[i] == '/') {
+                // b 赋值 3 ，标识/法。
+                b = 3;
+            } else {
+                //转换为相应的十进制数。
+                while (i < n && Character.isDigit(a[i])) {
+                    num = num * 10 + a[i] - '0';
+                    i++;
+                }
+                //这个i-1操作，是防止指针跳跃，溢出。
+                i--;
+                //判断进行什么操作
+                if (b == 2) {
+                    //进行乘法，下个数字与栈顶元素相乘，覆盖栈顶。
+                    stack.push(stack.pop() * num);
+                } else if (b == 3) {
+                    //进行除法，下个数字与栈顶元素相除，覆盖栈顶。
+                    stack.push(stack.pop() / num);
+                } else {
+                    //赋值正负。
+                    stack.push(num * b);
+                }
+                //重新置0。
+                num = 0;
+            }
+        }
+        //出栈累加，得到答案。
+        int sum = 0;
+        while (!stack.isEmpty()) {
+            sum += stack.pop();
+        }
+        return sum;
+    }
+
     /*
 
     Only 5 possible input we need to pay attention:
@@ -210,10 +266,39 @@ Finally if there is only one number, from the above solution, we haven't add the
         return result;
     }
 
+    public int calculate2241(String s) {
+        int[] index = new int[1];
+        return helper(s, index);
+    }
+    private int helper(String s, int[] index) {
+        int res = 0;
+        int num = 0;
+        int sign = 1;
+        while (index[0] < s.length()) {
+            char c = s.charAt(index[0]);
+            if (c >= '0' && c <= '9') {
+                num = num * 10 + (c - '0');
+            } else if (c == '+' || c == '-') {
+                res += sign * num;
+                num = 0;
+                sign = c == '+' ? 1 : -1;
+            } else if (c == '(') {
+                index[0]++;
+                res += sign * helper(s, index);
+                sign = 1;
+            } else if (c == ')') {
+                res += sign * num;
+                return res;
+            }
+            index[0]++;
+        }
+        return res + sign * num;
+    }
+
     @Test
     public void test() {
 //        calculate("(21+1)*2-5");
 //        calculate2("(21+1)*2-5");
-        System.out.println(calculate("(1+(4+5+2)-3)+(6+81)"));
+        System.out.println(calculate2241("(1+(4+5+2)-3)+(6+81)"));
     }
 }

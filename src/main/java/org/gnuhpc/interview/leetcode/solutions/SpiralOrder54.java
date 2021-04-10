@@ -45,6 +45,31 @@ public class SpiralOrder54 {
         return ans;//如果要数组则用stream：.stream().mapToInt(i -> i).toArray()
     }
 
+    /*
+    Method2: DFS
+     */
+
+    public List<Integer> spiralOrder2(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+        if (matrix.length == 0) return res;
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        dfs(visited, matrix, res, 0, 0);
+        return res;
+    }
+
+    private void dfs(boolean[][] visited, int[][] matrix, List<Integer> res, int i, int j) {
+        if (i < 0 || j < 0 || i >= matrix.length || j >= matrix[0].length || visited[i][j] == true) return;
+        visited[i][j] = true;
+        res.add(matrix[i][j]);
+        if (j - 1 < 0 || visited[i][j - 1] == true) {
+            dfs(visited, matrix, res, i - 1, j);
+        }
+        dfs(visited, matrix, res, i, j + 1);
+        dfs(visited, matrix, res, i + 1, j);
+        dfs(visited, matrix, res, i, j - 1);
+        dfs(visited, matrix, res, i - 1, j);
+    }
+
     @Test
     public void test() {
         System.out.println(spiralOrder(new int[][]{

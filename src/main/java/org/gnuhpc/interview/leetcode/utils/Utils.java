@@ -354,6 +354,7 @@ public class Utils {
         return Integer.parseInt(str, 2);
     }
 
+    //https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/solution/mian-shi-ti-15-er-jin-zhi-zhong-1de-ge-shu-wei-yun/
     //返回一个整数有多少1
     public static int count_one(int n) {
         int count = 0;

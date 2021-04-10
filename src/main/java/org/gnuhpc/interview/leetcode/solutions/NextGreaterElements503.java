@@ -15,7 +15,7 @@ public class NextGreaterElements503 {
         Arrays.fill(res, -1);
         Deque<Integer> s = new LinkedList<>();
         int i = 0;
-        while (i < 2 * nums.length) {
+        while (i < 2 * n) {
             if (s.isEmpty() || nums[i % n] <= nums[s.peek() % n]) {//可能会更小，因此往后走
                 s.push(i++);//如果只关注数值可以直接存入数值，如果关注idx之间的距离，也就是和最值的距离，则存入idx
             } else {

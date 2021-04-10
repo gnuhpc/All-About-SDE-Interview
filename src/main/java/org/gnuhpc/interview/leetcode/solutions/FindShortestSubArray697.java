@@ -39,4 +39,31 @@ public class FindShortestSubArray697 {
 
         return res + 1;
     }
+
+    //Method2: Towp pointer
+    public int findShortestSubArray2(int[] nums) {
+        int l = 0, r = 0, len = nums.length, res = len + 1;
+        Map<Integer, Integer> map = new HashMap<>();
+        int maxDegree = getDegree(nums);
+        while (r < len) {
+            map.put(nums[r], map.getOrDefault(nums[r], 0) + 1);
+            r++;
+            while (map.get(nums[r - 1]) == maxDegree) {
+                map.put(nums[l], map.get(nums[l]) - 1);
+                res = Math.min(res, r - l);
+                l++;
+            }
+        }
+        return res;
+    }
+
+    public int getDegree(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int res = 0;
+        for (int i : nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+            res = Math.max(res, map.get(i));
+        }
+        return res;
+    }
 }

@@ -13,41 +13,32 @@ public class Rob213 {
     House Robber I的升级版. 因为第一个element 和最后一个element不能同时出现. 则分两次call House Robber
     I. case 1: 不包括最后一个element. case 2: 不包括第一个element.
      */
-
     private int[] memo;
-
     public int rob(int[] nums) {
-        if (nums.length == 1) return nums[0];
+        int n = nums.length;
+        if(n == 1) return nums[0];
 
-        memo = new int[nums.length];
+        memo = new int[n];
+
         Arrays.fill(memo, -1);
+        int n1 = dfs(nums, 1, n - 1);
 
-        int nContainFirst = tryRob(nums, 1, nums.length);
-        //add by tina,注意重新赋值，因为第2轮最大值搜索对同一个索引计算结果不同
         Arrays.fill(memo, -1);
-        int yContainFirst = tryRob(nums, 0, nums.length - 1);
-
-        return Math.max(nContainFirst, yContainFirst);
-        //自顶向下，一般从最后的开始, 从最后一家开始抢，规模缩小
+        int n2 = dfs(nums,0, n - 2);
+        return Math.max(n1,n2);
     }
 
-    private int tryRob(int[] nums, int start, int end) {
-        if (start >= end) {
-            return 0;
+    private int dfs(int[] nums,int i,int j){
+        if( i  > nums.length - 1) return 0;
+        if(memo[i] != -1) return memo[i];
+        int maxMoney = 0;
+        for (int k = i; k <= j; k++) {
+            maxMoney = Math.max(maxMoney,dfs(nums,k + 2,j) + nums[k]);
         }
-        // 记忆化搜索可以避免重叠子问题的重复运算
-        if (memo[start] != -1) {
-            return memo[start];
-        }
-        // 下面是对状态转移方程的描述
-        int max = 0;
-        for (int i = start; i < end; i++) {
-            max = Math.max(max, nums[i] + tryRob(nums, i + 2, end));
-            max = Math.max(max, tryRob(nums, i + 1, end));
-        }
-        memo[start] = max;
-        return max;
+        memo[i] = maxMoney;
+        return memo[i];
     }
+
 
     // add by tina,DP
     public int rob2(int[] nums) {

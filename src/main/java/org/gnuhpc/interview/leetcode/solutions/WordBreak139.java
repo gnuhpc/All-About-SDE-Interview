@@ -1,6 +1,5 @@
 package org.gnuhpc.interview.leetcode.solutions;
 
-import org.gnuhpc.interview.datastructure.trie.Trie;
 import org.junit.Test;
 
 import java.util.*;
@@ -27,39 +26,50 @@ public class WordBreak139 {
     }
 
     /*
-    Method 2: dfs + Memorization 7ms
+    Method 2: dfs + Memorization 1ms
      */
     private int min = 0, max = 0;
+    Set<String> wordSet = new HashSet<>();
 
     public boolean wordBreak2(String s, List<String> wordDict) {
         min = Integer.MAX_VALUE;
         max = Integer.MIN_VALUE;
+
         for (String word : wordDict) {
             int l = word.length();
             max = Math.max(l, max);
             min = Math.min(l, min);
+            wordSet.add(word);
         }
-        return wordBreakHelper(s, wordDict, new HashSet<>(), 0);
+        int[] memo = new int[s.length() + 1];
+        Arrays.fill(memo, -1);//1可以，0不可以，-1不知道
+        return wordBreakHelper(s, memo, 0);
     }
 
     //start表示的是从字符串s的哪个位置开始
-    public boolean wordBreakHelper(String s, List<String> wordDict, Set<Integer> invalidPosSet, int start) {
+    public boolean wordBreakHelper(String s, int[] memo, int start) {
         if (start == s.length())
             return true;
+
+        if (memo[start] == 1) {
+            return true;
+        }
+        if (memo[start] == 0) {
+            return false;
+        }
+
         for (int end = start + 1; end <= s.length(); end++) {
-            if (invalidPosSet.contains(end))
-                continue;
             int len = end - start; //左开右闭是字符串处理的通用模式
-            if (len >= min && len <= max && wordDict.contains(s.substring(start, end))) {
-                if (wordBreakHelper(s, wordDict, invalidPosSet, end))
+            if (len >= min && len <= max && wordSet.contains(s.substring(start, end))) {
+                if (wordBreakHelper(s, memo, end))
                     return true;
                 else
-                    invalidPosSet.add(end);
+                    memo[start] = 1;
             }
         }
+        memo[start] = 0;
         return false;
     }
-
 
 
 
@@ -118,7 +128,7 @@ public class WordBreak139 {
 
 
     /*
-    Method 5: bfs
+    Method 4: bfs
     We can use a graph to represent the possible solutions.
     The vertices of the graph are simply the positions of the first characters of the words and each edge actually represents a word.
     For example, the input string is "nightmare",
@@ -136,33 +146,42 @@ the same with DP.
 This idea can be used to solve the problem word break II.
 We can simple construct the graph using BFS,
 save it into a map and then find all the paths using DFS
-     */
+     */ //TODO BFS的巧妙用法
 
-    public boolean wordBreak5(String s, List<String> wordDict) {
-        Set<String> dict = new HashSet<>(wordDict);
-        Set<Integer> visited = new HashSet<>();
+    Set<Integer> visited;
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        for (String word : wordDict) {
+            int l = word.length();
+            max = Math.max(l, max);
+            min = Math.min(l, min);
+        }
+
+        Set<String> wordSet = new HashSet<>(wordDict);
+        visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
 
         while (!queue.isEmpty()) {
             int size = queue.size();
-            for (int j = 0; j < size; j++) {
-                int n = queue.poll();
-                if (n == s.length()) { //可以到最后就是true
+            for (int i = 0; i < size; i++) {
+                int start = queue.poll();
+                if (start == s.length()) { //可以到最后就是true
                     return true;
                 }
-                if (!visited.contains(n)) {
-                    for (int i = n + 1; i <= s.length(); i++) {
-                        if (dict.contains(s.substring(n, i))) {
-                            queue.add(i);
-                            visited.add(n);
-                        }
+
+                if (visited.contains(start)) continue;
+                int len = s.length();
+                int endd = Math.min(start + max, len);
+                for (int end = start + min + 1; end <= endd; end++) {
+                    if (wordSet.contains(s.substring(start, end))) {
+                        queue.add(end);
+                        visited.add(start);
                     }
                 }
             }
         }
         return false;
-
     }
 
 

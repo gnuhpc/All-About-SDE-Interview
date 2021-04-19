@@ -77,67 +77,42 @@ public class Solve130 {
     }
 
     // Method 2: DFS
-    // add by tina
-    // 定义4个方向遍历的偏移量
-    // 本体不需要使用used这样的数组，因为可以在原二维数组上标记
-    // 对比第200题-岛屿个数
-    /*
-    先用 for 循环遍历棋盘的四边，用 DFS 算法把那些与边界相连的 O 换成一个特殊字符，比如 *；
-    然后再遍历整个棋盘，把剩下的 O 换成 X，把 # 恢复成 O。
-    这样就能完成题目的要求，时间复杂度 O(MN)。
-     */
+    int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int m, n;
 
     public void solve2(char[][] board) {
-        if (board == null || board.length == 0)
-            return;
-        r = board.length;
-        c = board[0].length;
-
-        //merge O's on left & right boarder
-        for (int i = 0; i < r; i++) {
-            if (board[i][0] == 'O') {
-                dfs(board, i, 0);
-            }
-
-            if (board[i][c - 1] == 'O') {
-                dfs(board, i, c - 1);
+        if (board == null || board.length == 0) return;
+        m = board.length;//行
+        n = board[0].length;//列
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if ((i == 0 || i == m - 1 || j == 0 || j == n - 1) && board[i][j] == 'O') {
+                    dfs(board, i, j);
+                }
             }
         }
-
-        //merge O's on top & bottom boarder
-        for (int j = 0; j < c; j++) {
-            if (board[0][j] == 'O') {
-                dfs(board, 0, j);
-            }
-
-            if (board[r - 1][j] == 'O') {
-                dfs(board, r - 1, j);
-            }
-        }
-
-        //process the board
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (board[i][j] == 'O') {
                     board[i][j] = 'X';
-                } else if (board[i][j] == '*') {//同一个位置，不会被扫2次
+                }
+                if (board[i][j] == '#') {
                     board[i][j] = 'O';
                 }
             }
         }
     }
 
-    public void dfs(char[][] board, int startx, int starty) { //, boolean[][] used
-        board[startx][starty] = '*';
-
-        for (int[] d : dr) {
-            int newx = startx + d[0];
-            int newy = starty + d[1];
-            if (isValid(newx, newy) && board[newx][newy] == 'O') {//&& !used[newx][newy]
-                dfs(board, newx, newy); //,used
-            }
+    private void dfs(char[][] board, int i, int j) {
+        if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || board[i][j] != 'O') {
+            return;
+        }
+        board[i][j] = '#';
+        for (int[] direction : directions) {
+            dfs(board, i + direction[0], j + direction[1]);
         }
     }
+
 
     /*
     Method3 : Union-Find
@@ -152,7 +127,7 @@ public class Solve130 {
 
         // 用一个虚拟节点, 边界上的O 的父节点都是这个虚拟节点
         // 主要思路是适时增加虚拟节点，想办法让元素「分门别类」，建立动态连通关系。
-        UnionFind qu = new UnionFind(rows * cols + 1);
+        UnionFind uf = new UnionFind(rows * cols + 1);
 
         //并差集虚拟节点
         int dummyNode = rows * cols;
@@ -163,17 +138,17 @@ public class Solve130 {
                     // 遇到O进行并查集操作合并
                     if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1) {
                         // 边界上的O,把它和dummyNode 合并成一个连通区域.
-                        qu.union(qu.node(cols, i, j), dummyNode);
+                        uf.union(uf.node(cols, i, j), dummyNode);
                     } else {
                         // 和上下左右合并成一个连通区域.
                         if (i > 0 && board[i - 1][j] == 'O')
-                            qu.union(qu.node(cols, i, j), qu.node(cols, i - 1, j));
+                            uf.union(uf.node(cols, i, j), uf.node(cols, i - 1, j));
                         if (i < rows - 1 && board[i + 1][j] == 'O')
-                            qu.union(qu.node(cols, i, j), qu.node(cols, i + 1, j));
+                            uf.union(uf.node(cols, i, j), uf.node(cols, i + 1, j));
                         if (j > 0 && board[i][j - 1] == 'O')
-                            qu.union(qu.node(cols, i, j), qu.node(cols, i, j - 1));
+                            uf.union(uf.node(cols, i, j), uf.node(cols, i, j - 1));
                         if (j < cols - 1 && board[i][j + 1] == 'O')
-                            qu.union(qu.node(cols, i, j), qu.node(cols, i, j + 1));
+                            uf.union(uf.node(cols, i, j), uf.node(cols, i, j + 1));
                     }
                 }
             }
@@ -182,7 +157,7 @@ public class Solve130 {
         //只有和边界 O 相连的 O 才具有和 dummy 的连通性，他们不会被替换。
         for (int i = 1; i < rows - 1; i++) {
             for (int j = 1; j < cols - 1; j++) {
-                if (board[i][j] == 'O' && !qu.isConnected(qu.node(cols, i, j), dummyNode)) {
+                if (board[i][j] == 'O' && !uf.isConnected(uf.node(cols, i, j), dummyNode)) {
                     // 和dummyNode 不在一个连通区域的,那么就是X；
                     board[i][j] = 'X';
                 }

@@ -6,11 +6,14 @@ import java.util.*;
 
 //LC 385 是一般情况
 public class ReorganizeString767 {
-    public String reorganizeString(String str) {
+    public String reorganizeString(String S) {
+        int len = S.length();
         Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
+        char[] arr = S.toCharArray();
+        for (int i = 0; i < len; i++) {
+            char c = arr[i];
             map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) > (len + 1) / 2) return "";
         }
 
 
@@ -32,8 +35,7 @@ public class ReorganizeString767 {
          *     System.out.println("Cool, matches now!");
          * }
          */
-        for (char c : map.keySet())
-            queue.offer(c);
+        queue.addAll(map.keySet());
 
         StringBuilder sb = new StringBuilder();
 
@@ -42,10 +44,7 @@ public class ReorganizeString767 {
             List<Character> temp = new ArrayList<>();
 
             for (int i = 0; i < 2; i++) {
-                if (queue.isEmpty()) {
-                    if (sb.length() != str.length()) return "";//需要cnt个不同的数来组成这一轮k间隔数据
-                    else break;
-                }
+                if (queue.isEmpty()) break;
 
                 char c = queue.poll();
                 sb.append(c);

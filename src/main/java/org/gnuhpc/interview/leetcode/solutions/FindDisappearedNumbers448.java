@@ -8,26 +8,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FindDisappearedNumbers448 {
-
     public List<Integer> findDisappearedNumbers(int[] nums) {
-        //用来存放结果
-        List<Integer> res = new ArrayList<>();
-        //1. 遍历下数组的元素，对对应的索引位置的元素作标记
-        int len = nums.length;
-        for(int i = 0; i < len; i++){
-            int num = Math.abs(nums[i]);  //由于数组的元素有可能被*-1，所以取绝对值
-            int index = num - 1;
-            if(nums[index] > 0){
-                nums[index] *= -1;
-            }
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            //当前数字本就出现在理应的位置上，跳过，不用换。当前数字理应出现的位置上，已经存在当前数字，跳过，不用换。
+            while (nums[i] != i + 1 && nums[nums[i] - 1] != nums[i]) swap(nums, i, nums[i] - 1);
         }
-        // 寻找没有标记的索引位置
-        for(int i = 0; i < len; i++){
-            if(nums[i] > 0){
-                res.add(i+1);
-            }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) ans.add(i + 1);
         }
-        return res;
+        return ans;
+    }
+
+    private void swap(int[] nums, int a, int b) {
+        int c = nums[a];
+        nums[a] = nums[b];
+        nums[b] = c;
     }
 
     @Test

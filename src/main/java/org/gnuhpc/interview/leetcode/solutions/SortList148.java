@@ -13,12 +13,12 @@ public class SortList148 {
         ListNode second = prev.next;
         prev.next = null;
 
-        // step 2. sort each half
+        // step 2. sort each half  -- O(nlogn)
         ListNode l1 = sortList(head);
         ListNode l2 = sortList(second);
 
 
-        // step 3. merge l1 and l2
+        // step 3. merge l1 and l2 -- O(nlogn)
         return merge(l1, l2);
     }
 

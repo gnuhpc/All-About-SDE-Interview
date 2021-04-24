@@ -13,14 +13,14 @@ public class CombinationSum4377 {
     }
 
     private int search(int[] nums, int target, int[] memo) {
+        if (target < 0) return 0;
+
         if (memo[target] != -1) {
             return memo[target];
         }
         int res = 0;
         for (int num : nums) {
-            if (target >= num) {
-                res += search(nums, target - num, memo);
-            }
+            res += search(nums, target - num, memo);
         }
         memo[target] = res;
         return res;

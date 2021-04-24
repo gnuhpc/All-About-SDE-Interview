@@ -61,7 +61,7 @@ public class QuickSort {
 
 
     /*
-    Method 2 : 三路，分成三部分， 推荐！
+    Method 2 : 三路，分成三部分
      */
     public void quickSort3Ways(int[] numbers, int left, int right) {
         if (left >= right) return;

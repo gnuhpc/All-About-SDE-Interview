@@ -20,6 +20,21 @@ public class RemoveDuplicates26 {
         return l + 1;
     }
 
+    /*
+    Method2: 通解
+     */
+
+    public int removeDuplicates2(int[] nums) {
+        return process(nums, 1);
+    }
+
+    int process(int[] nums, int k) {
+        int idx = 0;
+        for (int x : nums) {
+            if (idx < k || nums[idx - k] != x) nums[idx++] = x;
+        }
+        return idx;
+    }
 
     @Test
     public void test() {

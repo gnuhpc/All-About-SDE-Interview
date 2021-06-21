@@ -79,6 +79,29 @@ public class ContainsNearbyAlmostDuplicate220 {
         return false;
     }
 
+    public boolean containsNearbyAlmostDuplicate3(int[] nums, int k, int t) {
+        if (nums == null || nums.length < 2 || k < 1)
+            return false;
+
+        final int len = nums.length;
+        int[][] m = new int[len][2];
+        for (int i = 0; i < len; i++) {
+            m[i][0] = nums[i];
+            m[i][1] = i;
+        }
+        Arrays.sort(m, (a, b) -> Integer.compare(a[0], b[0])); // n log n
+        for (int i = 0; i < len - 1; i++) { // n times
+            for (int j = i + 1; j < len; j++) { // n times (in practice, less than that, unless t is large)
+                long tmp = (long) m[i][0] - (long) m[j][0];
+                if (Math.abs(tmp) > t)//实际是一种剪枝
+                    break;
+                if (Math.abs(m[i][1] - m[j][1]) <= k)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     @Test
     public void test() {
         int[] array = new int[]{1, 2, 3, 1};

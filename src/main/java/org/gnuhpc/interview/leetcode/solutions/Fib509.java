@@ -13,4 +13,16 @@ public class Fib509 {
         }
         return dp[N];
     }
+
+    /*
+    func fib(n int) int {
+	a, b := 0, 1
+	for ; n > 0; n-- {
+        //注意这儿需要防止越界
+		a, b = (a+b)%1000000007, a
+	}
+	return a
+}
+
+     */
 }

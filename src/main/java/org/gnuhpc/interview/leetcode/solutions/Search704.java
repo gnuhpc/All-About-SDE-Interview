@@ -9,4 +9,22 @@ public class Search704 {
     public int search(int[] nums, int target) {
         return BinarySearch.binarySearch(target, nums);
     }
+
+    /*
+    Golang Version:
+    func search(nums []int, target int) int {
+        for l, r := 0, len(nums)-1; l<=r; {
+            switch mid := (l+r)/2; {
+            case nums[mid] > target:
+                r = mid - 1
+            case nums[mid] < target:
+                l = mid + 1
+            default:
+                return mid
+            }
+        }
+        return -1
+    }
+
+     */
 }

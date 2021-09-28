@@ -10,10 +10,7 @@ public class GetKthFromEnd22 {
         if (head == null) return null;
         ListNode fast = head, slow = head;
 
-        while (k > 0 && fast != null) {
-            fast = fast.next;
-            k--;
-        }
+        for(;k> 0 && fast!=null; k--) fast = fast.next;
 
         if (fast == null && k > 0) return null;
 
@@ -24,4 +21,19 @@ public class GetKthFromEnd22 {
 
         return slow;
     }
+
+    /*
+    Golang Version:
+func getKthFromEnd(head *ListNode, k int) *ListNode {
+    fast, slow := head, head
+	for i := 0; i < k; i++ {
+		fast = fast.Next
+	}
+	for fast != nil {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	return slow
+}
+     */
 }

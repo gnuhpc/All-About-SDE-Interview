@@ -5,36 +5,14 @@ import org.junit.Test;
 
 public class CompareVersion165 {
     public int compareVersion(String version1, String version2) {
-        if (version1.equals(version2)) return 0;
-
-        int idx1 = version1.indexOf(".");
-        int idx2 = version2.indexOf(".");
-
-        int v1 = 0, v2 = 0;
-        if (idx1 == -1) {
-            v1 = Integer.parseInt(version1);
-        } else {
-            v1 = Integer.parseInt(version1.substring(0, idx1));
+        String[] v1 = version1.split("\\.");
+        String[] v2 = version2.split("\\.");
+        for (int i = 0; i < v1.length || i < v2.length; ++i) {
+            int num1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;
+            int num2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
+            if (num1 != num2) return num1 > num2 ? 1 : -1;
         }
-
-        if (idx2 == -1) {
-            v2 = Integer.parseInt(version2);
-        } else {
-            v2 = Integer.parseInt(version2.substring(0, idx2));
-        }
-
-        if (v1 > v2) return 1;
-        else if (v2 > v1) return -1;
-        else {
-            if (idx1 == -1 && idx2 == -1)
-                return 0;
-            else if (idx1 != -1 && idx2 == -1)
-                return compareVersion(version1.substring(idx1 + 1), "0");
-            else if (idx1 == -1 && idx2 != -1)
-                return compareVersion("0", version2.substring(idx2 + 1));
-            else
-                return compareVersion(version1.substring(idx1 + 1), version2.substring(idx2 + 1));
-        }
+        return 0;
     }
 
     @Test
@@ -44,4 +22,32 @@ public class CompareVersion165 {
         System.out.println(compareVersion("7.5.2.4", "7.5.3"));
         System.out.println(compareVersion("1.01", "1.001"));
     }
+
+
+    /*
+    Golang Version:
+    func compareVersion(version1 string, version2 string) int {
+        v1 := strings.Split(version1, ".")
+        v2 := strings.Split(version2, ".")
+
+        for len(v1) < len(v2) {
+            v1 = append(v1, "0")
+        }
+        for len(v2) < len(v1) {
+            v2 = append(v2, "0")
+        }
+
+        for i := 0; i < len(v1); i++ {
+            a, _ := strconv.Atoi(v1[i])
+            b, _ := strconv.Atoi(v2[i])
+            if a > b {
+                return 1
+            } else if a < b {
+                return -1
+            }
+        }
+        return 0
+    }
+
+     */
 }

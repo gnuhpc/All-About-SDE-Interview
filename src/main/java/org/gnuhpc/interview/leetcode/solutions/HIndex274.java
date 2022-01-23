@@ -37,6 +37,24 @@ public class HIndex274 {
         return 0;
 
     }
+    /*
+    func hIndex(citations []int) int {
+
+	count := 0
+
+	sort.Ints(citations)
+
+	for i := len(citations) - 1; i >= 0; i-- {
+		if citations[i] >= count+1 {
+			count++
+		} else {
+			return count
+		}
+	}
+	return count
+}
+
+     */
 
     // 方法二，借助hash表，hash表最重要的是明确其下标和值的含义
     // 本题中定义一个长度为n的数组，表示hash表

@@ -2,15 +2,18 @@ package org.gnuhpc.interview.leetcode.solutions;
 
 public class DominantIndex747 {
     public int dominantIndex(int[] nums) {
-        int maxIndex = 0;
-        for (int i = 0; i < nums.length; ++i) {
-            if (nums[i] > nums[maxIndex])
-                maxIndex = i;
+        int first = Integer.MIN_VALUE, second = Integer.MIN_VALUE;
+        int maxId = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > first) {
+                second = first;
+                first = nums[i];
+                maxId = i;
+            } else if (nums[i] > second) {
+                second = nums[i];
+            }
         }
-        for (int i = 0; i < nums.length; ++i) {
-            if (maxIndex != i && nums[maxIndex] < 2 * nums[i])
-                return -1;
-        }
-        return maxIndex;
+        return first >= 2 * second ? maxId : -1;
     }
+
 }

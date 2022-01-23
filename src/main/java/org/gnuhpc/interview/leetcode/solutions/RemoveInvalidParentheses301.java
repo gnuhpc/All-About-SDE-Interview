@@ -102,10 +102,10 @@ public class RemoveInvalidParentheses301 {
                     // for each state, if it's not visited, add it to the queue
                     queue.add(t);
                     visited.add(t);
-                    System.out.println(t);
+                //    System.out.println(t);
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
 
         return res;

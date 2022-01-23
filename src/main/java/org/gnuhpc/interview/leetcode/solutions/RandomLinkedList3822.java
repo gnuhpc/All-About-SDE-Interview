@@ -12,23 +12,35 @@ import java.util.Random;
 Reservoir Sampling for follow-up
  */
 public class RandomLinkedList3822 {
+
+    /*
+    这题属于数学题，如何在长度未知的序列（数据流）中随机选择一个元素出来？
+
+结论：当你遇到第 i 个元素时，应该有 1/i 的概率选择该元素，1 - 1/i 的概率保持原有的选择。
+     */
     ListNode head;
-    Random random;
+    Random r = new Random();
 
-    public RandomLinkedList3822(ListNode h) {
-        head = h;
-        random = new Random();
+    public RandomLinkedList3822(ListNode head) {
+        this.head = head;
     }
 
-    public int getRandom() {
-        ListNode c = head;
-        int r = c.val;
-        for (int i = 1; c.next != null; i++) {
-            c = c.next;
-            int n = random.nextInt(i + 1);
-            if (n < 1) r = c.val;
+    /* 返回链表中一个随机节点的值 */
+    int getRandom() {
+        int i = 0, res = 0;
+        ListNode p = head;
+        // while 循环遍历链表
+        while (p != null) {
+            i++;
+            // 生成一个 [0, i) 之间的整数
+            // 这个整数等于 0 的概率就是 1/i
+            if (0 == r.nextInt(i)) {
+                res = p.val;
+            }
+            p = p.next;
         }
-
-        return r;
+        return res;
     }
+
+
 }

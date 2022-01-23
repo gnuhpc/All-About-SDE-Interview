@@ -38,4 +38,30 @@ cost(1,n)=i+max(cost(1,i−1),cost(i+1,n))
         }
         return solve(1, n);
     }
+
+    /*
+    Method2: DFS + Memo
+     */
+    public int getMoneyAmount2(int n) {
+        int[][] memo = new int[n + 2][n + 2];
+        return dfs(1, n, memo);
+    }
+
+    private int dfs(int start, int end, int[][] memo) {
+        if (start >= end) {
+            return 0;
+        }
+
+        if (memo[start][end] != 0) {
+            return memo[start][end];
+        }
+
+        int ans = Integer.MAX_VALUE;
+        for (int k = start; k <= end; k++) {
+            ans = Math.min(ans, Math.max(dfs(start, k - 1, memo), dfs(k + 1, end, memo)) + k);
+        }
+
+        return memo[start][end] = ans;
+    }
+
 }

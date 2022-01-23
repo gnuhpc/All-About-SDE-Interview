@@ -7,11 +7,49 @@ import org.junit.Test;
  */
 public class LastRemaining390 {
 
+    /*
+输入：n = 9
+输出：6
+解释：
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+arr = [2, 4, 6, 8]
+arr = [2, 6]
+arr = [6]
+
+输入：n = 6
+输出：6
+解释：
+arr = [1, 2, 3, 4, 5, 6]
+arr = [2, 4, 6]
+arr = [4]
+
+
+*/
+
     public int lastRemaining(int n) {
-        return n == 1 ? 1 : 2 * (n / 2 + 1 - lastRemaining(n / 2));
+        if (n == 1) {
+            return 1;
+        }
+        int size = n;// 表示当前整数列表中的数量；
+        int step = 1; //表示两个有效整数之间的距离。
+        int start = 1;//表示从左到右第一个有效的整数；
+        boolean fromLeft = true; //本轮是否从左边开始消除
+
+        while (size > 1) {
+            if (fromLeft) {
+                start = start + step;
+            } else {
+                start = (size % 2 == 0) ? start : start + step;
+            }
+
+            size = size / 2;
+            step *= 2;
+            fromLeft = !fromLeft;
+        }
+
+        return start;
     }
 
-    //链接：https://leetcode-cn.com/problems/elimination-game/solution/xiao-chu-you-xi-xiang-jie-by-yueyue_projects/
 
     @Test
     public void test() {

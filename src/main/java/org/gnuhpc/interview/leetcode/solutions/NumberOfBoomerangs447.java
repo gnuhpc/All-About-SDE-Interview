@@ -33,4 +33,25 @@ public class NumberOfBoomerangs447 {
         }
         return ans;
     }
+    /*
+    func numberOfBoomerangs(points [][]int) int {
+    res := 0 //最终返回结果
+    for i:=0;i<len(points);i++{ //i当做枢纽，寻找到i距离想等的点
+        hash := make(map[int]int) //本轮的哈希表，不同的i点有不同的哈希表
+        for j := 0;j<len(points);j++{ //j为另外一个点
+            if i != j{ //两点不能相同
+                hash[distance(points[i],points[j])]++ //频率加一
+            }
+        } //二层循环for
+        for _,v := range hash{
+            res += v * (v-1) //第一次有v种选择，第二次有v-1种选择
+        }
+    }
+        return res
+}
+
+func distance(a,b []int)int{ //如果距离太大需要改用int64
+    return (a[0]-b[0]) * (a[0]-b[0]) + (a[1]-b[1]) * (a[1]-b[1]) //计算的是a,b两点的平方
+}
+     */
 }

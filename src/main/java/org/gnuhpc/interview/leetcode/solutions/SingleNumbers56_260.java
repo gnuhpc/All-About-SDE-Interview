@@ -15,32 +15,61 @@ public class SingleNumbers56_260 {
 再次遍历数组，用h和数组元素“与”操作为0还是为1区分开这两个数；
 不过不用担心其他出现两次的数被分开，影响结果，他们&h结果是一样的，会被分到一起 x^x = 0会消掉。 最后得到的就是 a、b
      */
+    /*
+[1,2,1,3,2,5]
 
-    // 假设结果数为A B
-    public int[] singleNumbers(int[] nums) {
-        int a = 0;
-        int b = 0;
-        int c = 0; // 用来记录 两个只出现一次的数 a^b
-        for (int i = 0; i < nums.length; i++) {
-            c = c ^ nums[i];
+1 = 001
+2 = 010
+1 = 001
+3 = 011
+2 = 010
+5 = 101
+
+把上边所有的数字异或，最后得到的结果就是 3 ^ 5 = 6 (110)
+
+然后对 110 调用 Integer.highestOneBit 方法就得到 100, 我们通过倒数第三位将原数组分类
+
+倒数第三位为 0 的组
+1 = 001
+2 = 010
+1 = 001
+3 = 011
+2 = 010
+
+倒数第三位为 1 的组
+5 = 101
+
+最后组内数字依次异或即可。
+
+作者：windliang
+链接：https://leetcode-cn.com/problems/single-number-iii/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-5-8/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     */
+
+    public int[] singleNumber(int[] nums) {
+        int diff = 0;
+        for (int n : nums) {
+            diff ^= n;
         }
-        int h = 1;
-        while ((c & h) == 0) {
-            h = h << 1;
-        }
-        for (int i = 0; i < nums.length; i++) {
-            if ((nums[i] & h) == 0) {
-                a ^= nums[i];
+        diff = Integer.highestOneBit(diff);
+        int[] result = {0, 0};
+        for (int n : nums) {
+            //当前位是 0 的组, 然后组内异或
+            if ((diff & n) == 0) {
+                result[0] ^= n;
+                //当前位是 1 的组
             } else {
-                b ^= nums[i];
+                result[1] ^= n;
             }
         }
-        return new int[]{a, b};
+        return result;
     }
+
 
 
     @Test
     public void test() {
-        Utils.printArray(singleNumbers(new int[]{4, 1, 4, 6}));
+        Utils.printArray(singleNumber(new int[]{4, 1, 4, 6}));
     }
 }

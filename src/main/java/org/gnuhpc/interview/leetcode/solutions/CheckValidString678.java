@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class CheckValidString678 {
     /*
-    Method1: DFS
+    Method1: DFS LTE
      */
     private String source;
 
@@ -16,8 +16,7 @@ public class CheckValidString678 {
     private boolean dfs(int start, int lCount) {
         if (lCount < 0) return false;
         if (start == source.length()) {
-            if (lCount == 0) return true;
-            else return false;
+            return lCount == 0;
         }
         if (source.charAt(start) == '(') {
             return dfs(start + 1, lCount + 1);

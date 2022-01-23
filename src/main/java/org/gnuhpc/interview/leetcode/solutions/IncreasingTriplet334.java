@@ -5,22 +5,24 @@ import org.junit.Test;
 public class IncreasingTriplet334 {
     //Method:  尝试法
     public boolean increasingTriplet(int[] nums) {
-        int i = 0;
-        int small = Integer.MAX_VALUE, big = Integer.MAX_VALUE;
-        
-        while (i < nums.length) {
+
+        int small = Integer.MAX_VALUE, mid = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length; i++) {
             if (nums[i] < small) { //比最小的还小
                 small = nums[i];
-            } else if (nums[i] > small && nums[i] <= big) { //是中间的那一个
-                big = nums[i];
-            } else if (nums[i] > big) { //比最大的还大，构成单调递增三元组
-                return true;
             }
-            i++;
+
+            if (nums[i] > mid) { //比最大的还大，构成单调递增三元组
+                return true;
+            } else if (nums[i] > small && nums[i] < mid) { //是中间的那一个
+                mid = nums[i];
+            }
         }
 
         return false;
     }
+
 
     @Test
     public void test() {

@@ -12,47 +12,46 @@ The right answer must satisfy two conditions:
 2. count of all the points should be even, and that of all the four corner points should be one
  */
 public class IsRectangleCover391 {
+    Set<Integer> set;
+
     public boolean isRectangleCover(int[][] rectangles) {
-        int left = Integer.MAX_VALUE;
-        int right = Integer.MIN_VALUE;
-        int top = Integer.MIN_VALUE;
-        int bottom = Integer.MAX_VALUE;
-        int n = rectangles.length;
+        long area = 0;
+        set = new HashSet();
 
-        Set<String> set = new HashSet<>();
-        int sumArea = 0;
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
+        for (int[] rec : rectangles) {
+            int x1 = rec[0], y1 = rec[1], x2 = rec[2], y2 = rec[3];
+            area += (long) (x2 - x1) * (y2 - y1);
 
-        for (int i = 0; i < n; i++) {
-            //获取四个点的坐标
-            left = Math.min(left, rectangles[i][0]);
-            bottom = Math.min(bottom, rectangles[i][1]);
-            right = Math.max(right, rectangles[i][2]);
-            top = Math.max(top, rectangles[i][3]);
-            //计算总小矩形的面积
-            sumArea += (rectangles[i][3] - rectangles[i][1]) * (rectangles[i][2] - rectangles[i][0]);
-            //分别记录小矩形的坐标
-            String lt = rectangles[i][0] + " " + rectangles[i][3];
-            String lb = rectangles[i][0] + " " + rectangles[i][1];
-            String rt = rectangles[i][2] + " " + rectangles[i][3];
-            String rb = rectangles[i][2] + " " + rectangles[i][1];
-            //如果有就移除 没有就加入
-            if (!set.contains(lt)) set.add(lt);
-            else set.remove(lt);
-            if (!set.contains(lb)) set.add(lb);
-            else set.remove(lb);
-            if (!set.contains(rt)) set.add(rt);
-            else set.remove(rt);
-            if (!set.contains(rb)) set.add(rb);
-            else set.remove(rb);
+            if (x1 < minX || y1 < minY) {
+                minX = x1;
+                minY = y1;
+            }
+            if (x2 > maxX || y2 > maxY) {
+                maxX = x2;
+                maxY = y2;
+            }
+
+            put(hashKey(x1, y1));
+            put(hashKey(x1, y2));
+            put(hashKey(x2, y1));
+            put(hashKey(x2, y2));
         }
 
-        //最后只剩4个大矩形坐标且面积相等即为完美矩形
-        if (set.size() == 4 && set.contains(left + " " + top) && set.contains(left + " " + bottom) &&
-                set.contains(right + " " + bottom) && set.contains(right + " " + top)) {
-            return sumArea == (right - left) * (top - bottom);
-        }
-        return false;
+        if (area != ((long) (maxX - minX) * (maxY - minY))) return false;
+        return set.size() == 4 && set.contains(hashKey(minX, minY)) &&
+                set.contains(hashKey(minX, maxY)) &&
+                set.contains(hashKey(maxX, minY)) &&
+                set.contains(hashKey(maxX, maxY));
 
+    }
 
+    private void put(int key) {
+        if (!set.add(key)) set.remove(key);
+    }
+
+    //TODO 二维的方法
+    private int hashKey(int x, int y) {
+        return x * 100001 + y;
     }
 }

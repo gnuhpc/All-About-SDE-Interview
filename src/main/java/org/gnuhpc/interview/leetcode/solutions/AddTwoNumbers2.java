@@ -39,6 +39,33 @@ public class AddTwoNumbers2 {
         return dummy.next;
     }
 
+    //Method: in-place modified
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        addTwoNumbers(l1, l2, 0);
+        return l1;
+    }
+
+    public void addTwoNumbers(ListNode l1, ListNode l2, int ll) {
+        ll = l1.val + l2.val + ll;
+        l1.val = ll < 10 ? ll : ll - 10;
+        if (l1.next != null && l2.next != null) {
+            addTwoNumbers(l1.next, l2.next, ll / 10);
+            return;
+        }
+        if (l2.next != null) {
+            l1.next = l2.next;
+        }
+        while (l1.next != null && ll > 9) {
+            l1 = l1.next;
+            ll = l1.val + 1;
+            l1.val = ll < 10 ? ll : ll - 10;
+        }
+        if (ll > 9) {
+            l1.next = new ListNode(1);
+        }
+    }
+
+
     @Test
     public void test() {
         ListNode.print(addTwoNumbers(ListNode.createList(new int[]{0}), ListNode.createList(new int[]{0})));

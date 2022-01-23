@@ -80,4 +80,32 @@ public class IsCousins993 {
         }
     }
 
+    TreeNode xParent, yParent;
+    int xDeep, yDeep;
+
+    public boolean isCousins3(TreeNode root, int x, int y) {
+
+        dfs(root, 0, null, x, y);
+        return xDeep == yDeep && xParent != yParent;
+    }
+
+    // 前序遍历：根 - 左 - 右
+    public void dfs(TreeNode node, int deep, TreeNode parent, int x, int y) {
+
+        if (node == null) return;
+
+        if (node.val == x) {
+
+            xParent = parent;
+            xDeep = deep;
+        } else if (node.val == y) {
+
+            yParent = parent;
+            yDeep = deep;
+        }
+
+        dfs(node.left, deep + 1, node, x, y);
+        dfs(node.right, deep + 1, node, x, y);
+    }
+
 }
